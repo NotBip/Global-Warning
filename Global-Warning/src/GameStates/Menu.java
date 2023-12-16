@@ -1,4 +1,4 @@
-package UserInterface;
+package GameStates;
 
 public class Menu {
     //Nusayba's thing
