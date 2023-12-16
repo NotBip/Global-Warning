@@ -1,5 +1,5 @@
 package Entities;
 
-public class Entities {
+public class AirEnemies {
     
 }
