@@ -5,6 +5,8 @@ import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
 
+import static Utilities.Constants.GAME_HEIGHT;
+
 import java.awt.Graphics;
 import java.awt.event.*;
 
@@ -26,7 +28,7 @@ public class Playing extends State implements KeyListener{
     }
 
     public void initialize() {
-        player = new Player(10, 10, 10, 10);
+        player = new Player(10, GAME_HEIGHT-100, 50, 50);
     }
 
     public void update() {
@@ -72,6 +74,9 @@ public class Playing extends State implements KeyListener{
             break;
             case KeyEvent.VK_S:
             player.setDown(true);
+            break;
+            case KeyEvent.VK_SPACE:
+            player.jump();
             break;
         }
     }
