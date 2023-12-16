@@ -1,4 +1,4 @@
-package Game.UserInputs;
+package UserInputs;
 
 public class MouseInputs {
     //a thing
