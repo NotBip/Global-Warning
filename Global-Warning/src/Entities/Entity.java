@@ -1,23 +1,26 @@
 package Entities;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 
 public class Entity {
-    private float x;
-    private float y;
-    private float width;
-    private float height;
-    private float xSpeed;
-    private float airSpeed;
-    private Rectangle2D.Float hitbox;
-    private int state;
-    private boolean inAir;
-    private int maxHealth;
-    private int currentHealth;
-    private int animationTick;
+    protected float x;
+    protected float y;
+    protected int width;
+    protected int height;
+    protected float xSpeed;
+    protected float airSpeed;
+    protected Rectangle2D.Float hitbox;
+    protected int state;
+    protected boolean inAir;
+    protected int maxHealth;
+    protected int currentHealth;
+    protected int animationTick;
+    protected int animationIndex;
 
 
-    public Entity(float x, float y, float width, float height) {
+    public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -34,6 +37,10 @@ public class Entity {
 
     public int getState() {
         return state;
+    }
+
+    public void drawHitbox(Graphics g) {
+        g.drawRect((int) hitbox.x, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
     

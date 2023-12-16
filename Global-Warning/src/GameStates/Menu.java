@@ -2,6 +2,7 @@ package GameStates;
 
 import java.awt.Graphics;
 
+
 public class Menu {
 
     public void update() {
