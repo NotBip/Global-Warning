@@ -1,6 +1,6 @@
 package Entities;
 
-import javafx.scene.shape.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 public class Entity {
     private float x;
@@ -9,7 +9,7 @@ public class Entity {
     private float height;
     private float xSpeed;
     private float airSpeed;
-    private Rectangle hitbox;
+    private Rectangle2D.Float hitbox;
     private int state;
     private boolean inAir;
     private int maxHealth;
@@ -25,10 +25,10 @@ public class Entity {
     }
 
     protected void initialize() {
-        hitbox = new Rectangle(x, y, width, height);
+        hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
-    public Rectangle getHitbox() {
+    public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
 
