@@ -28,7 +28,7 @@ public class Playing extends State implements KeyListener{
     }
 
     public void initialize() {
-        player = new Player(10, GAME_HEIGHT-100, 50, 50);
+        player = new Player(10, GAME_HEIGHT-100, 60, 80);
     }
 
     public void update() {
