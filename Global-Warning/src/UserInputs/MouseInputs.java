@@ -20,12 +20,12 @@ public class MouseInputs implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        
+        //face the mouse when entered
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+         //remain stagnant if gone
     }
 
     @Override

@@ -2,6 +2,7 @@ package Main;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.print("Heyoooooooooooo!");
+        //nusayba is great
+        new Game();
     }
 }
