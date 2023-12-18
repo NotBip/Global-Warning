@@ -1,5 +1,13 @@
 package GameStates;
 
+import java.awt.Graphics;
+
+
 public class Menu {
-    //Nusayba's thing
+
+    public void update() {
+    }
+
+    public void draw(Graphics g) {
+    }
 }
