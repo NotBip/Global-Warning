@@ -22,6 +22,21 @@ public class Constants {
 		public static final int DOWN = 3;
 	}
 
+	    public static class EnemyConstants {
+			public static final int Zombie = 0; 
+	}
+
+	public static int getMaxEnemyHealth(int enemyType) {
+		switch (enemyType) {
+			case 0:
+				return 10; 		
+			default:
+				return 0;
+		}
+	}
+
+
+
 	public static class PlayerConstants {
 		public static final int IDLELEFT = 1;
         public static final int IDLERIGHT = 0;
