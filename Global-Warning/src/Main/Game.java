@@ -2,7 +2,9 @@ package Main;
 
 import java.awt.Graphics;
 
+import Entities.Player;
 import GameStates.*;
+import Levels.LevelManager;
 
 
 public class Game implements Runnable {
@@ -73,6 +75,7 @@ public class Game implements Runnable {
 
     public void initialize() {
         playing = new Playing(this);
+		LevelManager.draw(g);
         menu = new Menu();
     }
 
