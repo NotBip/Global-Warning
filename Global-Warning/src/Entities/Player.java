@@ -19,41 +19,68 @@ public class Player extends Entity {
     private int playerDir = -1; 
 	private BufferedImage img;
     private float gravity = 0.04f;
+    private float airFriction = 0.04f;
+    private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.25f;
-
-    
+    private float defaultDashSpeed = 10f;
+    private float dashSpeed = 0;
+    private boolean isDashing = false;
+    public boolean canDash = false;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
-        this.xSpeed = 2.0f;
         this.inAir = true;
         Animations(); 
         initialize();
     }
 
+    /**
+     * Updates the player (position and direction currently) 
+     * @author Ryder Hodgson
+     * @since December 16, 2023
+     */
 
     public void update() {
-        moving = false;
+        moving = false; // Stop the player movement animation in case they stop moving this update
+        xSpeed = 0;
+        if(!isDashing) {
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
 
         if (right && !left && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) {
-            hitbox.x += xSpeed;
+            xSpeed += moveSpeed;
             moving = right;
             playerDir = RIGHT;
         } else if (!right && left && hitbox.x + xSpeed > 0) {
-            hitbox.x -= xSpeed;
+            xSpeed -= moveSpeed;
             moving = left;
             playerDir = LEFT;
-        }
+        }}
 
         if(inAir) {
             hitbox.y += airSpeed;
             airSpeed += gravity;
+            if(isDashing) {
+                canDash = false;
+            }
+        } else {
+            canDash = true;
         }
+    
+        if(isDashing) {
+            if(dashSpeed - airFriction <= 0) {
+                dashSpeed = 0;
+                isDashing = false;
+                System.out.println("dash done");
+            } else {
+            xSpeed = dashSpeed;
+            dashSpeed -= airFriction;
+        }
+    }
+        hitbox.x += xSpeed;
         updateAnimationTick();
 		setAnimation();
     }
@@ -63,6 +90,12 @@ public class Player extends Entity {
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
     }
 
+    /**
+     * Makes the player jump if they are on the ground 
+     * @author Ryder Hodgson
+     * @since December 16, 2023
+     */
+    
     public void jump() {
         if(inAir) {
             return;
@@ -71,6 +104,18 @@ public class Player extends Entity {
         airSpeed = jumpSpeed;
     }
 
+    public void dash() {
+        if(isDashing) {
+            return;
+        }
+        isDashing = true;
+        if(playerDir == LEFT) {
+            dashSpeed = -defaultDashSpeed;
+        } else {
+            dashSpeed = defaultDashSpeed;
+        }
+    }
+    
 
     public void setLeft(boolean left) {
         this.left = left;
@@ -91,8 +136,6 @@ public class Player extends Entity {
     public void setDown(boolean down) {
         this.down = down; 
     }
-
-
 
     /**
      * Loads the animations from the sprite atlas. 

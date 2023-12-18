@@ -19,7 +19,6 @@ public class Entity {
     protected int animationTick;
     protected int animationIndex;
 
-
     public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;

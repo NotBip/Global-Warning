@@ -78,6 +78,11 @@ public class Playing extends State implements KeyListener{
             case KeyEvent.VK_SPACE:
             player.jump();
             break;
+            case KeyEvent.VK_SHIFT:
+            if(player.canDash) {
+                player.dash();
+            }
+            
         }
     }
 
