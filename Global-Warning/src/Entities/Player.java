@@ -9,7 +9,6 @@ import static Utilities.Constants.Directions.*;
 import javax.imageio.ImageIO;
 
 import static Utilities.Atlas.*;
-import Utilities.Atlas;
 
 public class Player extends Entity {
 
@@ -19,10 +18,10 @@ public class Player extends Entity {
     private int playerDir = -1; 
 	private BufferedImage img;
     private float gravity = 0.04f;
-    private float airFriction = 0.04f;
+    private float airFriction = 0.1f;
     private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.25f;
-    private float defaultDashSpeed = 10f;
+    private float defaultDashSpeed = 5f;
     private float dashSpeed = 0;
     private boolean isDashing = false;
     public boolean canDash = false;
@@ -31,7 +30,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
         this.inAir = true;
-        Animations(); 
+        //Animations(); 
         initialize();
     }
 
@@ -44,50 +43,53 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-        if(!isDashing) {
+    
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
 
-        if (right && !left && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) {
+        if(isDashing) {
+            if(Math.abs(dashSpeed) >= 0.2) { // Dash in the player direction
+            xSpeed += dashSpeed;
+            dashSpeed -= airFriction;
+            } else {
+                dashSpeed = 0;
+                isDashing = false; 
+            }
+        } else {
+            if(!inAir) {
+                    dashSpeed = 0;
+                    canDash = true;
+                }
+        }
+        if (right && !left) {
             xSpeed += moveSpeed;
             moving = right;
             playerDir = RIGHT;
-        } else if (!right && left && hitbox.x + xSpeed > 0) {
+        } else if (!right && left) {
             xSpeed -= moveSpeed;
             moving = left;
             playerDir = LEFT;
-        }}
+        }
 
         if(inAir) {
             hitbox.y += airSpeed;
             airSpeed += gravity;
-            if(isDashing) {
-                canDash = false;
-            }
-        } else {
-            canDash = true;
-        }
-    
-        if(isDashing) {
-            if(dashSpeed - airFriction <= 0) {
-                dashSpeed = 0;
-                isDashing = false;
-                System.out.println("dash done");
-            } else {
-            xSpeed = dashSpeed;
-            dashSpeed -= airFriction;
-        }
-    }
+        } 
+            
+    if(hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) {
         hitbox.x += xSpeed;
+    } else {
+        dashSpeed = 0;
+    }
         updateAnimationTick();
 		setAnimation();
     }
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
+        //g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
     }
 
     /**
@@ -105,17 +107,19 @@ public class Player extends Entity {
     }
 
     public void dash() {
-        if(isDashing) {
+        if(isDashing || !canDash) {
             return;
         }
         isDashing = true;
+        canDash = false;
         if(playerDir == LEFT) {
             dashSpeed = -defaultDashSpeed;
+            airFriction = -Math.abs(airFriction);
         } else {
             dashSpeed = defaultDashSpeed;
+            airFriction = Math.abs(airFriction);
         }
     }
-    
 
     public void setLeft(boolean left) {
         this.left = left;
