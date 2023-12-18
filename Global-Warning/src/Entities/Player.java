@@ -34,17 +34,20 @@ public class Player extends Entity {
 
 
     public void update() {
-
+        moving = false;
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
 
-        if (right && !left && hitbox.x + xSpeed < GAME_WIDTH) {
+        if (right && !left && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) {
             hitbox.x += xSpeed;
-
+            moving = right;
+            playerDir = RIGHT;
         } else if (!right && left && hitbox.x + xSpeed > 0) {
             hitbox.x -= xSpeed;
+            moving = left;
+            playerDir = LEFT;
         }
 
         if(inAir) {
@@ -71,31 +74,22 @@ public class Player extends Entity {
 
     public void setLeft(boolean left) {
         this.left = left;
-        playerDir = LEFT; 
-        moving = left; 
     }
 
     public void setRight(boolean right) {
         this.right = right;
-        playerDir = RIGHT;
-        moving = right;
     }
 
     public void setInAir(boolean inAir) {
         this.inAir = inAir;
-        playerDir = UP;
-        moving = inAir;
     }
 
     public void setUp(boolean up) {
         this.up = up;
-        playerDir = DOWN;
-        moving = up;
     }
 
     public void setDown(boolean down) {
-        this.down = down;
-        moving = down; 
+        this.down = down; 
     }
 
 
