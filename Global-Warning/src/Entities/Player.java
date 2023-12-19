@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import static Utilities.Constants.Directions.*;
 import javax.imageio.ImageIO;
+import Objects.Weapons.*;
+
 
 import static Utilities.Atlas.*;
 import Utilities.Atlas;
@@ -20,12 +22,14 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
+    private Weapon1 weapon = new Weapon1(this);
 
     
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
+        //this.weapon = weapon;
         this.xSpeed = 2.0f;
         this.inAir = true;
         Animations(); 
@@ -54,12 +58,16 @@ public class Player extends Entity {
             hitbox.y += airSpeed;
             airSpeed += gravity;
         }
+
         updateAnimationTick();
 		setAnimation();
+        weapon.update();
+        
     }
 
     public void draw(Graphics g) {
         drawHitbox(g);
+        weapon.draw(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
     }
 

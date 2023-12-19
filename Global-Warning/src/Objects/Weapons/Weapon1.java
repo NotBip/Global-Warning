@@ -22,7 +22,7 @@ import javax.imageio.ImageIO;
 import static Utilities.Atlas.*;
 import Utilities.Atlas;
 
-public class Weapon1 extends Entities.Entity {
+public class Weapon1 {
    //entends entity for hitbox stuffs
 
 
@@ -35,10 +35,10 @@ public class Weapon1 extends Entities.Entity {
    private Player player;
 
    //protected Rectangle2D.Float gunbox;
-   protected float x;
-   protected float y;
-   protected int width;
-   protected int height;
+   protected float x=10;
+   protected float y=10;
+   protected int width=100;
+   protected int height=100;
 
    private int mouseX;
    private  int mouseY;
@@ -50,17 +50,13 @@ public class Weapon1 extends Entities.Entity {
    private float gravity = 0.04f;
 
 
-   public Weapon1(float x, float y, int width, int height) {
-      super(x, y, width, height);
-      this.xSpeed = 2.0f;
-      this.inAir = true;
-      getImage();
-      initialize();
+   public Weapon1 (Player player) {
+        this.player = player;
+         getImage();
   }
 
    public void draw(Graphics g) {
-      drawHitbox(g);
-      g.drawImage(img, (int) hitbox.x, (int) hitbox.y, null);
+      g.drawImage(img, (int) x, (int) y, width, height, null);
   }
 
 
@@ -71,6 +67,10 @@ public class Weapon1 extends Entities.Entity {
 
    public void update() {
       
+        x = player.getHitbox().x;
+        y = player.getHitbox().y;
+
+        /* 
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height-20;
@@ -85,8 +85,9 @@ public class Weapon1 extends Entities.Entity {
             hitbox.y += airSpeed;
             airSpeed += gravity;
         }
+        */
   }
-
+/* 
   public void jump() {
    if(inAir) {
        return;
@@ -116,7 +117,7 @@ public void setDown(boolean down) {
    this.down = down; 
 }
 
-
+*/
 
 }
 

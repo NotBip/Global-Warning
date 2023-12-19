@@ -31,13 +31,12 @@ public class Playing extends State implements KeyListener{
 
     public void initialize() {
         player = new Player(10, GAME_HEIGHT-100, 60, 80);
-        weapon= new Weapon1(20, GAME_HEIGHT-100, 20, 20);
+        weapon= new Weapon1(player);
        // weapon = new Weapon1(player);
     }
 
     public void update() {
         player.update();
-        weapon.update();
     }
 
     public void checkBorder() {
@@ -46,7 +45,6 @@ public class Playing extends State implements KeyListener{
 
     public void draw(Graphics g) {
             player.draw(g);
-            weapon.draw(g);
         
     }
 
@@ -76,23 +74,23 @@ public class Playing extends State implements KeyListener{
         switch(e.getKeyCode()) {
             case KeyEvent.VK_A:
             player.setLeft(true);
-            weapon.setLeft(true);
+           // weapon.setLeft(true);
             break;
             case KeyEvent.VK_D:
             player.setRight(true);
-            weapon.setRight(true);
+           // weapon.setRight(true);
             break;
             case KeyEvent.VK_W:
             player.setUp(true);
-            weapon.setUp(true);
+          //  weapon.setUp(true);
             break;
             case KeyEvent.VK_S:
             player.setDown(true);
-            weapon.setDown(true);
+          //  weapon.setDown(true);
             break;
             case KeyEvent.VK_SPACE:
             player.jump();
-            weapon.jump();
+          //  weapon.jump();
             break;
         }
     }
@@ -101,19 +99,19 @@ public class Playing extends State implements KeyListener{
         switch(e.getKeyCode()) {
             case KeyEvent.VK_A:
             player.setLeft(false);
-            weapon.setLeft(false);
+           // weapon.setLeft(false);
             break;
             case KeyEvent.VK_D:
             player.setRight(false);
-            weapon.setRight(false);
+           // weapon.setRight(false);
             break;
             case KeyEvent.VK_W:
             player.setUp(false);
-            weapon.setUp(false);
+           // weapon.setUp(false);
             break;
             case KeyEvent.VK_S:
             player.setDown(false);
-            weapon.setDown(false);
+          //  weapon.setDown(false);
             break;
         }
     }
