@@ -30,7 +30,7 @@ public class Player extends Entity {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
         this.inAir = true;
-        //Animations(); 
+        Animations(); 
         initialize();
     }
 
@@ -63,24 +63,25 @@ public class Player extends Entity {
                     canDash = true;
                 }
         }
-        if (right && !left) {
+        if (right && !left) { // Move right
             xSpeed += moveSpeed;
             moving = right;
             playerDir = RIGHT;
-        } else if (!right && left) {
+        } else if (!right && left) { // Move left
             xSpeed -= moveSpeed;
             moving = left;
             playerDir = LEFT;
         }
 
-        if(inAir) {
+        if(inAir) { // Fall
             hitbox.y += airSpeed;
             airSpeed += gravity;
         } 
             
-    if(hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) {
+    if(hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) { // Check for collisions with game boarders
         hitbox.x += xSpeed;
-    } else {
+    } else { // Don't let the player dash through walls
+        moving = false;
         dashSpeed = 0;
     }
         updateAnimationTick();
@@ -88,8 +89,8 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g) {
-        drawHitbox(g);
-        //g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
+       // drawHitbox(g);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x-10, (int) hitbox.y, null);
     }
 
     /**
