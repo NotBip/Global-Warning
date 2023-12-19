@@ -23,13 +23,13 @@ public class Enemy extends Entity {
     private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
     private float xSpeed; 
-
+    Player player; 
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType) {
         super(x, y, width, height);
         this.enemyType = EnemyType; 
-
+        
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
