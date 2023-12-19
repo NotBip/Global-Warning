@@ -3,10 +3,7 @@ import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import static Utilities.Constants.Directions.*;
-import javax.imageio.ImageIO;
 
 import static Utilities.Atlas.*;
 
@@ -16,13 +13,13 @@ public class Player extends Entity {
     private boolean moving = false; 
     private boolean left, right, up, down;
     private int playerDir = -1; 
-	private BufferedImage img;
     private float gravity = 0.04f;
     private float airFriction = 0.1f;
     private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.25f;
     private float defaultDashSpeed = 5f;
-    private float dashSpeed = 0;
+    private float dashXSpeed = 0;
+    private float dashYSpeed = 0;
     private boolean isDashing = false;
     public boolean canDash = false;
 
@@ -50,16 +47,27 @@ public class Player extends Entity {
         }
 
         if(isDashing) {
-            if(Math.abs(dashSpeed) >= 0.2) { // Dash in the player direction
-            xSpeed += dashSpeed;
-            dashSpeed -= airFriction;
+            if(Math.abs(dashXSpeed) >= 0.2) { // Dash in the player direction
+            xSpeed += dashXSpeed;
+            dashXSpeed -= airFriction;
             } else {
-                dashSpeed = 0;
-                isDashing = false; 
+                dashXSpeed = 0; 
+            }// lol
+            if(dashYSpeed <= -0.2) { // Dash in the player direction
+                System.out.println(airSpeed);
+            airSpeed += dashYSpeed/10;
+            dashYSpeed += (gravity * 5);
+           
+            } else {
+                dashYSpeed = 0; 
+            }
+            if(dashXSpeed == 0 && dashYSpeed == 0) {
+                isDashing = false;
             }
         } else {
             if(!inAir) {
-                    dashSpeed = 0;
+                    dashXSpeed = 0;
+                    dashYSpeed = 0;
                     canDash = true;
                 }
         }
@@ -82,7 +90,10 @@ public class Player extends Entity {
         hitbox.x += xSpeed;
     } else { // Don't let the player dash through walls
         moving = false;
-        dashSpeed = 0;
+        dashXSpeed = 0;
+    }
+    if(hitbox.y + airSpeed > 0 && hitbox.y + hitbox.height + airSpeed < GAME_HEIGHT) {
+
     }
         updateAnimationTick();
 		setAnimation();
@@ -113,12 +124,17 @@ public class Player extends Entity {
         }
         isDashing = true;
         canDash = false;
-        if(playerDir == LEFT) {
-            dashSpeed = -defaultDashSpeed;
+        if(left) {
+            dashXSpeed = -defaultDashSpeed;
             airFriction = -Math.abs(airFriction);
-        } else {
-            dashSpeed = defaultDashSpeed;
+        } else if(right){
+            dashXSpeed = defaultDashSpeed;
             airFriction = Math.abs(airFriction);
+        }
+        if(up) {
+            dashYSpeed = -defaultDashSpeed;
+        } else if (down && inAir) {
+            dashYSpeed = defaultDashSpeed;
         }
     }
 
