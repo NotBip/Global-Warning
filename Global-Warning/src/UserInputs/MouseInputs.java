@@ -20,7 +20,8 @@ public class MouseInputs implements MouseListener{
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //face the mouse when entered
+        //gamePanel.setRectPos(e.getX(), e.getY());
+
     }
 
     @Override
