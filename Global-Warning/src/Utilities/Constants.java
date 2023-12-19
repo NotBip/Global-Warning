@@ -26,8 +26,8 @@ public class Constants {
 
 	public static class EnemyConstants {
 			public static final int Zombie = 0;
-			public static final int ZOMBIE_HEIGHT = 60; 
-			public static final int ZOMBIE_WIDTH = 60; 
+			public static final int ZOMBIE_HEIGHT = 72; 
+			public static final int ZOMBIE_WIDTH = 41; 
 			public static final int zombieArrI = 3; 
 			public static final int zombieArrJ = 16; 
 			public static final int zombieW = 41; 
@@ -36,12 +36,14 @@ public class Constants {
 			public static final int RUNNING = 1; 
 
 			public static final int Pirate = 1; 
-			public static final int PIRATE_HEIGHT = 40; 
-			public static final int PIRATE_WIDTH = 64; 
+			public static final int PIRATE_HEIGHT = 80; 
+			public static final int PIRATE_WIDTH = 128; 
 			public static final int pirateArrI = 9;
 			public static final int pirateArrJ = 6; 
 			public static final int pirateW = 64; 
-			public static final int pirateH = 40;  
+			public static final int pirateH = 40; 
+
+
 			
 			
 	public static int GetSpriteAmount(int enemy_type, int enemy_state) {

@@ -20,7 +20,7 @@ public class Enemy extends Entity {
     private BufferedImage[][] animations; 
     private int xFlipped; 
     private int wFlipped; 
-    private int arrI, arrJ, enemyW, enemyH;
+    private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
     private float xSpeed; 
 
@@ -48,6 +48,8 @@ public class Enemy extends Entity {
         this.arrJ = arrJ;
         this.enemyW = enemyW;
         this.enemyH = enemyH;
+        this.Eheight = height; 
+        this.Ewidth = width; 
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
@@ -141,7 +143,7 @@ public class Enemy extends Entity {
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, enemyW * wFlipped, enemyH, null);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
     }
 
     /**
