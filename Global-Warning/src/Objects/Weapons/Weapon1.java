@@ -37,8 +37,8 @@ public class Weapon1 {
    //protected Rectangle2D.Float gunbox;
    protected float x=10;
    protected float y=10;
-   protected int width=100;
-   protected int height=100;
+   protected int width=50;
+   protected int height=50;
 
    private int mouseX;
    private  int mouseY;
@@ -68,7 +68,7 @@ public class Weapon1 {
    public void update() {
       
         x = player.getHitbox().x;
-        y = player.getHitbox().y;
+        y = player.getHitbox().y-20;
 
         /* 
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
