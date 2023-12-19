@@ -3,6 +3,8 @@ package Main;
 import java.awt.Graphics;
 
 import GameStates.*;
+import Levels.LevelManager;
+import Utilities.Constants;
 
 
 public class Game implements Runnable {
@@ -12,6 +14,10 @@ public class Game implements Runnable {
     private Playing playing;
     private Menu menu;
     private gamePanel panel;
+    private int xLvlOffset;
+	private int leftBorder = (int) (0.25 * Constants.GAME_WIDTH);
+	private int rightBorder = (int) (0.75 * Constants.GAME_WIDTH);
+	private int maxLvlOffsetX;
 
     public Game() {
         initialize();
@@ -60,6 +66,7 @@ public class Game implements Runnable {
         switch (GameState.currentState) {
             case PLAYING:
                 playing.draw(g);
+                LevelManager.draw(g);
                 break;
             case MENU:
             menu.draw(g);
