@@ -1,17 +1,23 @@
 package GameStates;
 
 import Entities.*;
+import Entities.Planet1Enemies.Enemy1;
+import Entities.Planet1Enemies.Enemy2;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
+import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.EnemyConstants.Zombie;
 
 import java.awt.Graphics;
 import java.awt.event.*;
 
 public class Playing extends State implements KeyListener{
     private Player player;
+    private Enemy1 enemy;
+    private Enemy2 pirate;  
     private LevelManager levelManager;
     private ObjectManager objectManager;
     private boolean paused;
@@ -29,10 +35,14 @@ public class Playing extends State implements KeyListener{
 
     public void initialize() {
         player = new Player(10, GAME_HEIGHT-100, 60, 80);
+        enemy = new Enemy1(10, GAME_HEIGHT-80); 
+        pirate = new Enemy2(GAME_WIDTH-50, GAME_HEIGHT-80);
     }
 
     public void update() {
         player.update();
+        enemy.move(player); 
+        pirate.move(player);
     }
 
     public void checkBorder() {
@@ -41,6 +51,8 @@ public class Playing extends State implements KeyListener{
 
     public void draw(Graphics g) {
             player.draw(g);
+            enemy.draw(g);
+            pirate.draw(g);
         
     }
 

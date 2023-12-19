@@ -20,12 +20,14 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
+    private int xFlipped = 0; 
+    private int wFlipped = 1; 
 
     
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
-        this.state = IDLERIGHT; 
+        this.state = IDLE; 
         this.xSpeed = 2.0f;
         this.inAir = true;
         Animations(); 
@@ -60,7 +62,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
     public void jump() {
@@ -130,14 +132,20 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
 	private void setAnimation() {
-		if(moving && playerDir == 2)
-		state = RUNNINGRIGHT; 
-		else if (moving && playerDir == 0)
-		state = RUNNINGLEFT; 
+		if(moving && playerDir == 2){
+            state = RUNNING; 
+            xFlipped = 0; 
+            wFlipped = 1; 
+        }
 		else if (!moving && playerDir == 2) 
-		state = IDLERIGHT; 
-		else if (!moving && playerDir == 0)
-		state = IDLELEFT;	
+		state = IDLE; 	
+        else if(moving && playerDir == 0){
+            state = RUNNING; 
+            xFlipped = width; 
+            wFlipped = -1; 
+        }
+		else if (!moving && playerDir == 0) 
+		state = IDLE; 	
 	}
 
     /**
