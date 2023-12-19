@@ -20,6 +20,7 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
+    private int[][] lvlData;
 
     
 
@@ -149,6 +150,5 @@ public class Player extends Entity {
 		this.playerDir = direction; 
 		moving = true; 
 	}
-
 
 }
