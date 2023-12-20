@@ -156,7 +156,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g) {
         // drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x - 10, (int) hitbox.y, null);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65, null);
 
     }
 
@@ -261,9 +261,9 @@ public class Player extends Entity {
             xFlipped = 0; 
             wFlipped = 1; 
         }
-		else if (!moving && playerDir == 2) 
+		else if (!moving && playerDir == RIGHT) 
 		state = IDLE; 	
-        else if(moving && playerDir == 0){
+        else if(moving && playerDir == LEFT){
             state = RUNNING; 
             xFlipped = width; 
             wFlipped = -1; 
