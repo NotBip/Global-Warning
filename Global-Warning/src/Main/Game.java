@@ -66,7 +66,6 @@ public class Game implements Runnable {
         switch (GameState.currentState) {
             case PLAYING:
                 playing.draw(g);
-                LevelManager.draw(g);
                 break;
             case MENU:
             menu.draw(g);
