@@ -24,10 +24,14 @@ public class Player extends Entity {
     private float dashYSpeed = 0;
     private boolean isDashing = false;
     public boolean canDash = true;
+    private int xFlipped = 0; 
+    private int wFlipped = 1; 
+
+    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
-        this.state = IDLERIGHT;
+        this.state = IDLE;
         this.inAir = true;
         Animations();
         initialize();
@@ -153,6 +157,7 @@ public class Player extends Entity {
     public void draw(Graphics g) {
         // drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x - 10, (int) hitbox.y, null);
+
     }
 
     /**
@@ -250,16 +255,22 @@ public class Player extends Entity {
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
-    private void setAnimation() {
-        if (moving && playerDir == 2)
-            state = RUNNINGRIGHT;
-        else if (moving && playerDir == 0)
-            state = RUNNINGLEFT;
-        else if (!moving && playerDir == 2)
-            state = IDLERIGHT;
-        else if (!moving && playerDir == 0)
-            state = IDLELEFT;
-    }
+	private void setAnimation() {
+		if(moving && playerDir == 2){
+            state = RUNNING; 
+            xFlipped = 0; 
+            wFlipped = 1; 
+        }
+		else if (!moving && playerDir == 2) 
+		state = IDLE; 	
+        else if(moving && playerDir == 0){
+            state = RUNNING; 
+            xFlipped = width; 
+            wFlipped = -1; 
+        }
+		else if (!moving && playerDir == 0) 
+		state = IDLE; 	
+	}
 
     /**
      * Sets the direction the player is facing.

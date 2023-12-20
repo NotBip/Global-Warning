@@ -37,6 +37,14 @@ public class Entity {
         return hitbox;
     }
 
+    public float hitboxX() {
+        return this.x; 
+    }
+
+    public float hitboxY() {
+        return this.y; 
+    }
+
     public int getState() {
         return state;
     }
@@ -44,6 +52,36 @@ public class Entity {
     public void drawHitbox(Graphics g) {
         g.drawRect((int) hitbox.x, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
+
+    public boolean canMove(float x, float y, float width, float height) {
+        if (solidTile(x + width, y)) {
+            if (solidTile(x, y + height)) {
+                if (solidTile(x, y)) {
+                    if (solidTile(x + width, y + height)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean solidTile(float x, float y) {
+        if(x > GAME_WIDTH || x < 0) {
+            return false;
+        }
+        if(y > GAME_HEIGHT || y < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected void newState(int state) {
+		this.state = state;
+		animationTick = 0;
+		animationIndex = 0;
+	}
 
     public boolean canMove(float x, float y, float width, float height) {
         if (solidTile(x + width, y)) {
