@@ -34,6 +34,14 @@ public class Entity {
         return hitbox;
     }
 
+    public float hitboxX() {
+        return this.x; 
+    }
+
+    public float hitboxY() {
+        return this.y; 
+    }
+
     public int getState() {
         return state;
     }
@@ -41,6 +49,12 @@ public class Entity {
     public void drawHitbox(Graphics g) {
         g.drawRect((int) hitbox.x, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
+
+    protected void newState(int state) {
+		this.state = state;
+		animationTick = 0;
+		animationIndex = 0;
+	}
 
     
 }
