@@ -1,4 +1,5 @@
 package Entities;
+
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
@@ -9,30 +10,32 @@ import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
-    private BufferedImage[][] animations; 
-    private boolean moving = false; 
+    private BufferedImage[][] animations;
+    private boolean moving = false;
     private boolean left, right, up, down;
-    private int playerDir = -1; 
+    private int playerDir = -1;
     private float gravity = 0.04f;
-    private float airFriction = 0.1f;
+    private float airFrictionX = 0.1f;
+    private float airFrictionY = 0.2f;
     private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.25f;
     private float defaultDashSpeed = 5f;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
     private boolean isDashing = false;
-    public boolean canDash = false;
+    public boolean canDash = true;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
-        this.state = IDLERIGHT; 
+        this.state = IDLERIGHT;
         this.inAir = true;
-        Animations(); 
+        Animations();
         initialize();
     }
 
     /**
-     * Updates the player (position and direction currently) 
+     * Updates the player (position and direction currently)
+     * 
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
@@ -40,101 +43,152 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-    
-        if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
-            inAir = false;
-            hitbox.y = GAME_HEIGHT-hitbox.height;
+       // airSpeed = 0;
+
+        
+            airSpeed += gravity;
+        
+        
+        if(right && !left) {
+            xSpeed = moveSpeed;
+            playerDir = RIGHT;
+            moving = true;
+        } else if (left && !right) {
+            xSpeed = -moveSpeed;
+            playerDir = LEFT;
+            moving = true;
         }
 
         if(isDashing) {
-            if(Math.abs(dashXSpeed) >= 0.2) { // Dash in the player direction
+            if(Math.abs(dashXSpeed) >= 0.2) {
             xSpeed += dashXSpeed;
-            dashXSpeed -= airFriction;
+            dashXSpeed -= airFrictionX; 
             } else {
-                dashXSpeed = 0; 
-            }// lol
-            if(dashYSpeed <= -0.2) { // Dash in the player direction
-                System.out.println(airSpeed);
-            airSpeed += dashYSpeed/10;
-            dashYSpeed += (gravity * 5);
-           
-            } else {
-                dashYSpeed = 0; 
-            }
-            if(dashXSpeed == 0 && dashYSpeed == 0) {
                 isDashing = false;
             }
+
+            if(Math.abs(dashYSpeed) >= 0.2) {
+            airSpeed += dashYSpeed;
+            dashYSpeed -= airFrictionY; 
+            } else {
+                isDashing = false;
+            }
+        }
+
+        if(canMove(hitbox.x+xSpeed, hitbox.y, hitbox.width, hitbox.height)) {
+            hitbox.x+=xSpeed;
         } else {
-            if(!inAir) {
-                    dashXSpeed = 0;
-                    dashYSpeed = 0;
-                    canDash = true;
-                }
+            moving = false;
+            dashXSpeed = 0;
         }
-        if (right && !left) { // Move right
-            xSpeed += moveSpeed;
-            moving = right;
-            playerDir = RIGHT;
-        } else if (!right && left) { // Move left
-            xSpeed -= moveSpeed;
-            moving = left;
-            playerDir = LEFT;
-        }
-
-        if(inAir) { // Fall
-            hitbox.y += airSpeed;
-            airSpeed += gravity;
-        } 
+        if(canMove(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height)) {
+            hitbox.y+=airSpeed;
+        } else {
+            if(!(airSpeed < 0)) {
+                inAir = false;
+            }
             
-    if(hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) { // Check for collisions with game boarders
-        hitbox.x += xSpeed;
-    } else { // Don't let the player dash through walls
-        moving = false;
-        dashXSpeed = 0;
-    }
-    if(hitbox.y + airSpeed > 0 && hitbox.y + hitbox.height + airSpeed < GAME_HEIGHT) {
+            dashYSpeed = 0;
+            if(!isDashing) {
+                canDash = true;
+            }
+        }
 
-    }
+        // if (hitbox.y + hitbox.height + airSpeed >= GAME_HEIGHT && inAir) {
+        //     inAir = false;
+        //     hitbox.y = GAME_HEIGHT - hitbox.height;
+        //     dashYSpeed = 0;
+        //     if(!isDashing) {
+        //             canDash = true;
+        //     }
+        // }
+
+        // if (isDashing) {
+        //     if (Math.abs(dashXSpeed) >= 0.2) { // Dash in the player direction
+        //         xSpeed += dashXSpeed;
+        //         dashXSpeed -= airFriction;
+        //     } else {
+        //         dashXSpeed = 0;
+        //     }
+        //     if (Math.abs(dashYSpeed) >= 0.2) { // Dash in the player direction
+        //         airSpeed += dashYSpeed;
+        //         dashYSpeed += gravity*5;
+        //         System.out.println(airSpeed);
+        //     } else {
+        //         dashYSpeed = 0;
+        //     }
+        //     if (dashXSpeed == 0 && dashYSpeed == 0) {
+        //         isDashing = false;
+        //     }
+        // }
+        // if (right && !left) { // Move right
+        //     xSpeed += moveSpeed;
+        //     moving = right;
+        //     playerDir = RIGHT;
+        // } else if (!right && left) { // Move left
+        //     xSpeed -= moveSpeed;
+        //     moving = left;
+        //     playerDir = LEFT;
+        // }
+
+        // if (hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) { // Check for collisions with game boarders
+        //     hitbox.x += xSpeed;
+        // } else { // Don't let the player dash through walls
+        //     moving = false;
+        //     dashXSpeed = 0;
+        // }
+        // if (hitbox.y + airSpeed > 0 && hitbox.y + hitbox.height + airSpeed < GAME_HEIGHT) {
+            
+        //     if (inAir) { // Fall
+        //         hitbox.y += airSpeed;
+        //         airSpeed += gravity;
+        //     } 
+  
+                
+        // }
         updateAnimationTick();
-		setAnimation();
+        setAnimation();
     }
 
     public void draw(Graphics g) {
-       // drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x-10, (int) hitbox.y, null);
+        // drawHitbox(g);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x - 10, (int) hitbox.y, null);
     }
 
     /**
-     * Makes the player jump if they are on the ground 
+     * Makes the player jump if they are on the ground
+     * 
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
-    
+
     public void jump() {
-        if(inAir) {
+        if (inAir) {
             return;
         }
         inAir = true;
         airSpeed = jumpSpeed;
     }
 
-    public void dash() {
-        if(isDashing || !canDash) {
+    public void dash() {  
+        if (isDashing || !canDash) {
             return;
         }
         isDashing = true;
         canDash = false;
-        if(left) {
+        if (left) {
             dashXSpeed = -defaultDashSpeed;
-            airFriction = -Math.abs(airFriction);
-        } else if(right){
+            airFrictionX = -Math.abs(airFrictionX);
+        } else if (right) {
             dashXSpeed = defaultDashSpeed;
-            airFriction = Math.abs(airFriction);
+            airFrictionX = Math.abs(airFrictionX);
         }
-        if(up) {
-            dashYSpeed = -defaultDashSpeed;
+        if (up) {
+            dashYSpeed = -(defaultDashSpeed);
+            airFrictionY = -Math.abs(airFrictionY);
         } else if (down && inAir) {
             dashYSpeed = defaultDashSpeed;
+            airFrictionY = Math.abs(airFrictionY);
         }
     }
 
@@ -155,64 +209,67 @@ public class Player extends Entity {
     }
 
     public void setDown(boolean down) {
-        this.down = down; 
+        this.down = down;
     }
 
     /**
-     * Loads the animations from the sprite atlas. 
+     * Loads the animations from the sprite atlas.
+     * 
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(PLAYER_ATLAS);
-        animations = new BufferedImage[4][4]; 
-        for (int i = 0; i < animations.length; i++){
-            for (int j = 0; j < animations[i].length; j++){
-                animations[i][j] = img.getSubimage(j*64, i*64, 64, 64);
+        animations = new BufferedImage[4][4];
+        for (int i = 0; i < animations.length; i++) {
+            for (int j = 0; j < animations[i].length; j++) {
+                animations[i][j] = img.getSubimage(j * 64, i * 64, 64, 64);
             }
         }
     }
 
     /**
-     * Helps change images making it animate. 
+     * Helps change images making it animate.
+     * 
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
     private void updateAnimationTick() {
-		animationTick++;
-		if (animationTick >= animationSpeed) {
-			animationTick = 0;
-			animationIndex++;
-			if (animationIndex >= GetSpriteAmount(state))
-				animationIndex = 0;
-		}
-	}
+        animationTick++;
+        if (animationTick >= animationSpeed) {
+            animationTick = 0;
+            animationIndex++;
+            if (animationIndex >= GetSpriteAmount(state))
+                animationIndex = 0;
+        }
+    }
 
     /**
-     * Changes animations based on input. 
+     * Changes animations based on input.
+     * 
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
-	private void setAnimation() {
-		if(moving && playerDir == 2)
-		state = RUNNINGRIGHT; 
-		else if (moving && playerDir == 0)
-		state = RUNNINGLEFT; 
-		else if (!moving && playerDir == 2) 
-		state = IDLERIGHT; 
-		else if (!moving && playerDir == 0)
-		state = IDLELEFT;	
-	}
+    private void setAnimation() {
+        if (moving && playerDir == 2)
+            state = RUNNINGRIGHT;
+        else if (moving && playerDir == 0)
+            state = RUNNINGLEFT;
+        else if (!moving && playerDir == 2)
+            state = IDLERIGHT;
+        else if (!moving && playerDir == 0)
+            state = IDLELEFT;
+    }
 
     /**
-     * Sets the direction the player is facing. 
+     * Sets the direction the player is facing.
+     * 
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
-    public void setDirection(int direction){
-		this.playerDir = direction; 
-		moving = true; 
-	}
-
+    public void setDirection(int direction) {
+        this.playerDir = direction;
+        moving = true;
+    }
 
 }
