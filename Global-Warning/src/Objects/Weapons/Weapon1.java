@@ -23,6 +23,8 @@ import javax.imageio.ImageIO;
 import static Utilities.Atlas.*;
 import java.util.Objects; 
 import Utilities.Atlas;
+import java.awt.Graphics2D;
+import java.awt.Point;
 
 
 public class Weapon1 {
@@ -39,19 +41,23 @@ public class Weapon1 {
   // private Rotate rotate;
 
    //protected Rectangle2D.Float gunbox;
-   protected float x=10;
-   protected float y=10;
+   protected int x=10;
+   protected int y=10;
    protected int width=50;
    protected int height=50;
 
-   private int mouseX;
-   private  int mouseY;
+   //private int mouseX;
+   //private  int mouseY;
    private MouseInputs mouseInputs;
+   private double  angle;
 
    BufferedImage img;
    private boolean left, right, up, down;
    private float jumpSpeed = -2.25f;
    private float gravity = 0.04f;
+   
+   private Point imagePosition = new Point(x,y);
+   private double imageAngleRad = 0;
 
 
    public Weapon1 (Player player) {
@@ -60,11 +66,15 @@ public class Weapon1 {
   }
 
    public void draw(Graphics g) {
-      g.drawImage(img, (int) x, (int) y, width, height, null);
+    Graphics2D g2 = (Graphics2D)g;
+      g2.drawImage(img, (int) x, (int) y, width, height, null);
+      g2.rotate(angle);
   }
 
-  public void pointMouse(float xMouse, float yMouse){
-      //img.rotate(yMouse/xMouse);
+  public double getAngle(int mouseX, int mouseY){
+    angle = Math.atan2(mouseX, mouseY); 
+    System.out.println("angle is "+angle);
+    return angle;
   }
 
   public void getImage(){
@@ -74,9 +84,19 @@ public class Weapon1 {
 
    public void update() {
       
-        x = player.getHitbox().x;
-        y = player.getHitbox().y-20;
+        x = (int) player.getHitbox().x;
+        y = (int) player.getHitbox().y-20;
 
+
+
+
+
+
+
+
+
+
+        
         /* 
         if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
             inAir = false;
