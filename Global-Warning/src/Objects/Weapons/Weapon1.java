@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.Object;
 
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
@@ -20,7 +21,9 @@ import static Utilities.Constants.Directions.*;
 import javax.imageio.ImageIO;
 
 import static Utilities.Atlas.*;
+import java.util.Objects; 
 import Utilities.Atlas;
+
 
 public class Weapon1 {
    //entends entity for hitbox stuffs
@@ -33,6 +36,7 @@ public class Weapon1 {
    private double bulletSpeed = 2.2;
    private boolean canShoot = false;
    private Player player;
+  // private Rotate rotate;
 
    //protected Rectangle2D.Float gunbox;
    protected float x=10;
@@ -59,6 +63,9 @@ public class Weapon1 {
       g.drawImage(img, (int) x, (int) y, width, height, null);
   }
 
+  public void pointMouse(float xMouse, float yMouse){
+      //img.rotate(yMouse/xMouse);
+  }
 
   public void getImage(){
       img =  getSpriteAtlas(WEAPON_ATLAS);
@@ -87,6 +94,8 @@ public class Weapon1 {
         }
         */
   }
+
+
 /* 
   public void jump() {
    if(inAir) {

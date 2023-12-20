@@ -116,6 +116,11 @@ public class Playing extends State implements KeyListener{
         }
     }
 
+    public void mouseClicked(MouseEvent e){
+        System.out.println("x is "+ e.getX());
+        System.out.println("y is "+ e.getY());
+
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
