@@ -33,7 +33,7 @@ public class Playing extends State implements KeyListener{
     }
 
     public void initialize() {
-        player = new Player(15, GAME_HEIGHT-100,45, 62);
+        player = new Player(80, GAME_HEIGHT-100,45, 62);
         enemyManager = new EnemyManager(player); 
         enemyManager.generateEnemies();
     }

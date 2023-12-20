@@ -9,8 +9,9 @@ import static Utilities.Constants.EnemyConstants.*;
 public class Enemy1 extends Enemy {
 
     public Enemy1(float x, float y) {
-        super(x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, Zombie, zombieArrI, zombieArrJ, zombieW, zombieH, ZOMBIE_ATLAS, 0, 1, 1.2f);
-    }
+        super(x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, Zombie, zombieArrI, zombieArrJ, zombieW, zombieH, ZOMBIE_ATLAS, 0, 1, 1.2f,  60, 70);
+        super.inAir = true; 
+}
 
 
 }

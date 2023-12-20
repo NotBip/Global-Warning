@@ -1,6 +1,7 @@
 package Entities;
 
 import static Utilities.Atlas.*;
+import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
@@ -23,20 +24,21 @@ public class Enemy extends Entity {
     private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
     private float xSpeed; 
+    private float gravity = 0.04f;
     Player player; 
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType) {
         super(x, y, width, height);
         this.enemyType = EnemyType; 
-        
+        this.inAir = true; 
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
         initialize();
     }
 
-    public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed) {
+    public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
 
         this.xSpeed = speed; 
@@ -48,8 +50,8 @@ public class Enemy extends Entity {
         this.arrJ = arrJ;
         this.enemyW = enemyW;
         this.enemyH = enemyH;
-        this.Eheight = height; 
-        this.Ewidth = width; 
+        this.Eheight = sizeH; 
+        this.Ewidth = sizeX; 
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
@@ -65,7 +67,13 @@ public class Enemy extends Entity {
 
     public void move(Player player) {
 
-        
+        if (player.hitbox.intersects(hitbox)){
+            xSpeed = 0; 
+            System.out.println("ATTACK!!!");
+            newState(ATTACK);
+            
+        }
+
         if (hitbox.x + xSpeed == GAME_WIDTH - hitbox.width-1 || player.hitbox.x < hitbox.x){
             changeDirection();
 
@@ -101,6 +109,19 @@ public class Enemy extends Entity {
             state = RUNNING; 
             hitbox.x -= xSpeed;
         }
+
+        if(inAir) { // Fall
+            hitbox.y += airSpeed;
+            airSpeed += gravity;
+        }
+
+        
+        if(hitbox.y+hitbox.height > GAME_HEIGHT && inAir) {
+            inAir = false;
+            hitbox.y = GAME_HEIGHT-hitbox.height;
+        }
+
+        
 
         updateAnimationTick(); 
     }
