@@ -8,6 +8,7 @@ import java.io.InputStream;
 import static Utilities.Constants.Directions.*;
 import javax.imageio.ImageIO;
 import Objects.Weapons.*;
+import GameStates.Playing;
 
 
 import static Utilities.Atlas.*;
@@ -15,6 +16,7 @@ import Utilities.Atlas;
 
 public class Player extends Entity {
 
+    Playing playing;
     private BufferedImage[][] animations; 
     private boolean moving = false; 
     private boolean left, right, up, down;
@@ -22,11 +24,13 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
+    private Weapon1 weapon = new Weapon1(this, playing);
 
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
         //this.weapon = weapon;
+        this.playing = playing;
         this.xSpeed = 2.0f;
         this.inAir = true;
         Animations(); 
@@ -58,15 +62,15 @@ public class Player extends Entity {
 
         updateAnimationTick();
 		setAnimation();
-     //   weapon.update();
+        weapon.update();
         
     }
 
     public void draw(Graphics g) {
         //hamad did this
-       // weapon.draw(g);
         drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
+        weapon.draw(g);
     }
 
     public void jump() {
