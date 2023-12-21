@@ -25,17 +25,14 @@ public class EnemyManager {
         this.player = player; 
     }
         public void generateEnemies() {
-            //zombie = new Enemy1(10, GAME_HEIGHT-80); 
             pirate = new Enemy2(GAME_WIDTH-50, GAME_HEIGHT-80);
         }
 
         public void update() { 
-            //zombie.move(player);
             pirate.move(player);
         }
 
         public void draw(Graphics g) { 
-            //zombie.draw(g);
              pirate.draw(g);
         }
 }
