@@ -16,18 +16,16 @@ public class Player extends Entity {
     private int playerDir = -1;
     private float gravity = 0.04f;
     private float airFrictionX = 0.1f;
-    private float airFrictionY = 0.2f;
+    private float airFrictionY = 0.1f;
     private float moveSpeed = 2.0f;
-    private float jumpSpeed = -2.25f;
+    private float jumpSpeed = -2.75f;
     private float defaultDashSpeed = 5f;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
-    private boolean isDashing = false;
+    public boolean isDashing = false;
     public boolean canDash = true;
     private int xFlipped = 0; 
     private int wFlipped = 1; 
-
-    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -47,13 +45,33 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
+       // System.out.println(dashYSpeed);
        // airSpeed = 0;
+          
+        if(airSpeed < 0) {
+                inAir = true;
+            }
 
-        
-            airSpeed += gravity;
-        
-        
-        if(right && !left) {
+        if(isDashing) {
+            if(Math.abs(dashXSpeed) >= 0.2) {
+            
+            xSpeed = dashXSpeed;
+            dashXSpeed -= airFrictionX; 
+            } 
+
+            if(Math.abs(dashYSpeed) >= 0.2) {
+            airSpeed = dashYSpeed; 
+            dashYSpeed -= airFrictionY;
+            
+            } else if (!(Math.abs(dashXSpeed) >= 0.2)) {
+                isDashing = false;
+                if(!down) 
+                airSpeed = -0.5f;
+            }
+
+           
+        } else {
+            if(right && !left) {
             xSpeed = moveSpeed;
             playerDir = RIGHT;
             moving = true;
@@ -62,37 +80,21 @@ public class Player extends Entity {
             playerDir = LEFT;
             moving = true;
         }
-
-        if(isDashing) {
-            if(Math.abs(dashXSpeed) >= 0.2) {
-            xSpeed += dashXSpeed;
-            dashXSpeed -= airFrictionX; 
-            } else {
-                isDashing = false;
-            }
-
-            if(Math.abs(dashYSpeed) >= 0.2) {
-            airSpeed += dashYSpeed;
-            dashYSpeed -= airFrictionY; 
-            } else {
-                isDashing = false;
-            }
+            airSpeed += gravity;
         }
+        
+        //dashYSpeed = 0; // Fixes a bug with dashing upwards
 
         if(canMove(hitbox.x+xSpeed, hitbox.y, hitbox.width, hitbox.height)) {
             hitbox.x+=xSpeed;
         } else {
             moving = false;
-            dashXSpeed = 0;
         }
-        if(canMove(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height)) {
-            hitbox.y+=airSpeed;
-        } else {
-            if(!(airSpeed < 0)) {
-                inAir = false;
-            }
-            
-            dashYSpeed = 0;
+        if(canMove(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height)) { // Check vertical collisions
+            hitbox.y+=airSpeed; 
+        } else { // Reset vertical motion if on ground
+            airSpeed = 0;
+            inAir = false;
             if(!isDashing) {
                 canDash = true;
             }
@@ -168,7 +170,7 @@ public class Player extends Entity {
      */
 
     public void jump() {
-        if (inAir) {
+        if (inAir || Math.abs(dashXSpeed) >= 1) {
             return;
         }
         inAir = true;
@@ -179,22 +181,32 @@ public class Player extends Entity {
         if (isDashing || !canDash) {
             return;
         }
+        airSpeed = 0;
         isDashing = true;
         canDash = false;
-        if (left) {
+        if (left && !right) {
             dashXSpeed = -defaultDashSpeed;
             airFrictionX = -Math.abs(airFrictionX);
-        } else if (right) {
+            
+        } else if (right && !left) {
             dashXSpeed = defaultDashSpeed;
             airFrictionX = Math.abs(airFrictionX);
+            
         }
-        if (up) {
+        if (up && !down) {
             dashYSpeed = -(defaultDashSpeed);
             airFrictionY = -Math.abs(airFrictionY);
-        } else if (down && inAir) {
+        } else if (down && !up && inAir) {
             dashYSpeed = defaultDashSpeed;
             airFrictionY = Math.abs(airFrictionY);
         }
+
+        if(up && right || up && left) {
+            dashXSpeed /=1.1f;
+            dashYSpeed /=1.1f;
+            
+        }
+
     }
 
     public void setLeft(boolean left) {
@@ -281,6 +293,14 @@ public class Player extends Entity {
     public void setDirection(int direction) {
         this.playerDir = direction;
         moving = true;
+    }
+
+    public float getMoveSpeed() {
+        return moveSpeed;
+    }
+
+    public float getXSpeed() {
+        return xSpeed;
     }
 
 }
