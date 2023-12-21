@@ -22,9 +22,6 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
-    private Weapon1 weapon = new Weapon1(this);
-
-    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -61,7 +58,7 @@ public class Player extends Entity {
 
         updateAnimationTick();
 		setAnimation();
-        weapon.update();
+     //   weapon.update();
         
     }
 
@@ -70,7 +67,6 @@ public class Player extends Entity {
        // weapon.draw(g);
         drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
-        weapon.draw(g);
     }
 
     public void jump() {

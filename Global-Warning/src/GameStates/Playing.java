@@ -7,8 +7,10 @@ import Main.Game;
 import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
+import static Utilities.Constants.GAME_WIDTH;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.*;
 
 public class Playing extends State implements KeyListener{
@@ -18,6 +20,9 @@ public class Playing extends State implements KeyListener{
     private ObjectManager objectManager;
     private boolean paused;
     private float borderLen;
+    private double weaponAngle = 0; 
+    public double mouseX; 
+    public double mouseY; 
 
     public Playing(Game game) {
         super(game);
@@ -31,7 +36,7 @@ public class Playing extends State implements KeyListener{
 
     public void initialize() {
         player = new Player(10, GAME_HEIGHT-100, 60, 80);
-        weapon= new Weapon1(player);
+        weapon= new Weapon1(player, this);
        // weapon = new Weapon1(player);
     }
 
@@ -45,6 +50,7 @@ public class Playing extends State implements KeyListener{
 
     public void draw(Graphics g) {
             player.draw(g);
+            weapon.draw(g);
         
     }
 
@@ -68,6 +74,11 @@ public class Playing extends State implements KeyListener{
     public ObjectManager getObjectManager(){
         return objectManager;
     }
+
+     public double getAngle() { 
+        return weaponAngle; 
+    }
+
 
     public void keyPressed(KeyEvent e) {
 
@@ -118,17 +129,15 @@ public class Playing extends State implements KeyListener{
     
   
     public void mouseMoved(MouseEvent e){
-        
-        System.out.println("x is "+ +e.getX());
-       System.out.println("y is "+ e.getY());
-        weapon.getMouse(e.getX(), e.getY());
-
-        //use this: https://stackoverflow.com/questions/26607930/java-rotate-image-towards-mouse-position
-       // double dx = e.getX() - weapon.geX();
-        //\double dy = e.getY() - weapon.geY();
-       // weapon.getAngle(dx, dy);
-       // imageAngleRad = Math.atan2(dy, dx);
-
+       // System.out.println("asdasd");
+       int cX = e.getX();
+       int cY = e.getY();
+       mouseX = e.getX(); 
+       mouseY = e.getY(); 
+       double deltaX = GAME_WIDTH/2 - e.getX();
+       double deltaY = 200 - e.getY();
+        weaponAngle = -Math.atan2(deltaX, deltaY) + 1.75;
+        System.out.println(weaponAngle);
     }
 
 

@@ -35,9 +35,7 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-       System.out.println("mouse moves");
-       
+    public void mouseMoved(MouseEvent e) {       
        switch(GameState.currentState) {
         case PLAYING:
             panel.getGame().getPlaying().mouseMoved(e);
