@@ -28,13 +28,11 @@ public class Constants {
 			public static final int Zombie = 0;
 			public static final int ZOMBIE_HEIGHT = 67; 
 			public static final int ZOMBIE_WIDTH = 60; 
-			public static final int zombieArrI = 3; 
-			public static final int zombieArrJ = 16; 
-			public static final int zombieW = 41; 
-			public static final int zombieH = 72; 
-			public static final int IDLE = 0; 
-			public static final int RUNNING =1; 
-			public static final int ATTACK = 6; 
+			public static final int zombieArrI = 5; 
+			public static final int zombieArrJ = 6; 
+			public static final int zombieW = 64; 
+			public static final int zombieH = 62; 
+			public static final int zombieAttack = 2; 
 
 			public static final int Pirate = 1; 
 			public static final int PIRATE_HEIGHT = 67; 
@@ -42,7 +40,10 @@ public class Constants {
 			public static final int pirateArrI = 9;
 			public static final int pirateArrJ = 6; 
 			public static final int pirateW = 64; 
-			public static final int pirateH = 40; 
+			public static final int pirateH = 40;
+			public static final int IDLE = 0; 
+			public static final int RUNNING = 1; 
+			public static final int ATTACK = 6; 
 
 
 			
@@ -60,10 +61,13 @@ public class Constants {
 		case ATTACK: 
 			if (enemy_type == Pirate)
 				return 2; 
-
+		
+		case zombieAttack: 
+			if (enemy_type == Zombie)
+				return 6; 
 		case RUNNING:
 			if (enemy_type == Zombie)
-			return 6;
+			return 5;
 
 			else if(enemy_type == Pirate)
 			return 2; 
