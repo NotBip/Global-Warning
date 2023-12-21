@@ -50,14 +50,7 @@ public class Constants {
 			
 	public static int GetSpriteAmount(int enemy_type, int enemy_state) {
 		switch (enemy_state) {
-
-		// case IDLE: 
-		// 	if (enemy_type == Zombie)
-		// 	return 1;
-
-		// 	else if(enemy_type == Pirate)
-		// 	return 5; 
-		
+			
 		case ATTACK: 
 			if (enemy_type == Pirate)
 				return 2; 
