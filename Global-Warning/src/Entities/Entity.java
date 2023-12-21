@@ -77,6 +77,16 @@ public class Entity {
         return true;
     }
 
+    public boolean checkFloor(float x, float y, float width, float height) {
+        if(solidTile(x, y + height)) {
+            if(solidTile(x + width, y + height)) {
+                return false;
+            }        
+        }
+        return true;
+        }
+    
+
     protected void newState(int state) {
 		this.state = state;
 		animationTick = 0;

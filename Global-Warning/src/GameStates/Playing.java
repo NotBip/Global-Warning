@@ -85,6 +85,7 @@ public class Playing extends State implements KeyListener{
             player.setDown(true);
             break;
             case KeyEvent.VK_SPACE:
+            
             player.jump();
             break;
             case KeyEvent.VK_SHIFT:

@@ -19,13 +19,14 @@ public class Player extends Entity {
     private float airFrictionY = 0.1f;
     private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.75f;
-    private float defaultDashSpeed = 5f;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
+    private int dashUpdates = 0;
+    private int maxDashUpdates = 20;
     public boolean isDashing = false;
     public boolean canDash = true;
-    private int xFlipped = 0; 
-    private int wFlipped = 1; 
+    private int xFlipped = 0;
+    private int wFlipped = 1;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -45,120 +46,90 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-       // System.out.println(dashYSpeed);
-       // airSpeed = 0;
-          
-        if(airSpeed < 0) {
-                inAir = true;
-            }
+        System.out.println(hitbox.y + moveSpeed + hitbox.height);
+        // System.out.println(dashYSpeed);
+        // airSpeed = 0;
 
-        if(isDashing) {
-            if(Math.abs(dashXSpeed) >= 0.2) {
-            
-            xSpeed = dashXSpeed;
-            dashXSpeed -= airFrictionX; 
-            } 
+        if (airSpeed != 0) {
+            inAir = true;
+        }
+        if(!inAir) {
+            airSpeed = 0;
+        }
 
-            if(Math.abs(dashYSpeed) >= 0.2) {
-            airSpeed = dashYSpeed; 
-            dashYSpeed -= airFrictionY;
-            
-            } else if (!(Math.abs(dashXSpeed) >= 0.2)) {
+        if (isDashing) {
+
+            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
+                                                // updates
+                dashUpdates++;
+                xSpeed = dashXSpeed;
+                airSpeed = dashYSpeed;
+            } else {
+                if (dashYSpeed < 0) { // Make the transition out of up dashes less choppy
+                    airSpeed = -1;
+                } // Reset everything
                 isDashing = false;
-                if(!down) 
-                airSpeed = -0.5f;
+                dashXSpeed = 0;
+                dashYSpeed = 0;
+                dashUpdates = 0;
             }
 
-           
         } else {
-            if(right && !left) {
-            xSpeed = moveSpeed;
-            playerDir = RIGHT;
-            moving = true;
-        } else if (left && !right) {
-            xSpeed = -moveSpeed;
-            playerDir = LEFT;
-            moving = true;
-        }
-            airSpeed += gravity;
-        }
-        
-        //dashYSpeed = 0; // Fixes a bug with dashing upwards
+            if (right && !left) {
+                xSpeed = moveSpeed;
+                playerDir = RIGHT;
+                moving = true;
+            } else if (left && !right) {
+                xSpeed = -moveSpeed;
+                playerDir = LEFT;
+                moving = true;
+            }
+            if (inAir) {
+                airSpeed += gravity;
+            } else {
+                airSpeed = 0;
+            }
 
-        if(canMove(hitbox.x+xSpeed, hitbox.y, hitbox.width, hitbox.height)) {
-            hitbox.x+=xSpeed;
+        }
+
+        if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height)) { // Move on the horizontal if possible
+            hitbox.x += xSpeed;
         } else {
             moving = false;
         }
-        if(canMove(hitbox.x, hitbox.y+airSpeed, hitbox.width, hitbox.height)) { // Check vertical collisions
-            hitbox.y+=airSpeed; 
-        } else { // Reset vertical motion if on ground
-            airSpeed = 0;
+        if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height)) { // Move on the vertical if possible
+            hitbox.y += airSpeed;
+        }
+
+        else if(checkFloor(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height)) { // Check if player is on ground
             inAir = false;
-            if(!isDashing) {
+            airSpeed = 0;
+            if(dashXSpeed == 0) {
+                isDashing = false;
                 canDash = true;
+                dashUpdates = 0;
             }
         }
 
-        // if (hitbox.y + hitbox.height + airSpeed >= GAME_HEIGHT && inAir) {
-        //     inAir = false;
-        //     hitbox.y = GAME_HEIGHT - hitbox.height;
-        //     dashYSpeed = 0;
-        //     if(!isDashing) {
-        //             canDash = true;
-        //     }
-        // }
+        // Reset vertical motion if on ground
+    //    else if (!canMove(hitbox.x, hitbox.y + moveSpeed, hitbox.width, hitbox.height)) {
+    //         System.out.println("ooga");
+    //         airSpeed = 0;
+    //         inAir = false;
+    //         if (!isDashing) {
+    //             canDash = true;
 
-        // if (isDashing) {
-        //     if (Math.abs(dashXSpeed) >= 0.2) { // Dash in the player direction
-        //         xSpeed += dashXSpeed;
-        //         dashXSpeed -= airFriction;
-        //     } else {
-        //         dashXSpeed = 0;
-        //     }
-        //     if (Math.abs(dashYSpeed) >= 0.2) { // Dash in the player direction
-        //         airSpeed += dashYSpeed;
-        //         dashYSpeed += gravity*5;
-        //         System.out.println(airSpeed);
-        //     } else {
-        //         dashYSpeed = 0;
-        //     }
-        //     if (dashXSpeed == 0 && dashYSpeed == 0) {
-        //         isDashing = false;
-        //     }
-        // }
-        // if (right && !left) { // Move right
-        //     xSpeed += moveSpeed;
-        //     moving = right;
-        //     playerDir = RIGHT;
-        // } else if (!right && left) { // Move left
-        //     xSpeed -= moveSpeed;
-        //     moving = left;
-        //     playerDir = LEFT;
-        // }
+    //         }
+    //     }
 
-        // if (hitbox.x + xSpeed > 0 && hitbox.x + hitbox.width + xSpeed < GAME_WIDTH) { // Check for collisions with game boarders
-        //     hitbox.x += xSpeed;
-        // } else { // Don't let the player dash through walls
-        //     moving = false;
-        //     dashXSpeed = 0;
-        // }
-        // if (hitbox.y + airSpeed > 0 && hitbox.y + hitbox.height + airSpeed < GAME_HEIGHT) {
-            
-        //     if (inAir) { // Fall
-        //         hitbox.y += airSpeed;
-        //         airSpeed += gravity;
-        //     } 
-  
-                
-        // }
         updateAnimationTick();
         setAnimation();
     }
 
     public void draw(Graphics g) {
         // drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65, null);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65,
+                null);
 
     }
 
@@ -177,7 +148,7 @@ public class Player extends Entity {
         airSpeed = jumpSpeed;
     }
 
-    public void dash() {  
+    public void dash() {
         if (isDashing || !canDash) {
             return;
         }
@@ -185,26 +156,26 @@ public class Player extends Entity {
         isDashing = true;
         canDash = false;
         if (left && !right) {
-            dashXSpeed = -defaultDashSpeed;
+            dashXSpeed = -moveSpeed * 2;
             airFrictionX = -Math.abs(airFrictionX);
-            
+
         } else if (right && !left) {
-            dashXSpeed = defaultDashSpeed;
+            dashXSpeed = moveSpeed * 2;
             airFrictionX = Math.abs(airFrictionX);
-            
+
         }
         if (up && !down) {
-            dashYSpeed = -(defaultDashSpeed);
+            dashYSpeed = -moveSpeed * 2;
             airFrictionY = -Math.abs(airFrictionY);
         } else if (down && !up && inAir) {
-            dashYSpeed = defaultDashSpeed;
+            dashYSpeed = moveSpeed * 2;
             airFrictionY = Math.abs(airFrictionY);
         }
 
-        if(up && right || up && left) {
-            dashXSpeed /=1.1f;
-            dashYSpeed /=1.1f;
-            
+        if (up && right || up && left) {
+            dashXSpeed /= 1.2f;
+            dashYSpeed /= 1.2f;
+
         }
 
     }
@@ -267,22 +238,20 @@ public class Player extends Entity {
      * @author Hamad Mohammed
      * @since December 16, 2023
      */
-	private void setAnimation() {
-		if(moving && playerDir == 2){
-            state = RUNNING; 
-            xFlipped = 0; 
-            wFlipped = 1; 
-        }
-		else if (!moving && playerDir == RIGHT) 
-		state = IDLE; 	
-        else if(moving && playerDir == LEFT){
-            state = RUNNING; 
-            xFlipped = width; 
-            wFlipped = -1; 
-        }
-		else if (!moving && playerDir == 0) 
-		state = IDLE; 	
-	}
+    private void setAnimation() {
+        if (moving && playerDir == 2) {
+            state = RUNNING;
+            xFlipped = 0;
+            wFlipped = 1;
+        } else if (!moving && playerDir == RIGHT)
+            state = IDLE;
+        else if (moving && playerDir == LEFT) {
+            state = RUNNING;
+            xFlipped = width;
+            wFlipped = -1;
+        } else if (!moving && playerDir == 0)
+            state = IDLE;
+    }
 
     /**
      * Sets the direction the player is facing.
