@@ -1,30 +1,15 @@
 package Objects.Weapons;
 
-import java.awt.geom.Rectangle2D;
 import Entities.*;
 import UserInputs.MouseInputs;
-import javax.swing.JPanel;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.Object;
-
-import static Utilities.Constants.*;
-import static Utilities.Constants.PlayerConstants.*;
-
-import static Utilities.Constants.Directions.*;
-import javax.imageio.ImageIO;
 
 import static Utilities.Atlas.*;
-import java.util.Objects; 
-import Utilities.Atlas;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 
 
 public class Weapon1 {
@@ -41,8 +26,12 @@ public class Weapon1 {
   // private Rotate rotate;
 
    //protected Rectangle2D.Float gunbox;
-   protected int x=10;
-   protected int y=10;
+   protected double x=10;
+   protected double y=10;
+  private double mouseX=10;
+   private double mouseY=10;
+
+
    protected int width=50;
    protected int height=50;
 
@@ -56,7 +45,6 @@ public class Weapon1 {
    private float jumpSpeed = -2.25f;
    private float gravity = 0.04f;
    
-   private Point imagePosition = new Point(x,y);
    private double imageAngleRad = 0;
 
 
@@ -66,15 +54,28 @@ public class Weapon1 {
   }
 
    public void draw(Graphics g) {
-    Graphics2D g2 = (Graphics2D)g;
+      Graphics2D g2 = (Graphics2D)g;
+      //double x = mouseX - width / 2d;
+      //double y = mouseY - height / 2d;
+
+      double theta = Math.atan2(mouseX, mouseY);
+      g2.rotate(-theta);
+      g2.translate(0,0);
       g2.drawImage(img, (int) x, (int) y, width, height, null);
-      g2.rotate(angle);
   }
 
-  public double getAngle(int mouseX, int mouseY){
-    angle = Math.atan2(mouseX, mouseY); 
-    System.out.println("angle is "+angle);
-    return angle;
+  public void getMouse(double mouseX, double mouseY){
+    mouseX = this.mouseX;
+    mouseY = this.mouseY;
+  }
+
+
+public int geX(){
+      return (int)x;
+  }
+
+public int geY(){
+      return (int)y;
   }
 
   public void getImage(){
@@ -86,15 +87,6 @@ public class Weapon1 {
       
         x = (int) player.getHitbox().x;
         y = (int) player.getHitbox().y-20;
-
-
-
-
-
-
-
-
-
 
         
         /* 

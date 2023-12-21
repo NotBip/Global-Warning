@@ -6,31 +6,44 @@ import static Utilities.Constants.PLAYING;
 import Objects.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import GameStates.GameState;
 import Main.gamePanel;
 
-public class MouseInputs implements MouseListener{
+public class MouseInputs implements MouseMotionListener, MouseListener{
 
     gamePanel panel;
-
     public MouseInputs(gamePanel panel) {
         this.panel = panel;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        switch(GameState.currentState) {
-        case PLAYING:
-            panel.getGame().getPlaying().mouseClicked(e);
-            System.out.println("mouse click lol");
-        case MENU:
-       }
+        System.out.println("mouse clicked");
+    
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        //gamePanel.setRectPos(e.getX(), e.getY());
+      //works
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+       //doesn't work
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+       System.out.println("mouse moves");
+       
+       switch(GameState.currentState) {
+        case PLAYING:
+            panel.getGame().getPlaying().mouseMoved(e);
+        case MENU:
+       }
+       
     }
 
     @Override
@@ -40,7 +53,7 @@ public class MouseInputs implements MouseListener{
 
     @Override
     public void mousePressed(MouseEvent e) {
-       
+        //works
     }
 
     @Override

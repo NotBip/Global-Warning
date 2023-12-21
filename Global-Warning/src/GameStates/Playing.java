@@ -115,18 +115,23 @@ public class Playing extends State implements KeyListener{
             break;
         }
     }
-
-    public void mouseClicked(MouseEvent e){
+    
+  
+    public void mouseMoved(MouseEvent e){
+        
         System.out.println("x is "+ +e.getX());
        System.out.println("y is "+ e.getY());
-      //  weapon.getAngle(e.getX(), e.getY());
+        weapon.getMouse(e.getX(), e.getY());
 
         //use this: https://stackoverflow.com/questions/26607930/java-rotate-image-towards-mouse-position
-        //double dx = e.getX() - imagePosition.getX();
-        //double dy = e.getY() - imagePosition.getY();
-        //imageAngleRad = Math.atan2(dy, dx);
+       // double dx = e.getX() - weapon.geX();
+        //\double dy = e.getY() - weapon.geY();
+       // weapon.getAngle(dx, dy);
+       // imageAngleRad = Math.atan2(dy, dx);
 
     }
+
+
 
     @Override
     public void keyTyped(KeyEvent e) {
