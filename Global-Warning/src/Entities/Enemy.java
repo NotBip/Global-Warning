@@ -25,6 +25,7 @@ public class Enemy extends Entity {
     private String Atlas; 
     private float xSpeed; 
     private float gravity = 0.04f;
+    private boolean isAttack = false; 
     Player player; 
 
 
@@ -68,13 +69,23 @@ public class Enemy extends Entity {
     public void move(Player player) {
 
         if (player.hitbox.intersects(hitbox)){
-            xSpeed = 0; 
             System.out.println("ATTACK!!!");
+            xSpeed = 0; 
+            if(!isAttack && enemyType == Pirate){
             newState(ATTACK);
-            
+            isAttack = true; 
+            }
+            if(!isAttack && enemyType == Zombie){ 
+                newState(zombieAttack);
+                isAttack = true; 
+            }
+        }
+        else { 
+        xSpeed = 2f;  
+        isAttack = false; 
         }
 
-        if (hitbox.x + xSpeed == GAME_WIDTH - hitbox.width-1 || player.hitbox.x < hitbox.x){
+        if ((hitbox.x + xSpeed == GAME_WIDTH - hitbox.width-1 || player.hitbox.x < hitbox.x) && !isAttack){
             changeDirection();
 
             if (enemyType == Zombie){
@@ -87,7 +98,7 @@ public class Enemy extends Entity {
                 wFlipped = -1; 
             }
     
-        } else if ((hitbox.x + xSpeed)-1 == 0 || player.hitbox.x > hitbox.x ){
+        } else if (((hitbox.x + xSpeed)-1 == 0 || player.hitbox.x > hitbox.x) && !isAttack ){
             changeDirection();
 
             if (enemyType == Zombie){
@@ -102,10 +113,10 @@ public class Enemy extends Entity {
             }
         }
 
-        if (player.hitbox.x > hitbox.x && direction == RIGHT && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) {
+        if ((player.hitbox.x > hitbox.x && direction == RIGHT && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) && !isAttack) {
             state = RUNNING; 
             hitbox.x += xSpeed;
-        } else if (player.hitbox.x < hitbox.x && direction == LEFT && hitbox.x + xSpeed > 0) {
+        } else if ((player.hitbox.x < hitbox.x && direction == LEFT && hitbox.x + xSpeed > 0) && !isAttack) {
             state = RUNNING; 
             hitbox.x -= xSpeed;
         }
