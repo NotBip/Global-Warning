@@ -55,12 +55,12 @@ public class Weapon1 {
 
    public void draw(Graphics g) {
       Graphics2D g2 = (Graphics2D)g;
-      //double x = mouseX - width / 2d;
-      //double y = mouseY - height / 2d;
+      double x = mouseX - width / 2d;
+      double y = mouseY - height / 2d;
 
-      double theta = Math.atan2(mouseX, mouseY);
+      double theta = Math.atan2(this.x, this.y);
       g2.rotate(-theta);
-      g2.translate(0,0);
+      g2.translate(100,100);
       g2.drawImage(img, (int) x, (int) y, width, height, null);
   }
 
