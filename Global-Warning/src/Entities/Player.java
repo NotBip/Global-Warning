@@ -70,7 +70,7 @@ public class Player extends Entity {
         //hamad did this
         drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
-        weapon.draw(g);
+       //weapon.draw(g);
     }
 
     public void jump() {

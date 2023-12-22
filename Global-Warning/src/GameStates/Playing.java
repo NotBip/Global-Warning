@@ -50,7 +50,7 @@ public class Playing extends State implements KeyListener{
 
     public void draw(Graphics g) {
             player.draw(g);
-           // weapon.draw(g);
+           weapon.draw(g);
         
     }
 
@@ -130,10 +130,12 @@ public class Playing extends State implements KeyListener{
   
     public void mouseMoved(MouseEvent e){
 
-       double deltaX = weapon.getX() - e.getX();
-       double deltaY = weapon.getY() - e.getY();
-
+       //double deltaX = weapon.getX() - e.getX();
+       //double deltaY = weapon.getY() - e.getY();
+       double deltaX = GAME_WIDTH/2 - e.getX();
+       double deltaY = 200 - e.getY();
         weaponAngle = -Math.atan2(deltaX, deltaY) + 1.75;
+       // weaponAngle = -Math.atan2(deltaX, deltaY) + 1.75;
       //  System.out.println(weaponAngle);
     }
 
