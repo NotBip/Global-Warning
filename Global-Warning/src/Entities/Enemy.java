@@ -7,6 +7,8 @@ import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
 
 import java.awt.Graphics;
+import java.awt.Robot;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 import Utilities.Atlas;
@@ -16,7 +18,7 @@ import static Utilities.Constants.Directions.RIGHT;
 
 public class Enemy extends Entity {
     protected int aniIndex, enemyState, enemyType;
-	protected int aniTick, aniSpeed = 25;
+	protected int aniTick, hitCooldown, aniSpeed = 15;
     protected int direction = RIGHT; 
     private BufferedImage[][] animations; 
     private int xFlipped; 
@@ -69,18 +71,16 @@ public class Enemy extends Entity {
     public void move(Player player) {
 
         if (player.hitbox.intersects(hitbox)){
-            System.out.println("ATTACK!!!");
+            aniSpeed = 45;
+            checkPlayerHit(player);
             xSpeed = 0; 
             if(!isAttack && enemyType == Pirate){
             newState(ATTACK);
             isAttack = true; 
             }
-            if(!isAttack && enemyType == Zombie){ 
-                newState(zombieAttack);
-                isAttack = true; 
-            }
         }
         else { 
+        aniSpeed = animationSpeed; 
         xSpeed = 2f;  
         isAttack = false; 
         }
@@ -88,12 +88,7 @@ public class Enemy extends Entity {
         if ((hitbox.x + xSpeed == GAME_WIDTH - hitbox.width-1 || player.hitbox.x < hitbox.x) && !isAttack){
             changeDirection();
 
-            if (enemyType == Zombie){
-                xFlipped = 0; 
-                wFlipped = 1; 
-            }
-
-            else if(enemyType == Pirate){ 
+            if(enemyType == Pirate){ 
                 xFlipped = width; 
                 wFlipped = -1; 
             }
@@ -101,12 +96,7 @@ public class Enemy extends Entity {
         } else if (((hitbox.x + xSpeed)-1 == 0 || player.hitbox.x > hitbox.x) && !isAttack ){
             changeDirection();
 
-            if (enemyType == Zombie){
-                xFlipped = width; 
-                wFlipped = -1; 
-            }
-
-            else if(enemyType == Pirate){ 
+             if(enemyType == Pirate){ 
                 xFlipped = 0; 
                 wFlipped = 1; 
                 
@@ -165,7 +155,7 @@ public class Enemy extends Entity {
      */
     protected void updateAnimationTick() {
 		animationTick++;
-		if (animationTick >= animationSpeed) {
+		if (animationTick >= aniSpeed) {
 			animationTick = 0;
 			animationIndex++;
 			if (animationIndex >= GetSpriteAmount(enemyType, state))
@@ -200,5 +190,14 @@ public class Enemy extends Entity {
 	public int getEnemyState() {
 		return enemyState;
 	}
+
+    protected void checkPlayerHit(Player player) {
+        hitCooldown++; 
+        if (hitCooldown >= aniSpeed*2) {
+			hitCooldown = 0;
+			player.changeHealth(-getEnemyDamage(enemyType));
+        }
+    }
+
 
 }

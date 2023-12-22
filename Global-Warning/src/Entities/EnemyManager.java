@@ -7,7 +7,6 @@ import UserInterface.LoadSave;
 import Utilities.Atlas;
 import Utilities.Atlas.*;
 import Entities.Entity.*;
-import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Levels.Levels;
 
@@ -17,7 +16,6 @@ import static Utilities.Constants.EnemyConstants.*;
 
 public class EnemyManager {
 
-        Enemy1 zombie; 
         Enemy2 pirate; 
         Player player; 
 

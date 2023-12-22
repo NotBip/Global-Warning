@@ -73,7 +73,6 @@ public class Entity {
         if(y > GAME_HEIGHT || y < 0) {
             return false;
         }
-
         return true;
     }
 

@@ -1,7 +1,6 @@
 package GameStates;
 
 import Entities.*;
-import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Levels.LevelManager;
 import Main.Game;
@@ -9,7 +8,6 @@ import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.EnemyConstants.Zombie;
 import Entities.EnemyManager.*;
 import java.awt.Graphics;
 import java.awt.event.*;

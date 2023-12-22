@@ -30,10 +30,13 @@ public class Player extends Entity {
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
+        this.maxHealth = 100;
+		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
         Animations();
         initialize();
+
     }
 
     /**
@@ -46,13 +49,16 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-        System.out.println(hitbox.y + moveSpeed + hitbox.height);
-        // System.out.println(dashYSpeed);
-        // airSpeed = 0;
 
+        System.out.println(currentHealth);
         if (airSpeed != 0) {
             inAir = true;
         }
+
+        if (this.currentHealth <= 0){ 
+            airSpeed -= .05;     
+        }
+
         if(!inAir) {
             airSpeed = 0;
         }
@@ -110,24 +116,12 @@ public class Player extends Entity {
                 dashUpdates = 0;
             }
         }
-
-        // Reset vertical motion if on ground
-    //    else if (!canMove(hitbox.x, hitbox.y + moveSpeed, hitbox.width, hitbox.height)) {
-    //         System.out.println("ooga");
-    //         airSpeed = 0;
-    //         inAir = false;
-    //         if (!isDashing) {
-    //             canDash = true;
-
-    //         }
-    //     }
-
         updateAnimationTick();
         setAnimation();
     }
 
     public void draw(Graphics g) {
-        // drawHitbox(g);
+        drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65,
                 null);
 
@@ -271,5 +265,16 @@ public class Player extends Entity {
     public float getXSpeed() {
         return xSpeed;
     }
+
+    /**
+     * Changes the players health depending on enemy.
+     * @author Hamad Mohammed
+     * @param value Damage being done 
+     * @since December 16, 2023
+     */
+     public void changeHealth(int value) {
+		currentHealth += value;
+		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
+	}
 
 }
