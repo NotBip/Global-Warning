@@ -32,8 +32,8 @@ public class Weapon1 implements MouseMotionListener {
     protected int width=50;
     protected int height=50;
 
-    protected float x=10;
-    protected float y=10;
+    protected float x=0;
+    protected float y=0;
 
     public Weapon1 (Player player, Playing playing) {
         this.player = player;
@@ -49,7 +49,7 @@ public class Weapon1 implements MouseMotionListener {
         Graphics2D g2d = (Graphics2D)g; 
        //double x = GAME_WIDTH/2+50; 
        // double y = 200+50;
-        g2d.rotate(playing.getAngle() , x, y);
+        g2d.rotate(playing.getAngle() , x, y+20);
        //g2d.rotate(playing.getAngle() , x+50, y+50);
         // if (playing.mouseX < x){
         //     xFlipped = 0; 
@@ -62,7 +62,7 @@ public class Weapon1 implements MouseMotionListener {
       // g2d.drawImage(img, GAME_WIDTH/2 + xFlipped, 200, 100 * wFlipped, 100, null); 
        //g2d.drawImage(img,  GAME_WIDTH/2 + (int)x, (int) y, width, height, null);
     // g2d.drawImage(img, (int) x, (int) y, width, height, null);
-   g.drawImage(img, (int) x, (int) y, width, height, null);
+   g.drawImage(img, (int) x, (int) y+20, width, height, null);
    update();
 
      }
