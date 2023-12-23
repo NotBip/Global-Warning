@@ -56,7 +56,7 @@ public class Enemy extends Entity {
         this.enemyH = enemyH;
         this.Eheight = sizeH; 
         this.Ewidth = sizeX; 
-        this.enemyRangeX = x - (x*1.5f);
+        this.enemyRangeX = x - x;
         this.enemyRangeY = y - 200; 
         this.enemyRangeH = height + 220; 
         this.enemyRangeW = width + 300; 

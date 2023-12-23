@@ -7,8 +7,8 @@ import Entities.Enemy;
 
 public class Enemy2 extends Enemy {
 
-    public Enemy2(float x, float y) {
-        super(x, y, PIRATE_WIDTH, PIRATE_HEIGHT, Pirate, pirateArrI, pirateArrJ, pirateW, pirateH, PIRATE_ATLAS, PIRATE_WIDTH, -1, 1f, 100, 85);    
+    public Enemy2(float x, float y, float speed) {
+        super(x, y, PIRATE_WIDTH, PIRATE_HEIGHT, Pirate, pirateArrI, pirateArrJ, pirateW, pirateH, PIRATE_ATLAS, PIRATE_WIDTH, -1, speed, 100, 85);    
         super.inAir = true; 
 
     }

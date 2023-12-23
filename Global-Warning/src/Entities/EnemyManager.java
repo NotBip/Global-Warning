@@ -2,6 +2,8 @@ package Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import GameStates.Playing;
 import UserInterface.LoadSave;
 import Utilities.Atlas;
@@ -15,21 +17,26 @@ import static Utilities.Constants.EnemyConstants.*;
 
 public class EnemyManager {
 
-        Enemy2 pirate; 
+        ArrayList<Enemy2> pirate = new ArrayList<Enemy2>(); 
         Player player; 
 
     public EnemyManager(Player player){
         this.player = player; 
+
     }
         public void generateEnemies() {
-            pirate = new Enemy2(100, GAME_HEIGHT-80);
+        pirate.add(new Enemy2(100, GAME_HEIGHT-80, 1.6f)) ;
         }
 
         public void update() { 
-            pirate.move(player);
+           for (Enemy2 o : pirate) { 
+            o.move(player); 
+           }
         }
 
         public void draw(Graphics g) { 
-             pirate.draw(g);
+            for (Enemy2 o : pirate) { 
+            o.draw(g);
+           }
         }
 }
