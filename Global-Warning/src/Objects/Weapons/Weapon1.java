@@ -47,22 +47,30 @@ public class Weapon1 implements MouseMotionListener {
   
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g; 
-       //double x = GAME_WIDTH/2+50; 
-       // double y = 200+50;
-        g2d.rotate(playing.getAngle() , x, y+20);
-       //g2d.rotate(playing.getAngle() , x+50, y+50);
-        // if (playing.mouseX < x){
-        //     xFlipped = 0; 
-        //     wFlipped = 1; 
-        // }
-        // else {
-        //     xFlipped = 100;
-        //     wFlipped = -1; 
-        // }
-      // g2d.drawImage(img, GAME_WIDTH/2 + xFlipped, 200, 100 * wFlipped, 100, null); 
-       //g2d.drawImage(img,  GAME_WIDTH/2 + (int)x, (int) y, width, height, null);
-    // g2d.drawImage(img, (int) x, (int) y, width, height, null);
-   g.drawImage(img, (int) x, (int) y+20, width, height, null);
+       
+        //positive offset
+        //g2d.rotate(playing.getAngle() , x+30, y+50);
+
+        g2d.rotate(playing.getAngle() , x+30, y+50);
+
+         if (playing.mouseX < x){
+             xFlipped = 0; 
+            wFlipped = 1; 
+           // System.out.println("flip once");
+         }
+         else {
+            xFlipped = 70;
+            wFlipped = -1; 
+            //dSystem.out.println("flip twice");
+         }
+     
+         //positive img
+        g.drawImage(img, (int) x+xFlipped, (int) y+20, width*wFlipped, height, null);
+
+       // g.drawImage(img, (int) x+70, (int) y+20, width*-1, height, null);
+
+
+
    update();
 
      }

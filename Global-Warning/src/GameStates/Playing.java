@@ -23,6 +23,7 @@ public class Playing extends State implements KeyListener{
     private double weaponAngle = 0; 
     public double mouseX; 
     public double mouseY; 
+    public double offset;
 
     public Playing(Game game) {
         super(game);
@@ -130,11 +131,21 @@ public class Playing extends State implements KeyListener{
   
     public void mouseMoved(MouseEvent e){
 
-       //double deltaX = weapon.getX() - e.getX();
-       //double deltaY = weapon.getY() - e.getY();
-       double deltaX = weapon.getX() - e.getX();
-       double deltaY = weapon.getY() - e.getY();
-        weaponAngle = -Math.atan2(deltaX, deltaY) + 1.75;
+       mouseX = e.getX();
+        mouseY = e.getY();
+
+        if (mouseX < weapon.getX()){
+
+           offset = 1.6;
+        }
+        else {
+           offset = -1.5;
+        }
+       
+        double deltaX = weapon.getX() - mouseX;
+       double deltaY = weapon.getY() - mouseY;
+        weaponAngle = -Math.atan2(deltaX, deltaY)+offset;
+
        // weaponAngle = -Math.atan2(deltaX, deltaY) + 1.75;
       //  System.out.println(weaponAngle);
     }

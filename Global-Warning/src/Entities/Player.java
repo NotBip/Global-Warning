@@ -62,7 +62,7 @@ public class Player extends Entity {
 
         updateAnimationTick();
 		setAnimation();
-        weapon.update();
+        //weapon.update();
         
     }
 
