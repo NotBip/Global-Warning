@@ -5,19 +5,19 @@ import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.Directions.*;
-
+import static Entities.Enemy.*; 
 import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
     private boolean moving = false;
-    private boolean left, right, up, down;
+    public boolean left, right, up, down;
     private int playerDir = -1;
     private float gravity = 0.04f;
     private float airFrictionX = 0.1f;
     private float airFrictionY = 0.1f;
-    private float moveSpeed = 2.0f;
+    public float moveSpeed = 2.0f;
     private float jumpSpeed = -2.75f;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
@@ -27,6 +27,7 @@ public class Player extends Entity {
     public boolean canDash = true;
     private int xFlipped = 0;
     private int wFlipped = 1;
+    private Enemy enemy; 
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -50,7 +51,10 @@ public class Player extends Entity {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
 
-        System.out.println(currentHealth);
+        if(up) { 
+            airSpeed -= 2;
+        }
+      //  System.out.println(currentHealth);
         if (airSpeed != 0) {
             inAir = true;
         }
@@ -276,5 +280,16 @@ public class Player extends Entity {
 		currentHealth += value;
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
 	}
+
+    /**
+     * Adds knockback to player when attacked. 
+     * @author Hamad Mohammed
+     * @since December 22, 2023
+     */
+    public void knockBack() { 
+
+    }
+
+
 
 }

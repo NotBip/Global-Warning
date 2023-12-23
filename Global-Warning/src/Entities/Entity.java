@@ -21,6 +21,9 @@ public class Entity {
     protected int currentHealth;
     protected int animationTick;
     protected int animationIndex;
+    protected Rectangle2D.Float enemyRange; 
+    protected float enemyRangeX, enemyRangeY; 
+    protected int enemyRangeW, enemyRangeH; 
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -30,6 +33,7 @@ public class Entity {
     }
 
     protected void initialize() {
+        enemyRange = new Rectangle2D.Float(enemyRangeX, enemyRangeY, enemyRangeW, enemyRangeH); 
         hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
@@ -51,13 +55,14 @@ public class Entity {
 
     public void drawHitbox(Graphics g) {
         g.drawRect((int) hitbox.x, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+        g.drawRect((int) enemyRange.x, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     public boolean canMove(float x, float y, float width, float height) {
-        if (solidTile(x + width, y)) {
-            if (solidTile(x, y + height)) {
-                if (solidTile(x, y)) {
-                    if (solidTile(x + width, y + height)) {
+        if (!solidTile(x + width, y)) {
+            if (!solidTile(x, y + height)) {
+                if (!solidTile(x, y)) {
+                    if (!solidTile(x + width, y + height)) {
                         return true;
                     }
                 }
@@ -68,17 +73,18 @@ public class Entity {
 
     public boolean solidTile(float x, float y) {
         if(x > GAME_WIDTH || x < 0) {
-            return false;
+            return true;
         }
         if(y > GAME_HEIGHT || y < 0) {
-            return false;
+            return true;
         }
-        return true;
+
+        return false;
     }
 
     public boolean checkFloor(float x, float y, float width, float height) {
-        if(solidTile(x, y + height)) {
-            if(solidTile(x + width, y + height)) {
+        if(!solidTile(x, y + height + 1)) {
+            if(!solidTile(x + width, y + height + 1)) {
                 return false;
             }        
         }

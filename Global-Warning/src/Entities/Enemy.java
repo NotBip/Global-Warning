@@ -19,16 +19,16 @@ import static Utilities.Constants.Directions.RIGHT;
 public class Enemy extends Entity {
     protected int aniIndex, enemyState, enemyType;
 	protected int aniTick, hitCooldown, aniSpeed = 15;
-    protected int direction = RIGHT; 
+    protected int direction = LEFT; 
     private BufferedImage[][] animations; 
     private int xFlipped; 
     private int wFlipped; 
     private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
-    private float xSpeed; 
+    private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
-    private boolean isAttack = false; 
-    Player player; 
+    private boolean isAttack = false, leftwall = false, isVisible = false; 
+
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType) {
@@ -44,7 +44,8 @@ public class Enemy extends Entity {
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
 
-        this.xSpeed = speed; 
+        this.moveSpeed = speed; 
+        this.xSpeed = this.moveSpeed; 
         this.xFlipped = xFlipped; 
         this.wFlipped = wFlipped;
         this.Atlas = Atlas; 
@@ -55,6 +56,10 @@ public class Enemy extends Entity {
         this.enemyH = enemyH;
         this.Eheight = sizeH; 
         this.Ewidth = sizeX; 
+        this.enemyRangeX = x - (x*1.5f);
+        this.enemyRangeY = y - 200; 
+        this.enemyRangeH = height + 220; 
+        this.enemyRangeW = width + 300; 
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
@@ -62,14 +67,15 @@ public class Enemy extends Entity {
     }
 
     protected void turnTowardsPlayer(Player player) {
+    if (isPlayerVisible(player)) { 
 		if (player.hitbox.x > hitbox.x)
 			direction = RIGHT;
 		else
 			direction = LEFT;
+        }
 	}
 
     public void move(Player player) {
-
         if (player.hitbox.intersects(hitbox)){
             aniSpeed = 45;
             checkPlayerHit(player);
@@ -81,38 +87,72 @@ public class Enemy extends Entity {
         }
         else { 
         aniSpeed = animationSpeed; 
-        xSpeed = 2f;  
+        xSpeed = moveSpeed;  
         isAttack = false; 
         }
 
-        if ((hitbox.x + xSpeed == GAME_WIDTH - hitbox.width-1 || player.hitbox.x < hitbox.x) && !isAttack){
-            changeDirection();
-
-            if(enemyType == Pirate){ 
-                xFlipped = width; 
-                wFlipped = -1; 
+        if (player.hitbox.intersects(enemyRange) && !isAttack) {
+            if (player.hitbox.x < this.hitbox.x && direction == RIGHT && !isVisible) {
+            isVisible = true; 
+            direction = LEFT; 
+            wFlipped = flipW(); 
+            xFlipped = flipX();
+            leftwall = false;
+            System.out.println("CHANGE");
             }
-    
-        } else if (((hitbox.x + xSpeed)-1 == 0 || player.hitbox.x > hitbox.x) && !isAttack ){
-            changeDirection();
-
-             if(enemyType == Pirate){ 
-                xFlipped = 0; 
-                wFlipped = 1; 
-                
+            
+            if (player.hitbox.x > this.hitbox.x && direction == LEFT && isVisible) { 
+            isVisible = false; 
+            direction = RIGHT; 
+            wFlipped = flipW(); 
+            xFlipped = flipX();
+            leftwall = true;
+            System.out.println("CHANGE");
             }
         }
 
-        if ((player.hitbox.x > hitbox.x && direction == RIGHT && hitbox.x + xSpeed < GAME_WIDTH - hitbox.width) && !isAttack) {
-            state = RUNNING; 
-            hitbox.x += xSpeed;
-        } else if ((player.hitbox.x < hitbox.x && direction == LEFT && hitbox.x + xSpeed > 0) && !isAttack) {
+
+        if (canMove(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height) && !isAttack && !leftwall) {
             state = RUNNING; 
             hitbox.x -= xSpeed;
+            enemyRange.x -= xSpeed; 
         }
+
+        else if ((!canMove(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height) && !isAttack) && !leftwall) {
+            direction = RIGHT; 
+            leftwall = true;
+            wFlipped = flipW(); 
+            xFlipped = flipX(); 
+            enemyRange.x += xSpeed; 
+            hitbox.x += xSpeed; 
+        }
+
+       if ((canMove(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height) && !isAttack) && leftwall) { 
+            state = RUNNING; 
+            hitbox.x += xSpeed;
+            enemyRange.x += xSpeed; 
+        }
+
+        else if (!isAttack && leftwall) {
+            direction = LEFT; 
+            hitbox.x -= xSpeed; 
+            enemyRange.x -= xSpeed; 
+            wFlipped = flipW(); 
+            xFlipped = flipX();
+            leftwall = false;
+
+        }
+
+        //         state = RUNNING; 
+        //         hitbox.x += xSpeed;
+        //         collideHitbox.x += xSpeed; 
+        //     }
+            
+        // }
 
         if(inAir) { // Fall
             hitbox.y += airSpeed;
+            enemyRange.y += airSpeed; 
             airSpeed += gravity;
         }
 
@@ -127,22 +167,17 @@ public class Enemy extends Entity {
         updateAnimationTick(); 
     }
 
-	protected void changeDirection() {
-		if (direction == LEFT)
-			direction = RIGHT;
-		else
-			direction = LEFT;
-	}
+
     
     public int flipX() {
-		if (direction == RIGHT)
+		if (xFlipped == 0)
 			return width;
 		else
 			return 0;
 	}
 
 	public int flipW() {
-		if (direction == RIGHT)
+		if (wFlipped == 1)
 			return -1;
 		else
 			return 1;
@@ -199,5 +234,14 @@ public class Enemy extends Entity {
         }
     }
 
+        /**
+     * 
+     */
+    public boolean isPlayerVisible(Player player) { 
 
+        if (this.hitbox.intersects(player.hitbox)) 
+            return true; 
+        else 
+            return false; 
+    }
 }

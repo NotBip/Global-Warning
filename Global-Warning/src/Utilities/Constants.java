@@ -70,7 +70,7 @@ public class Constants {
 		switch (enemyType) {
 
 			case Pirate:
-				return 15; 		
+				return 1; 		
 			default:
 				return 0; 
 		}

@@ -9,7 +9,6 @@ import Utilities.Atlas.*;
 import Entities.Entity.*;
 import Entities.Planet1Enemies.Enemy2;
 import Levels.Levels;
-
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.EnemyConstants.*;
@@ -23,7 +22,7 @@ public class EnemyManager {
         this.player = player; 
     }
         public void generateEnemies() {
-            pirate = new Enemy2(GAME_WIDTH-50, GAME_HEIGHT-80);
+            pirate = new Enemy2(100, GAME_HEIGHT-80);
         }
 
         public void update() { 
