@@ -8,16 +8,12 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
-import static Utilities.Constants.GAME_WIDTH;
 import static GameStates.Playing.*; 
 import java.awt.Graphics2D;
-import java.awt.Point;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
-import UserInputs.MouseInputs.*; 
-
-
+import Objects.*;
 
 public class Weapon1 implements MouseMotionListener {
     private Player player;
@@ -34,6 +30,7 @@ public class Weapon1 implements MouseMotionListener {
 
     protected float x=0;
     protected float y=0;
+    //private Bullets bullets = new Bullets(x,y,100, 100,this, playing);
 
     public Weapon1 (Player player, Playing playing) {
         this.player = player;
@@ -66,6 +63,7 @@ public class Weapon1 implements MouseMotionListener {
      
          //positive img
         g.drawImage(img, (int) x+xFlipped, (int) y+20, width*wFlipped, height, null);
+        //bullets.draw(g);
 
        // g.drawImage(img, (int) x+70, (int) y+20, width*-1, height, null);
 
@@ -86,7 +84,7 @@ public class Weapon1 implements MouseMotionListener {
 
         x = player.getHitbox().x;
         y = player.getHitbox().y-20;
-        
+
      }
 
     public void getImage() {

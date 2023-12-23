@@ -24,7 +24,7 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
-    private Weapon1 weapon = new Weapon1(this, playing);
+    //private Weapon1 weapon = new Weapon1(this, playing);
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
