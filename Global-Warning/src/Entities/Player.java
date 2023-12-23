@@ -51,10 +51,6 @@ public class Player extends Entity {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
 
-        if(up) { 
-            airSpeed -= 2;
-        }
-      //  System.out.println(currentHealth);
         if (airSpeed != 0) {
             inAir = true;
         }
