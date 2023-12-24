@@ -17,14 +17,20 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import Objects.Weapons.Weapon1;
 
-public class Bullets extends Entities.Entity implements MouseListener{
+public class Bullets extends Entities.Entity implements MouseListener {
 
   Playing playing;
+
+  
    private int bulletDamage = 1;
    private int bulletAmount = 1;
    private double bulletRange = 5.5;
    private double bulletSpeed = 2.2;
    private boolean canShoot = false;
+   private boolean SHOT;
+
+   protected float x=0;
+    protected float y=0;
 
   // private int width = 100;
   // private int height = 100;
@@ -34,21 +40,61 @@ public class Bullets extends Entities.Entity implements MouseListener{
 
 
    public Bullets (Weapon1 weapon, Playing playing) {
-        super(100, 100, 100, 100);
-        this.weapon = weapon;
+       super(weapon.getX(), weapon.getY(), 100,  100);
         this.playing = playing;
+        this.weapon = weapon;
+        initialize();
   }
    
   public void draw(Graphics g) {
-    System.out.println("Good eveningggg");  
     drawHitbox(g);
  }
 
- public void update() {
+ public void updateStartPosition() {
+    //System.out.println(SHOT);
+    if (SHOT != true){
+  //  System.out.println("1");
+     hitbox.x = weapon.getX();
+    hitbox.y = weapon.getY();
 
-  hitbox.x = weapon.getX();
-  hitbox.y = weapon.getY();
-  
+    } else {
+        System.out.println("0");
+    }
+
+}
+
+
+
+public void shot (double mouseX, double mouseY){
+    SHOT = true;
+    updateStartPosition();
+    //System.out.println(SHOT);
+    
+    hitbox.x = (float)mouseX;
+    hitbox.y = (float)mouseY;
+
+   /* 
+   while (hitbox.y != mouseY && hitbox.x != mouseX){
+    if (hitbox.x < mouseX){
+        hitbox.x += 0.1;
+    
+    } 
+
+    if (hitbox.y < mouseY){
+        hitbox.y += 0.1;
+    }
+    
+    if (hitbox.x > mouseX){
+        hitbox.x -= 0.1;
+    } 
+    
+    if (hitbox.y > mouseY){
+        hitbox.y -= 0.1;
+    }
+   }
+   */
+    System.out.println("SHOT END");
+
 }
 
 @Override

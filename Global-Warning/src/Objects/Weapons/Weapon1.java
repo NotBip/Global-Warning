@@ -32,8 +32,7 @@ public class Weapon1 implements MouseMotionListener {
     protected float y=0;
     private Bullets bullets = new Bullets(this, playing);
 
-    public Weapon1 (Player player, Bullets bullets, Playing playing) {
-        this.bullets = bullets;
+    public Weapon1 (Player player, Playing playing) {
         this.player = player;
         this.playing = playing; 
         getImage();
@@ -64,7 +63,7 @@ public class Weapon1 implements MouseMotionListener {
      
          //positive img
         g.drawImage(img, (int) x+xFlipped, (int) y+20, width*wFlipped, height, null);
-        //bullets.draw(g);
+        bullets.draw(g);
 
        // g.drawImage(img, (int) x+70, (int) y+20, width*-1, height, null);
 
@@ -85,7 +84,7 @@ public class Weapon1 implements MouseMotionListener {
 
         x = player.getHitbox().x;
         y = player.getHitbox().y-20;
-        //bullets.update();
+        bullets.updateStartPosition();
      }
 
     public void getImage() {
