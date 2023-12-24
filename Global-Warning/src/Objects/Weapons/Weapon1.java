@@ -30,9 +30,10 @@ public class Weapon1 implements MouseMotionListener {
 
     protected float x=0;
     protected float y=0;
-    //private Bullets bullets = new Bullets(x,y,100, 100,this, playing);
+    private Bullets bullets = new Bullets(this, playing);
 
-    public Weapon1 (Player player, Playing playing) {
+    public Weapon1 (Player player, Bullets bullets, Playing playing) {
+        this.bullets = bullets;
         this.player = player;
         this.playing = playing; 
         getImage();
@@ -84,7 +85,7 @@ public class Weapon1 implements MouseMotionListener {
 
         x = player.getHitbox().x;
         y = player.getHitbox().y-20;
-
+        //bullets.update();
      }
 
     public void getImage() {

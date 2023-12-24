@@ -38,8 +38,7 @@ public class Playing extends State implements KeyListener{
 
     public void initialize() {
         player = new Player(10, GAME_HEIGHT-100, 60, 80, this);
-        weapon= new Weapon1(player, this);
-        bullets = new Bullets(100,100, 100, 100, weapon, this);
+        weapon= new Weapon1(player, bullets, this);
         
        // weapon = new Weapon1(player);
     }
@@ -55,7 +54,7 @@ public class Playing extends State implements KeyListener{
     public void draw(Graphics g) {
             player.draw(g);
            weapon.draw(g);
-        //bullets.draw(g);
+           //bullets.draw(g);
         
     }
 
@@ -158,6 +157,8 @@ public class Playing extends State implements KeyListener{
     public void mouseClicked(MouseEvent e) {
          mouseX = e.getX();
         mouseY = e.getY();
+
+        System.out.println("Heyoooooo!");
 
     }
 
