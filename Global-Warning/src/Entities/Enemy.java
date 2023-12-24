@@ -20,6 +20,7 @@ public class Enemy extends Entity {
     protected int aniIndex, enemyState, enemyType;
 	protected int aniTick, hitCooldown, aniSpeed = 15;
     protected int direction = LEFT; 
+    private String state = WALK; 
     private BufferedImage[][] animations; 
     private int xFlipped; 
     private int wFlipped; 
@@ -76,18 +77,24 @@ public class Enemy extends Entity {
 	}
 
     public void move(Player player) {
+        System.out.println(state);
         if (player.hitbox.intersects(hitbox)){
             aniSpeed = 45;
             checkPlayerHit(player);
             xSpeed = 0; 
-            if(!isAttack && enemyType == Pirate){
-            newState(ATTACK);
+            if(!isAttack){
+            state = ATTACK; 
             isAttack = true; 
             }
         }
         else { 
+        if(!player.hitbox.intersects(enemyRange))
+        xSpeed = moveSpeed - .5f; 
+        else { 
+        xSpeed = moveSpeed;
+        state = RUN; 
+        }
         aniSpeed = animationSpeed; 
-        xSpeed = moveSpeed;  
         isAttack = false; 
         }
 
@@ -109,11 +116,18 @@ public class Enemy extends Entity {
             leftwall = true;
             System.out.println("CHANGE");
             }
+
+        else if (!player.hitbox.intersects(enemyRange)) { 
+            xSpeed = moveSpeed - .5f; 
+        }
         }
 
 
         if (canMove(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height) && !isAttack && !leftwall) {
-            state = RUNNING; 
+            if(!player.hitbox.intersects(enemyRange))
+            state = WALK; 
+            else 
+            state = RUN; 
             hitbox.x -= xSpeed;
             enemyRange.x -= xSpeed; 
         }
@@ -128,7 +142,10 @@ public class Enemy extends Entity {
         }
 
        if ((canMove(this.hitbox.x, this.hitbox.y, this.hitbox.width, this.hitbox.height) && !isAttack) && leftwall) { 
-            state = RUNNING; 
+            if(!player.hitbox.intersects(enemyRange))
+            state = WALK; 
+            else 
+            state = RUN;       
             hitbox.x += xSpeed;
             enemyRange.x += xSpeed; 
         }
@@ -142,13 +159,6 @@ public class Enemy extends Entity {
             leftwall = false;
 
         }
-
-        //         state = RUNNING; 
-        //         hitbox.x += xSpeed;
-        //         collideHitbox.x += xSpeed; 
-        //     }
-            
-        // }
 
         if(inAir) { // Fall
             hitbox.y += airSpeed;
@@ -200,7 +210,7 @@ public class Enemy extends Entity {
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
+        g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
     }
 
     /**
@@ -222,9 +232,9 @@ public class Enemy extends Entity {
 		return aniIndex;
 	}
 
-	public int getEnemyState() {
-		return enemyState;
-	}
+	public void getEnemyState() {
+
+    }
 
     protected void checkPlayerHit(Player player) {
         hitCooldown++; 
@@ -234,8 +244,12 @@ public class Enemy extends Entity {
         }
     }
 
-        /**
-     * 
+    /**
+     * Checks if the player is visible to the enemy or not
+     * @author Hamad Mohammed
+     * @since December 24, 2023
+     * @param player The instance of the player being detected. 
+     * @return Is the player visible or not
      */
     public boolean isPlayerVisible(Player player) { 
 

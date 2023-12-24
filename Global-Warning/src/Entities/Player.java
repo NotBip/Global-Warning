@@ -4,6 +4,9 @@ import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import Main.Game;
+
 import static Utilities.Constants.Directions.*;
 import static Entities.Enemy.*; 
 import static Utilities.Atlas.*;
@@ -14,11 +17,11 @@ public class Player extends Entity {
     private boolean moving = false;
     public boolean left, right, up, down;
     private int playerDir = -1;
-    private float gravity = 0.04f;
-    private float airFrictionX = 0.1f;
-    private float airFrictionY = 0.1f;
-    public float moveSpeed = 2.0f;
-    private float jumpSpeed = -2.75f;
+    private float gravity = 0.04f * Game.SCALE;
+    private float airFrictionX = 0.1f * Game.SCALE;
+    private float airFrictionY = 0.1f * Game.SCALE;
+    public float moveSpeed = 2.0f  * Game.SCALE;
+    private float jumpSpeed = -2.75f * Game.SCALE;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
     private int dashUpdates = 0;
@@ -123,7 +126,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65,
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, (55 * wFlipped) * (int) Game.SCALE, 65 * (int) Game.SCALE,
                 null);
 
     }
