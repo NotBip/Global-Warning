@@ -8,12 +8,11 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
-import static GameStates.Playing.*; 
 import java.awt.Graphics2D;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import Objects.*;
+import java.awt.geom.AffineTransform;
 
 public class Weapon1 implements MouseMotionListener {
     private Player player;
@@ -21,16 +20,12 @@ public class Weapon1 implements MouseMotionListener {
     Graphics2D g2d; 
     MouseInputs mouse;
     Playing playing;
-
     private int xFlipped = 0; 
     private int wFlipped = 1; 
-
     protected int width=50;
     protected int height=50;
-
     protected float x=0;
     protected float y=0;
-    private Bullets bullets = new Bullets(this, playing);
 
     public Weapon1 (Player player, Playing playing) {
         this.player = player;
@@ -44,51 +39,41 @@ public class Weapon1 implements MouseMotionListener {
   
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g; 
-       
-        //positive offset
-        //g2d.rotate(playing.getAngle() , x+30, y+50);
-
-        g2d.rotate(playing.getAngle() , x+30, y+50);
+        AffineTransform oldXForm = g2d.getTransform();
+        g2d.rotate(playing.getAngle() , this.x+30, this.y+50);
 
          if (playing.mouseX < x){
-             xFlipped = 0; 
-            wFlipped = 1; 
-           // System.out.println("flip once");
+            this.xFlipped = 0; 
+            this. wFlipped = 1; 
          }
          else {
-            xFlipped = 70;
-            wFlipped = -1; 
-            //dSystem.out.println("flip twice");
+            this.xFlipped = 70;
+            this.wFlipped = -1; 
          }
      
-         //positive img
-        g.drawImage(img, (int) x+xFlipped, (int) y+20, width*wFlipped, height, null);
-        bullets.draw(g);
-
-       // g.drawImage(img, (int) x+70, (int) y+20, width*-1, height, null);
+        g.drawImage(this.img, (int) this.x+this.xFlipped, (int) this.y+20, this.width*this.wFlipped, this.height, null);
+        g2d.setTransform(oldXForm);
 
 
 
-   update();
+   //update();
 
      }
 
      public float getX() {
-        return x;
+        return this.x;
      }
       public float getY() {
-        return y;
+        return this.y;
      }
 
      public void update() {
-
-        x = player.getHitbox().x;
-        y = player.getHitbox().y-20;
-        bullets.updateStartPosition();
+        this.x = player.getHitbox().x;
+        this.y = player.getHitbox().y-20;
      }
 
     public void getImage() {
-        img = getSpriteAtlas(WEAPON_ATLAS); 
+        this.img = getSpriteAtlas(WEAPON_ATLAS); 
     }
 
     @Override

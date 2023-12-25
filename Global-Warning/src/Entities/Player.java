@@ -2,6 +2,8 @@ package Entities;
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,12 +26,10 @@ public class Player extends Entity {
 	private BufferedImage img;
     private float gravity = 0.04f;
     private float jumpSpeed = -2.25f;
-    //private Weapon1 weapon = new Weapon1(this, playing);
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.state = IDLERIGHT; 
-        //this.weapon = weapon;
         this.playing = playing;
         this.xSpeed = 2.0f;
         this.inAir = true;
@@ -62,12 +62,12 @@ public class Player extends Entity {
 
         updateAnimationTick();
 		setAnimation();
-        //weapon.update();
         
     }
 
     public void draw(Graphics g) {
         //hamad did this
+
         drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
        //weapon.draw(g);
