@@ -18,7 +18,7 @@ import static Utilities.Constants.EnemyConstants.*;
 
 public class EnemyManager {
 
-        ArrayList<Enemy2> pirate = new ArrayList<Enemy2>(); 
+        ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
         ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
         Player player; 
 
@@ -27,14 +27,14 @@ public class EnemyManager {
 
     }
         public void generateEnemies() {
-        pirate.add(new Enemy2(100, GAME_HEIGHT-80)) ;
+        Waterboi.add(new Enemy2(100, GAME_HEIGHT-600)) ;
         Fireboi.add(new Enemy1(100, GAME_HEIGHT-600)); 
         }
 
         public void update() { 
-           for (Enemy2 o : pirate) { 
-            o.move(player); 
-           }
+          for (Enemy2 o : Waterboi) { 
+           o.move(player); 
+         }
 
            for (Enemy1 f : Fireboi) { 
             f.move(player);
@@ -42,8 +42,8 @@ public class EnemyManager {
         }
 
         public void draw(Graphics g) { 
-            for (Enemy2 o : pirate) { 
-            o.draw(g);
+            for (Enemy2 o : Waterboi) { 
+               o.draw(g);
            }
 
              for (Enemy1 f : Fireboi) { 

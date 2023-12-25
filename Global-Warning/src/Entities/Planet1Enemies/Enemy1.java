@@ -10,7 +10,7 @@ import static Utilities.Constants.EnemyConstants.*;
 public class Enemy1 extends Enemy {
 
    public Enemy1(float x, float y) {
-        super(x, y, FIREBOI_WIDTH+75, FIREBOI_HEIGHT, Fireboi, fireboiArrI, fireboiArrJ, fireboiW, fireboiH, FIREBOI_ATLAS, FIREBOI_WIDTH, -1, fireSpeed,  fireSizeX, fireSizeY);
+        super(x, y, FIREBOI_WIDTH+10, FIREBOI_HEIGHT, Fireboi, fireboiArrI, fireboiArrJ, fireboiW, fireboiH, FIREBOI_ATLAS, FIREBOI_WIDTH, -1, fireSpeed,  fireSizeX, fireSizeY);
         super.inAir = true; 
 }
 

@@ -33,30 +33,36 @@ public class Constants {
 			public static final String RUN = "RUN"; 
 			public static final String ATTACK = "ATTACK"; 
 
-			public static final int Pirate = 0; 
-			public static final int PIRATE_HEIGHT = 67*(int) Game.SCALE; 
-			public static final int PIRATE_WIDTH = 90*(int) Game.SCALE; 
-			public static final int pirateArrI = 9;
-			public static final int pirateArrJ = 6; 
-			public static final int pirateW = 64; 
-			public static final int pirateH = 40;
-			public static final int pirateIdle = 0; 
-			public static final int pirateRunning = 1; 
-			public static final int pirateAttack = 6; 
-			public static final float pirateSpeed = 1.2f * Game.SCALE; 
-			public static final int pirateSizeX = 100*(int) Game.SCALE; 
-			public static final int pirateSizeY = 85*(int) Game.SCALE; 
+			public static final int Waterboi = 0; 
+			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
+			public static final int WATERBOI_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int waterAttackSpeed = 20; 
+			public static final int waterArrI = 9;
+			public static final int waterArrJ = 8; 
+			public static final int waterW = 144; 
+			public static final int waterH = 166;
+			public static final int waterIdle = 0; 
+			public static final int waterWalk = 1; 
+			public static final int waterRunning = 2; 
+			public static final int waterAttack = 6; 
+			public static final float waterSpeed = 1.0f * Game.SCALE; 
+			public static final int waterSizeX = 100*(int) Game.SCALE; 
+			public static final int waterSizeY = 110*(int) Game.SCALE; 
+
+
 
 			public static final int Fireboi = 1; 
 			public static final int FIREBOI_HEIGHT = 93 *(int) Game.SCALE; 
 			public static final int FIREBOI_WIDTH = 60 *(int) Game.SCALE; 
-			public static final int fireboiArrI = 5; 
+			public static final int fireAttackSpeed = 15; 
+			public static final int fireboiArrI = 9; 
 			public static final int fireboiArrJ = 8; 
-			public static final int fireboiW = 159; 
-			public static final int fireboiH = 163;
+			public static final int fireboiW = 144; 
+			public static final int fireboiH = 165;
 			public static final int fireIdle = 0; 
 			public static final int fireWalk = 1; 
 			public static final int fireRun = 2; 
+			public static final int fireAttack = 7; 
 			public static final float fireSpeed = 1.5f * Game.SCALE; 
 			public static final int fireSizeX = 100 *(int) Game.SCALE; 
 			public static final int fireSizeY = 110 *(int) Game.SCALE; 
@@ -68,25 +74,25 @@ public class Constants {
 		switch (enemy_state) {
 
 		case "IDLE": 
-			if(enemy_type == Pirate)
-			return 4; 
+			if(enemy_type == Waterboi)
+			return 5; 
 			if(enemy_type == Fireboi) 
 			return 5; 
 		case "WALK":
-			 if(enemy_type == Pirate)
-			return 2; 
+			 if(enemy_type == Waterboi)
+			return 6; 
 			 if(enemy_type == Fireboi)
 			return 7;
 		case "RUN": 
-			 if(enemy_type == Pirate)
-			return 2; 
+			 if(enemy_type == Waterboi)
+			return 5; 
 			 if(enemy_type == Fireboi)
 			return 2;
 		case "ATTACK": 
-			if(enemy_type == Pirate)
+			if(enemy_type == Waterboi)
 			return 3; 
 			if(enemy_type == Fireboi)
-			return 5; 
+			return 6; 
 		default: 
 			return 0;
 
@@ -105,8 +111,12 @@ public class Constants {
 	public static int getEnemyDamage(int enemyType) { 
 		switch (enemyType) {
 
-			case Pirate:
-				return 1; 		
+			case Waterboi:
+				return 1; 
+			
+			case Fireboi: 
+				return 1; 
+				
 			default:
 				return 0; 
 		}
@@ -115,34 +125,45 @@ public class Constants {
 	public static int findState(int enemy_type, String enemy_state) { 
 		switch(enemy_state) { 
 			case "IDLE": 
-				if(enemy_type == Pirate) 
-				return pirateIdle; 
+				if(enemy_type == Waterboi) 
+				return waterIdle; 
 				if(enemy_type == Fireboi)
 				return fireIdle; 
 
 			case "WALK":
-				if(enemy_type == Pirate)
-				return pirateRunning; 
+				if(enemy_type == Waterboi)
+				return waterWalk; 
 				if(enemy_type == Fireboi) 
 				return fireWalk; 
 			
 			case "RUN": 
-				if(enemy_type == Pirate)
-				return pirateRunning; 
+				if(enemy_type == Waterboi)
+				return waterRunning; 
 				if(enemy_type == Fireboi)
 				return fireRun; 
 			
 			case "ATTACK": 
-				if(enemy_type == Pirate) 
-				return pirateAttack; 
+				if(enemy_type == Waterboi) 
+				return waterAttack; 
 				if(enemy_type == Fireboi)
-				return fireIdle; 
+				return fireAttack; 
 			
 			default: 
 				return 0; 
 		}
+	}
 
+	public static int getAttackSpeed(int enemy_type) { 
+		
+		switch (enemy_type) {
 
+			case Waterboi:
+				return waterAttackSpeed; 
+			case Fireboi: 
+				return fireAttackSpeed;
+			default:
+				return 0;
+		}
 	}
 
 

@@ -77,9 +77,9 @@ public class Enemy extends Entity {
 	}
 
     public void move(Player player) {
-        System.out.println(state);
+        System.out.println(player.currentHealth);
         if (player.hitbox.intersects(hitbox)){
-            aniSpeed = 45;
+            aniSpeed = getAttackSpeed(this.enemyType);
             checkPlayerHit(player);
             xSpeed = 0; 
             if(!isAttack){
@@ -238,7 +238,7 @@ public class Enemy extends Entity {
 
     protected void checkPlayerHit(Player player) {
         hitCooldown++; 
-        if (hitCooldown >= aniSpeed*2) {
+        if (hitCooldown >= 110) {
 			hitCooldown = 0;
 			player.changeHealth(-getEnemyDamage(enemyType));
         }
