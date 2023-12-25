@@ -2,10 +2,15 @@ package Entities;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.HEIGHT_IN_TILES;
+import static Utilities.Constants.TILE_SIZE;
+import static Utilities.Constants.WIDTH_IN_TILES;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+
+import Main.Game;
 
 public class Entity {
     protected float x;
@@ -54,10 +59,10 @@ public class Entity {
     }
 
     public boolean canMove(float x, float y, float width, float height) {
-        if (solidTile(x + width, y)) {
-            if (solidTile(x, y + height)) {
-                if (solidTile(x, y)) {
-                    if (solidTile(x + width, y + height)) {
+        if (!solidTile(x, y)) {
+            if (!solidTile(x + width, y + height)) {
+                if (!solidTile(x + width, y)) {
+                    if (!solidTile(x, y + height)) {
                         return true;
                     }
                 }
@@ -68,24 +73,39 @@ public class Entity {
 
     public boolean solidTile(float x, float y) {
         if(x > GAME_WIDTH || x < 0) {
-            return false;
+            return true;
         }
         if(y > GAME_HEIGHT || y < 0) {
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     public boolean checkFloor(float x, float y, float width, float height) {
-        if(solidTile(x, y + height)) {
-            if(solidTile(x + width, y + height)) {
+        
+        if(!solidTile(x, y + height + 1)) {
+            if(!solidTile(x + width, y + height + 1)) {
                 return false;
             }        
         }
         return true;
         }
     
+public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
+		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE);
+        System.out.println(currentTile);
+		if (airSpeed > 0) {
+			// Falling - touching floor
+			int tileYPos = currentTile * TILE_SIZE;
+			int yOffset = (int) (TILE_SIZE - hitbox.height);
+			return tileYPos + yOffset - 1;
+		} else
+			// Jumping
+			return currentTile * TILE_SIZE;
+
+	}
+
 
     protected void newState(int state) {
 		this.state = state;

@@ -69,7 +69,7 @@ public class Enemy extends Entity {
     public void move(Player player) {
 
         if (player.hitbox.intersects(hitbox)){
-            System.out.println("ATTACK!!!");
+            //System.out.println("ATTACK!!!");
             xSpeed = 0; 
             if(!isAttack && enemyType == Pirate){
             newState(ATTACK);
