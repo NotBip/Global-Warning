@@ -33,7 +33,10 @@ public class Playing extends State implements KeyListener{
     }
 
     public void initialize() {
-        player = new Player(80, GAME_HEIGHT-100,45, 62);
+        player = new Player(GAME_WIDTH/2, GAME_HEIGHT/2,45, 63);
+        levelManager = new LevelManager(this);
+        levelManager.loadNextLevel();
+        player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         enemyManager = new EnemyManager(player); 
         enemyManager.generateEnemies();
     }
@@ -48,9 +51,9 @@ public class Playing extends State implements KeyListener{
     }
 
     public void draw(Graphics g) {
-            player.draw(g);
-            enemyManager.draw(g);
-        
+        player.draw(g);
+        enemyManager.draw(g);
+        levelManager.draw(g);
     }
 
     public void reset() {

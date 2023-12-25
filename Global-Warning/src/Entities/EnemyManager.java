@@ -26,7 +26,7 @@ public class EnemyManager {
     }
         public void generateEnemies() {
             //zombie = new Enemy1(10, GAME_HEIGHT-80); 
-            pirate = new Enemy2(GAME_WIDTH-50, GAME_HEIGHT-80);
+            pirate = new Enemy2(GAME_WIDTH/2, GAME_HEIGHT/2);
         }
 
         public void update() { 
@@ -36,6 +36,8 @@ public class EnemyManager {
 
         public void draw(Graphics g) { 
             //zombie.draw(g);
+            System.out.println("broky");
              pirate.draw(g);
+             System.exit(0);
         }
 }

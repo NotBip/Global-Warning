@@ -91,9 +91,9 @@ public class LevelManager {
 		}
 	}
 
-	/*public static Level getCurrentLevel() {
-		return Level.get(lvlIndex);
-	}*/
+	public Level getCurrentLevel() {
+		return levels.get(lvlIndex);
+	}
 
 	public int getAmountOfLevels() {
 		return levels.size();

@@ -68,7 +68,7 @@ public class Level {
 	private void loadEntities(int greenValue, int x, int y) {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
-		case 100 -> playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+		case 100: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
 		}
 	}
 

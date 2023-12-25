@@ -11,9 +11,10 @@ import static Utilities.Atlas.*;
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
+    private int lvlData[][];
     private boolean moving = false;
     private boolean left, right, up, down;
-    private int playerDir = -1;
+    private int playerDir = RIGHT;
     private float gravity = 0.04f;
     private float moveSpeed = 2.0f;
     private float jumpSpeed = -2.75f;
@@ -34,6 +35,11 @@ public class Player extends Entity {
         initialize();
     }
 
+
+    public void loadLevelData(int[][] lvlData) {
+        this.lvlData = lvlData;
+    }
+
     /**
      * Updates the player (position and direction currently)
      * 
@@ -44,7 +50,7 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-        //System.out.println(isDashing);
+       // System.out.println(inAir);
 
         if (isDashing) {
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
@@ -55,9 +61,10 @@ public class Player extends Entity {
                     inAir = true;
                 }
             } else {
-                if (dashYSpeed < 0) { // Make the transition out of up dashes less choppy
+                if (dashYSpeed < 0 && canMove(hitbox.x, hitbox.y + dashYSpeed, hitbox.width, hitbox.height, lvlData)) { // Make the transition out of up dashes less choppy
                     airSpeed = -1;
                 } // Reset everything
+                
                 isDashing = false;
                 dashXSpeed = 0;
                 dashYSpeed = 0;
@@ -77,7 +84,7 @@ public class Player extends Entity {
 
         if (!inAir) { // Checking if the player has just gone into the air
             
-            if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height)) { // Check if player is not on ground
+            if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Check if player is not on ground
                 inAir = true;
             } else {
                 if(!isDashing) { // If not dashing on the ground, give dash back
@@ -89,23 +96,28 @@ public class Player extends Entity {
         }
 
         if (inAir) { // Moving while in the air
-            if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height)) { // Move on the vertical if possible
+            if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) { // Move on the vertical if possible
                 hitbox.y += airSpeed;
                 airSpeed += gravity;
-                if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height)) { // Move on the horizontal if possible
+                if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                     hitbox.x += xSpeed;
                 } else {
                     moving = false;
                 }
             } else {
-                if (airSpeed >= 0) { // Reset everything to do with air
+                System.out.println(dashYSpeed);
+                hitbox.y = fixYPos(hitbox, airSpeed);
+                isDashing = false;
+                dashYSpeed = 0;
+                airSpeed = gravity;
+                if (airSpeed > 0) { // Reset everything to do with air
                     inAir = false;
                     airSpeed = 0;
-                    
-                } 
+                
+                }
             }
         } else { // Moving on the ground
-            if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height)) { // Move on the horizontal if possible
+            if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
             }
         }
@@ -116,7 +128,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g) {
-        // drawHitbox(g);
+        drawHitbox(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
@@ -149,9 +161,9 @@ public class Player extends Entity {
         airSpeed = 0;
         isDashing = true;
         canDash = false;
-        if (left && !right) { // Set dash left
+        if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * 2;
-        } else if (right && !left) { // Set dash right
+        } else if (right && !left || (!up && !down && playerDir == RIGHT)) { // Set dash right
             dashXSpeed = moveSpeed * 2;
         }
         if (up && !down) { // Set dash up
@@ -163,8 +175,9 @@ public class Player extends Entity {
         if (up && right || up && left) { // Make the dash cover the same distance but diagonally 
             dashXSpeed /= 1.4f;
             dashYSpeed /= 1.4f;
-
+            return;
         }
+        
 
     }
 
