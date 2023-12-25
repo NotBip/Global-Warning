@@ -25,9 +25,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
    private int bulletDamage = 1;
    private int bulletAmount = 1;
    private double bulletRange = 5.5;
-   private double bulletSpeed = 2.2f;
+   //private double bulletSpeed = 2.2f;
    private boolean canShoot = false;
-   private boolean SHOT = false;
+   private boolean SHOT;
    private double mouseX;
    private double mouseY;
    private float increase;
@@ -47,6 +47,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
        super(weapon.getX(), weapon.getY(), 100,  100);
         this.playing = playing;
         this.weapon = weapon;
+        this.xSpeed = 5.0f;
+        //SHOT = false;
         initialize();
   }
    
@@ -65,9 +67,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
     } 
     
     if (SHOT == true && SHOT != false) {
-        System.out.println("Hello id like to shoot this bullet");
-        hitbox.x += (float)bulletSpeed;
-        hitbox.y += (float)bulletSpeed;
+       
+        SHOT = true;
+        System.out.println("SHOTTTTT");
+      
+        hitbox.x += (float)xSpeed;
+        hitbox.y += (float)xSpeed;
+    
    }
 
 }
