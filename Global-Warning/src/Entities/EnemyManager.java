@@ -9,7 +9,7 @@ import Utilities.Atlas.*;
 import Entities.Entity.*;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
-import Levels.Levels;
+import Levels.Level;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;

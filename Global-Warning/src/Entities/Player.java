@@ -44,6 +44,7 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
+        //System.out.println(isDashing);
 
         if (isDashing) {
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
@@ -64,17 +65,18 @@ public class Player extends Entity {
             }
         } else { // Regular movement if not dashing
             if (right && !left) { // Right
-                xSpeed = moveSpeed;
+                xSpeed += moveSpeed;
                 playerDir = RIGHT;
                 moving = true;
             } else if (left && !right) { // Left
-                xSpeed = -moveSpeed;
+                xSpeed -= moveSpeed;
                 playerDir = LEFT;
                 moving = true;
             }
         }
 
         if (!inAir) { // Checking if the player has just gone into the air
+            
             if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height)) { // Check if player is not on ground
                 inAir = true;
             } else {
@@ -99,6 +101,7 @@ public class Player extends Entity {
                 if (airSpeed >= 0) { // Reset everything to do with air
                     inAir = false;
                     airSpeed = 0;
+                    
                 } 
             }
         } else { // Moving on the ground
@@ -106,6 +109,8 @@ public class Player extends Entity {
                 hitbox.x += xSpeed;
             }
         }
+        
+        //System.out.println(hitbox.x);
         updateAnimationTick();
         setAnimation();
     }

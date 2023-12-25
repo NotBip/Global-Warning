@@ -59,10 +59,17 @@ public class Entity {
     }
 
     public boolean canMove(float x, float y, float width, float height) {
+<<<<<<< HEAD
         if (!solidTile(x, y)) {
             if (!solidTile(x + width, y + height)) {
                 if (!solidTile(x + width, y)) {
                     if (!solidTile(x, y + height)) {
+=======
+        if (!solidTile(x + width, y)) {
+            if (!solidTile(x, y + height)) {
+                if (!solidTile(x, y)) {
+                    if (!solidTile(x + width, y + height)) {
+>>>>>>> d9e401f959a9c954c94c942e23e48ce84d1defed
                         return true;
                     }
                 }
@@ -83,7 +90,10 @@ public class Entity {
     }
 
     public boolean checkFloor(float x, float y, float width, float height) {
+<<<<<<< HEAD
         
+=======
+>>>>>>> d9e401f959a9c954c94c942e23e48ce84d1defed
         if(!solidTile(x, y + height + 1)) {
             if(!solidTile(x + width, y + height + 1)) {
                 return false;
