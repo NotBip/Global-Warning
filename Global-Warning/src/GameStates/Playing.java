@@ -156,6 +156,7 @@ public class Playing extends State implements KeyListener{
 
     public void mouseClicked(MouseEvent e) {
         System.out.println("SHOT START");
+        bullets.setSHOT(true);
         bullets.shot(mouseX, mouseY);
 
     }

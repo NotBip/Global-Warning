@@ -28,6 +28,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
    private double bulletSpeed = 2.2f;
    private boolean canShoot = false;
    private boolean SHOT = false;
+   private double mouseX;
+   private double mouseY;
+   private float increase;
+
 
    protected float x=0;
     protected float y=0;
@@ -52,16 +56,19 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
  public void updateStartPosition() {
     //System.out.println(SHOT);
-    if (SHOT != true){
-     System.out.println("1");
-     hitbox.x = weapon.getX();
+   if (SHOT != true&& SHOT == false){
+   //  System.out.println("1");
+
+    hitbox.x = weapon.getX();
     hitbox.y = weapon.getY();
 
-    } else {
-        System.out.println("0");
-        hitbox.x += bulletSpeed;
-        hitbox.y += bulletSpeed;
-    }
+    } 
+    
+    if (SHOT == true && SHOT != false) {
+        System.out.println("Hello id like to shoot this bullet");
+        hitbox.x += (float)bulletSpeed;
+        hitbox.y += (float)bulletSpeed;
+   }
 
 }
 
@@ -71,40 +78,19 @@ public void setSHOT (boolean SHOT){
 
 
 public void shot (double mouseX, double mouseY){
-    setSHOT(true);
     updateStartPosition();
     //System.out.println(SHOT);
     
-    hitbox.x = (float)mouseX;
-    hitbox.y = (float)mouseY;
-
-   /* 
-   while (hitbox.y != mouseY && hitbox.x != mouseX){
-    if (hitbox.x < mouseX){
-        hitbox.x += 0.1;
-    
-    } 
-
-    if (hitbox.y < mouseY){
-        hitbox.y += 0.1;
-    }
-    
-    if (hitbox.x > mouseX){
-        hitbox.x -= 0.1;
-    } 
-    
-    if (hitbox.y > mouseY){
-        hitbox.y -= 0.1;
-    }
-   }
-   */
+     this.mouseX= mouseX;
+     this.mouseY = mouseY;
+    //setSHOT(true);
     System.out.println("SHOT END");
 
 }
 
 @Override
     public void mouseClicked(MouseEvent e) {
-        //lol random thing
+        setSHOT(true);
     }
 
    @Override
