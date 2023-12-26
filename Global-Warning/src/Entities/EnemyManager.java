@@ -36,8 +36,8 @@ public class EnemyManager {
 
         public void draw(Graphics g) { 
             //zombie.draw(g);
-            System.out.println("broky");
+            
              pirate.draw(g);
-             System.exit(0);
+            
         }
 }

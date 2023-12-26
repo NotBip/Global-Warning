@@ -105,7 +105,7 @@ public class Player extends Entity {
                     moving = false;
                 }
             } else {
-                System.out.println(dashYSpeed);
+                //System.out.println(airSpeed);
                 hitbox.y = fixYPos(hitbox, airSpeed);
                 isDashing = false;
                 dashYSpeed = 0;

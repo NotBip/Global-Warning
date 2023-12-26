@@ -37,13 +37,13 @@ public class Playing extends State implements KeyListener{
         levelManager = new LevelManager(this);
         levelManager.loadNextLevel();
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        enemyManager = new EnemyManager(player); 
-        enemyManager.generateEnemies();
+       // enemyManager = new EnemyManager(player); 
+        //enemyManager.generateEnemies();
     }
 
     public void update() {
         player.update();
-        enemyManager.update();
+       // enemyManager.update();
     }
 
     public void checkBorder() {
@@ -52,7 +52,7 @@ public class Playing extends State implements KeyListener{
 
     public void draw(Graphics g) {
         player.draw(g);
-        enemyManager.draw(g);
+        //enemyManager.draw(g);
         levelManager.draw(g);
     }
 

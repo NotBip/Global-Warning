@@ -140,7 +140,7 @@ public class Entity {
      * @return the new yPos
      */
 public static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
-		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE); // The current tile the bottom of the player is on
+		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE - 0.1); // The current tile the bottom of the player is on, subtract 0.1 to fix inconsistency issue with the tile calculation
 		if (airSpeed > 0) { // Falling or touching floor
 			int tileY = currentTile * TILE_SIZE;
 			int yOffset = (int) (TILE_SIZE - hitbox.height);
@@ -149,7 +149,6 @@ public static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
             return currentTile * TILE_SIZE - TILE_SIZE;
         }	
 	}
-
 
     protected void newState(int state) {
 		this.state = state;
