@@ -107,6 +107,8 @@ import java.util.List;
         }
     
         public void removeBullet() {
+            //bullet iteration
+            
             it =  bullets.iterator(); 
             if (it.hasNext()){
                 Bullets draw = it.next();

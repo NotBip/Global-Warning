@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class Bullets implements MouseListener {
+public class Bullets extends Entities.Entity implements MouseListener {
 
     //extends Entities.Entity
 
@@ -28,13 +28,14 @@ public class Bullets implements MouseListener {
     public boolean SHOT = false;
 
     public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY) {
-        //super((float)startX, (float)startY, 10, 10);
+        super((float)startX, (float)startY, 10, 10);
         this.weapon = weapon; 
         this.playing = playing;
         this.x = startX;
         this.y = startY;
         this.speed = 5.0;
         setDirection(targetX, targetY);
+        initialize();
     }
 
     public void setDirection(double targetX, double targetY) {
@@ -46,27 +47,34 @@ public class Bullets implements MouseListener {
     public void move() {
         x += speed * directionX;
         y += speed * directionY;
+        hitbox.x += speed * directionX;
+        hitbox.y += speed * directionX;
     }
 
-    public void updateSpeed (){
-        x = weapon.getX()+50;
-        y = weapon.getX()+35;
+   // public void updateSpeed (){
+      //  x = weapon.getX()+50;
+      //  y = weapon.getX()+35;
 
-    }
-
+    //}
+//
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D)g; 
 //drawHitbox(g);
 
         int drawX = (int) Math.round(x);
         int drawY = (int) Math.round(y);
+        hitbox.x = drawX-5;
+        hitbox.y = drawY-5;
+        
         // System.out.println(drawX);
         g2d.setColor(Color.RED);
         g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         g2d.setColor(Color.BLACK);
-        
-        if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH || drawX <= 0  || drawX <= weapon.x-400)
-            playing.removeBullet();
+        drawHitbox(g);
+
+
+        //if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH || drawX <= 0  || drawX <= weapon.x-400)
+        playing.removeBullet();
 /* 
        Iterator<Bullets> it = Bullets.iterator(); 
         it.hasNext(); 
