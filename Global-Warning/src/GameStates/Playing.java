@@ -12,12 +12,14 @@
     import java.awt.Graphics2D;
     import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
     public class Playing extends State implements KeyListener{
         private Player player;
         private Weapon1 weapon;
         public List<Bullets> bullets;
+        public Iterator<Bullets> it;
         private LevelManager levelManager;
         private ObjectManager objectManager;
         private boolean paused;
@@ -40,13 +42,13 @@ import java.util.List;
         public void initialize() {
             player = new Player(10, GAME_HEIGHT-100, 60, 80, this);
             weapon= new Weapon1(player, this);
-            bullets = new ArrayList<>();
-
+            bullets = new ArrayList<>();            
         }
 
         public void update() {
             player.update();
             weapon.update();
+
             for(Bullets bullet : bullets) { 
                 bullet.updateBullets();
             }
@@ -61,6 +63,7 @@ import java.util.List;
             for(Bullets bullet : bullets) { 
             bullet.draw(g);
             }
+
             weapon.draw(g);
             player.draw(g);
   
@@ -94,13 +97,25 @@ import java.util.List;
         }
 
         private void spawnBullet(int x, int y) {
+           // if (bullets.size() < 1){
             System.out.println("NEW BULLET! ");
             Bullets bullet = new Bullets(weapon, this, weapon.getX()+50, weapon.getY()+35, x, y);
             bullets.add(bullet);
+       // } else {
+            //removeBullet();
+        // }
         }
     
-        public void removeBullet() { 
-            bullets.remove(0);
+        public void removeBullet() {
+            it =  bullets.iterator(); 
+            if (it.hasNext()){
+                Bullets draw = it.next();
+
+                if(draw.getDrawX() >= weapon.getX()+400 || draw.getDrawX() >= GAME_WIDTH || draw.getDrawX() <= 0  || draw.getDrawX() <= weapon.getX()-400)
+                    it.remove();
+            }
+            
+           // bullets.remove(0);
         }
 
         public void keyPressed(KeyEvent e) {
