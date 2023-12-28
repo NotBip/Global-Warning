@@ -97,10 +97,13 @@ import java.util.List;
         }
 
         private void spawnBullet(int x, int y) {
-           // if (bullets.size() < 1){
+            //there can only be 1 bullet shot at a time
+            //this is a temporary cooldown system 
+           if (bullets.size() < 1){ //there must be 0 bullets on-screen for a new bullet to spawn
             System.out.println("NEW BULLET! ");
             Bullets bullet = new Bullets(weapon, this, weapon.getX()+50, weapon.getY()+35, x, y);
             bullets.add(bullet);
+           }
        // } else {
             //removeBullet();
         // }
@@ -108,7 +111,7 @@ import java.util.List;
     
         public void removeBullet() {
             //bullet iteration
-            
+
             it =  bullets.iterator(); 
             if (it.hasNext()){
                 Bullets draw = it.next();
