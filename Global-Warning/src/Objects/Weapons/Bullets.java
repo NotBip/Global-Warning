@@ -26,6 +26,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private Weapon1 weapon; 
     private Playing playing; 
     public boolean SHOT = false;
+    //https://gamedev.stackexchange.com/questions/158616/how-do-i-create-a-delay-or-cooldown-timer
 
     public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY) {
         super((float)startX, (float)startY, 10, 10);
@@ -35,7 +36,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.y = startY;
 
         // I increased the speed to compensate for the cooldown
-        this.speed = 13.0;
+        this.speed = 6.0;
         setDirection(targetX, targetY);
         initialize();
     }
@@ -74,8 +75,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         g2d.setColor(Color.BLACK);
         drawHitbox(g);
 
-
-        //if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH || drawX <= 0  || drawX <= weapon.x-400)
+        //A MILLION ERRORs
+    if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH || drawX <= 0  || drawX <= weapon.x-400)
         playing.removeBullet();
 /* 
        Iterator<Bullets> it = Bullets.iterator(); 
@@ -87,7 +88,15 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     */
     }
+/* 
+    public long coolDown (){
+        return lastBullet + coolDown;
+    }
 
+    public long setLastBullet (long lastBullet) {
+        return this.lastBullet = lastBullet;
+    }
+*/
     public void updateBullets() {
        // updateBulletDirections((int) playing.mouseX, (int) playing.mouseY);
         for (Bullets bullet : playing.bullets) {

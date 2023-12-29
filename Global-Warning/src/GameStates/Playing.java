@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
     public class Playing extends State implements KeyListener{
         private Player player;
         private Weapon1 weapon;
@@ -29,6 +30,9 @@ import java.util.List;
         public double mouseX; 
         public double mouseY; 
         public double offset;
+
+        public long lastBullet = 0;
+        public long coolDown = 300; // 500 milliseconds
 
         public Playing(Game game) {
             super(game);
@@ -196,14 +200,19 @@ import java.util.List;
 
 
         public void mouseClicked(MouseEvent e) {
-           // bulletCount +=1;
-            //if (bulletCount < 2 ){
+            long time1 = System.currentTimeMillis();
+
+            if (time1 > lastBullet + coolDown) {
                 spawnBullet(e.getX(), e.getY());
+                lastBullet = time1;
+            } 
+    } 
+            
 
             //} else {
               
            // }
-        }
+        
         @Override
         public void keyTyped(KeyEvent e) {
             
