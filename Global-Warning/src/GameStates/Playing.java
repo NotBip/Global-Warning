@@ -32,7 +32,7 @@ import java.util.List;
         public double offset;
 
         public long lastBullet = 0;
-        public long coolDown = 300; // 500 milliseconds
+        public long coolDown = 800; // 500 milliseconds
 
         public Playing(Game game) {
             super(game);
@@ -108,7 +108,7 @@ import java.util.List;
             System.out.println("NEW BULLET! ");
             Bullets bullet = new Bullets(weapon, this, weapon.getX()+50, weapon.getY()+35, x, y);
             bullets.add(bullet);
-            it =  bullets.iterator(); 
+            it = bullets.iterator(); 
           // }
        // } else {
             //removeBullet();
@@ -116,17 +116,21 @@ import java.util.List;
         }
     
         public void removeBullet() {
-            //bullet iteration
 
-           // it =  bullets.iterator(); 
-            if (it.hasNext()){
+            while (it.hasNext()){
                 Bullets draw = it.next();
-
-                if(draw.getDrawX() >= weapon.getX()+400 || draw.getDrawX() >= GAME_WIDTH || draw.getDrawX() <= 0  || draw.getDrawX() <= weapon.getX()-400)
+                
+            //   if(draw.getDrawX() >= weapon.getX()+400 || draw.getDrawX() >= GAME_WIDTH || draw.getDrawX() <= 0 || draw.getDrawX() <= weapon.getX()-400){
+                   //System.out.println("getDraw " + draw.getDrawX());
+                  // System.out.println("getWeapon "+ weapon.getX());
+                   //System.out.println("REMOVE");
+                    System.out.println("REMOVE");   
                     it.remove();
+                    bullets.remove(draw);
+            //   }
+
             }
             
-           // bullets.remove(0);
         }
 
         public void keyPressed(KeyEvent e) {

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+
 public class Bullets extends Entities.Entity implements MouseListener {
 
     //extends Entities.Entity
@@ -76,8 +77,11 @@ public class Bullets extends Entities.Entity implements MouseListener {
         drawHitbox(g);
 
         //A MILLION ERRORs
-    if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH || drawX <= 0  || drawX <= weapon.x-400)
-        playing.removeBullet();
+        if (playing.bullets.size() > 0){
+            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0   || drawX <= weapon.x-400 ){
+                playing.removeBullet();
+            }
+        }
 /* 
        Iterator<Bullets> it = Bullets.iterator(); 
         it.hasNext(); 
