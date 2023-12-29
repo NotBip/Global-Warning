@@ -32,7 +32,7 @@ import java.util.List;
         public double offset;
 
         public long lastBullet = 0;
-        public long coolDown = 800; // 500 milliseconds
+        public long coolDown = 300; // 500 milliseconds
 
         public Playing(Game game) {
             super(game);
@@ -47,7 +47,7 @@ import java.util.List;
         public void initialize() {
             player = new Player(10, GAME_HEIGHT-100, 60, 80, this);
             weapon= new Weapon1(player, this);
-            bullets = new ArrayList<>();            
+            bullets = new ArrayList<>();         
         }
 
         public void update() {
@@ -66,7 +66,7 @@ import java.util.List;
 
         public void draw(Graphics g) {
             for(Bullets bullet : bullets) { 
-            bullet.draw(g);
+            bullet.draw(g);  
             }
 
             weapon.draw(g);
@@ -108,28 +108,33 @@ import java.util.List;
             System.out.println("NEW BULLET! ");
             Bullets bullet = new Bullets(weapon, this, weapon.getX()+50, weapon.getY()+35, x, y);
             bullets.add(bullet);
-            it = bullets.iterator(); 
-          // }
-       // } else {
-            //removeBullet();
-        // }
+          
         }
     
         public void removeBullet() {
 
-            while (it.hasNext()){
-                Bullets draw = it.next();
+            //iterator now has all elements in the array list
+            it = bullets.iterator();  
+            //while (it.hasNext()){
+
+                //get next element in list
+               Bullets draw = it.next();
                 
             //   if(draw.getDrawX() >= weapon.getX()+400 || draw.getDrawX() >= GAME_WIDTH || draw.getDrawX() <= 0 || draw.getDrawX() <= weapon.getX()-400){
                    //System.out.println("getDraw " + draw.getDrawX());
                   // System.out.println("getWeapon "+ weapon.getX());
                    //System.out.println("REMOVE");
-                    System.out.println("REMOVE");   
-                    it.remove();
-                    bullets.remove(draw);
-            //   }
+                       
+                  //  System.out.println("size: " + bullets.size() );  
+                   System.out.println("REMOVE");
+                    //remove from iterator then remove from the array list
+                    it.remove(); 
+                     bullets.remove(draw);
 
-            }
+                  //   System.out.println("size: " + bullets.size());  
+              // }
+
+           // }
             
         }
 

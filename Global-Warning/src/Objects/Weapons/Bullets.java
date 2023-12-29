@@ -3,6 +3,7 @@ package Objects.Weapons;
 import GameStates.Playing;
 
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.GAME_HEIGHT;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -37,7 +38,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.y = startY;
 
         // I increased the speed to compensate for the cooldown
-        this.speed = 6.0;
+        this.speed = 10.0;
         setDirection(targetX, targetY);
         initialize();
     }
@@ -62,8 +63,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
     //}
 //
     public void draw(Graphics g) {
+
+        //bullet spawns
         Graphics2D g2d = (Graphics2D)g; 
-//drawHitbox(g);
+
 
         int drawX = (int) Math.round(x);
         int drawY = (int) Math.round(y);
@@ -74,11 +77,18 @@ public class Bullets extends Entities.Entity implements MouseListener {
         g2d.setColor(Color.RED);
         g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         g2d.setColor(Color.BLACK);
+
+       //draw bullet hitbox
         drawHitbox(g);
 
-        //A MILLION ERRORs
-        if (playing.bullets.size() > 0){
-            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0   || drawX <= weapon.x-400 ){
+        //if there is at least one bullet in the list...
+        if (playing.bullets.size() > 0){   
+            //System.out.println("BULLET");  
+            //if it gets out of specified bounds...
+            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0 || drawX <= weapon.x-400||drawY <= -10|| drawY >= GAME_HEIGHT){
+               System.out.println("y is "+drawY +" and x is "+ drawX);  
+
+                //remove a bullet
                 playing.removeBullet();
             }
         }
@@ -92,15 +102,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     */
     }
-/* 
-    public long coolDown (){
-        return lastBullet + coolDown;
-    }
 
-    public long setLastBullet (long lastBullet) {
-        return this.lastBullet = lastBullet;
-    }
-*/
     public void updateBullets() {
        // updateBulletDirections((int) playing.mouseX, (int) playing.mouseY);
         for (Bullets bullet : playing.bullets) {
@@ -109,12 +111,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
         }
     }
 
+    /* 
     private void updateBulletDirections(int mouseX, int mouseY) {
         for (Bullets bullet : playing.bullets) {
             bullet.setDirection(mouseX, mouseY);
         }
     }
-
+*/
     public void setSHOT (boolean SHOT){
         this.SHOT = SHOT;
         
