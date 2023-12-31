@@ -85,7 +85,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if (playing.bullets.size() > 0){   
             //System.out.println("BULLET");  
             //if it gets out of specified bounds...
-            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0 || drawX <= weapon.x-400||drawY <= -10|| drawY >= GAME_HEIGHT){
+            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0 || drawX <= weapon.x-400||drawY <= 0|| drawY >= GAME_HEIGHT){
                System.out.println("y is "+drawY +" and x is "+ drawX);  
 
                 //remove a bullet

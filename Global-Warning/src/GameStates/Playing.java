@@ -112,29 +112,21 @@ import java.util.List;
         }
     
         public void removeBullet() {
-
-            //iterator now has all elements in the array list
-            it = bullets.iterator();  
-            //while (it.hasNext()){
+        it = bullets.iterator();  
+        
+        while (it.hasNext()){
+                //iterator now has all elements in the array list
+        //        it = bullets.iterator();  
+                //while (it.hasNext()){
 
                 //get next element in list
-               Bullets draw = it.next();
+                Bullets draw = it.next();
+                System.out.println("REMOVE");
                 
-            //   if(draw.getDrawX() >= weapon.getX()+400 || draw.getDrawX() >= GAME_WIDTH || draw.getDrawX() <= 0 || draw.getDrawX() <= weapon.getX()-400){
-                   //System.out.println("getDraw " + draw.getDrawX());
-                  // System.out.println("getWeapon "+ weapon.getX());
-                   //System.out.println("REMOVE");
-                       
-                  //  System.out.println("size: " + bullets.size() );  
-                   System.out.println("REMOVE");
-                    //remove from iterator then remove from the array list
-                    it.remove(); 
-                     bullets.remove(draw);
-
-                  //   System.out.println("size: " + bullets.size());  
-              // }
-
-           // }
+                //remove from iterator then remove from the array list
+                it.remove();
+                bullets.remove(draw);
+            }
             
         }
 
@@ -209,14 +201,13 @@ import java.util.List;
 
 
         public void mouseClicked(MouseEvent e) {
+             long time1 = System.currentTimeMillis();
+        if (time1 > lastBullet + coolDown) {
+                spawnBullet(e.getX(), e.getY());
+                lastBullet = time1;
+            }    
+        }
 
-    } 
-            
-
-            //} else {
-              
-           // }
-        
         @Override
         public void keyTyped(KeyEvent e) {
             
@@ -224,7 +215,7 @@ import java.util.List;
 
 
         public void mouseDragged(MouseEvent e) {
-            long time1 = System.currentTimeMillis();
+           long time1 = System.currentTimeMillis();
             if (time1 > lastBullet + coolDown) {
                 spawnBullet(e.getX(), e.getY());
                 lastBullet = time1;
