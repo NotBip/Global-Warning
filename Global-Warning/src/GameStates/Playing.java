@@ -209,12 +209,7 @@ import java.util.List;
 
 
         public void mouseClicked(MouseEvent e) {
-            long time1 = System.currentTimeMillis();
 
-            if (time1 > lastBullet + coolDown) {
-                spawnBullet(e.getX(), e.getY());
-                lastBullet = time1;
-            } 
     } 
             
 
@@ -229,7 +224,11 @@ import java.util.List;
 
 
         public void mouseDragged(MouseEvent e) {
-                 
+            long time1 = System.currentTimeMillis();
+            if (time1 > lastBullet + coolDown) {
+                spawnBullet(e.getX(), e.getY());
+                lastBullet = time1;
+            }    
         }
 
     }
