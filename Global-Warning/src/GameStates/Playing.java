@@ -54,8 +54,8 @@ import java.util.List;
             player.update();
             weapon.update();
 
-            for(Bullets bullet : bullets) { 
-                bullet.updateBullets();
+            for(int i = 0; i < bullets.size(); i++) { 
+            bullets.get(i).updateBullets();  
             }
 
         }
@@ -65,8 +65,8 @@ import java.util.List;
         }
 
         public void draw(Graphics g) {
-            for(Bullets bullet : bullets) { 
-            bullet.draw(g);  
+            for(int i = 0; i < bullets.size(); i++) { 
+            bullets.get(i).draw(g);  
             }
 
             weapon.draw(g);
@@ -112,22 +112,7 @@ import java.util.List;
         }
     
         public void removeBullet() {
-        it = bullets.iterator();  
-        
-        while (it.hasNext()){
-                //iterator now has all elements in the array list
-        //        it = bullets.iterator();  
-                //while (it.hasNext()){
-
-                //get next element in list
-                Bullets draw = it.next();
-                System.out.println("REMOVE");
-                
-                //remove from iterator then remove from the array list
-                it.remove();
-                bullets.remove(draw);
-            }
-            
+                bullets.remove(0);            
         }
 
         public void keyPressed(KeyEvent e) {
