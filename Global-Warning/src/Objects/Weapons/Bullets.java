@@ -10,13 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.List;
-import Entities.Entity.*;
-import java.util.Iterator;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+
 
 
 public class Bullets extends Entities.Entity implements MouseListener {
@@ -56,12 +50,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.y += speed * directionX;
     }
 
-   // public void updateSpeed (){
-      //  x = weapon.getX()+50;
-      //  y = weapon.getX()+35;
-
-    //}
-//
     public void draw(Graphics g) {
 
         //bullet spawns
@@ -73,7 +61,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.x = drawX-5;
         hitbox.y = drawY-5;
         
-        // System.out.println(drawX);
+     ;
         g2d.setColor(Color.RED);
         g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         g2d.setColor(Color.BLACK);
@@ -83,23 +71,15 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         //if there is at least one bullet in the list...
         if (playing.bullets.size() > 0){   
-            //System.out.println("BULLET");  
+           
             //if it gets out of specified bounds...
             if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0 || drawX <= weapon.x-400||drawY <= 0|| drawY >= GAME_HEIGHT){
-               System.out.println("y is "+drawY +" and x is "+ drawX);  
+               
                 //remove a bullet
                 playing.removeBullet();
             }
         }
-/* 
-       Iterator<Bullets> it = Bullets.iterator(); 
-        it.hasNext(); 
-        Bullets draw = it.next();
 
-    if(draw.x >= weapon.x+400 || draw.x >= GAME_WIDTH || draw.x <= 0  || draw.x <= weapon.x-400)
-        playing.removeBullet();
-
-    */
     }
 
     public void updateBullets() {
@@ -110,13 +90,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         }
     }
 
-    /* 
-    private void updateBulletDirections(int mouseX, int mouseY) {
-        for (Bullets bullet : playing.bullets) {
-            bullet.setDirection(mouseX, mouseY);
-        }
-    }
-*/
+    
     public void setSHOT (boolean SHOT){
         this.SHOT = SHOT;
         

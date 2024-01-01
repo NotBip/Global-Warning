@@ -3,5 +3,5 @@ package GameStates;
 public enum GameState {
     MENU, PLAYING;
 
-    public static GameState currentState = PLAYING;
+    public static GameState currentState = MENU;
 }

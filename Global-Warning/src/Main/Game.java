@@ -13,6 +13,7 @@ public class Game implements Runnable {
     private Menu menu;
     private gamePanel panel;
 
+
     public Game() {
         initialize();
         panel = new gamePanel(this);
@@ -44,7 +45,7 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case MENU:
-            menu.update();
+                menu.update();
         }
     }
 
@@ -73,7 +74,7 @@ public class Game implements Runnable {
 
     public void initialize() {
         playing = new Playing(this);
-        menu = new Menu();
+        menu = new Menu(this);
     }
 
     /**
