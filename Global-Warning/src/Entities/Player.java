@@ -3,6 +3,7 @@ package Entities;
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.Directions.*;
 
@@ -38,6 +39,14 @@ public class Player extends Entity {
 
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
+    }
+
+    public void setSpawn(Point spawn) {
+        int spawnOffset = (int) (this.hitbox.height / 2) + 10;
+        this.x = spawn.x;
+        this.y = spawn.y - spawnOffset;
+        hitbox.x = x;
+        hitbox.y = y;
     }
 
     /**
@@ -127,9 +136,9 @@ public class Player extends Entity {
         setAnimation();
     }
 
-    public void draw(Graphics g) {
-        drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65, null);
+    public void draw(Graphics g, int offset) {
+        drawHitbox(g, offset);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
     /**

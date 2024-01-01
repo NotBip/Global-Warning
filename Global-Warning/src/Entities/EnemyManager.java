@@ -34,10 +34,10 @@ public class EnemyManager {
             pirate.move(player);
         }
 
-        public void draw(Graphics g) { 
+        public void draw(Graphics g, int offset) { 
             //zombie.draw(g);
             
-             pirate.draw(g);
+             pirate.draw(g, offset);
             
         }
 }

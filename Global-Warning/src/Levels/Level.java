@@ -23,6 +23,10 @@ public class Level {
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
 	private Point playerSpawn;
+	private Point leftSpawn;
+	private Point rightSpawn;
+	private Point leftTransition;
+	private Point rightTransition;
 
 	public Level(BufferedImage img) {
 		this.img = img;
@@ -68,7 +72,11 @@ public class Level {
 	private void loadEntities(int greenValue, int x, int y) {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
-		case 100: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		}
 	}
 
@@ -98,6 +106,22 @@ public class Level {
 
 	public Point getPlayerSpawn() {
 		return playerSpawn;
+	}
+
+	public Point getLeftSpawn() {
+		return leftSpawn;
+	}
+
+	public Point getRightSpawn() {
+		return rightSpawn;
+	}
+
+	public Point getLeftTransition() {
+		return leftTransition;
+	}
+
+	public Point getRightTransition() {
+		return rightTransition;
 	}
 
 	/*public ArrayList<Entity> getEntityName() {

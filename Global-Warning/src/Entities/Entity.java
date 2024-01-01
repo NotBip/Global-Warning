@@ -55,8 +55,8 @@ public class Entity {
         return state;
     }
 
-    public void drawHitbox(Graphics g) {
-        g.drawRect((int) hitbox.x, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+    public void drawHitbox(Graphics g, int offset) {
+        g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
 
     /**
@@ -95,9 +95,9 @@ public class Entity {
      */
 
     public boolean solidTile(float x, float y, int[][] lvlData) {
-        if(x > GAME_WIDTH || x < 0) {
-            return true;
-        }
+         if(x > lvlData[0].length * TILE_SIZE || x < 0) {
+             return true;
+         }
         if(y > GAME_HEIGHT || y < 0) {
             return true;
         }
