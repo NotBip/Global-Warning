@@ -1,5 +1,7 @@
 package Utilities;
 
+import Main.Game;
+
 public class Constants {
 
     // Game constants
@@ -14,6 +16,11 @@ public class Constants {
     // States
     public static final int MENU = 0;
     public static final int PLAYING = 1;
+
+	public static class Buttons {
+			public static final int B_WIDTH= 140;
+			public static final int B_HEIGHT = 56;
+		}
 
     public static class Directions {
 		public static final int LEFT = 0;

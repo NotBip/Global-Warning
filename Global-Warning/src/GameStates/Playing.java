@@ -102,6 +102,14 @@ import java.util.List;
             return weaponAngle; 
         }
 
+        public void bulletCooldown (MouseEvent e){
+             long time1 = System.currentTimeMillis();
+             if (time1 > lastBullet + coolDown) {
+                    spawnBullet(e.getX(), e.getY());
+                    lastBullet = time1;
+            }    
+        }
+
         private void spawnBullet(int x, int y) {
             //there can only be 1 bullet shot at a time
             //this is a temporary cooldown system 
@@ -187,11 +195,7 @@ import java.util.List;
 
 
         public void mouseClicked(MouseEvent e) {
-             long time1 = System.currentTimeMillis();
-        if (time1 > lastBullet + coolDown) {
-                spawnBullet(e.getX(), e.getY());
-                lastBullet = time1;
-            }    
+             bulletCooldown(e);
         }
 
         @Override
@@ -200,12 +204,9 @@ import java.util.List;
         }
 
 
+
         public void mouseDragged(MouseEvent e) {
-           long time1 = System.currentTimeMillis();
-            if (time1 > lastBullet + coolDown) {
-                spawnBullet(e.getX(), e.getY());
-                lastBullet = time1;
-            }    
+           bulletCooldown(e);
         }
 
     }

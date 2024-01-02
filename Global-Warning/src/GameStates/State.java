@@ -1,6 +1,12 @@
 package GameStates;
 
 import Main.Game;
+import UserInterface.MenuButton;
+
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent.*;
+import java.awt.event.MouseEvent;
+import UserInterface.*;
 
 public class State {
     private Game game;
@@ -12,6 +18,10 @@ public class State {
     public void setGame(Game game) {
         this.game = game;
     }
+
+    public boolean isIn(MouseEvent e, MenuButton mb) {
+		return mb.getBounds().contains(e.getX(), e.getY());
+	}
 
 
 }

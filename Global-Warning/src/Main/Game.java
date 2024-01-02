@@ -46,6 +46,13 @@ public class Game implements Runnable {
                 break;
             case MENU:
                 menu.update();
+                break;
+            case OPTIONS:
+                break;
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
         }
     }
 
@@ -112,6 +119,7 @@ public class Game implements Runnable {
 
         }
     }
+    
     
     public Playing getPlaying() {
         return playing;
