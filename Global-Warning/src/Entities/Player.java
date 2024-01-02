@@ -13,18 +13,19 @@ public class Player extends Entity {
 
     private BufferedImage[][] animations;
     private int lvlData[][];
-    private boolean moving = false;
-    private boolean left, right, up, down;
-    private int playerDir = RIGHT;
-    private float gravity = 0.04f;
-    private float moveSpeed = 2.0f;
-    private float jumpSpeed = -2.75f;
-    private float dashXSpeed = 0;
-    private float dashYSpeed = 0;
-    private int dashUpdates = 0;
-    private int maxDashUpdates = 20;
-    public boolean isDashing = false;
-    public boolean canDash = true;
+    private boolean moving = false; // Is the player moving?
+    private boolean left, right, up, down; // What direction is being pressed
+    private int playerDir = RIGHT; // The player's direction
+    private float gravity = 0.04f; // Speed of gravity
+    private float moveSpeed = 2.0f; // Default walk speed of the player
+    private float jumpSpeed = -2.75f; // Jump speed of the player
+    private float dashXSpeed = 0; // Speed of the player's dash on the horizontal
+    private float dashYSpeed = 0; // Speed of the player's dash on the vertical
+    private int dashUpdates = 0; // The amount of updates that have passed while dashing
+    private int maxDashUpdates = 20; // The maximum amount of updates that can pass while dashing
+    private float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
+    public boolean isDashing = false; // Is the player dashing?
+    public boolean canDash = true; // Can the player dash?
     private int xFlipped = 0;
     private int wFlipped = 1;
 
@@ -36,13 +37,12 @@ public class Player extends Entity {
         initialize();
     }
 
-
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
     }
 
     public void setSpawn(Point spawn) {
-        int spawnOffset = (int) (this.hitbox.height / 2) + 10;
+        int spawnOffset = (int) (this.hitbox.height / 2) + 10; // Don't spawn the player inside the block the spawn point in on top of
         this.x = spawn.x;
         this.y = spawn.y - spawnOffset;
         hitbox.x = x;
@@ -50,7 +50,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Updates the player (position and direction currently)
+     * Updates the player's position, direction and sprite 
      * 
      * @author Ryder Hodgson
      * @since December 16, 2023
@@ -59,21 +59,20 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-       // System.out.println(inAir);
 
         if (isDashing) {
-            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
+            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
+                                                // updates
                 dashUpdates++;
                 xSpeed = dashXSpeed;
                 airSpeed = dashYSpeed;
-                if(airSpeed < 0) { // Set in air if dashing upward
+                if (airSpeed < 0) { // Set in air if dashing upward
                     inAir = true;
                 }
             } else {
                 if (dashYSpeed < 0 && canMove(hitbox.x, hitbox.y + dashYSpeed, hitbox.width, hitbox.height, lvlData)) { // Make the transition out of up dashes less choppy
                     airSpeed = -1;
                 } // Reset everything
-                
                 isDashing = false;
                 dashXSpeed = 0;
                 dashYSpeed = 0;
@@ -91,12 +90,12 @@ public class Player extends Entity {
             }
         }
 
-        if (!inAir) { // Checking if the player has just gone into the air
-            
+        // Checking if the player has just gone into the air
+        if (!inAir) {
             if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Check if player is not on ground
                 inAir = true;
             } else {
-                if(!isDashing) { // If not dashing on the ground, give dash back
+                if (!isDashing) { // If not dashing on the ground, give dash back
                     canDash = true;
                     dashXSpeed = 0;
                     dashUpdates = 0;
@@ -104,34 +103,27 @@ public class Player extends Entity {
             }
         }
 
-        if (inAir) { // Moving while in the air
+        // Moving vertically
+        if (inAir) {
             if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) { // Move on the vertical if possible
                 hitbox.y += airSpeed;
                 airSpeed += gravity;
-                if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
-                    hitbox.x += xSpeed;
-                } else {
-                    moving = false;
-                }
             } else {
-                //System.out.println(airSpeed);
+                // Reset everything to do with air
                 hitbox.y = fixYPos(hitbox, airSpeed);
                 isDashing = false;
-                dashYSpeed = 0;
-                airSpeed = gravity;
-                if (airSpeed > 0) { // Reset everything to do with air
-                    inAir = false;
-                    airSpeed = 0;
-                
-                }
+                dashYSpeed = 0; 
+                inAir = false;
+                airSpeed = 0;
             }
-        } else { // Moving on the ground
+        } 
+        // Moving horizontally
             if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
+            } else {
+                moving = false;
+                hitbox.x = fixXPos(hitbox, xSpeed + dashXSpeed);
             }
-        }
-        
-        //System.out.println(hitbox.x);
         updateAnimationTick();
         setAnimation();
     }
@@ -164,30 +156,26 @@ public class Player extends Entity {
      */
 
     public void dash() {
-        if (isDashing || !canDash) {
+        if (isDashing || !canDash) { // Immediately return if the player is already dashing or unable to dash
             return;
         }
-        airSpeed = 0;
         isDashing = true;
         canDash = false;
         if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
-            dashXSpeed = -moveSpeed * 2;
+            dashXSpeed = -moveSpeed * dashSpeedMultiplier;
         } else if (right && !left || (!up && !down && playerDir == RIGHT)) { // Set dash right
-            dashXSpeed = moveSpeed * 2;
+            dashXSpeed = moveSpeed * dashSpeedMultiplier;
         }
         if (up && !down) { // Set dash up
-            dashYSpeed = -moveSpeed * 2;
-        } else if (down && !up && inAir) { // Set dash right
-            dashYSpeed = moveSpeed * 2;
+            dashYSpeed = -moveSpeed * dashSpeedMultiplier;
+        } else if (down && !up && inAir) { // Set dash down
+            dashYSpeed = moveSpeed * dashSpeedMultiplier;
         }
 
-        if (up && right || up && left) { // Make the dash cover the same distance but diagonally 
-            dashXSpeed /= 1.4f;
-            dashYSpeed /= 1.4f;
-            return;
+        if (up && (right || left)) { // Make the dash cover the same general distance if dashing diagonally using special triangle math
+            dashXSpeed /= Math.sqrt(2);
+            dashYSpeed /= Math.sqrt(2);
         }
-        
-
     }
 
     public void setLeft(boolean left) {
@@ -263,15 +251,8 @@ public class Player extends Entity {
             state = IDLE;
     }
 
-    /**
-     * Sets the direction the player is facing.
-     * 
-     * @author Hamad Mohammed
-     * @since December 16, 2023
-     */
     public void setDirection(int direction) {
         this.playerDir = direction;
-        moving = true;
     }
 
     public float getMoveSpeed() {

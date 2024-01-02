@@ -5,14 +5,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import GameStates.Playing;
-import Main.Game;
 import Utilities.Constants;
 import Utilities.LoadSave;
-import GameStates.Playing;
 
 public class LevelManager {
 
-	private Game game;
 	private BufferedImage[] levelSprite;
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;

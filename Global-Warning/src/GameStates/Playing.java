@@ -24,7 +24,6 @@ public class Playing extends State implements KeyListener {
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
-    private boolean checkingTransition = false;
 
     public Playing(Game game) {
         super(game);
@@ -36,7 +35,7 @@ public class Playing extends State implements KeyListener {
      * 
      * @author Ryder Hodgson
      * @since January 1st, 2024
-     * @param spawnType whether the player is transitioning from a door, or spawning at a checkpoint (0 = checkpoint, 1 = left, 2 = right)
+     * @param spawnType 0 = checkpoint, 1 = next room left, 2 = next room right
      */
 
     public void loadNextLevel(int spawnType) {
@@ -47,18 +46,20 @@ public class Playing extends State implements KeyListener {
             case 0:
             default: player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         }
-        
     }
 
     public void initialize() {
         // enemyManager = new EnemyManager(player);
         levelManager = new LevelManager(this);
 
-        player = new Player(GAME_WIDTH / 4, GAME_HEIGHT / 2 - 50, 45, 63);
+        player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
         levelManager.loadNextLevel();
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
-
+        try{ // Catch errors if the room has no default spawn point
+            player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+        } catch(Exception e) { // Will spawn the player at its initialization spawning coordinates
+            System.out.println("no default spawn point found");
+        }
         // enemyManager.generateEnemies();
     }
 
@@ -88,31 +89,53 @@ public class Playing extends State implements KeyListener {
             xOffset += distance - borderLen;
         }
 
-        if (xOffset >= maxOffsetX) { // Lock the camera to the right
+        if (xOffset >= maxOffsetX) { // Lock the camera to the right on the right edge of the room
             xOffset = maxOffsetX;
         }
-        if (xOffset <= 0) { // Lock the camera to the left
+        if (xOffset <= 0) { // Lock the camera to the left on the left edge of the room
             xOffset = 0;
         }
     }
 
+    /**
+     * Checks if that player has touched a transition point, if so, put them into the next corresponding room
+     * 
+     * @author Ryder Hodgson
+     * @since January 1st, 2024
+     */
+
     public void checkTransition() {
-        if (levelManager.getCurrentLevel().getLeftTransition() != null) {
-            if (player.getHitbox().x <= levelManager.getCurrentLevel().getLeftTransition().x
-                    && levelManager.getLevelIndex() > 0) {
+        // Check left door
+        if (levelManager.getCurrentLevel().getLeftTransition() != null) { // Is there a left door?
+            if (player.getHitbox().x <= levelManager.getCurrentLevel().getLeftTransition().x // Checking if touching left door
+                    && levelManager.getLevelIndex() > 0) { // Make sure there is a level to transition into
 
-                levelManager.setLevelIndex(levelManager.getLevelIndex() - 1);
-                loadNextLevel(2);
+                // Load previous room
+                levelManager.setLevelIndex(levelManager.getLevelIndex() - 1); 
+                if(levelManager.getCurrentLevel().getRightSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
+                    loadNextLevel(2);
+                } else {
+                    System.out.println("no right spawn point found");
+                    loadNextLevel(0);
+                }
+                
                 return;
-
             }
         }
-        if (levelManager.getCurrentLevel().getRightTransition() != null) {
-            if (player.getHitbox().x+ player.getHitbox().width >= levelManager.getCurrentLevel().getRightTransition().x
-                    && levelManager.getLevelIndex() < levelManager.getAmountOfLevels()-1) {
 
+        // Check right door
+        if (levelManager.getCurrentLevel().getRightTransition() != null) { // Is there a right door?
+            if (player.getHitbox().x + player.getHitbox().width >= levelManager.getCurrentLevel().getRightTransition().x // Check if touching right door
+                    && levelManager.getLevelIndex() < levelManager.getAmountOfLevels()-1) { // Make sure there is a level to transition into
+                
+                // Load next room
                 levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
-                loadNextLevel(1);
+                if(levelManager.getCurrentLevel().getRightSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
+                    loadNextLevel(1);
+                } else {
+                    System.out.println("no left spawn point found");
+                    loadNextLevel(0);
+                }
                 return;
             }
         }
