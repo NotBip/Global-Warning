@@ -1,27 +1,27 @@
 package UserInterface;
 
-import static Utilities.Atlas.getSpriteAtlas;
-
 import GameStates.GameState;
-import static Utilities.Atlas.getSpriteAtlas;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.text.Bidi;
+
 import GameStates.*;
-import static Utilities.Atlas.MENUBUTTON_ATLAS;
+import static Utilities.Atlas.*;
 import static Utilities.Constants.Buttons.*;
 
-public class SaveButton {
+public class SaveButton extends MenuButton{
 
  private int xPos, yPos, rowIndex, index;
-	//private int xOffsetCenter = B_WIDTH / 2;
 	private GameState state;
 	private BufferedImage[] imgs;
+	//private BufferedImage img;
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
 
 	public SaveButton(int xPos, int yPos, int rowIndex, GameState state) {
+		super (xPos,  yPos,rowIndex, state);
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rowIndex = rowIndex;
@@ -31,26 +31,27 @@ public class SaveButton {
 	}
 
 	private void inButtonBounds() {
-		bounds = new Rectangle(xPos , yPos, B_WIDTH, B_HEIGHT);
+		bounds = new Rectangle(xPos-70 , yPos+30, B_WIDTH+100, B_HEIGHT+25);
 
 	}
 
 	private void loadImgs() {
-		imgs = new BufferedImage[3];
-		BufferedImage temp = getSpriteAtlas(MENUBUTTON_ATLAS); 
+		imgs = new BufferedImage[2];
+		BufferedImage temp = getSpriteAtlas(MENUSAVEUNCLICK_ATLAS); 
+		//img = temp;
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = temp.getSubimage(i * B_WIDTH, rowIndex * B_HEIGHT, B_WIDTH, B_HEIGHT);
+			imgs[i] = temp.getSubimage(i * B_WIDTH, rowIndex * B_HEIGHT, B_WIDTH+140, B_HEIGHT-13);
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(imgs[index], xPos , yPos, B_WIDTH, B_HEIGHT, null);
-		//g.drawRect(xPos , yPos, B_WIDTH, B_HEIGHT);
+		g.drawImage(imgs[index], xPos-70, yPos+30, B_WIDTH+100, B_HEIGHT+25, null);
+		g.drawRect(xPos-70 , yPos+30, B_WIDTH+100, B_HEIGHT+25);
+		//g.drawImage(img, xPos ,yPos, 200, 200, null);
 	}
 
 	public void update() {
-		index = 0;
 		if (mouseOver)
-			index = 2;
+			imgs[0] = getSpriteAtlas(MENUSAVECLICK_ATLAS);
 	}
 
 	public boolean getMouseOver() {

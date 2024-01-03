@@ -1,49 +1,50 @@
 package GameStates;
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
-import UserInterface.MenuButton;
+import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 
-public class Menu extends State implements KeyListener, MouseListener{
+public class SaveState extends State implements KeyListener, MouseListener{
 
     private int offset = 70;
     private int  height = GAME_HEIGHT;
     private int  width = GAME_WIDTH;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS); 
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS); 
-    private MenuButton[] buttons = new MenuButton[3];
+    private SaveButton[] buttons = new SaveButton[3];
 
-    public Menu (Game game){
+    public SaveState (Game game){
        super(game);
        makeButtons();
     }
 
     public void update() {
-        for (MenuButton mb : buttons)
-			mb.update();
+        for (SaveButton sb : buttons)
+			sb.update();
 	
     }
 
     public void makeButtons (){
-        buttons[0] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-140, 0, GameState.SAVE);
-		buttons[1] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-70, 1, GameState.OPTIONS);
-		buttons[2] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset,  2, GameState.QUIT);
+        buttons[0] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-180, 0, GameState.PLAYING);
+		buttons[1] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-90, 1, GameState.PLAYING);
+		buttons[2] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset,  2, GameState.PLAYING);
     }
 
     public void draw(Graphics g) {
     
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
         g.drawImage(this.imgtitle, GAME_WIDTH/3, 0, 300, 150, null);
-        for (MenuButton mb : buttons)
-			mb.draw(g);
+        for (SaveButton sb : buttons)
+			sb.draw(g);
 	
     }
     @Override
@@ -65,12 +66,12 @@ public class Menu extends State implements KeyListener, MouseListener{
     }
 
     public void mouseMoved(MouseEvent e){
-        for (MenuButton mb : buttons)
-        mb.setMouseOver(false);
+        for (SaveButton sb : buttons)
+        sb.setMouseOver(false);
 
-    for (MenuButton mb : buttons)
-        if (isIn(e, mb)) {
-            mb.setMouseOver(true);
+    for (SaveButton sb : buttons)
+        if (isIn(e, sb)) {
+            sb.setMouseOver(true);
             break;
 
         }
@@ -88,9 +89,9 @@ public class Menu extends State implements KeyListener, MouseListener{
         
      @Override
       public void mousePressed(MouseEvent e) {
-        for (MenuButton mb : buttons) {
-			if (isIn(e, mb)) {
-				mb.setMousePressed(true);
+        for (SaveButton sb : buttons) {
+			if (isIn(e, sb)) {
+				sb.setMousePressed(true);
 			}
     
       }
@@ -98,10 +99,10 @@ public class Menu extends State implements KeyListener, MouseListener{
     
         @Override
         public void mouseReleased(MouseEvent e) {
-            for (MenuButton mb : buttons) {
-                if (isIn(e, mb)) {
-                    if (mb.getMousePressed())
-                        mb.applyGamestate();
+            for (SaveButton sb : buttons) {
+                if (isIn(e, sb)) {
+                    if (sb.getMousePressed())
+                        sb.applyGamestate();
                     break;
                 }
             }
@@ -111,8 +112,8 @@ public class Menu extends State implements KeyListener, MouseListener{
      }
 
      private void resetButtons() {
-		for (MenuButton mb : buttons)
-			mb.resetButtons();
+		for (SaveButton sb : buttons)
+			sb.resetButtons();
 
 	}
 
@@ -125,6 +126,10 @@ public class Menu extends State implements KeyListener, MouseListener{
         public void mouseEntered(MouseEvent e) {
         
      }
+
+     private boolean isIn(MouseEvent e, SaveButton b) {
+		return b.getBounds().contains(e.getX(), e.getY());
+	}
 
     
 }

@@ -129,23 +129,18 @@ import java.util.List;
             switch(e.getKeyCode()) {
                 case KeyEvent.VK_A:
                 player.setLeft(true);
-            // weapon.setLeft(true);
                 break;
                 case KeyEvent.VK_D:
                 player.setRight(true);
-            // weapon.setRight(true);
                 break;
                 case KeyEvent.VK_W:
                 player.setUp(true);
-            //  weapon.setUp(true);
                 break;
                 case KeyEvent.VK_S:
                 player.setDown(true);
-            //  weapon.setDown(true);
                 break;
                 case KeyEvent.VK_SPACE:
                 player.jump();
-            //  weapon.jump();
                 break;
             }
         }
@@ -154,19 +149,15 @@ import java.util.List;
             switch(e.getKeyCode()) {
                 case KeyEvent.VK_A:
                 player.setLeft(false);
-            // weapon.setLeft(false);
                 break;
                 case KeyEvent.VK_D:
                 player.setRight(false);
-            // weapon.setRight(false);
                 break;
                 case KeyEvent.VK_W:
                 player.setUp(false);
-            // weapon.setUp(false);
                 break;
                 case KeyEvent.VK_S:
                 player.setDown(false);
-            //  weapon.setDown(false);
                 break;
             }
         }

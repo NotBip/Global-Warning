@@ -11,6 +11,7 @@ public class Game implements Runnable {
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
+    private SaveState save;
     private gamePanel panel;
 
 
@@ -48,6 +49,7 @@ public class Game implements Runnable {
                 menu.update();
                 break;
             case SAVE:
+                save.update();
                 break;
             case OPTIONS:
                 break;
@@ -72,7 +74,10 @@ public class Game implements Runnable {
                 playing.draw(g);
                 break;
             case MENU:
-            menu.draw(g);
+                menu.draw(g);
+                break;
+            case SAVE:
+                save.draw(g);
         }
     }
     /**
@@ -84,6 +89,7 @@ public class Game implements Runnable {
     public void initialize() {
         playing = new Playing(this);
         menu = new Menu(this);
+        save = new SaveState(this);
     }
 
     /**
@@ -129,6 +135,10 @@ public class Game implements Runnable {
 
     public Menu getMenu() {
         return menu;
+    }
+
+     public SaveState getSave() {
+        return save;
     }
 
 
