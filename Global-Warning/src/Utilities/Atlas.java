@@ -11,6 +11,11 @@ public class Atlas {
     public static final String WEAPON_ATLAS = "gunSmol.png";
     public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";
+    public static final String MENUTITLE_ATLAS = "menuTitle.png";
+
+    public static final String MENUSAVECLICK_ATLAS = "save_click.png";
+    public static final String MENUSAVEUNCLICK_ATLAS = "save_unclick.png";
+
 
      /**
       * 

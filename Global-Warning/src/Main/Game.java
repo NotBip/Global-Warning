@@ -47,6 +47,8 @@ public class Game implements Runnable {
             case MENU:
                 menu.update();
                 break;
+            case SAVE:
+                break;
             case OPTIONS:
                 break;
             case QUIT:
