@@ -20,6 +20,11 @@ public class Constants {
 	public static class Buttons {
 			public static final int B_WIDTH= 140;
 			public static final int B_HEIGHT = 56;
+
+			public static final int SAVE_B_WIDTH= 200;
+			public static final int SAVE_B_HEIGHT = 66;
+
+
 		}
 
     public static class Directions {

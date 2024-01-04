@@ -4,6 +4,10 @@ package GameStates;
 import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.Buttons.B_HEIGHT;
+import static Utilities.Constants.Buttons.B_WIDTH;
+import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
+import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
 import UserInterface.SaveButton;
@@ -15,7 +19,7 @@ import static Utilities.Atlas.*;
 
 public class SaveState extends State implements KeyListener, MouseListener{
 
-    private int offset = 70;
+    private int offset = 100;
     private int  height = GAME_HEIGHT;
     private int  width = GAME_WIDTH;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS); 
@@ -34,9 +38,9 @@ public class SaveState extends State implements KeyListener, MouseListener{
     }
 
     public void makeButtons (){
-        buttons[0] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-180, 0, GameState.PLAYING);
-		buttons[1] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-90, 1, GameState.PLAYING);
-		buttons[2] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset,  2, GameState.PLAYING);
+        buttons[0] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-160, SAVE_B_WIDTH, SAVE_B_HEIGHT, 0, GameState.PLAYING);
+		buttons[1] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-80, SAVE_B_WIDTH, SAVE_B_HEIGHT, 1, GameState.PLAYING);
+		buttons[2] = new SaveButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset, SAVE_B_WIDTH, SAVE_B_HEIGHT,  2, GameState.PLAYING);
     }
 
     public void draw(Graphics g) {
@@ -67,7 +71,7 @@ public class SaveState extends State implements KeyListener, MouseListener{
 
     public void mouseMoved(MouseEvent e){
         for (SaveButton sb : buttons)
-        sb.setMouseOver(false);
+            sb.setMouseOver(false);
 
     for (SaveButton sb : buttons)
         if (isIn(e, sb)) {

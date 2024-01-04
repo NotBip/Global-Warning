@@ -9,26 +9,20 @@ import static Utilities.Atlas.MENUBUTTON_ATLAS;
 import static Utilities.Constants.Buttons.*;
 
 
-public class MenuButton {
-    private int xPos, yPos, rowIndex, index;
+public class MenuButton extends Button {
+    private int xPos, yPos, width, height, index, rowIndex;
 	//private int xOffsetCenter = B_WIDTH / 2;
 	private GameState state;
 	private BufferedImage[] imgs;
-	private boolean mouseOver, mousePressed;
-	private Rectangle bounds;
 
-	public MenuButton(int xPos, int yPos, int rowIndex, GameState state) {
+	public MenuButton(int xPos, int yPos, int width, int height, int rowIndex, GameState state) {
+		super (xPos,  yPos,width, height);
 		this.xPos = xPos;
 		this.yPos = yPos;
-		this.rowIndex = rowIndex;
 		this.state = state;
+		this.rowIndex = rowIndex;
 		loadImgs();
-		inButtonBounds();
-	}
-
-	private void inButtonBounds() {
-		bounds = new Rectangle(xPos , yPos, B_WIDTH, B_HEIGHT);
-
+		getBounds();
 	}
 
 	private void loadImgs() {
@@ -45,40 +39,17 @@ public class MenuButton {
 
 	public void update() {
 		index = 0;
-		if (mouseOver)
+		if (getMouseOver())
 			index = 1;
-		if (mousePressed)
+		if (getMousePressed())
 			index = 2;
-	}
-
-	public boolean getMouseOver() {
-		return mouseOver;
-	}
-
-	public void setMouseOver(boolean mouseOver) {
-		this.mouseOver = mouseOver;
-	}
-
-	public boolean getMousePressed() {
-		return mousePressed;
-	}
-
-	public void setMousePressed(boolean mousePressed) {
-		this.mousePressed = mousePressed;
-	}
-
-	public Rectangle getBounds() {
-		return bounds;
 	}
 
 	public void applyGamestate() {
 		GameState.currentState = state;
 	}
 
-	public void resetButtons() {
-		mouseOver = false;
-		mousePressed = false;
-	}
+
 
 }
 

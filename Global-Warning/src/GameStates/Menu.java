@@ -3,6 +3,8 @@ package GameStates;
 import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.Buttons.B_WIDTH;
+import static Utilities.Constants.Buttons.B_HEIGHT;
 import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
 import UserInterface.MenuButton;
@@ -33,9 +35,9 @@ public class Menu extends State implements KeyListener, MouseListener{
     }
 
     public void makeButtons (){
-        buttons[0] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-140, 0, GameState.SAVE);
-		buttons[1] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-70, 1, GameState.OPTIONS);
-		buttons[2] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset,  2, GameState.QUIT);
+        buttons[0] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-140, B_WIDTH, B_HEIGHT, 0, GameState.SAVE);
+		buttons[1] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset-70, B_WIDTH, B_HEIGHT, 1, GameState.OPTIONS);
+		buttons[2] = new MenuButton(GAME_WIDTH / 2-offset, GAME_HEIGHT/2+offset,  B_WIDTH, B_HEIGHT, 2, GameState.QUIT);
     }
 
     public void draw(Graphics g) {
@@ -66,7 +68,7 @@ public class Menu extends State implements KeyListener, MouseListener{
 
     public void mouseMoved(MouseEvent e){
         for (MenuButton mb : buttons)
-        mb.setMouseOver(false);
+             mb.setMouseOver(false);
 
     for (MenuButton mb : buttons)
         if (isIn(e, mb)) {
@@ -125,6 +127,10 @@ public class Menu extends State implements KeyListener, MouseListener{
         public void mouseEntered(MouseEvent e) {
         
      }
+
+     private boolean isIn(MouseEvent e, MenuButton b) {
+		return b.getBounds().contains(e.getX(), e.getY());
+	}
 
     
 }
