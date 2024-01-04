@@ -27,6 +27,8 @@ public class Weapon1 implements MouseMotionListener {
     protected float x=0;
     protected float y=0;
 
+
+    
     public Weapon1 (Player player, Playing playing) {
         this.player = player;
         this.playing = playing; 

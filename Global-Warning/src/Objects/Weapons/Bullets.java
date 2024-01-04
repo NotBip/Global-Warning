@@ -15,14 +15,18 @@ import java.awt.event.MouseListener;
 
 public class Bullets extends Entities.Entity implements MouseListener {
 
-    //extends Entities.Entity
-
+    //variables
     private double x, y, speed;
     private double directionX, directionY;
     private Weapon1 weapon; 
     private Playing playing; 
     public boolean SHOT = false;
-    //https://gamedev.stackexchange.com/questions/158616/how-do-i-create-a-delay-or-cooldown-timer
+    
+    /**
+     * Constructor to create bullets
+     * @author Nusayba Hamou
+     * @since December 19, 2023
+     */
 
     public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY) {
         super((float)startX, (float)startY, 10, 10);
@@ -37,11 +41,24 @@ public class Bullets extends Entities.Entity implements MouseListener {
         initialize();
     }
 
+    /**
+     * sets direction for the gun
+     * @author Hamad Mohammed
+     * @since December 21, 2023
+     */
+
+
     public void setDirection(double targetX, double targetY) {
         double angle = Math.atan2(targetY - y, targetX - x);
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
     }
+
+    /**
+     * shoots bullets towards mouse
+     * @author Hamad Mohammed
+     * @since December 25, 2023
+     */
 
     public void move() {
         x += speed * directionX;
@@ -49,6 +66,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.x += speed * directionX;
         hitbox.y += speed * directionX;
     }
+
+
+    /**
+     * draw bullets
+     * @author Hamad Mohammed
+     * @since December 19, 2023
+     */
 
     public void draw(Graphics g) {
 
@@ -82,19 +106,20 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     }
 
+    /**
+     * update bullets for shooting animation
+     * @author Hamad Mohammed
+     * @since December 19, 2023
+     */
+
+
     public void updateBullets() {
-       // updateBulletDirections((int) playing.mouseX, (int) playing.mouseY);
         for (Bullets bullet : playing.bullets) {
-         //  updateSpeed();
             bullet.move();
         }
     }
 
-    
-    public void setSHOT (boolean SHOT){
-        this.SHOT = SHOT;
-        
-    }
+     /* Getters */
 
     public int getDrawX() {
         return (int) Math.round(x);
@@ -102,6 +127,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
       public int getDrawY() {
         return (int) Math.round(y);
      }
+
+
+    /* Mouse events */
 
     @Override
     public void mouseClicked(MouseEvent e) {
