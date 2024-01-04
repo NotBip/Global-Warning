@@ -59,12 +59,16 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
+        
+        
 
         if (isDashing) {
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
                                                 // updates
                 dashUpdates++;
                 xSpeed = dashXSpeed;
+                
+                if(dashYSpeed != 0)
                 airSpeed = dashYSpeed;
                 if (airSpeed < 0) { // Set in air if dashing upward
                     inAir = true;
@@ -111,7 +115,7 @@ public class Player extends Entity {
             } else {
                 // Reset everything to do with air
                 hitbox.y = fixYPos(hitbox, airSpeed);
-                isDashing = false;
+                //isDashing = false;
                 dashYSpeed = 0; 
                 inAir = false;
                 airSpeed = 0;
@@ -122,14 +126,14 @@ public class Player extends Entity {
                 hitbox.x += xSpeed;
             } else {
                 moving = false;
-                hitbox.x = fixXPos(hitbox, xSpeed + dashXSpeed);
+                hitbox.x = fixXPos(hitbox, xSpeed);
             }
         updateAnimationTick();
         setAnimation();
     }
 
     public void draw(Graphics g, int offset) {
-        drawHitbox(g, offset);
+        //drawHitbox(g, offset);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
@@ -146,6 +150,9 @@ public class Player extends Entity {
         }
         inAir = true;
         airSpeed = jumpSpeed;
+        // Allow the player to jump out of a dash, keeping the dashing momentum
+        canDash = true;
+        dashUpdates = 0;
     }
 
     /**

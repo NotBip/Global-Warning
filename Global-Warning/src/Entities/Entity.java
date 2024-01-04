@@ -164,7 +164,7 @@ protected static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
      * @return the new xPos
      */
 protected static float fixXPos(Rectangle2D.Float hitbox, float xSpeed) {
-		int currentTile = (int) ((hitbox.x+hitbox.width) / TILE_SIZE); // The current tile the right of the entity is on
+		int currentTile = (int) ((hitbox.x+hitbox.width) / TILE_SIZE - 0.2); // The current tile the right of the entity is on, subtract 0.2 to fix inconsistency issue with the tile calculation
 		if (xSpeed > 0) { // Moving the right
 			int tileX = currentTile * TILE_SIZE; // The current x position of the tile the entity is on 
 			int xOffset = (int) (TILE_SIZE - hitbox.width); // Offset the new x position since moving right takes into account the right side, not the left (origin of x pos)
