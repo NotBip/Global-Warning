@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Playing extends State implements KeyListener {
+public class Playing extends State implements KeyListener, MouseListener {
     private Player player;
     private Weapon1 weapon;
     public int bulletCount;
@@ -22,7 +22,8 @@ public class Playing extends State implements KeyListener {
     public Iterator<Bullets> it;
     private LevelManager levelManager;
     private ObjectManager objectManager;
-    private boolean paused;
+    private Pause pauseScreen;
+    public static boolean paused = false;
     private float borderLen;
     private double weaponAngle = 0;
     public double mouseX;
@@ -45,15 +46,26 @@ public class Playing extends State implements KeyListener {
         player = new Player(10, GAME_HEIGHT - 100, 60, 80, this);
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+
+        pauseScreen = new Pause(this);
     }
 
     public void update() {
-        player.update();
-        weapon.update();
+       // player.update();
+       // weapon.update();
+       // for (int i = 0; i < bullets.size(); i++) {
+       //     bullets.get(i).updateBullets();
+       // }
 
+        if (!paused) {
+			 player.update();
+            weapon.update();
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
         }
+		} else {
+			pauseScreen.update();
+		}
 
     }
 
@@ -62,12 +74,16 @@ public class Playing extends State implements KeyListener {
     }
 
     public void draw(Graphics g) {
+
+        player.draw(g);
+        weapon.draw(g);
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g);
         }
 
-        weapon.draw(g);
-        player.draw(g);
+        if (paused) {
+			pauseScreen.draw(g);
+		}
 
     }
 
@@ -120,9 +136,10 @@ public class Playing extends State implements KeyListener {
 
     private void spawnBullet(int x, int y) {
 
-       // System.out.println("NEW BULLET! ");
-        Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y);
-        bullets.add(bullet);
+       if (!paused){
+            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y);
+             bullets.add(bullet);
+        }
 
     }
 
@@ -155,6 +172,10 @@ public class Playing extends State implements KeyListener {
             case KeyEvent.VK_SPACE:
                 player.jump();
                 break;
+            case KeyEvent.VK_ESCAPE:
+			     paused = !paused;
+                 break;
+
         }
     }
 
@@ -187,16 +208,23 @@ public class Playing extends State implements KeyListener {
         mouseX = e.getX();
         mouseY = e.getY();
 
-        if (mouseX < weapon.getX()) {
+        if (!paused) {
+            if (mouseX < weapon.getX()) {
 
-            offset = 1.6;
-        } else {
-            offset = -1.5;
+                offset = 1.6;
+            } else {
+                offset = -1.5;
+            }
+
+            double deltaX = weapon.getX() - mouseX;
+            double deltaY = weapon.getY() - mouseY;
+
+            
+            weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
         }
 
-        double deltaX = weapon.getX() - mouseX;
-        double deltaY = weapon.getY() - mouseY;
-        weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
+       // if (paused)
+			//pauseScreen.mouseMoved(e);
 
     }
 
@@ -225,6 +253,37 @@ public class Playing extends State implements KeyListener {
 
     public void mouseDragged(MouseEvent e) {
         bulletCooldown(e);
+
+        if (paused)
+			pauseScreen.mouseDragged(e);
+    }
+
+    public void unpauseGame() {
+		paused = false;
+	}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+      //  if (paused)
+			//pauseScreen.mousePressed(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      //  if (paused)
+			//pauseScreen.mouseReleased(e);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mouseEntered'");
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
     }
 
 }
