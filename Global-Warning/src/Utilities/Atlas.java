@@ -9,13 +9,19 @@ public class Atlas {
     // Importing Sprite Sheets and assigning them names
     public static final String PLAYER_ATLAS = "MC.png";
     public static final String WEAPON_ATLAS = "gunSmol.png";
+
     public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";
     public static final String MENUTITLE_ATLAS = "menuTitle.png";
+
     public static final String PAUSE_ATLAS = "pause_screen.png";
     public static final String GAMEBUTTONS_ATLAS = "gamepause_buttons.png";
 
     public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
+
+    public static final String INVENTORY_ATLAS = "inventory_menu.png";
+    public static final String INVENTORYSLOT_ATLAS = "inventory_slots.png";
+
 
 
      /**

@@ -23,7 +23,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     private LevelManager levelManager;
     private ObjectManager objectManager;
     private Pause pauseScreen;
-    public static boolean paused = false;
+    private InventoryState inventoryState;
+    public static boolean paused, inventory = false;
     private float borderLen;
     private double weaponAngle = 0;
     public double mouseX;
@@ -48,24 +49,22 @@ public class Playing extends State implements KeyListener, MouseListener {
         bullets = new ArrayList<>();
 
         pauseScreen = new Pause(this);
+        inventoryState = new InventoryState(this);
     }
 
     public void update() {
-       // player.update();
-       // weapon.update();
-       // for (int i = 0; i < bullets.size(); i++) {
-       //     bullets.get(i).updateBullets();
-       // }
 
-        if (!paused) {
-			 player.update();
-            weapon.update();
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).updateBullets();
-        }
-		} else {
+        if (paused) {
 			pauseScreen.update();
-		}
+		} else if (inventory){
+			inventoryState.update();
+		} else {
+            player.update();
+            weapon.update();
+         for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).updateBullets();
+         }
+        }
 
     }
 
@@ -83,7 +82,11 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (paused) {
 			pauseScreen.draw(g);
-		}
+		} 
+
+        if (inventory) {
+            inventoryState.draw(g);
+        }
 
     }
 
@@ -175,6 +178,9 @@ public class Playing extends State implements KeyListener, MouseListener {
             case KeyEvent.VK_ESCAPE:
 			     paused = !paused;
                  break;
+             case KeyEvent.VK_I:
+			     inventory = !inventory;
+                 break;
 
         }
     }
@@ -208,7 +214,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         mouseX = e.getX();
         mouseY = e.getY();
 
-        if (!paused) {
+        if (!paused && !inventory) {
             if (mouseX < weapon.getX()) {
 
                 offset = 1.6;
@@ -225,6 +231,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
        if (paused)
 			pauseScreen.mouseMoved(e);
+
+         if (inventory)
+			inventoryState.mouseMoved(e);
+        
 
     }
 
@@ -256,22 +266,35 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (paused)
 			pauseScreen.mouseDragged(e);
+
+        if (inventory)
+            inventoryState.mouseDragged(e);
     }
 
     public void unpauseGame() {
 		paused = false;
 	}
 
+    public void unInventory() {
+		inventory = false;
+	}
+
     @Override
     public void mousePressed(MouseEvent e) {
        if (paused)
 			pauseScreen.mousePressed(e);
+
+        if (paused)
+            inventoryState.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
        if (paused)
 			pauseScreen.mouseReleased(e);
+
+        if (inventory)
+            inventoryState.mouseReleased(e);
     }
 
     @Override
