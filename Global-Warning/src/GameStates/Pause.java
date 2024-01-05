@@ -1,115 +1,151 @@
 package GameStates;
 
-
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.Buttons.B_WIDTH;
-import static Utilities.Constants.Buttons.B_HEIGHT;
+import static Utilities.Constants.Buttons.PAUSE_B_HEIGHT;
+import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 
-import Main.Game;
-import UserInterface.MenuButton;
+import UserInterface.InGameButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 
+public class Pause {
 
-public class Pause  {
-    private Playing playing;
-	private BufferedImage backgroundImg =   getSpriteAtlas(PAUSE_ATLAS);
-	//private int bgX, bgY, bgW, bgH;
-	//private UrmButton menuB, unpauseB;
+	// variables
+	private Playing playing;
+	private BufferedImage backgroundImg = getSpriteAtlas(PAUSE_ATLAS);
+	private InGameButton menuBackB;
+
+	/**
+	 * Constructor to create pause overlay
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
 
 	public Pause(Playing playing) {
 		this.playing = playing;
-		//loadBackground();
-		//createUrmButtons();
-
-	}
-/* 
-	private void createUrmButtons() {
-		int menuX = (int) (313 * Game.SCALE);
-		int unpauseX = (int) (462 * Game.SCALE);
-		int bY = (int) (325 * Game.SCALE);
-
-		menuB = new UrmButton(menuX, bY, URM_SIZE, URM_SIZE, 2);
-		unpauseB = new UrmButton(unpauseX, bY, URM_SIZE, URM_SIZE, 0);
-
-	}
-   
-
-	private void loadBackground() {
-		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PAUSE_BACKGROUND);
-		bgW = (int) (backgroundImg.getWidth() * Game.SCALE);
-		bgH = (int) (backgroundImg.getHeight() * Game.SCALE);
-		bgX = Game.GAME_WIDTH / 2 - bgW / 2;
-		bgY = (int) (25 * Game.SCALE);
+		makeButton();
 
 	}
 
-     */
+	/**
+	 * Adds button to pause menu
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	public void makeButton() {
+		menuBackB = new InGameButton(GAME_WIDTH / 2 - 10, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
+				GameState.MENU);
+
+	}
+
+	/**
+	 * Updates button in pause menu
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
 
 	public void update() {
+		menuBackB.update();
+	}
 
-		//menuB.update();
-		//unpauseB.update();
+	/**
+	 * Draws pause menu and button
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	public void draw(Graphics g) {
+		g.drawImage(backgroundImg, GAME_WIDTH / 2 - 80, 100, 200, 200, null);
+		menuBackB.draw(g);
+	}
+
+	/**
+	 * Resets all buttons
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	private void resetButtons() {
+		menuBackB.resetButtons();
 
 	}
 
-	public void draw(Graphics g) {
-		// Background
-		g.drawImage(backgroundImg, GAME_WIDTH/2 -80, 100, 200,200, null);
+	/**
+	 * Checks if cursor X and Y position overlap button bounds
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
 
+	private boolean isIn(MouseEvent e, InGameButton b) {
+		return b.getBounds().contains(e.getX(), e.getY());
+	}
 
-		// UrmButtons
-		//menuB.draw(g);
-		//unpauseB.draw(g);
+	/**
+	 * Checks if mouse position overlaps bounds (cursor on button)
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	public void mouseMoved(MouseEvent e) {
+		menuBackB.setMouseOver(false);
+
+		if (isIn(e, menuBackB)) {
+			menuBackB.setMouseOver(true);
+		}
+	}
+
+	public void mouseClicked(MouseEvent e) {
+
 	}
 
 	public void mouseDragged(MouseEvent e) {
-	
 
 	}
-/* 
+
+	/**
+	 * Checks if mouse is clicked on button (cursor clicks button)
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	// @Override
 	public void mousePressed(MouseEvent e) {
-		if (isIn(e, menuB))
-			menuB.setMousePressed(true);
-		else if (isIn(e, unpauseB))
-			unpauseB.setMousePressed(true);
+		if (isIn(e, menuBackB)) {
+			menuBackB.setMousePressed(true);
+
+		}
 	}
+
+	/**
+	 * Checks if mouse is released from button bounds
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
 
 	public void mouseReleased(MouseEvent e) {
-		if (isIn(e, menuB)) {
-			if (menuB.isMousePressed()) {
-				Gamestate.state = Gamestate.MENU;
-				playing.unpauseGame();
-			}
-		} else if (isIn(e, unpauseB)) {
-			if (unpauseB.isMousePressed())
-				playing.unpauseGame();
+		if (isIn(e, menuBackB)) {
+			if (menuBackB.getMousePressed())
+				menuBackB.applyGamestate();
+
 		}
 
-		menuB.resetBools();
-		unpauseB.resetBools();
+		resetButtons();
 
 	}
-
-	public void mouseMoved(MouseEvent e) {
-		menuB.setMouseOver(false);
-		unpauseB.setMouseOver(false);
-
-		if (isIn(e, menuB))
-			menuB.setMouseOver(true);
-		else if (isIn(e, unpauseB))
-			unpauseB.setMouseOver(true);
-
-	}
-
-	private boolean isIn(MouseEvent e, PauseButton b) {
-		return b.getBounds().contains(e.getX(), e.getY());
-	}
-*/
 
 }

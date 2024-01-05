@@ -7,7 +7,7 @@ public class Button {
 	// variables
 	protected int x, y, width, height;
 	protected Rectangle bounds;
-	private boolean mouseOver, mousePressed;
+	private boolean mouseOver, mousePressed, mouseReleased;
 
 	/**
 	 * Constructor to create a button
@@ -105,5 +105,15 @@ public class Button {
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
+
+	public boolean getMouseReleased() {
+		return mouseReleased;
+	}
+
+	public void setMouseReleased(boolean mouseReleased) {
+		this.mouseReleased = mouseReleased;
+	}
+
+	
 
 }

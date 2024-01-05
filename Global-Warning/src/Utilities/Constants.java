@@ -24,6 +24,9 @@ public class Constants {
 			public static final int SAVE_B_WIDTH= 200;
 			public static final int SAVE_B_HEIGHT = 66;
 
+			public static final int PAUSE_B_WIDTH= 56;
+			public static final int PAUSE_B_HEIGHT = 56;
+
 
 		}
 

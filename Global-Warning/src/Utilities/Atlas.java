@@ -13,6 +13,7 @@ public class Atlas {
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";
     public static final String MENUTITLE_ATLAS = "menuTitle.png";
     public static final String PAUSE_ATLAS = "pause_screen.png";
+    public static final String GAMEBUTTONS_ATLAS = "gamepause_buttons.png";
 
     public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
 

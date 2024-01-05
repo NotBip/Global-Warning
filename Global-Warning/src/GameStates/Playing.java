@@ -223,8 +223,8 @@ public class Playing extends State implements KeyListener, MouseListener {
             weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
         }
 
-       // if (paused)
-			//pauseScreen.mouseMoved(e);
+       if (paused)
+			pauseScreen.mouseMoved(e);
 
     }
 
@@ -264,14 +264,14 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-      //  if (paused)
-			//pauseScreen.mousePressed(e);
+       if (paused)
+			pauseScreen.mousePressed(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-      //  if (paused)
-			//pauseScreen.mouseReleased(e);
+       if (paused)
+			pauseScreen.mouseReleased(e);
     }
 
     @Override
