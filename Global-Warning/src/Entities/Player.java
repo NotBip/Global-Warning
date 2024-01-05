@@ -2,19 +2,12 @@ package Entities;
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import static Utilities.Constants.Directions.*;
-import javax.imageio.ImageIO;
-import Objects.Weapons.*;
 import GameStates.Playing;
 
 
 import static Utilities.Atlas.*;
-import Utilities.Atlas;
 
 public class Player extends Entity {
 

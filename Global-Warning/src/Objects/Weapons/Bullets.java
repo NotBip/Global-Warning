@@ -11,26 +11,24 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-
-
 public class Bullets extends Entities.Entity implements MouseListener {
 
-    //variables
+    // variables
     private double x, y, speed;
     private double directionX, directionY;
-    private Weapon1 weapon; 
-    private Playing playing; 
-    public boolean SHOT = false;
-    
+    private Weapon1 weapon;
+    private Playing playing;
+
     /**
      * Constructor to create bullets
+     * 
      * @author Nusayba Hamou
      * @since December 19, 2023
      */
 
     public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY) {
-        super((float)startX, (float)startY, 10, 10);
-        this.weapon = weapon; 
+        super((float) startX, (float) startY, 10, 10);
+        this.weapon = weapon;
         this.playing = playing;
         this.x = startX;
         this.y = startY;
@@ -43,10 +41,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     /**
      * sets direction for the gun
+     * 
      * @author Hamad Mohammed
      * @since December 21, 2023
      */
-
 
     public void setDirection(double targetX, double targetY) {
         double angle = Math.atan2(targetY - y, targetX - x);
@@ -56,6 +54,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     /**
      * shoots bullets towards mouse
+     * 
      * @author Hamad Mohammed
      * @since December 25, 2023
      */
@@ -67,39 +66,39 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.y += speed * directionX;
     }
 
-
     /**
      * draw bullets
+     * 
      * @author Hamad Mohammed
      * @since December 19, 2023
      */
 
     public void draw(Graphics g) {
 
-        //bullet spawns
-        Graphics2D g2d = (Graphics2D)g; 
-
+        // bullet spawns
+        Graphics2D g2d = (Graphics2D) g;
 
         int drawX = (int) Math.round(x);
         int drawY = (int) Math.round(y);
-        hitbox.x = drawX-5;
-        hitbox.y = drawY-5;
-        
-     ;
+        hitbox.x = drawX - 5;
+        hitbox.y = drawY - 5;
+
+        ;
         g2d.setColor(Color.RED);
         g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         g2d.setColor(Color.BLACK);
 
-       //draw bullet hitbox
+        // draw bullet hitbox
         drawHitbox(g);
 
-        //if there is at least one bullet in the list...
-        if (playing.bullets.size() > 0){   
-           
-            //if it gets out of specified bounds...
-            if(drawX >= weapon.x+400 || drawX >= GAME_WIDTH  || drawX <= 0 || drawX <= weapon.x-400||drawY <= 0|| drawY >= GAME_HEIGHT){
-               
-                //remove a bullet
+        // if there is at least one bullet in the list...
+        if (playing.bullets.size() > 0) {
+
+            // if it gets out of specified bounds...
+            if (drawX >= weapon.x + 400 || drawX >= GAME_WIDTH || drawX <= 0 || drawX <= weapon.x - 400 || drawY <= 0
+                    || drawY >= GAME_HEIGHT) {
+
+                // remove a bullet
                 playing.removeBullet();
             }
         }
@@ -108,10 +107,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     /**
      * update bullets for shooting animation
+     * 
      * @author Hamad Mohammed
      * @since December 19, 2023
      */
-
 
     public void updateBullets() {
         for (Bullets bullet : playing.bullets) {
@@ -119,15 +118,15 @@ public class Bullets extends Entities.Entity implements MouseListener {
         }
     }
 
-     /* Getters */
+    /* Getters */
 
     public int getDrawX() {
         return (int) Math.round(x);
-     }
-      public int getDrawY() {
-        return (int) Math.round(y);
-     }
+    }
 
+    public int getDrawY() {
+        return (int) Math.round(y);
+    }
 
     /* Mouse events */
 

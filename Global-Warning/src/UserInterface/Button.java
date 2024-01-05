@@ -3,9 +3,18 @@ package UserInterface;
 import java.awt.Rectangle;
 
 public class Button {
-    protected int x, y, width, height;
+
+	// variables
+	protected int x, y, width, height;
 	protected Rectangle bounds;
 	private boolean mouseOver, mousePressed;
+
+	/**
+	 * Constructor to create a button
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 4, 2024
+	 */
 
 	public Button(int x, int y, int width, int height) {
 		this.x = x;
@@ -15,9 +24,31 @@ public class Button {
 		createBounds();
 	}
 
+	/**
+	 * Create bounds
+	 * 
+	 * @referenced: Kaarin Gaming
+	 * @author Nusayba Hamou
+	 * @since January 4, 2024
+	 */
+
 	private void createBounds() {
 		bounds = new Rectangle(x, y, width, height);
 	}
+
+	/**
+	 * Resets button animations to unclicked
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 4, 2024
+	 */
+
+	public void resetButtons() {
+		mouseOver = false;
+		mousePressed = false;
+	}
+
+	/* Getters and Setters */
 
 	public int getX() {
 		return x;
@@ -58,7 +89,7 @@ public class Button {
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
-	
+
 	public boolean getMouseOver() {
 		return mouseOver;
 	}
@@ -75,8 +106,4 @@ public class Button {
 		this.mousePressed = mousePressed;
 	}
 
-	public void resetButtons() {
-		mouseOver = false;
-		mousePressed = false;
-	}
 }
