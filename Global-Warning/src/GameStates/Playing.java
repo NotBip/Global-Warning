@@ -56,7 +56,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (paused) {
 			pauseScreen.update();
-		} else if (inventory){
+		} else if (inventory && !paused){
 			inventoryState.update();
 		} else {
             player.update();
@@ -80,13 +80,13 @@ public class Playing extends State implements KeyListener, MouseListener {
             bullets.get(i).draw(g);
         }
 
-        if (paused) {
-			pauseScreen.draw(g);
-		} 
-
         if (inventory) {
             inventoryState.draw(g);
         }
+
+        if (paused) {
+			pauseScreen.draw(g);
+		} 
 
     }
 
@@ -139,7 +139,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     private void spawnBullet(int x, int y) {
 
-       if (!paused){
+       if (!paused && !inventory){
             Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y);
              bullets.add(bullet);
         }
@@ -179,7 +179,9 @@ public class Playing extends State implements KeyListener, MouseListener {
 			     paused = !paused;
                  break;
              case KeyEvent.VK_I:
-			     inventory = !inventory;
+                 if (!paused){
+			         inventory = !inventory;
+                 }
                  break;
 
         }
@@ -284,7 +286,7 @@ public class Playing extends State implements KeyListener, MouseListener {
        if (paused)
 			pauseScreen.mousePressed(e);
 
-        if (paused)
+        if (inventory)
             inventoryState.mousePressed(e);
     }
 

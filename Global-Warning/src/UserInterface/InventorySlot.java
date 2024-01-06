@@ -1,6 +1,5 @@
 package UserInterface;
 
-import GameStates.GameState;
 
 import static Utilities.Atlas.getSpriteAtlas;
 
@@ -16,7 +15,7 @@ public class InventorySlot extends Button {
 	private BufferedImage[] imgs;
 
 	/**
-	 * Constructor to create button for pause menu
+	 * Constructor to create button for inventory slot
 	 * 
 	 * @author Nusayba Hamou
 	 * @since January 5, 2024
@@ -33,7 +32,7 @@ public class InventorySlot extends Button {
 	}
 
 	/**
-	 * loads animations for button
+	 * loads animations for slot
 	 * 
 	 * @author Nusayba Hamou
 	 * @since January 5, 2024
@@ -43,18 +42,19 @@ public class InventorySlot extends Button {
 		imgs = new BufferedImage[2];
 		BufferedImage temp = getSpriteAtlas(INVENTORYSLOT_ATLAS);
 		for (int i = 0; i < imgs.length; i++)
+			//sub image height for some reason won't go past 80
 			imgs[i] = temp.getSubimage(i * INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
 	}
 
 	/**
-	 * Draws specific sprite for button
+	 * Draws specific sprite for slot
 	 * 
 	 * @author Nusayba Hamou
 	 * @since January 5, 2024
 	 */
 
 	public void draw(Graphics g) {
-		g.drawImage(imgs[index], xPos, yPos, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT, null);
+		g.drawImage(imgs[index], xPos, yPos, 50, 50, null);
 	}
 
 	/**

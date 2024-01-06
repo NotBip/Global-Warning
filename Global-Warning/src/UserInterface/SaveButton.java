@@ -42,9 +42,9 @@ public class SaveButton extends Button {
 	 */
 
 	private void loadImgs() {
-		imgs = new BufferedImage[3];
+		imgs = new BufferedImage[2];
 		BufferedImage temp = getSpriteAtlas(SAVEBUTTON_ATLAS);
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = temp.getSubimage(i * SAVE_B_WIDTH, rowIndex * SAVE_B_HEIGHT, SAVE_B_WIDTH, SAVE_B_HEIGHT);
 	}
 
