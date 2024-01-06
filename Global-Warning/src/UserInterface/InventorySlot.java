@@ -42,7 +42,6 @@ public class InventorySlot extends Button {
 		imgs = new BufferedImage[2];
 		BufferedImage temp = getSpriteAtlas(INVENTORYSLOT_ATLAS);
 		for (int i = 0; i < imgs.length; i++)
-			//sub image height for some reason won't go past 80
 			imgs[i] = temp.getSubimage(i * INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
 	}
 
@@ -54,7 +53,7 @@ public class InventorySlot extends Button {
 	 */
 
 	public void draw(Graphics g) {
-		g.drawImage(imgs[index], xPos, yPos, 50, 50, null);
+		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
 	}
 
 	/**

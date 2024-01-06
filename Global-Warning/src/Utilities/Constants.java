@@ -28,8 +28,7 @@ public class Constants {
 			public static final int PAUSE_B_HEIGHT = 56;
 
 			public static final int INVENTORY_B_WIDTH= 100;
-			//will not allow for a height above 40 (actual image height is 80)
-			public static final int INVENTORY_B_HEIGHT= 40;
+			public static final int INVENTORY_B_HEIGHT= 81;
 
 
 		}

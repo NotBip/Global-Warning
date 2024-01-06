@@ -20,7 +20,7 @@ public class Atlas {
     public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
 
     public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";
-    public static final String INVENTORYSLOT_ATLAS = "inventory_slot.png";
+    public static final String INVENTORYSLOT_ATLAS = "inventory_slot_new.png";
 
 
 
