@@ -13,6 +13,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import static Utilities.Constants.*;
 
 public class Weapon1 implements MouseMotionListener {
 
@@ -24,8 +25,6 @@ public class Weapon1 implements MouseMotionListener {
     Playing playing;
     private int xFlipped = 0; 
     private int wFlipped = 1; 
-    protected int width=50;
-    protected int height=50;
     protected float x=0;
     protected float y=0;
 
@@ -74,7 +73,7 @@ public class Weapon1 implements MouseMotionListener {
                 this.wFlipped = -1; 
             }
         }
-        g.drawImage(this.img, (int) this.x+this.xFlipped, (int) this.y+20, this.width*this.wFlipped, this.height, null);
+        g.drawImage(this.img, (int) this.x+this.xFlipped, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
         g2d.setTransform(oldXForm);
 
      }
@@ -98,7 +97,13 @@ public class Weapon1 implements MouseMotionListener {
 
 
     public void getImage() {
-        this.img = getSpriteAtlas(WEAPON_ATLAS); 
+        if (Playing.gunIndex == 1){
+            this.img = getSpriteAtlas(WEAPON1_ATLAS); 
+        } else if (Playing.gunIndex == 2){
+            this.img = getSpriteAtlas(WEAPON2_ATLAS); 
+        } else {
+            this.img = getSpriteAtlas(WEAPON3_ATLAS); 
+        }
     }
 
 

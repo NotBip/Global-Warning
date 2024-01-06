@@ -25,6 +25,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public static boolean paused, inventory = false;
     private float borderLen;
     private double weaponAngle = 0;
+    public static int gunIndex = 1;
     public double mouseX;
     public double mouseY;
     public double offset;
@@ -155,6 +156,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         bullets.remove(0);
     }
 
+
     public void keyPressed(KeyEvent e) {
 
         switch (e.getKeyCode()) {
@@ -172,6 +174,15 @@ public class Playing extends State implements KeyListener, MouseListener {
                 break;
             case KeyEvent.VK_SPACE:
                 player.jump();
+                break;
+            case KeyEvent.VK_1:
+                if (gunIndex == 1){
+                    gunIndex = 2;
+                } else if (gunIndex == 2){
+                    gunIndex = 3;
+                } else{
+                    gunIndex = 1;
+                }
                 break;
             case KeyEvent.VK_ESCAPE:
 			     paused = !paused;
@@ -271,14 +282,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             inventoryState.mouseDragged(e);
     }
 
-    public void unpauseGame() {
-		paused = false;
-	}
-
-    public void unInventory() {
-		inventory = false;
-	}
-
+   
     @Override
     public void mousePressed(MouseEvent e) {
        if (paused)

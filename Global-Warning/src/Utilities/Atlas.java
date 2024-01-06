@@ -8,7 +8,10 @@ import javax.imageio.ImageIO;
 public class Atlas {
     // Importing Sprite Sheets and assigning them names
     public static final String PLAYER_ATLAS = "MC.png";
-    public static final String WEAPON_ATLAS = "gunSmol.png";
+    public static final String WEAPON1_ATLAS = "gunSmol.png";
+    public static final String WEAPON2_ATLAS = "pixel_weap_blue.png";
+    public static final String WEAPON3_ATLAS = "pixel_weap_yellow.png";
+
 
     public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";

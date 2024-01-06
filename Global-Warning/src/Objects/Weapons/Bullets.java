@@ -83,10 +83,16 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.x = drawX - 5;
         hitbox.y = drawY - 5;
 
-        ;
-        g2d.setColor(Color.RED);
-        g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
-        g2d.setColor(Color.BLACK);
+        if (Playing.gunIndex == 1){
+            g2d.setColor(Color.PINK);
+            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+        } else if (Playing.gunIndex ==2){
+            g2d.setColor(Color.BLUE);
+            g2d.fillOval(drawX - 5, drawY - 5, 20, 20);
+        } else {
+            g2d.setColor(Color.ORANGE);
+            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+        }
 
         // draw bullet hitbox
         drawHitbox(g);
