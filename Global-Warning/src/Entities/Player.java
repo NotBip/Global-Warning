@@ -59,8 +59,6 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
-        
-        
 
         if (isDashing) {
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
