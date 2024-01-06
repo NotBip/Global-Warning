@@ -152,7 +152,7 @@ public class InventoryState {
 	public void mouseReleased(MouseEvent e) {
         for (InventorySlot slot : slots){
             if (isIn(e, slot)) {
-			    if (slot.getMousePressed())
+			    if (slot.getMousePressed() && !Playing.paused)
                     System.out.print("Inventory slot clicked lool");
             }
 
