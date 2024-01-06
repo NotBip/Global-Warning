@@ -38,6 +38,7 @@ public class LevelManager {
 		Level newLevel = levels.get(lvlIndex);
 		//game.getPlaying().getEnemyManager().generateEnemies();
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
+		playing.getPlayer().setWindy(newLevel.getWindy());
 		playing.setMaxLvlOffset(newLevel.getLvlOffset());
 		
 		//game.getPlaying().getObjectManager().loadObjects(newLevel);

@@ -26,6 +26,8 @@ public class Player extends Entity {
     private float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
+    private boolean isWindy = false;
+    private float windSpeed = -1.0f;
     private int xFlipped = 0;
     private int wFlipped = 1;
 
@@ -58,7 +60,12 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
-        xSpeed = 0;
+        if(isWindy) {
+            xSpeed = windSpeed;
+        } else {
+            xSpeed = 0;    
+        }
+        
         
         
 
@@ -269,5 +276,9 @@ public class Player extends Entity {
     public float getXSpeed() {
         return xSpeed;
     }
+
+    public void setWindy(boolean isWindy) {
+        this.isWindy = isWindy;
+    } 
 
 }
