@@ -1,9 +1,5 @@
 package UserInputs;
 
-import static Utilities.Constants.MENU;
-import static Utilities.Constants.PLAYING;
-
-import Objects.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -30,6 +26,11 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
         case SAVE:
             panel.getGame().getSave().mouseClicked(e);  
             break;
+        case OPTIONS:
+            panel.getGame().getOptions().mouseClicked(e);  
+            break;
+        case QUIT:
+            break;
        }
     
     }
@@ -51,6 +52,11 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
         case SAVE:
             panel.getGame().getSave().mouseDragged(e);  
             break;
+         case OPTIONS:
+            panel.getGame().getOptions().mouseDragged(e);  
+            break;
+        case QUIT:
+            break;
        }
     }
 
@@ -65,7 +71,12 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
             break;
         case SAVE:
             panel.getGame().getSave().mouseMoved(e);  
-            break;    
+            break; 
+         case OPTIONS:
+            panel.getGame().getOptions().mouseMoved(e);  
+            break;
+        case QUIT:
+            break;   
 
        }
        
@@ -88,6 +99,11 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
         case SAVE:
             panel.getGame().getSave().mousePressed(e);  
             break;
+         case OPTIONS:
+            panel.getGame().getOptions().mousePressed(e);  
+            break;
+        case QUIT:
+            break;
        
        }
     }
@@ -103,6 +119,11 @@ public class MouseInputs implements MouseMotionListener, MouseListener{
             break;
         case SAVE:
             panel.getGame().getSave().mouseReleased(e);  
+            break;
+         case OPTIONS:
+            panel.getGame().getOptions().mouseReleased(e);  
+            break;
+        case QUIT:
             break;
        
        }

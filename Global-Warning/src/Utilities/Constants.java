@@ -30,6 +30,9 @@ public class Constants {
 			public static final int INVENTORY_B_WIDTH= 100;
 			public static final int INVENTORY_B_HEIGHT= 81;
 
+			public static final int SOUND_B_WIDTH= 42;
+			public static final int SOUND_B_HEIGHT= 42;
+
 
 		}
 

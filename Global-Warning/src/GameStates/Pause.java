@@ -88,7 +88,7 @@ public class Pause {
 	 * @since January 5, 2024
 	 */
 
-	private boolean isIn(MouseEvent e, InGameButton b) {
+	public static boolean isIn(MouseEvent e, InGameButton b) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
 
