@@ -1,5 +1,4 @@
 package Main;
-import hsa2.*;
 import java.awt.Color;
 
 
