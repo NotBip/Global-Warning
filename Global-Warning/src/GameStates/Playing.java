@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
     private Player player;
-    private Weapon1 weapon;
+    private static Weapon1 weapon;
     public int bulletCount;
     public List<Bullets> bullets;
     private LevelManager levelManager;
@@ -90,6 +90,13 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     public void reset() {
+
+    }
+
+
+     public static void setGunIndex(int item){
+        gunIndex = item;
+        weapon.getImage();
 
     }
 
@@ -200,16 +207,6 @@ public class Playing extends State implements KeyListener, MouseListener {
                 break;
             case KeyEvent.VK_S:
                 player.setDown(false);
-                break;
-            case KeyEvent.VK_1:
-                if (gunIndex == 1){
-                    gunIndex = 2;
-                } else if (gunIndex == 2){
-                    gunIndex = 3;
-                } else{
-                    gunIndex = 1;
-                }
-                 weapon.getImage();
                 break;
         }
     }

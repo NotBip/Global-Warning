@@ -41,12 +41,20 @@ public class InventoryState {
 	 */
 
 	public void makeSlots(){
-		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
-        slots[1] = new InventorySlot(GAME_WIDTH / 2 +position , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
-        slots[2] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
-        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
-        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
-        slots[5] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 - position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT);
+		//first slot
+		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2-position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1); 
+		//second slot
+		slots[1] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2);
+		
+		//3rd slot (under first slot)
+       slots[2] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,3);
+	   //4th slot
+        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,4);
+
+		//5th slot (final row)
+        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,5);
+		//6th slot
+        slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6);
 		
 
 	}
@@ -153,7 +161,7 @@ public class InventoryState {
         for (InventorySlot slot : slots){
             if (isIn(e, slot)) {
 			    if (slot.getMousePressed() && !Playing.paused)
-                    System.out.print("Inventory slot clicked lool");
+					Playing.setGunIndex(slot.item);
             }
 
 		}

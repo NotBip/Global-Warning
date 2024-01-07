@@ -6,12 +6,16 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import GameStates.Playing;
+
 import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
+import static Utilities.Atlas.*;
 import static Utilities.Constants.Buttons.*;
 
 public class InventorySlot extends Button {
     // variables
 	private int xPos, yPos, index;
+	public int item;
 	private BufferedImage[] imgs;
 
 	/**
@@ -21,11 +25,12 @@ public class InventorySlot extends Button {
 	 * @since January 5, 2024
 	 */
 
-	public InventorySlot(int xPos, int yPos, int width, int height) {
+	public InventorySlot(int xPos, int yPos, int width, int height, int item) {
 		super(xPos, yPos, width, height);
 
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.item = item;
 
 		loadImgs();
 		getBounds();
@@ -54,6 +59,28 @@ public class InventorySlot extends Button {
 
 	public void draw(Graphics g) {
 		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
+
+	switch(item) {
+        case 1:
+           g.drawImage(getSpriteAtlas(WEAPON1_ATLAS), xPos+15, yPos+15, 50, 50, null);
+            break;
+        case 2:
+           g.drawImage(getSpriteAtlas(WEAPON2_ATLAS), xPos+15, yPos+15, 50, 50, null);
+            break;
+        case 3:
+             
+            break;
+        case 4:
+
+            break;
+        case 5:
+            break;
+		case 6:
+            break;
+		default:
+			break;
+       }
+
 	}
 
 	/**
