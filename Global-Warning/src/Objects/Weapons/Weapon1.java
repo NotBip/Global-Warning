@@ -23,8 +23,10 @@ public class Weapon1 implements MouseMotionListener {
     Graphics2D g2d; 
     MouseInputs mouse;
     Playing playing;
+    
     private int xFlipped = 0; 
     private int wFlipped = 1; 
+    
     protected float x=0;
     protected float y=0;
 

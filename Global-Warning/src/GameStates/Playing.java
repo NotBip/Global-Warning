@@ -175,15 +175,6 @@ public class Playing extends State implements KeyListener, MouseListener {
             case KeyEvent.VK_SPACE:
                 player.jump();
                 break;
-            case KeyEvent.VK_1:
-                if (gunIndex == 1){
-                    gunIndex = 2;
-                } else if (gunIndex == 2){
-                    gunIndex = 3;
-                } else{
-                    gunIndex = 1;
-                }
-                break;
             case KeyEvent.VK_ESCAPE:
 			     paused = !paused;
                  break;
@@ -209,6 +200,16 @@ public class Playing extends State implements KeyListener, MouseListener {
                 break;
             case KeyEvent.VK_S:
                 player.setDown(false);
+                break;
+            case KeyEvent.VK_1:
+                if (gunIndex == 1){
+                    gunIndex = 2;
+                } else if (gunIndex == 2){
+                    gunIndex = 3;
+                } else{
+                    gunIndex = 1;
+                }
+                 weapon.getImage();
                 break;
         }
     }

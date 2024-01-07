@@ -80,6 +80,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         int drawX = (int) Math.round(x);
         int drawY = (int) Math.round(y);
+
         hitbox.x = drawX - 5;
         hitbox.y = drawY - 5;
 
@@ -88,11 +89,12 @@ public class Bullets extends Entities.Entity implements MouseListener {
             g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         } else if (Playing.gunIndex ==2){
             g2d.setColor(Color.BLUE);
-            g2d.fillOval(drawX - 5, drawY - 5, 20, 20);
+            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         } else {
             g2d.setColor(Color.ORANGE);
             g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         }
+
 
         // draw bullet hitbox
         drawHitbox(g);
