@@ -185,7 +185,11 @@ public class Playing extends State implements KeyListener, MouseListener {
                 player.jump();
                 break;
             case KeyEvent.VK_ESCAPE:
-			     paused = !paused;
+                if (inventory){
+                    inventory = false;
+                } else {
+                    paused = !paused;
+                }
                  break;
              case KeyEvent.VK_I:
                  if (!paused){
