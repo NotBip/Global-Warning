@@ -69,7 +69,7 @@ public class Enemy extends Entity {
     public void move(Player player) {
 
         if (player.hitbox.intersects(hitbox)){
-            System.out.println("ATTACK!!!");
+            //System.out.println("ATTACK!!!");
             xSpeed = 0; 
             if(!isAttack && enemyType == Pirate){
             newState(ATTACK);
@@ -173,9 +173,9 @@ public class Enemy extends Entity {
 		}
 	}
 
-    public void draw(Graphics g) {
-        drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
+    public void draw(Graphics g, int offset) {
+        drawHitbox(g, offset);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
     }
 
     /**

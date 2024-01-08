@@ -9,7 +9,7 @@ import Utilities.Atlas.*;
 import Entities.Entity.*;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
-import Levels.Levels;
+import Levels.Level;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
@@ -26,7 +26,7 @@ public class EnemyManager {
     }
         public void generateEnemies() {
             //zombie = new Enemy1(10, GAME_HEIGHT-80); 
-            pirate = new Enemy2(GAME_WIDTH-50, GAME_HEIGHT-80);
+            pirate = new Enemy2(GAME_WIDTH/2, GAME_HEIGHT/2);
         }
 
         public void update() { 
@@ -34,8 +34,10 @@ public class EnemyManager {
             pirate.move(player);
         }
 
-        public void draw(Graphics g) { 
+        public void draw(Graphics g, int offset) { 
             //zombie.draw(g);
-             pirate.draw(g);
+            
+             pirate.draw(g, offset);
+            
         }
 }

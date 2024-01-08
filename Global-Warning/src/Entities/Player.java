@@ -3,6 +3,7 @@ package Entities;
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.Directions.*;
 
@@ -11,22 +12,29 @@ import static Utilities.Atlas.*;
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
-    private boolean moving = false;
-    private boolean left, right, up, down;
-    private int playerDir = -1;
-    private float gravity = 0.04f;
-    private float airFrictionX = 0.1f;
-    private float airFrictionY = 0.1f;
-    private float moveSpeed = 2.0f;
-    private float jumpSpeed = -2.75f;
-    private float dashXSpeed = 0;
-    private float dashYSpeed = 0;
-    private int dashUpdates = 0;
-    private int maxDashUpdates = 20;
-    public boolean isDashing = false;
-    public boolean canDash = true;
+    private int lvlData[][];
+    private boolean moving = false; // Is the player moving?
+    private boolean left, right, up, down; // What direction is being pressed
+    private int playerDir = RIGHT; // The player's direction
+    private float gravity = 0.04f; // Speed of gravity
+    private float moveSpeed = 2.0f; // Default walk speed of the player
+    private float jumpSpeed = -2.75f; // Jump speed of the player
+    private float dashXSpeed = 0; // Speed of the player's dash on the horizontal
+    private float dashYSpeed = 0; // Speed of the player's dash on the vertical
+    private int dashUpdates = 0; // The amount of updates that have passed while dashing
+    private int maxDashUpdates = 20; // The maximum amount of updates that can pass while dashing
+    private int updatesBetweenDash = 0; // The amount of updates that have passed since the last dash
+    private int maxUpdatesBetweenDash = 60; // The cooldown between dashing
+    private float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
+    public boolean isDashing = false; // Is the player dashing?
+    public boolean canDash = true; // Can the player dash?
+    private boolean isWindy = false; // If the level the player is on is windy
+    private float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
+    private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
+    private int maxWallJumpUpdates = 60; // The cooldown between walljumping
+    private boolean touchingWall = false; // Is the player running into a wall?
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -36,8 +44,20 @@ public class Player extends Entity {
         initialize();
     }
 
+    public void loadLevelData(int[][] lvlData) {
+        this.lvlData = lvlData;
+    }
+
+    public void setSpawn(Point spawn) {
+        int spawnOffset = (int) (this.hitbox.height / 2) + 10; // Don't spawn the player inside the block the spawn point in on top of
+        this.x = spawn.x;
+        this.y = spawn.y - spawnOffset;
+        hitbox.x = x;
+        hitbox.y = y;
+    }
+
     /**
-     * Updates the player (position and direction currently)
+     * Updates the player's position, direction and sprite 
      * 
      * @author Ryder Hodgson
      * @since December 16, 2023
@@ -45,27 +65,44 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
-        xSpeed = 0;
-        System.out.println(hitbox.y + moveSpeed + hitbox.height);
-        // System.out.println(dashYSpeed);
-        // airSpeed = 0;
 
-        if (airSpeed != 0) {
-            inAir = true;
+        // Set the player's default speed at the start of the update before editing it later in the method 
+        if(isWindy) {
+            xSpeed = windSpeed;
+        } else {
+            xSpeed = 0;    
         }
-        if(!inAir) {
-            airSpeed = 0;
+
+        // So the player can't infinitely jump up a wall super quickly
+        if(wallJumpUpdates > 0) {
+            wallJumpUpdates++;
+            if(wallJumpUpdates >= maxWallJumpUpdates) {
+                wallJumpUpdates = 0;
+            }
+        }
+
+        // So the player can't infinitely dash on a flat floor super quickly
+        if(updatesBetweenDash > 0) {
+            updatesBetweenDash++;
+            if(updatesBetweenDash >= maxUpdatesBetweenDash) {
+                updatesBetweenDash = 0;
+            }
         }
 
         if (isDashing) {
-
-            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
-                                                // updates
+            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
                 dashUpdates++;
                 xSpeed = dashXSpeed;
-                airSpeed = dashYSpeed;
+                
+                if(dashYSpeed != 0) { // Set the airspeed to dash speed 
+                    airSpeed = dashYSpeed;
+                }
+                
+                if (airSpeed < 0) { // Set in air if dashing upward
+                    inAir = true;
+                }
             } else {
-                if (dashYSpeed < 0) { // Make the transition out of up dashes less choppy
+                if (dashYSpeed < 0 && canMove(hitbox.x, hitbox.y + dashYSpeed, hitbox.width, hitbox.height, lvlData)) { // Make the transition out of up dashes less choppy
                     airSpeed = -1;
                 } // Reset everything
                 isDashing = false;
@@ -73,111 +110,120 @@ public class Player extends Entity {
                 dashYSpeed = 0;
                 dashUpdates = 0;
             }
-
-        } else {
-            if (right && !left) {
-                xSpeed = moveSpeed;
+        } else { // Regular movement if not dashing
+            if (right && !left) { // Right
+                xSpeed += moveSpeed;
                 playerDir = RIGHT;
                 moving = true;
-            } else if (left && !right) {
-                xSpeed = -moveSpeed;
+            } else if (left && !right) { // Left
+                xSpeed -= moveSpeed;
                 playerDir = LEFT;
                 moving = true;
             }
-            if (inAir) {
+        }
+
+        // Checking if the player has just gone into the air
+        if (!inAir) {
+            if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Check if player is not on ground
+                inAir = true;
+            } else {
+                wallJumpUpdates = 0;
+                if (!isDashing) { // If not dashing on the ground, give dash back
+                    canDash = true;
+                    dashXSpeed = 0;
+                    dashUpdates = 0;
+                }
+            }
+        }
+
+        // Moving vertically
+        if (inAir) {
+            if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) { // Move on the vertical if possible
+                hitbox.y += airSpeed;
                 airSpeed += gravity;
             } else {
+                // Reset everything to do with air
+                hitbox.y = fixYPos(hitbox, airSpeed);
+                //isDashing = false;
+                dashYSpeed = 0; 
+                inAir = false;
                 airSpeed = 0;
             }
-
-        }
-
-        if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height)) { // Move on the horizontal if possible
-            hitbox.x += xSpeed;
-        } else {
-            moving = false;
-        }
-        if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height)) { // Move on the vertical if possible
-            hitbox.y += airSpeed;
-        }
-
-        else if(checkFloor(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height)) { // Check if player is on ground
-            inAir = false;
-            airSpeed = 0;
-            if(dashXSpeed == 0) {
-                isDashing = false;
-                canDash = true;
-                dashUpdates = 0;
+        } 
+        // Moving horizontally
+            if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
+                hitbox.x += xSpeed;
+                touchingWall = false;
+            } else {
+                touchingWall = true;
+                moving = false;
+                hitbox.x = fixXPos(hitbox, xSpeed);
             }
-        }
-
-        // Reset vertical motion if on ground
-    //    else if (!canMove(hitbox.x, hitbox.y + moveSpeed, hitbox.width, hitbox.height)) {
-    //         System.out.println("ooga");
-    //         airSpeed = 0;
-    //         inAir = false;
-    //         if (!isDashing) {
-    //             canDash = true;
-
-    //         }
-    //     }
-
         updateAnimationTick();
         setAnimation();
     }
 
-    public void draw(Graphics g) {
-        // drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65,
-                null);
-
+    public void draw(Graphics g, int offset) {
+        //drawHitbox(g, offset);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
     /**
-     * Makes the player jump if they are on the ground
+     * Makes the player jump if they are on the ground or running into a wall
      * 
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
 
     public void jump() {
-        if (inAir || Math.abs(dashXSpeed) >= 1) {
+        if (inAir && !touchingWall) {
             return;
         }
+        // Jump only if you are able to jump off a wall (or the ground, as hitting the ground resets wallJumpUpdates)
+        if(wallJumpUpdates == 0) {
+            if(touchingWall) {
+                wallJumpUpdates = 1;
+            }
+        
         inAir = true;
         airSpeed = jumpSpeed;
+        
+        // Allow the player to jump out of a dash, keeping the dashing momentum
+        canDash = true;
+        dashUpdates = 0;
+        updatesBetweenDash = 0;
+        }
     }
 
+    /**
+     * Sets the player speed to dash if they are allowed to
+     * 
+     * @author Ryder Hodgson
+     * @since December 18, 2023
+     */
+
     public void dash() {
-        if (isDashing || !canDash) {
+        if (isDashing || !canDash || updatesBetweenDash > 0) { // Immediately return if the player is already dashing or unable to dash
             return;
         }
-        airSpeed = 0;
+        updatesBetweenDash = 1;
         isDashing = true;
         canDash = false;
-        if (left && !right) {
-            dashXSpeed = -moveSpeed * 2;
-            airFrictionX = -Math.abs(airFrictionX);
-
-        } else if (right && !left) {
-            dashXSpeed = moveSpeed * 2;
-            airFrictionX = Math.abs(airFrictionX);
-
+        if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
+            dashXSpeed = -moveSpeed * dashSpeedMultiplier;
+        } else if (right && !left || (!up && !down && playerDir == RIGHT)) { // Set dash right
+            dashXSpeed = moveSpeed * dashSpeedMultiplier;
         }
-        if (up && !down) {
-            dashYSpeed = -moveSpeed * 2;
-            airFrictionY = -Math.abs(airFrictionY);
-        } else if (down && !up && inAir) {
-            dashYSpeed = moveSpeed * 2;
-            airFrictionY = Math.abs(airFrictionY);
+        if (up && !down) { // Set dash up
+            dashYSpeed = -moveSpeed * dashSpeedMultiplier;
+        } else if (down && !up && inAir) { // Set dash down
+            dashYSpeed = moveSpeed * dashSpeedMultiplier;
         }
 
-        if (up && right || up && left) {
-            dashXSpeed /= 1.2f;
-            dashYSpeed /= 1.2f;
-
+        if (up && (right || left)) { // Make the dash cover the same general distance if dashing diagonally using special triangle math
+            dashXSpeed /= Math.sqrt(2);
+            dashYSpeed /= Math.sqrt(2);
         }
-
     }
 
     public void setLeft(boolean left) {
@@ -253,15 +299,8 @@ public class Player extends Entity {
             state = IDLE;
     }
 
-    /**
-     * Sets the direction the player is facing.
-     * 
-     * @author Hamad Mohammed
-     * @since December 16, 2023
-     */
     public void setDirection(int direction) {
         this.playerDir = direction;
-        moving = true;
     }
 
     public float getMoveSpeed() {
@@ -271,5 +310,9 @@ public class Player extends Entity {
     public float getXSpeed() {
         return xSpeed;
     }
+
+    public void setWindy(boolean isWindy) {
+        this.isWindy = isWindy;
+    } 
 
 }

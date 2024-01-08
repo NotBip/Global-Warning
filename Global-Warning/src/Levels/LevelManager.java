@@ -4,22 +4,22 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import Main.Game;
+import GameStates.Playing;
 import Utilities.Constants;
 import Utilities.LoadSave;
 
 public class LevelManager {
 
-	private Game game;
 	private BufferedImage[] levelSprite;
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;
-	private static int lvlIndex = 0;
+	private static int lvlIndex = 5;
 	private int aniTick;
 	private int aniIndex;
+	private Playing playing;
 
-	public LevelManager(Game game) {
-		this.game = game;
+	public LevelManager(Playing playing) {
+		this.playing = playing;
 		importOutsideSprites();
 		createWater();
 		levels = new ArrayList<>();
@@ -36,11 +36,14 @@ public class LevelManager {
 
 	public void loadNextLevel() {
 		Level newLevel = levels.get(lvlIndex);
-		//game.getPlaying().getEnemyManager().loadEnemies(newLevel);
-		//game.getPlaying().getPlayer().loadLvlData(newLevel.getLevelData());
-		//game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
+		//game.getPlaying().getEnemyManager().generateEnemies();
+		playing.getPlayer().loadLevelData(newLevel.getLevelData());
+		playing.getPlayer().setWindy(newLevel.getWindy());
+		playing.setMaxLvlOffset(newLevel.getLvlOffset());
+		
 		//game.getPlaying().getObjectManager().loadObjects(newLevel);
 	}
+
 
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
@@ -58,18 +61,18 @@ public class LevelManager {
 			}
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g, int offset) {
 		for (int j = 0; j < Constants.HEIGHT_IN_TILES; j++)
 			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
 				int index = levels.get(lvlIndex).getSpriteIndex(i, j);
 				int x = Constants.TILE_SIZE * i;
 				int y = Constants.TILE_SIZE * j;
 				if (index == 48)
-					g.drawImage(waterSprite[aniIndex], x, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+					g.drawImage(waterSprite[aniIndex], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 				else if (index == 49)
-					g.drawImage(waterSprite[4], x, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+					g.drawImage(waterSprite[4], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 				else
-					g.drawImage(levelSprite[index], x, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 	}
 
@@ -88,9 +91,10 @@ public class LevelManager {
 		}
 	}
 
-	/*public static Level getCurrentLevel() {
-		return Level.get(lvlIndex);
-	}*/
+	public Level getCurrentLevel() {
+		return levels.get(lvlIndex);
+	}
+
 
 	public int getAmountOfLevels() {
 		return levels.size();
@@ -101,6 +105,7 @@ public class LevelManager {
 	}
 
 	public void setLevelIndex(int lvlIndex) {
-		this.lvlIndex = lvlIndex;
+		LevelManager.lvlIndex = lvlIndex;
 	}
 }
+
