@@ -23,11 +23,18 @@ public class Player extends Entity {
     private float dashYSpeed = 0; // Speed of the player's dash on the vertical
     private int dashUpdates = 0; // The amount of updates that have passed while dashing
     private int maxDashUpdates = 20; // The maximum amount of updates that can pass while dashing
+    private int updatesBetweenDash = 0; // The amount of updates that have passed since the last dash
+    private int maxUpdatesBetweenDash = 60; // The cooldown between dashing
     private float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
+    private boolean isWindy = false; // If the level the player is on is windy
+    private float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
+    private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
+    private int maxWallJumpUpdates = 60; // The cooldown between walljumping
+    private boolean touchingWall = false; // Is the player running into a wall?
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -58,16 +65,39 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
-        xSpeed = 0;
+
+        // Set the player's default speed at the start of the update before editing it later in the method 
+        if(isWindy) {
+            xSpeed = windSpeed;
+        } else {
+            xSpeed = 0;    
+        }
+
+        // So the player can't infinitely jump up a wall super quickly
+        if(wallJumpUpdates > 0) {
+            wallJumpUpdates++;
+            if(wallJumpUpdates >= maxWallJumpUpdates) {
+                wallJumpUpdates = 0;
+            }
+        }
+
+        // So the player can't infinitely dash on a flat floor super quickly
+        if(updatesBetweenDash > 0) {
+            updatesBetweenDash++;
+            if(updatesBetweenDash >= maxUpdatesBetweenDash) {
+                updatesBetweenDash = 0;
+            }
+        }
 
         if (isDashing) {
-            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of
-                                                // updates
+            if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
                 dashUpdates++;
                 xSpeed = dashXSpeed;
                 
-                if(dashYSpeed != 0)
-                airSpeed = dashYSpeed;
+                if(dashYSpeed != 0) { // Set the airspeed to dash speed 
+                    airSpeed = dashYSpeed;
+                }
+                
                 if (airSpeed < 0) { // Set in air if dashing upward
                     inAir = true;
                 }
@@ -97,6 +127,7 @@ public class Player extends Entity {
             if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Check if player is not on ground
                 inAir = true;
             } else {
+                wallJumpUpdates = 0;
                 if (!isDashing) { // If not dashing on the ground, give dash back
                     canDash = true;
                     dashXSpeed = 0;
@@ -122,7 +153,9 @@ public class Player extends Entity {
         // Moving horizontally
             if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
+                touchingWall = false;
             } else {
+                touchingWall = true;
                 moving = false;
                 hitbox.x = fixXPos(hitbox, xSpeed);
             }
@@ -136,21 +169,30 @@ public class Player extends Entity {
     }
 
     /**
-     * Makes the player jump if they are on the ground
+     * Makes the player jump if they are on the ground or running into a wall
      * 
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
 
     public void jump() {
-        if (inAir) {
+        if (inAir && !touchingWall) {
             return;
         }
+        // Jump only if you are able to jump off a wall (or the ground, as hitting the ground resets wallJumpUpdates)
+        if(wallJumpUpdates == 0) {
+            if(touchingWall) {
+                wallJumpUpdates = 1;
+            }
+        
         inAir = true;
         airSpeed = jumpSpeed;
+        
         // Allow the player to jump out of a dash, keeping the dashing momentum
         canDash = true;
         dashUpdates = 0;
+        updatesBetweenDash = 0;
+        }
     }
 
     /**
@@ -161,9 +203,10 @@ public class Player extends Entity {
      */
 
     public void dash() {
-        if (isDashing || !canDash) { // Immediately return if the player is already dashing or unable to dash
+        if (isDashing || !canDash || updatesBetweenDash > 0) { // Immediately return if the player is already dashing or unable to dash
             return;
         }
+        updatesBetweenDash = 1;
         isDashing = true;
         canDash = false;
         if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
@@ -267,5 +310,9 @@ public class Player extends Entity {
     public float getXSpeed() {
         return xSpeed;
     }
+
+    public void setWindy(boolean isWindy) {
+        this.isWindy = isWindy;
+    } 
 
 }
