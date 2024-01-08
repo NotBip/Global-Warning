@@ -4,24 +4,21 @@ import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-import Main.Game;
-
 import static Utilities.Constants.Directions.*;
-import static Entities.Enemy.*; 
+
 import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
     private BufferedImage[][] animations;
     private boolean moving = false;
-    public boolean left, right, up, down;
+    private boolean left, right, up, down;
     private int playerDir = -1;
-    private float gravity = 0.04f * Game.SCALE;
-    private float airFrictionX = 0.1f * Game.SCALE;
-    private float airFrictionY = 0.1f * Game.SCALE;
-    public float moveSpeed = 2.0f  * Game.SCALE;
-    private float jumpSpeed = -2.75f * Game.SCALE;
+    private float gravity = 0.04f;
+    private float airFrictionX = 0.1f;
+    private float airFrictionY = 0.1f;
+    private float moveSpeed = 2.0f;
+    private float jumpSpeed = -2.75f;
     private float dashXSpeed = 0;
     private float dashYSpeed = 0;
     private int dashUpdates = 0;
@@ -30,7 +27,6 @@ public class Player extends Entity {
     public boolean canDash = true;
     private int xFlipped = 0;
     private int wFlipped = 1;
-    private Enemy enemy; 
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -54,7 +50,7 @@ public class Player extends Entity {
         moving = false; // Stop the player movement animation in case they stop moving this update
         xSpeed = 0;
 
-      //  System.out.println(currentHealth);
+        System.out.println(currentHealth);
         if (airSpeed != 0) {
             inAir = true;
         }
@@ -126,7 +122,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g) {
         drawHitbox(g);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, (55 * wFlipped) * (int) Game.SCALE, 65 * (int) Game.SCALE,
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped, (int) hitbox.y, 55 * wFlipped, 65,
                 null);
 
     }
@@ -280,16 +276,5 @@ public class Player extends Entity {
 		currentHealth += value;
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
 	}
-
-    /**
-     * Adds knockback to player when attacked. 
-     * @author Hamad Mohammed
-     * @since December 22, 2023
-     */
-    public void knockBack() { 
-
-    }
-
-
 
 }
