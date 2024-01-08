@@ -27,28 +27,28 @@ public class EnemyManager {
 
     }
         public void generateEnemies() {
-        Waterboi.add(new Enemy2(100, GAME_HEIGHT-600)) ;
-        Fireboi.add(new Enemy1(100, GAME_HEIGHT-600)); 
+       // Waterboi.add(new Enemy2(100, GAME_HEIGHT-600)) ;
+       // Fireboi.add(new Enemy1(100, GAME_HEIGHT-600)); 
         }
 
         public void update() { 
-          for (Enemy2 o : Waterboi) { 
-           o.move(player); 
-         }
+        //   for (Enemy2 o : Waterboi) { 
+        //    o.move(player); 
+        //  }
 
-           for (Enemy1 f : Fireboi) { 
-            f.move(player);
-           }
+          //  for (Enemy1 f : Fireboi) { 
+          //   f.move(player);
+          //  }
         }
 
         public void draw(Graphics g) { 
-            for (Enemy2 o : Waterboi) { 
-               o.draw(g);
-           }
+          //   for (Enemy2 o : Waterboi) { 
+          //      o.draw(g);
+          //  }
 
-             for (Enemy1 f : Fireboi) { 
-             f.draw(g);
-            }
+          //    for (Enemy1 f : Fireboi) { 
+          //    f.draw(g);
+          //   }
 
         }
 }
