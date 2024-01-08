@@ -68,7 +68,6 @@ public class Playing extends State implements KeyListener {
         checkBorder();
         checkTransition();
 
-        // checkingTransition = false;
         // enemyManager.update();
     }
 
