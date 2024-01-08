@@ -6,7 +6,6 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import GameStates.Playing;
 
 import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
 import static Utilities.Atlas.*;
@@ -58,6 +57,7 @@ public class InventorySlot extends Button {
 	 */
 
 	public void draw(Graphics g) {
+		int num = 0;
 		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
 
 	switch(item) {
@@ -68,14 +68,24 @@ public class InventorySlot extends Button {
            g.drawImage(getSpriteAtlas(WEAPON2_ATLAS), xPos+15, yPos+15, 50, 50, null);
             break;
         case 3:
-             
+			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
+			if (index == 1)	
+				g.drawString("Amount: "+num, 20, 20);
             break;
         case 4:
-
+			g.drawImage(getSpriteAtlas(POTION_ATLAS), xPos-20, yPos-20, 120, 120, null); 
+			if (index == 1)	
+				g.drawString("Amount: "+num, 20, 20);
             break;
         case 5:
+			g.drawImage(getSpriteAtlas(KEY_ATLAS), xPos+15, yPos+15, 50, 50, null); 
+			if (index == 1)	
+				g.drawString("Amount: "+num, 20, 20);
             break;
 		case 6:
+			g.drawImage(getSpriteAtlas(GEM_ATLAS), xPos+15, yPos+15, 50, 50, null); 
+			if (index == 1)	
+				g.drawString("Amount: "+num, 20, 20);
             break;
 		default:
 			break;

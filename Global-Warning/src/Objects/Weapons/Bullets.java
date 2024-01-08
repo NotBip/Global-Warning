@@ -3,6 +3,8 @@ package Objects.Weapons;
 import GameStates.Playing;
 
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Atlas.*;
+import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.GAME_HEIGHT;
 
 import java.awt.Color;
@@ -87,12 +89,12 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if (Playing.gunIndex == 1){
             g2d.setColor(Color.PINK);
             g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
-        } else if (Playing.gunIndex ==2){
+        } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
             g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         } else {
-            g2d.setColor(Color.ORANGE);
-            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+            //g2d.setColor(Color.ORANGE);
+           // g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         }
 
 

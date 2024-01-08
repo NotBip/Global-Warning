@@ -95,8 +95,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
 
      public static void setGunIndex(int item){
-        gunIndex = item;
-        weapon.getImage();
+        if (item <3){
+            gunIndex = item;
+            weapon.getImage();
+        }
 
     }
 

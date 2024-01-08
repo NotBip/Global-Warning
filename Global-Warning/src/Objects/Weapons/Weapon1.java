@@ -104,7 +104,7 @@ public class Weapon1 implements MouseMotionListener {
         } else if (Playing.gunIndex == 2){
             this.img = getSpriteAtlas(WEAPON2_ATLAS); 
         } else {
-            this.img = getSpriteAtlas(WEAPON3_ATLAS); 
+            //this.img = getSpriteAtlas(WEAPON3_ATLAS); 
         }
     }
 
