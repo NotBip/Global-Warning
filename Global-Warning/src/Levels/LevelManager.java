@@ -44,7 +44,6 @@ public class LevelManager {
 		//game.getPlaying().getObjectManager().loadObjects(newLevel);
 	}
 
-	
 
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
@@ -96,6 +95,7 @@ public class LevelManager {
 		return levels.get(lvlIndex);
 	}
 
+
 	public int getAmountOfLevels() {
 		return levels.size();
 	}
@@ -108,3 +108,4 @@ public class LevelManager {
 		LevelManager.lvlIndex = lvlIndex;
 	}
 }
+
