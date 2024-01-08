@@ -2,6 +2,8 @@ package Entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import GameStates.Playing;
 import UserInterface.LoadSave;
 import Utilities.Atlas;
@@ -10,34 +12,44 @@ import Entities.Entity.*;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Levels.Level;
-
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.EnemyConstants.*;
 
 public class EnemyManager {
 
-        Enemy1 zombie; 
-        Enemy2 pirate; 
+        ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
+        ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
         Player player; 
 
     public EnemyManager(Player player){
         this.player = player; 
+
     }
         public void generateEnemies() {
-            //zombie = new Enemy1(10, GAME_HEIGHT-80); 
-            pirate = new Enemy2(GAME_WIDTH/2, GAME_HEIGHT/2);
+       // Waterboi.add(new Enemy2(100, GAME_HEIGHT-600)) ;
+       // Fireboi.add(new Enemy1(100, GAME_HEIGHT-600)); 
         }
 
         public void update() { 
-            //zombie.move(player);
-            pirate.move(player);
+        //   for (Enemy2 o : Waterboi) { 
+        //    o.move(player); 
+        //  }
+
+          //  for (Enemy1 f : Fireboi) { 
+          //   f.move(player);
+          //  }
         }
 
-        public void draw(Graphics g, int offset) { 
-            //zombie.draw(g);
-            
-             pirate.draw(g, offset);
-            
-        }
+        public void draw(Graphics g) { 
+        //     for (Enemy2 o : Waterboi) { 
+        //        o.draw(g);
+        //    }
+
+        //      for (Enemy1 f : Fireboi) { 
+        //      f.draw(g);
+        //     }
+
+        // }
+}
 }
