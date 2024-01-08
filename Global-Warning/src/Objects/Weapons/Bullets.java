@@ -3,8 +3,6 @@ package Objects.Weapons;
 import GameStates.Playing;
 
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Atlas.*;
-import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.GAME_HEIGHT;
 
 import java.awt.Color;
@@ -99,6 +97,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
 
         // draw bullet hitbox
+        g2d.setColor(Color.BLACK);
         drawHitbox(g);
 
         // if there is at least one bullet in the list...

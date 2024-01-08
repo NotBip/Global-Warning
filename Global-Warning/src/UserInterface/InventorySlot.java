@@ -70,6 +70,7 @@ public class InventorySlot extends Button {
         case 3:
 			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	
+				//g.drawRect(xPos, yPos, 20, 20);
 				g.drawString("Amount: "+num, 20, 20);
             break;
         case 4:

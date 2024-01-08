@@ -23,7 +23,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private Pause pauseScreen;
     private InventoryState inventoryState;
     public static boolean paused, inventory = false;
-    private float borderLen;
+    //private float borderLen;
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public double mouseX;
