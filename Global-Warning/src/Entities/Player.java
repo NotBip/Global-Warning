@@ -38,10 +38,13 @@ public class Player extends Entity {
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
+        this.maxHealth = 100;
+		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
         Animations();
         initialize();
+
     }
 
     public void loadLevelData(int[][] lvlData) {
@@ -314,5 +317,15 @@ public class Player extends Entity {
     public void setWindy(boolean isWindy) {
         this.isWindy = isWindy;
     } 
+    /**
+     * Changes the players health depending on enemy.
+     * @author Hamad Mohammed
+     * @param value Damage being done 
+     * @since December 16, 2023
+     */
+     public void changeHealth(int value) {
+		currentHealth += value;
+		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
+	}
 
 }

@@ -1,5 +1,7 @@
 package Utilities;
 
+import Main.Game;
+
 public class Constants {
 
     // Game constants
@@ -25,53 +27,72 @@ public class Constants {
 
 
 	public static class EnemyConstants {
-			public static final int Zombie = 0;
-			public static final int ZOMBIE_HEIGHT = 67; 
-			public static final int ZOMBIE_WIDTH = 60; 
-			public static final int zombieArrI = 5; 
-			public static final int zombieArrJ = 6; 
-			public static final int zombieW = 64; 
-			public static final int zombieH = 62; 
-			public static final int zombieAttack = 2; 
 
-			public static final int Pirate = 1; 
-			public static final int PIRATE_HEIGHT = 67; 
-			public static final int PIRATE_WIDTH = 90; 
-			public static final int pirateArrI = 9;
-			public static final int pirateArrJ = 6; 
-			public static final int pirateW = 64; 
-			public static final int pirateH = 40;
-			public static final int IDLE = 0; 
-			public static final int RUNNING = 1; 
-			public static final int ATTACK = 6; 
+			public static final String IDLE = "IDLE";
+			public static final String WALK = "WALK"; 
+			public static final String RUN = "RUN"; 
+			public static final String ATTACK = "ATTACK"; 
+
+			public static final int Waterboi = 0; 
+			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
+			public static final int WATERBOI_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int waterAttackSpeed = 20; 
+			public static final int waterArrI = 9;
+			public static final int waterArrJ = 8; 
+			public static final int waterW = 144; 
+			public static final int waterH = 166;
+			public static final int waterIdle = 0; 
+			public static final int waterWalk = 1; 
+			public static final int waterRunning = 2; 
+			public static final int waterAttack = 6; 
+			public static final float waterSpeed = 1.0f * Game.SCALE; 
+			public static final int waterSizeX = 100*(int) Game.SCALE; 
+			public static final int waterSizeY = 110*(int) Game.SCALE; 
+
+
+
+			public static final int Fireboi = 1; 
+			public static final int FIREBOI_HEIGHT = 93 *(int) Game.SCALE; 
+			public static final int FIREBOI_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int fireAttackSpeed = 15; 
+			public static final int fireboiArrI = 9; 
+			public static final int fireboiArrJ = 8; 
+			public static final int fireboiW = 144; 
+			public static final int fireboiH = 165;
+			public static final int fireIdle = 0; 
+			public static final int fireWalk = 1; 
+			public static final int fireRun = 2; 
+			public static final int fireAttack = 7; 
+			public static final float fireSpeed = 1.5f * Game.SCALE; 
+			public static final int fireSizeX = 100 *(int) Game.SCALE; 
+			public static final int fireSizeY = 110 *(int) Game.SCALE; 
 
 
 			
 			
-	public static int GetSpriteAmount(int enemy_type, int enemy_state) {
+	public static int GetSpriteAmount(int enemy_type, String enemy_state) {
 		switch (enemy_state) {
 
-		// case IDLE: 
-		// 	if (enemy_type == Zombie)
-		// 	return 1;
-
-		// 	else if(enemy_type == Pirate)
-		// 	return 5; 
-		
-		case ATTACK: 
-			if (enemy_type == Pirate)
-				return 2; 
-		
-		case zombieAttack: 
-			if (enemy_type == Zombie)
-				return 6; 
-		case RUNNING:
-			if (enemy_type == Zombie)
-			return 5;
-
-			else if(enemy_type == Pirate)
-			return 2; 
-
+		case "IDLE": 
+			if(enemy_type == Waterboi)
+			return 5; 
+			if(enemy_type == Fireboi) 
+			return 5; 
+		case "WALK":
+			 if(enemy_type == Waterboi)
+			return 6; 
+			 if(enemy_type == Fireboi)
+			return 7;
+		case "RUN": 
+			 if(enemy_type == Waterboi)
+			return 5; 
+			 if(enemy_type == Fireboi)
+			return 2;
+		case "ATTACK": 
+			if(enemy_type == Waterboi)
+			return 3; 
+			if(enemy_type == Fireboi)
+			return 6; 
 		default: 
 			return 0;
 
@@ -86,6 +107,66 @@ public class Constants {
 				return 0;
 		}
 	}
+
+	public static int getEnemyDamage(int enemyType) { 
+		switch (enemyType) {
+
+			case Waterboi:
+				return 1; 
+			
+			case Fireboi: 
+				return 1; 
+				
+			default:
+				return 0; 
+		}
+	}
+
+	public static int findState(int enemy_type, String enemy_state) { 
+		switch(enemy_state) { 
+			case "IDLE": 
+				if(enemy_type == Waterboi) 
+				return waterIdle; 
+				if(enemy_type == Fireboi)
+				return fireIdle; 
+
+			case "WALK":
+				if(enemy_type == Waterboi)
+				return waterWalk; 
+				if(enemy_type == Fireboi) 
+				return fireWalk; 
+			
+			case "RUN": 
+				if(enemy_type == Waterboi)
+				return waterRunning; 
+				if(enemy_type == Fireboi)
+				return fireRun; 
+			
+			case "ATTACK": 
+				if(enemy_type == Waterboi) 
+				return waterAttack; 
+				if(enemy_type == Fireboi)
+				return fireAttack; 
+			
+			default: 
+				return 0; 
+		}
+	}
+
+	public static int getAttackSpeed(int enemy_type) { 
+		
+		switch (enemy_type) {
+
+			case Waterboi:
+				return waterAttackSpeed; 
+			case Fireboi: 
+				return fireAttackSpeed;
+			default:
+				return 0;
+		}
+	}
+
+
 }
 
 

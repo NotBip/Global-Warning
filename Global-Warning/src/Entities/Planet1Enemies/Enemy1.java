@@ -3,13 +3,14 @@ package Entities.Planet1Enemies;
 import Entities.Enemy;
 import GameStates.Playing;
 
+import static Utilities.Atlas.FIREBOI_ATLAS;
 import static Utilities.Atlas.ZOMBIE_ATLAS;
 import static Utilities.Constants.EnemyConstants.*;
 
 public class Enemy1 extends Enemy {
 
-    public Enemy1(float x, float y) {
-        super(x, y, ZOMBIE_WIDTH, ZOMBIE_HEIGHT, Zombie, zombieArrI, zombieArrJ, zombieW, zombieH, ZOMBIE_ATLAS, 0, 1, 1.2f,  60, 70);
+   public Enemy1(float x, float y) {
+        super(x, y, FIREBOI_WIDTH+10, FIREBOI_HEIGHT, Fireboi, fireboiArrI, fireboiArrJ, fireboiW, fireboiH, FIREBOI_ATLAS, FIREBOI_WIDTH, -1, fireSpeed,  fireSizeX, fireSizeY);
         super.inAir = true; 
 }
 

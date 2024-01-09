@@ -9,6 +9,7 @@ import Levels.LevelManager;
 public class Game implements Runnable {
     private static final int FPS = 60; // Frames per second
     private static final int UPS = 120; // Updates (behind the scenes stuff) per second
+    public static final float SCALE = 1f; 
     private Thread gameThread;
     private Playing playing;
     private Menu menu;

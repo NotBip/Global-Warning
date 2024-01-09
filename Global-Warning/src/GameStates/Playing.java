@@ -10,7 +10,6 @@ import Objects.ObjectManager;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.TILE_SIZE;
-import static Utilities.Constants.EnemyConstants.Zombie;
 import Entities.EnemyManager.*;
 import java.awt.Graphics;
 import java.awt.event.*;
@@ -49,10 +48,9 @@ public class Playing extends State implements KeyListener {
     }
 
     public void initialize() {
-        // enemyManager = new EnemyManager(player);
         levelManager = new LevelManager(this);
-
         player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
+        enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         try{ // Catch errors if the room has no default spawn point
@@ -60,15 +58,15 @@ public class Playing extends State implements KeyListener {
         } catch(Exception e) { // Will spawn the player at its initialization spawning coordinates
             System.out.println("no default spawn point found");
         }
-        // enemyManager.generateEnemies();
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
+
     }
 
     public void update() {
         player.update();
         checkBorder();
         checkTransition();
-
-        // enemyManager.update();
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData());
     }
 
      /**
@@ -142,7 +140,7 @@ public class Playing extends State implements KeyListener {
 
     public void draw(Graphics g) {
         player.draw(g, xOffset);
-        // enemyManager.draw(g, offset);
+        enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
     }
 

@@ -27,6 +27,9 @@ public class Entity {
     protected int animationTick;
     protected int animationIndex;
     protected int[][] lvlData;
+    protected Rectangle2D.Float enemyRange; 
+    protected float enemyRangeX, enemyRangeY; 
+    protected int enemyRangeW, enemyRangeH; 
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -36,6 +39,7 @@ public class Entity {
     }
 
     protected void initialize() {
+        enemyRange = new Rectangle2D.Float(enemyRangeX, enemyRangeY, enemyRangeW, enemyRangeH); 
         hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
@@ -57,6 +61,7 @@ public class Entity {
 
     public void drawHitbox(Graphics g, int offset) {
         g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+        g.drawRect((int) enemyRange.x - offset, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     /**
