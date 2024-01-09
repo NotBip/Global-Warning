@@ -4,6 +4,7 @@ import Main.Game;
 
 public class Constants {
 
+ 
 	// Game constants
 
 	public static final int TILE_SIZE = 32;
@@ -39,7 +40,7 @@ public class Constants {
 
 	}
 
-	public static class Directions {
+    public static class Directions {
 		public static final int LEFT = 0;
 		public static final int UP = 1;
 		public static final int RIGHT = 2;
@@ -193,23 +194,6 @@ public class Constants {
 
 
 	public static class PlayerConstants {
-		public static final int IDLELEFT = 1;
-		public static final int IDLERIGHT = 0;
-		public static final int RUNNINGRIGHT = 2;
-		public static final int RUNNINGLEFT = 3;
-
-		public static int GetSpriteAmount(int player_action) {
-			switch (player_action) {
-				case RUNNINGRIGHT:
-					return 4;
-				case IDLELEFT:
-					return 4;
-				case IDLERIGHT:
-					return 4;
-				case RUNNINGLEFT:
-					return 4;
-				default:
-					return 1;
 		public static final int IDLE = 0;
 		public static final int RUNNING = 2;
 
@@ -223,6 +207,6 @@ public class Constants {
 				return 1;
 			}
 		}
-	}
+    }
 }
 		

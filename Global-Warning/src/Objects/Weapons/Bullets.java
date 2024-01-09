@@ -73,7 +73,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 19, 2023
      */
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xOffset) {
 
         // bullet spawns
         Graphics2D g2d = (Graphics2D) g;
@@ -98,7 +98,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         // draw bullet hitbox
         g2d.setColor(Color.BLACK);
-        drawHitbox(g);
+        drawHitbox(g, xOffset);
 
         // if there is at least one bullet in the list...
         if (playing.bullets.size() > 0) {
