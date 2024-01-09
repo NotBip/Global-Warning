@@ -182,11 +182,10 @@ public class Enemy extends Entity {
 
     
     public int flipX() {
-		if (xFlipped == 0) { 
+		if (xFlipped == 0)  
 			return width;
-        } else {
+         else 
 			return 0;
-        }
         }
 
 	public int flipW() {
