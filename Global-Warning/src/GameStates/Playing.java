@@ -29,7 +29,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int xOffset;
     private int maxOffsetX;
     private LevelManager levelManager;
-    private ObjectManager objectManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
     public static boolean paused, inventory = false;
@@ -53,28 +52,6 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     }
 
-    public void initialize() {
-        player = new Player(10, GAME_HEIGHT - 100, 60, 80, this);
-        weapon = new Weapon1(player, this);
-        bullets = new ArrayList<>();
-
-        pauseScreen = new Pause(this);
-        inventoryState = new InventoryState(this);
-    }
-
-    public void update() {
-
-        if (paused) {
-			pauseScreen.update();
-		} else if (inventory && !paused){
-			inventoryState.update();
-		} else {
-            player.update();
-            weapon.update();
-         for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).updateBullets();
-         }
-        }
 
     /**
      * Loads the new level
@@ -99,23 +76,37 @@ public class Playing extends State implements KeyListener, MouseListener {
         player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
+        weapon = new Weapon1(player, this);
+        bullets = new ArrayList<>();
+        pauseScreen = new Pause(this);
+        inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         } catch(Exception e) { // Will spawn the player at its initialization spawning coordinates
             System.out.println("no default spawn point found");
         }
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
-
     }
 
     public void update() {
+        if (paused) {
+			pauseScreen.update();
+		} else if (inventory && !paused){
+			inventoryState.update();
+		} else {
+            player.update();
+            weapon.update();
+         for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).updateBullets();
+         }
         player.update();
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData());
     }
-
+    }
      /**
      * Checks if that player has gone past the camera border
      * 
@@ -187,8 +178,12 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) {
         weapon.draw(g);
+        player.draw(g, xOffset);
+        enemyManager.draw(g, xOffset);
+        levelManager.draw(g, xOffset);
+        
         for (int i = 0; i < bullets.size(); i++) {
-            bullets.get(i).draw(g);
+            bullets.get(i).draw(g, xOffset);
         }
 
         if (inventory) {
@@ -197,11 +192,9 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (paused) {
 			pauseScreen.draw(g);
-		} 
-        player.draw(g, xOffset);
-        enemyManager.draw(g, xOffset);
-        levelManager.draw(g, xOffset);
+		}
     }
+       
 
     public void reset() {
 
@@ -388,10 +381,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         bulletCooldown(e);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
 
     /**
 	 * Applies cooldown if bullet is shot (mouse dragged; click with movement)
@@ -431,17 +420,17 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseEntered'");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mouseExited'");
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
     }
+
 
 }

@@ -7,10 +7,11 @@ import Entities.Enemy;
 
 public class Enemy2 extends Enemy {
 
-    public Enemy2(float x, float y, int[][] lvldata) {
+    public Enemy2(float x, float y, int[][] lvlData) {
         super(x, y, WATERBOI_WIDTH+20, WATERBOI_HEIGHT, Waterboi, waterArrI, waterArrJ, waterW, waterH, WATERBOI_ATLAS, WATERBOI_WIDTH, -1, waterSpeed, waterSizeX, waterSizeY);    
         super.inAir = true; 
-        super.lvlData = lvldata; 
+        super.lvlData = lvlData; 
+
     }
     
 }
