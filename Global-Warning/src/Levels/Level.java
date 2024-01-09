@@ -3,6 +3,10 @@ package Levels;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import Entities.Planet1Enemies.Enemy1;
+import Entities.Planet1Enemies.Enemy2;
 import Utilities.Constants;
 
 public class Level {
@@ -22,7 +26,8 @@ public class Level {
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
 	private boolean isWindy = false;
-
+	ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
+    ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
 	public Level(BufferedImage img) {
 		this.img = img;
@@ -49,7 +54,7 @@ public class Level {
 	private void loadLevelData(int redValue, int x, int y) {
 		if (redValue >= 50)
 			lvlData[y][x] = 0;
-		else
+		else	
 			lvlData[y][x] = redValue;
 		switch (redValue) {
 		}
@@ -58,13 +63,13 @@ public class Level {
 	private void loadEntities(int greenValue, int x, int y) {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
+		case 1: Waterboi.add(new Enemy2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		case 103: isWindy = true;
-
 		}
 	}
 
@@ -114,6 +119,10 @@ public class Level {
 
 	public boolean getWindy() {
 		return isWindy;
+	}
+
+	public ArrayList<Enemy2> getWaterBoi() { 
+		return Waterboi; 
 	}
 
 	/*public ArrayList<Entity> getEntityName() {

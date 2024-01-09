@@ -40,7 +40,6 @@ public class LevelManager {
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());
 		playing.setMaxLvlOffset(newLevel.getLvlOffset());
-		
 		//game.getPlaying().getObjectManager().loadObjects(newLevel);
 	}
 
@@ -108,4 +107,3 @@ public class LevelManager {
 		LevelManager.lvlIndex = lvlIndex;
 	}
 }
-
