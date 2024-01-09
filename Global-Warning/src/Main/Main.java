@@ -1,8 +1,9 @@
 package Main;
+import java.awt.Color;
 
 public class Main {
     public static void main(String[] args) {
-        //nusayba is great
+        //Hamad is great
         new Game();
     }
 }
