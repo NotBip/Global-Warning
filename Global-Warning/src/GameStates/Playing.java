@@ -2,16 +2,12 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
-import Entities.Planet1Enemies.Enemy1;
-import Entities.Planet1Enemies.Enemy2;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.TILE_SIZE;
-import Entities.EnemyManager.*;
 import java.awt.Graphics;
 
 import java.awt.event.*;
@@ -348,10 +344,9 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (!paused && !inventory) {
             if (mouseX < weapon.getX()) {
-
-                offset = 1.6;
+                offset = 1.7;
             } else {
-                offset = -1.5;
+                offset = -1.8;
             }
 
             double deltaX = weapon.getX() - mouseX;
@@ -392,11 +387,30 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void mouseDragged(MouseEvent e) {
         bulletCooldown(e);
 
-        if (paused)
-			pauseScreen.mouseDragged(e);
+        mouseX = e.getX();
+        mouseY = e.getY();
 
-        if (inventory)
-            inventoryState.mouseDragged(e);
+        if (!paused && !inventory) {
+            if (mouseX < weapon.getX()) {
+                offset = 1.7;
+            } else {
+                offset = -1.8;
+            }
+
+            double deltaX = weapon.getX() - mouseX;
+            double deltaY = weapon.getY() - mouseY;
+
+            
+            weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
+        }
+
+       if (paused)
+			pauseScreen.mouseMoved(e);
+
+         if (inventory)
+			inventoryState.mouseMoved(e);
+        
+
     }
 
    
