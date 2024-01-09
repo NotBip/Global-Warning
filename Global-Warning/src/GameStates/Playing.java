@@ -39,8 +39,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseY;
     public double offset;
 
+    //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
-    public long coolDown = 300; // 300 milliseconds
+    public long fireRateWeapon1 = 300; // 300 milliseconds
+    public long fireRateWeapon2 = 300; // 300 milliseconds
 
 
     public Playing(Game game) {
@@ -247,7 +249,17 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void bulletCooldown(MouseEvent e) {
         long time1 = System.currentTimeMillis();
-        if (time1 > lastBullet + coolDown) {
+        long rate = 0;
+
+        //check which gun is being used
+        if (gunIndex ==1 ){
+            rate = fireRateWeapon1;
+        }else if (gunIndex ==2 ) {
+            rate = fireRateWeapon2;
+        }
+
+        //cooldown according to the firerate of gun
+        if (time1 > lastBullet + rate) {
             spawnBullet(e.getX(), e.getY());
             lastBullet = time1;
         }
