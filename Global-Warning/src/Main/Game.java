@@ -13,7 +13,10 @@ public class Game implements Runnable {
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
+    private OptionState options;
+    private SaveState save;
     private gamePanel panel;
+
 
     public Game() {
         initialize();
@@ -46,7 +49,18 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case MENU:
-            menu.update();
+                menu.update();
+                break;
+            case SAVE:
+                save.update();
+                break;
+            case OPTIONS:
+                options.update();
+                break;
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
         }
     }
 
@@ -64,7 +78,16 @@ public class Game implements Runnable {
                 playing.draw(g);
                 break;
             case MENU:
-            menu.draw(g);
+                menu.draw(g);
+                break;
+            case SAVE:
+                save.draw(g);
+                break;
+            case OPTIONS:
+                options.draw(g);
+                break;
+            case QUIT:
+                break;
         }
     }
     /**
@@ -75,7 +98,9 @@ public class Game implements Runnable {
 
     public void initialize() {
         playing = new Playing(this);
-        menu = new Menu();
+        menu = new Menu(this);
+        save = new SaveState(this);
+        options = new OptionState(this);
     }
 
     /**
@@ -114,6 +139,7 @@ public class Game implements Runnable {
         }
     }
     
+    
     public Playing getPlaying() {
         return playing;
     }
@@ -121,6 +147,15 @@ public class Game implements Runnable {
     public Menu getMenu() {
         return menu;
     }
+
+     public SaveState getSave() {
+        return save;
+    }
+
+     public OptionState getOptions() {
+        return options;
+    }
+
 
 
 }

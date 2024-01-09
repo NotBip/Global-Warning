@@ -20,6 +20,7 @@ public class KeyInputs implements KeyListener{
         case PLAYING:
             panel.getGame().getPlaying().keyPressed(e);
         case MENU:
+            panel.getGame().getMenu().keyPressed(e);
        }
     }
 
@@ -29,6 +30,7 @@ public class KeyInputs implements KeyListener{
         case PLAYING:
             panel.getGame().getPlaying().keyReleased(e);
         case MENU:
+            panel.getGame().getMenu().keyReleased(e);
        }
     }
 

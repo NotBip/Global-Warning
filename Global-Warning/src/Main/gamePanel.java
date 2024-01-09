@@ -18,6 +18,7 @@ public class gamePanel extends JPanel{
         this.game = game;
         setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
         addMouseListener(new MouseInputs(this));
+        addMouseMotionListener(new MouseInputs(this));
         addKeyListener(new KeyInputs(this));
         
     }

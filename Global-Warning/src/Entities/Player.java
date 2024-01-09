@@ -6,11 +6,26 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.Directions.*;
+import GameStates.Playing;
 
 import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
+    Playing playing;
+    private BufferedImage[][] animations; 
+    private boolean moving = false; 
+    private boolean left, right, up, down;
+    private int playerDir = -1; 
+	private BufferedImage img;
+    private float gravity = 0.04f;
+    private float jumpSpeed = -2.25f;
+
+    public Player(float x, float y, int width, int height, Playing playing) {
+        super(x, y, width, height);
+        this.state = IDLERIGHT; 
+        this.playing = playing;
+        this.xSpeed = 2.0f;
     private BufferedImage[][] animations;
     private int lvlData[][];
     private boolean moving = false; // Is the player moving?
@@ -92,6 +107,17 @@ public class Player extends Entity {
             }
         }
 
+    updateAnimationTick();
+		setAnimation();
+        
+    }
+
+    public void draw(Graphics g) {
+        //hamad did this
+
+        drawHitbox(g);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x, (int) hitbox.y, null);
+       //weapon.draw(g);
         if (isDashing) {
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
                 dashUpdates++;
