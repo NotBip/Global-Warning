@@ -29,10 +29,11 @@ public class Enemy extends Entity {
     private String Atlas; 
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
-    private boolean isAttack = false, leftwall = false, isVisible = false; 
+    private boolean isAttack = false, leftwall = false, isVisible = false;
+    private int enemyHP;
 
 
-    public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
+    public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH, int enemyHP) {
         super(x, y, width, height); 
 
         this.moveSpeed = speed; 
@@ -52,6 +53,7 @@ public class Enemy extends Entity {
         this.enemyRangeH = height+200; 
         this.enemyRangeW = width+100; 
         maxHealth = getMaxEnemyHealth(EnemyType);
+        this.enemyHP = enemyHP;
         currentHealth = maxHealth; 
         Animations(); 
         initialize();
