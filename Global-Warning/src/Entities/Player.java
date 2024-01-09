@@ -36,12 +36,17 @@ public class Player extends Entity {
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
 
+    private float healthBarWidth = 100;
+    private float healthBarHeight = 30;
+    private float currentHealthBarLen;
+
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.maxHealth = 100;
 		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
+        currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations();
         initialize();
 
@@ -168,6 +173,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g, int offset) {
         //drawHitbox(g, offset);
+        drawHealthBar(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
@@ -279,6 +285,10 @@ public class Player extends Entity {
             if (animationIndex >= GetSpriteAmount(state))
                 animationIndex = 0;
         }
+    }
+
+    private void drawHealthBar(Graphics g) {
+        g.drawRect(800, 20, (int) healthBarWidth, (int) healthBarHeight);
     }
 
     /**
