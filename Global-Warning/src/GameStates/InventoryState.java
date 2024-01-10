@@ -42,19 +42,19 @@ public class InventoryState {
 
 	public void makeSlots(){
 		//first slot
-		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2-position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1,1); 
+		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2-position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1); 
 		//second slot
-		slots[1] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1,2);
+		slots[1] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2);
 		
 		//3rd slot (under first slot)
-       slots[2] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1,3);
+       slots[2] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,3);
 	   //4th slot
-        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1,4);
+        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,4);
 
 		//5th slot (final row)
-        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2,5);
+        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,5);
 		//6th slot
-        slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2,6);
+        slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6);
 		
 
 	}
