@@ -208,5 +208,37 @@ public class Constants {
 			}
 		}
     }
+
+
+	public static class ObjectConstants {
+		public static final String IDLE = "IDLE";
+			public static final String WALK = "USED";  
+
+			public static final int Chest = 0; 
+			public static final int CHEST_HEIGHT = 93 *(int) Game.SCALE; 
+			public static final int CHEST_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int chestArrI = 2;
+			public static final int chestW = 60; 
+			public static final int chestH = 166;
+			public static final int chestIdle = 0;
+			public static final int chestOpen = 1;
+			public static final int chestSizeX = 100*(int) Game.SCALE; 
+			public static final int chestSizeY = 110*(int) Game.SCALE; 
+		
+		public static int findState(int object_type, String object_state) { 
+		switch(object_state) { 
+			case "IDLE": 
+				if(object_type == Chest) 
+				return chestIdle; 
+
+			case "USED":
+				if(object_type == Chest)
+				return chestOpen; 
+				
+			default: 
+				return 0; 
+		}
+	}
+	}
 }
 		
