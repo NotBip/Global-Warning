@@ -99,7 +99,6 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
-        player.update();
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData());

@@ -14,7 +14,7 @@ import static Utilities.Constants.Buttons.*;
 
 public class InventorySlot extends Button {
     // variables
-	private int xPos, yPos, index, rowIndex;
+	private int xPos, yPos, index;
 	public int item;
 	private BufferedImage[] imgs;
 	private BufferedImage[] hvr;
@@ -26,14 +26,14 @@ public class InventorySlot extends Button {
 	 * @since January 5, 2024
 	 */
 
-	public InventorySlot(int xPos, int yPos, int width, int height,int rowIndex, int item) {
+	public InventorySlot(int xPos, int yPos, int width, int height, int item) {
 		super(xPos, yPos, width, height);
 
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.item = item;
-		this.rowIndex = rowIndex;
 
+		
 		loadImgs();
 		loadHoverImgs();
 		getBounds();
@@ -58,9 +58,9 @@ public class InventorySlot extends Button {
 		hvr = new BufferedImage[4];
 		BufferedImage temp = getSpriteAtlas(ITEM_HOVER_ATLAS);
 
-		hvr[0] = temp.getSubimage(0*ITEM_HOVER_WIDTH, 0*ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		hvr[1] = temp.getSubimage(ITEM_HOVER_WIDTH, 0*ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		hvr[2] = temp.getSubimage(0*ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
+		hvr[0] = temp.getSubimage(0, 0, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
+		hvr[1] = temp.getSubimage(ITEM_HOVER_WIDTH, 0, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
+		hvr[2] = temp.getSubimage(0, ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
 		hvr[3] = temp.getSubimage(ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
 		
 	}
@@ -75,50 +75,64 @@ public class InventorySlot extends Button {
 	 */
 
 	public void draw(Graphics g) {
-		//int num = 0;
+		int [] num = new int[4];
+		num[0] = 3;
 		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
 
 	switch(item) {
         case 1:
            g.drawImage(getSpriteAtlas(WEAPON1_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
-				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos+40, yPos-110, 130, 150, null);
+				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos-90, yPos-110, 160, 150, null);
+				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
 			}
+			
             break;
         case 2:
            g.drawImage(getSpriteAtlas(WEAPON2_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
-				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos+40, yPos-110, 130, 150, null);
+				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos+40, yPos-110, 160, 150, null);
+				g.drawString("Amount: "+num[0], xPos+40,yPos-30);
 			}
 
             break;
         case 3:
 			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
-				g.drawImage(hvr[0], xPos+40, yPos-110, 130, 150, null);
+				g.drawImage(hvr[0], xPos-90, yPos-110, 130, 150, null);
+				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
 			}
             break;
         case 4:
 			g.drawImage(getSpriteAtlas(POTION_ATLAS), xPos-20, yPos-20, 120, 120, null); 
-			if (index == 1)	
+			if (index == 1)	{
 				g.drawImage(hvr[1], xPos+40, yPos-110, 130, 150, null);
+				g.drawString("Amount: "+num[0], xPos+50,yPos-30);
+			}
             break;
         case 5:
 			g.drawImage(getSpriteAtlas(KEY_ATLAS), xPos+15, yPos+15, 50, 50, null); 
-			if (index == 1)	
-				g.drawImage(hvr[2], xPos+40, yPos-110, 130, 150, null);
+			if (index == 1)	{
+				g.drawImage(hvr[2], xPos-90, yPos-110, 130, 150, null);
+				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
+			}
             break;
 		case 6:
 			g.drawImage(getSpriteAtlas(GEM_ATLAS), xPos+15, yPos+15, 50, 50, null); 
-			if (index == 1)	
+			if (index == 1)	{
 				g.drawImage(hvr[3], xPos+40, yPos-110, 130, 150, null);
-				//g.drawString("Amount: "+num, 20, 20);
+				g.drawString("Amount: "+num[0], xPos+50,yPos-30);
+			}
             break;
 		default:
 			break;
        }
 
+	   
+
 	}
+
+	
 
 	/**
 	 * Updates button sprite based on mouse postion
