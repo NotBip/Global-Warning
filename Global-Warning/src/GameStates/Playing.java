@@ -58,7 +58,9 @@ public class Playing extends State implements KeyListener, MouseListener {
      */
 
     public void loadNextLevel(int spawnType) {
+        enemyManager.resetEnemies();
         levelManager.loadNextLevel();
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
         switch(spawnType) {
             case 1: player.setSpawn(levelManager.getCurrentLevel().getLeftSpawn()); break;
             case 2: player.setSpawn(levelManager.getCurrentLevel().getRightSpawn()); break;

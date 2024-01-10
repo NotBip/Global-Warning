@@ -49,4 +49,10 @@ public class EnemyManager {
           //   }
 
         }
+        
+        public void resetEnemies() {
+          for(Enemy2 e : currentLevel.getWaterBoi()) {
+            e.resetEnemy();
+          }
+        }
 }

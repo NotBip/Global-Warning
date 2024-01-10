@@ -30,6 +30,7 @@ public class Enemy extends Entity {
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
     private boolean isAttack = false, leftwall = false, isVisible = false; 
+    private int enemyRangeWidth = 80;
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -47,10 +48,10 @@ public class Enemy extends Entity {
         this.enemyH = enemyH;
         this.Eheight = sizeH; 
         this.Ewidth = sizeX; 
-        this.enemyRangeX = x-50;
-        this.enemyRangeY = y-100; 
-        this.enemyRangeH = height+200; 
-        this.enemyRangeW = width+100; 
+        this.enemyRangeX = x-enemyRangeWidth;
+        this.enemyRangeY = y-enemyRangeWidth; 
+        this.enemyRangeH = height+2*enemyRangeWidth; 
+        this.enemyRangeW = width+2*enemyRangeWidth; 
         maxHealth = getMaxEnemyHealth(EnemyType);
         currentHealth = maxHealth; 
         Animations(); 
@@ -71,10 +72,10 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player, int[][] lvllData) {
-        enemyRange.x = this.hitbox.x-50; 
-        enemyRange.y = this.hitbox.y-100; 
-        enemyRange.height = (int) this.hitbox.height+200; 
-        enemyRange.width = (int) this.hitbox.width+100; 
+        enemyRange.x = this.hitbox.x-enemyRangeWidth; 
+        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
+        enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
 
         if (!player.hitbox.intersects(enemyRange))
         state = WALK; 
@@ -267,4 +268,12 @@ public class Enemy extends Entity {
         else 
             return false; 
     }
+
+    public void resetEnemy() {
+        hitbox.x = x;
+        hitbox.y = y;
+        currentHealth = maxHealth;
+        state = WALK;
+        inAir = true;
+      }
 }

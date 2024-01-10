@@ -26,8 +26,8 @@ public class Level {
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
 	private boolean isWindy = false;
-	ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
-    ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
+	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
+    private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
 	public Level(BufferedImage img) {
 		this.img = img;
@@ -71,6 +71,12 @@ public class Level {
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		case 103: isWindy = true;
 		}
+	}
+
+	public void resetEnemies() {
+		
+			Waterboi.clear();
+		
 	}
 
 	private void loadObjects(int blueValue, int x, int y) {
@@ -129,4 +135,3 @@ public class Level {
 		return EntityName;
 	}*/
 }
-

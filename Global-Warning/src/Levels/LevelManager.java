@@ -61,7 +61,7 @@ public class LevelManager {
 	}
 
 	public void draw(Graphics g, int offset) {
-		for (int j = 0; j < Constants.HEIGHT_IN_TILES; j++)
+		for (int j = 0; j < levels.get(lvlIndex).getLevelData().length; j++)
 			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
 				int index = levels.get(lvlIndex).getSpriteIndex(i, j);
 				int x = Constants.TILE_SIZE * i;
