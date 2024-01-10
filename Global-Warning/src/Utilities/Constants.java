@@ -17,6 +17,12 @@ public class Constants {
     public static final int MENU = 0;
     public static final int PLAYING = 1;
 
+	//weapon constants
+	public static final int WEAPON_WIDTH = 50;
+	public static final int WEAPON_HEIGHT = 50;
+
+	
+
     public static class Directions {
 		public static final int LEFT = 0;
 		public static final int UP = 1;
@@ -24,7 +30,23 @@ public class Constants {
 		public static final int DOWN = 3;
 	}
 
+	public static class Buttons {
+		public static final int B_WIDTH = 140;
+		public static final int B_HEIGHT = 56;
 
+		public static final int SAVE_B_WIDTH = 200;
+		public static final int SAVE_B_HEIGHT = 66;
+
+		public static final int PAUSE_B_WIDTH = 56;
+		public static final int PAUSE_B_HEIGHT = 56;
+
+		public static final int INVENTORY_B_WIDTH = 100;
+		public static final int INVENTORY_B_HEIGHT = 81;
+
+		public static final int SOUND_B_WIDTH = 42;
+		public static final int SOUND_B_HEIGHT = 42;
+
+	}
 
 	public static class EnemyConstants {
 
