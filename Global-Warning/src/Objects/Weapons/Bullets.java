@@ -84,7 +84,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         hitbox.x = drawX - 5 + xOffset;
         hitbox.y = drawY - 5;
         x = hitbox.x;
-        System.out.println(drawX);
+        //System.out.println(drawX);
 
         if (Playing.gunIndex == 1){
             g2d.setColor(Color.PINK);

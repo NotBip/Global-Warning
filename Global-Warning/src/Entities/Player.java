@@ -2,6 +2,8 @@ package Entities;
 
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -36,7 +38,7 @@ public class Player extends Entity {
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
 
-    private float healthBarWidth = 100;
+    private float healthBarWidth = 200;
     private float healthBarHeight = 30;
     private float currentHealthBarLen;
 
@@ -46,7 +48,7 @@ public class Player extends Entity {
 		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
-        currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
+        this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations();
         initialize();
 
@@ -173,7 +175,6 @@ public class Player extends Entity {
 
     public void draw(Graphics g, int offset) {
         //drawHitbox(g, offset);
-        drawHealthBar(g);
         g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
     }
 
@@ -287,8 +288,13 @@ public class Player extends Entity {
         }
     }
 
-    private void drawHealthBar(Graphics g) {
-        g.drawRect(800, 20, (int) healthBarWidth, (int) healthBarHeight);
+    public void drawHealthBar(Graphics g) {
+        g.setColor(Color.red);
+        g.fillRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
+        g.setColor(Color.green);
+        g.fillRect(20, 20, (int) currentHealthBarLen, (int) healthBarHeight);
+        g.setColor(Color.black);
+        g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
     }
 
     /**
@@ -336,6 +342,8 @@ public class Player extends Entity {
      public void changeHealth(int value) {
 		currentHealth += value;
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
+        currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
+        System.out.println(currentHealthBarLen);
 	}
 
 }

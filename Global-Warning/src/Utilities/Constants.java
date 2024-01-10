@@ -21,8 +21,6 @@ public class Constants {
 	public static final int WEAPON_WIDTH = 50;
 	public static final int WEAPON_HEIGHT = 50;
 
-	
-
     public static class Directions {
 		public static final int LEFT = 0;
 		public static final int UP = 1;
@@ -134,7 +132,7 @@ public class Constants {
 		switch (enemyType) {
 
 			case Waterboi:
-				return 1; 
+				return 10; 
 			
 			case Fireboi: 
 				return 1; 
