@@ -2,113 +2,110 @@ package GameStates;
 
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.Buttons.B_WIDTH;
-import static Utilities.Constants.Buttons.B_HEIGHT;
+import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
+import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
-
 import Main.Game;
-import UserInterface.MenuButton;
+import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 
-public class Menu extends State implements KeyListener, MouseListener {
+public class SaveState extends State implements KeyListener, MouseListener {
 
     // variables
-    private int offset = 70;
+    private int offset = 100;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
-    private MenuButton[] buttons = new MenuButton[3];
+    private SaveButton[] buttons = new SaveButton[3];
 
     /**
-     * Constructor for menu
+     * Constructor for save state
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
-    public Menu(Game game) {
+    public SaveState(Game game) {
         super(game);
         makeButtons();
     }
 
     /**
-     * Updates menu buttons in menu
+     * Updates save slots/buttons in save state
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
     public void update() {
-        for (MenuButton mb : buttons)
-            mb.update();
+        for (SaveButton sb : buttons)
+            sb.update();
 
     }
 
     /**
-     * Adds menu buttons to menu
+     * Add save slots to save state
      * 
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
     public void makeButtons() {
-        buttons[0] = new MenuButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 140, B_WIDTH, B_HEIGHT, 0,
-                GameState.SAVE);
-        buttons[1] = new MenuButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 70, B_WIDTH, B_HEIGHT, 1,
-                GameState.OPTIONS);
-        buttons[2] = new MenuButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset, B_WIDTH, B_HEIGHT, 2,
-                GameState.QUIT);
+        buttons[0] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 160, SAVE_B_WIDTH,
+                SAVE_B_HEIGHT, 0, GameState.PLAYING);
+        buttons[1] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 80, SAVE_B_WIDTH, SAVE_B_HEIGHT,
+                1, GameState.PLAYING);
+        buttons[2] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset, SAVE_B_WIDTH, SAVE_B_HEIGHT, 2,
+                GameState.PLAYING);
     }
 
     /**
-     * Draws menu background, menu title, and menu buttons
+     * Draws save background and save buttons
      * 
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
         g.drawImage(this.imgtitle, GAME_WIDTH / 3, 0, 300, 150, null);
-        for (MenuButton mb : buttons)
-            mb.draw(g);
+        for (SaveButton sb : buttons)
+            sb.draw(g);
 
     }
 
     /**
-     * Resets all menu buttons
+     * Resets all save buttons
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
+
     private void resetButtons() {
-        for (MenuButton mb : buttons)
-            mb.resetButtons();
+        for (SaveButton sb : buttons)
+            sb.resetButtons();
 
     }
 
     /**
      * Checks if cursor X and Y position overlap button bounds
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
-    private boolean isIn(MouseEvent e, MenuButton b) {
+    private boolean isIn(MouseEvent e, SaveButton b) {
         return b.getBounds().contains(e.getX(), e.getY());
     }
 
     /* Mouse events */
+
     @Override
     public void keyPressed(KeyEvent e) {
 
@@ -127,18 +124,17 @@ public class Menu extends State implements KeyListener, MouseListener {
     /**
      * Checks if mouse position overlaps bounds (cursor on button)
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
 
     public void mouseMoved(MouseEvent e) {
-        for (MenuButton mb : buttons)
-            mb.setMouseOver(false);
+        for (SaveButton sb : buttons)
+            sb.setMouseOver(false);
 
-        for (MenuButton mb : buttons)
-            if (isIn(e, mb)) {
-                mb.setMouseOver(true);
+        for (SaveButton sb : buttons)
+            if (isIn(e, sb)) {
+                sb.setMouseOver(true);
                 break;
 
             }
@@ -155,16 +151,14 @@ public class Menu extends State implements KeyListener, MouseListener {
     /**
      * Checks if mouse is clicked on button (cursor clicks button)
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
-
     @Override
     public void mousePressed(MouseEvent e) {
-        for (MenuButton mb : buttons) {
-            if (isIn(e, mb)) {
-                mb.setMousePressed(true);
+        for (SaveButton sb : buttons) {
+            if (isIn(e, sb)) {
+                sb.setMousePressed(true);
             }
 
         }
@@ -173,20 +167,19 @@ public class Menu extends State implements KeyListener, MouseListener {
     /**
      * Checks if mouse is released from button bounds
      * 
-     * @referenced: Kaarin Gaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
+     * @since January 3, 2024
      */
-
     @Override
     public void mouseReleased(MouseEvent e) {
-        for (MenuButton mb : buttons) {
-            if (isIn(e, mb)) {
-                if (mb.getMousePressed())
-                    mb.applyGamestate();
+        for (SaveButton sb : buttons) {
+            if (isIn(e, sb)) {
+                if (sb.getMousePressed())
+                    sb.applyGamestate();
                 break;
             }
         }
+
         resetButtons();
 
     }

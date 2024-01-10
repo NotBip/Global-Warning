@@ -1,33 +1,53 @@
 package GameStates;
 
 import Entities.*;
-import Entities.Planet1Enemies.Enemy1;
-import Entities.Planet1Enemies.Enemy2;
+import Objects.Weapons.*;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.TILE_SIZE;
-import Entities.EnemyManager.*;
 import java.awt.Graphics;
-import java.awt.event.*;
 
-public class Playing extends State implements KeyListener {
+import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Playing extends State implements KeyListener, MouseListener {
     private Player player;
+    private static Weapon1 weapon;
+    public int bulletCount;
+    public List<Bullets> bullets;
     private EnemyManager enemyManager;
-    private LevelManager levelManager;
     private ObjectManager objectManager;
-    private boolean paused;
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
+    private LevelManager levelManager;
+    private Pause pauseScreen;
+    private InventoryState inventoryState;
+    public static boolean paused, inventory = false;
+    //private float borderLen;
+    private double weaponAngle = 0;
+    public static int gunIndex = 1;
+    public double mouseX;
+    public double mouseY;
+    public double offset;
+
+    public long lastBullet = 0;
+    public long coolDown = 300; // 300 milliseconds
+
 
     public Playing(Game game) {
         super(game);
         initialize();
     }
+
+    public void loadNextLevel() {
+
+    }
+
 
     /**
      * Loads the new level
@@ -54,23 +74,36 @@ public class Playing extends State implements KeyListener {
         player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
+        weapon = new Weapon1(player, this);
+        bullets = new ArrayList<>();
+        pauseScreen = new Pause(this);
+        inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         } catch(Exception e) { // Will spawn the player at its initialization spawning coordinates
             System.out.println("no default spawn point found");
         }
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
-
     }
 
     public void update() {
-        player.update();
+        if (paused) {
+			pauseScreen.update();
+		} else if (inventory && !paused){
+			inventoryState.update();
+		} else {
+            player.update();
+            weapon.update();
+         for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).updateBullets();
+         }
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData());
     }
-
+    }
      /**
      * Checks if that player has gone past the camera border
      * 
@@ -141,15 +174,41 @@ public class Playing extends State implements KeyListener {
     }
 
     public void draw(Graphics g) {
+        weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).draw(g, xOffset);
+        }
+
+        if (inventory) {
+            inventoryState.draw(g);
+        }
+
+        if (paused) {
+			pauseScreen.draw(g);
+		}
     }
+       
 
     public void reset() {
 
     }
 
+     public static void setGunIndex(int item){
+        if (item <3){
+            gunIndex = item;
+            weapon.getImage();
+        }
+
+    }
+
+    public Weapon1 getWeapon1() {
+        return weapon;
+   }
+   
     public void setMaxLvlOffset(int lvlOffset) {
         this.maxOffsetX = lvlOffset;
     }
@@ -165,6 +224,54 @@ public class Playing extends State implements KeyListener {
     public ObjectManager getObjectManager() {
         return objectManager;
     }
+
+    public double getAngle() {
+        return weaponAngle;
+    }
+
+    /**
+	 * Adds a cooldown between bullets shot
+	 * 
+	 * @referenced: https://gamedev.stackexchange.com/questions/158616/how-do-i-create-a-delay-or-cooldown-timer
+	 * @author Nusayba Hamou
+	 * @since December 29, 2023
+	 */
+
+    public void bulletCooldown(MouseEvent e) {
+        long time1 = System.currentTimeMillis();
+        if (time1 > lastBullet + coolDown) {
+            spawnBullet(e.getX(), e.getY());
+            lastBullet = time1;
+        }
+    }
+
+    /**
+	 * Creates a new bullet and adds it to the bullet list
+	 * 
+	 * @author Hamad Mohammed
+	 * @since December 25, 2023
+	 */
+
+    private void spawnBullet(int x, int y) {
+
+       if (!paused && !inventory){
+            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset);
+             bullets.add(bullet);
+        }
+
+    }
+
+    /**
+	 * Removes bullet from bullet list
+	 * 
+	 * @author Hamad Mohammed
+	 * @since December 25, 2023
+	 */
+
+    public void removeBullet() {
+        bullets.remove(0);
+    }
+
 
     public EnemyManager getEnemyManager() {
         return enemyManager;
@@ -188,6 +295,18 @@ public class Playing extends State implements KeyListener {
             case KeyEvent.VK_SPACE:
                 player.jump();
                 break;
+            case KeyEvent.VK_ESCAPE:
+                if (inventory){
+                    inventory = false;
+                } else {
+                    paused = !paused;
+                }
+                 break;
+             case KeyEvent.VK_I:
+                 if (!paused){
+			         inventory = !inventory;
+                 }
+                 break;
             case KeyEvent.VK_SHIFT:
                 player.dash();
                 break;
@@ -212,9 +331,121 @@ public class Playing extends State implements KeyListener {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
+    /**
+	 * Gets location of mouse cursor and updates weapon angle
+	 * 
+	 * @author Hamad Mohammed
+	 * @since December 25, 2023
+	 */
+
+    public void mouseMoved(MouseEvent e) {
+
+        mouseX = e.getX();
+        mouseY = e.getY();
+        
+        if (!paused && !inventory) {
+            if (mouseX < weapon.getX() - xOffset) {
+                offset = 1.7;
+            } else {
+                offset = -1.8;
+            }
+
+            double deltaX = weapon.getX() - mouseX - xOffset;
+            double deltaY = weapon.getY() - mouseY;
+
+            
+            weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
+        }
+
+       if (paused)
+			pauseScreen.mouseMoved(e);
+
+         if (inventory)
+			inventoryState.mouseMoved(e);
+        
 
     }
+
+     /**
+	 * Applies cooldown if bullet is shot (mouse clicked)
+	 * 
+	 * @author Nusayba Hamou
+	 * @since December 29, 2023
+	 */
+
+    public void mouseClicked(MouseEvent e) {
+        bulletCooldown(e);
+    }
+
+
+    /**
+	 * Applies cooldown if bullet is shot (mouse dragged; click with movement)
+	 * 
+	 * @author Hamad Mohammed
+	 * @since December 30, 2023
+	 */
+
+    public void mouseDragged(MouseEvent e) {
+        bulletCooldown(e);
+
+        mouseX = e.getX();
+        mouseY = e.getY();
+
+        if (!paused && !inventory) {
+            if (mouseX < weapon.getX()) {
+                offset = 1.7;
+            } else {
+                offset = -1.8;
+            }
+
+            double deltaX = weapon.getX() - mouseX;
+            double deltaY = weapon.getY() - mouseY;
+
+            
+            weaponAngle = -Math.atan2(deltaX, deltaY) + offset;
+        }
+
+       if (paused)
+			pauseScreen.mouseMoved(e);
+
+         if (inventory)
+			inventoryState.mouseMoved(e);
+        
+
+    }
+
+   
+    @Override
+    public void mousePressed(MouseEvent e) {
+       if (paused)
+			pauseScreen.mousePressed(e);
+
+        if (inventory)
+            inventoryState.mousePressed(e);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+       if (paused)
+			pauseScreen.mouseReleased(e);
+
+        if (inventory)
+            inventoryState.mouseReleased(e);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
+    }
+
 
 }

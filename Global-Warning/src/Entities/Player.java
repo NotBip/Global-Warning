@@ -29,7 +29,7 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
-    private float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
+    private float windSpeed = -moveSpeed/2; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump

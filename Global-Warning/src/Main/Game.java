@@ -10,10 +10,14 @@ public class Game implements Runnable {
     private static final int FPS = 60; // Frames per second
     private static final int UPS = 120; // Updates (behind the scenes stuff) per second
     public static final float SCALE = 1f; 
+    int update = 0;
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
+    private OptionState options;
+    private SaveState save;
     private gamePanel panel;
+
 
     public Game() {
         initialize();
@@ -46,7 +50,18 @@ public class Game implements Runnable {
                 playing.update();
                 break;
             case MENU:
-            menu.update();
+                menu.update();
+                break;
+            case SAVE:
+                save.update();
+                break;
+            case OPTIONS:
+                options.update();
+                break;
+            case QUIT:
+            default:
+                System.exit(0);
+                break;
         }
     }
 
@@ -64,7 +79,16 @@ public class Game implements Runnable {
                 playing.draw(g);
                 break;
             case MENU:
-            menu.draw(g);
+                menu.draw(g);
+                break;
+            case SAVE:
+                save.draw(g);
+                break;
+            case OPTIONS:
+                options.draw(g);
+                break;
+            case QUIT:
+                break;
         }
     }
     /**
@@ -75,7 +99,9 @@ public class Game implements Runnable {
 
     public void initialize() {
         playing = new Playing(this);
-        menu = new Menu();
+        menu = new Menu(this);
+        save = new SaveState(this);
+        options = new OptionState(this);
     }
 
     /**
@@ -107,12 +133,16 @@ public class Game implements Runnable {
             }
 
             if (timeSinceLastUpdate >= 1) {
+                if(update >= UPS) {
+                    update = 0;
+                }
                 update();
                 timeSinceLastUpdate--; // Don't set to 0 as a means of catching up if updates are lost
             }
 
         }
     }
+    
     
     public Playing getPlaying() {
         return playing;
@@ -121,6 +151,15 @@ public class Game implements Runnable {
     public Menu getMenu() {
         return menu;
     }
+
+     public SaveState getSave() {
+        return save;
+    }
+
+     public OptionState getOptions() {
+        return options;
+    }
+
 
 
 }
