@@ -10,6 +10,7 @@ public class Game implements Runnable {
     private static final int FPS = 60; // Frames per second
     private static final int UPS = 120; // Updates (behind the scenes stuff) per second
     public static final float SCALE = 1f; 
+    int update = 0;
     private Thread gameThread;
     private Playing playing;
     private Menu menu;
@@ -132,6 +133,9 @@ public class Game implements Runnable {
             }
 
             if (timeSinceLastUpdate >= 1) {
+                if(update >= UPS) {
+                    update = 0;
+                }
                 update();
                 timeSinceLastUpdate--; // Don't set to 0 as a means of catching up if updates are lost
             }

@@ -60,13 +60,14 @@ public class Weapon1 implements MouseMotionListener {
      * @since December 19, 2023
      */
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int xOffset) {
         Graphics2D g2d = (Graphics2D)g; 
         AffineTransform oldXForm = g2d.getTransform();
-        g2d.rotate(playing.getAngle() , this.x+30, this.y+50);
+        g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
 
         if (!Playing.paused && !Playing.inventory){
-            if (playing.mouseX < x){
+           // System.out.println(playing.getAngle());
+            if (playing.mouseX < this.x-xOffset){
                 this.xFlipped = 0; 
                 this. wFlipped = 1; 
             }
@@ -75,7 +76,7 @@ public class Weapon1 implements MouseMotionListener {
                 this.wFlipped = -1; 
             }
         }
-        g.drawImage(this.img, (int) this.x+this.xFlipped, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
+        g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
         g2d.setTransform(oldXForm);
 
      }

@@ -26,7 +26,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 19, 2023
      */
 
-    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY) {
+    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset) {
         super((float) startX, (float) startY, 10, 10);
         this.weapon = weapon;
         this.playing = playing;
@@ -35,7 +35,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         // I increased the speed to compensate for the cooldown
         this.speed = 10.0;
-        setDirection(targetX, targetY);
+        setDirection(targetX, targetY, xOffset);
         initialize();
     }
 
@@ -46,8 +46,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 21, 2023
      */
 
-    public void setDirection(double targetX, double targetY) {
-        double angle = Math.atan2(targetY - y, targetX - x);
+    public void setDirection(double targetX, double targetY, int xOffset) {
+        double angle = Math.atan2(targetY - y, targetX - x + xOffset);
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
     }
@@ -78,18 +78,20 @@ public class Bullets extends Entities.Entity implements MouseListener {
         // bullet spawns
         Graphics2D g2d = (Graphics2D) g;
 
-        int drawX = (int) Math.round(x);
+        int drawX = (int) Math.round(x - xOffset);
         int drawY = (int) Math.round(y);
 
-        hitbox.x = drawX - 5;
+        hitbox.x = drawX - 5 + xOffset;
         hitbox.y = drawY - 5;
+        x = hitbox.x;
+        System.out.println(drawX);
 
         if (Playing.gunIndex == 1){
             g2d.setColor(Color.PINK);
-            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
         } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
-            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
         } else {
             //g2d.setColor(Color.ORANGE);
            // g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
@@ -104,7 +106,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if (playing.bullets.size() > 0) {
 
             // if it gets out of specified bounds...
-            if (drawX >= weapon.x + 400 || drawX >= GAME_WIDTH || drawX <= 0 || drawX <= weapon.x - 400 || drawY <= 0
+            if (drawX >= weapon.x + 400-xOffset || drawX >= GAME_WIDTH || drawX <= 0 || drawX <= weapon.x-xOffset - 400 || drawY <= 0
                     || drawY >= GAME_HEIGHT) {
 
                 // remove a bullet
