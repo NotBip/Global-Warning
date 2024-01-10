@@ -27,6 +27,12 @@ public class Constants {
 		public static final int RIGHT = 2;
 		public static final int DOWN = 3;
 	}
+	//hover images
+	public static final int ITEM_HOVER_WIDTH = 102;
+	public static final int ITEM_HOVER_HEIGHT = 70;
+
+
+
 
 	public static class Buttons {
 		public static final int B_WIDTH = 140;
@@ -43,7 +49,6 @@ public class Constants {
 
 		public static final int SOUND_B_WIDTH = 42;
 		public static final int SOUND_B_HEIGHT = 42;
-
 	}
 
 	public static class EnemyConstants {
