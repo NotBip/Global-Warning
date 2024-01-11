@@ -127,7 +127,7 @@ public class InventoryState {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
+	
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -158,15 +158,20 @@ public class InventoryState {
 	 */
 
 	public void mouseReleased(MouseEvent e) {
+		 
         for (InventorySlot slot : slots){
+		slot.select = false;
             if (isIn(e, slot)) {
-			    if (slot.getMousePressed() && !Playing.paused)
+			    if (slot.getMousePressed() && !Playing.paused){
 					Playing.setGunIndex(slot.item);
+					slot.select = true;
+					
+				}
             }
 
 		}
-
 		resetButtons();
+
 
 	}
 }

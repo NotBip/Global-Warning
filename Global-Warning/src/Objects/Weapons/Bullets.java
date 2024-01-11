@@ -14,10 +14,15 @@ import java.awt.event.MouseListener;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y, speed;
+    private double x, y;
+    public static double speed1,speed2;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
+
+    //upgradeable abilities (fire-rate in playing class)
+    //no concept of damage yet, but public static double upgradeDamage;
+    
 
     /**
      * Constructor to create bullets
@@ -34,8 +39,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.y = startY;
 
         // I increased the speed to compensate for the cooldown
-        this.speed = 10.0;
-        setDirection(targetX, targetY, xOffset);
+        speed1 = 10.0;
+        speed2 = 7.0;
+        setDirection(targetX, targetY);
         initialize();
     }
 
@@ -63,6 +69,15 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public void move() {
+        double speed = 0;
+
+        //different guns have different speeds
+        if (Playing.gunIndex == 1){
+            speed = speed1;
+        } else if(Playing.gunIndex == 2){
+            speed = speed2;
+        }
+
         x += speed * directionX;
         y += speed * directionY;
         hitbox.x += speed * directionX;
