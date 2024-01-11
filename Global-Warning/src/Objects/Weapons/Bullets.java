@@ -90,7 +90,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if (!Playing.inventory){
             if (!Playing.paused){
                 //adding ten sorta fixes the offset
-                x = hitbox.x +10;
+                x = hitbox.x;
             }
         }
 
