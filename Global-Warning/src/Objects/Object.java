@@ -5,176 +5,138 @@ import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
 import static Utilities.Constants.TILE_SIZE;
 import static Utilities.Constants.WIDTH_IN_TILES;
+import static Utilities.Constants.Directions;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
-public class Object{
-    protected float x;
-    protected float y;
-    protected int width;
-    protected int height;
-    protected Rectangle2D.Float hitbox;
-    protected int state;
-    protected int animationTick;
-    protected int animationIndex;
-    protected int[][] lvlData;
+import Entities.Entity;
+import Entities.Player;
+
+public class Object extends Entity{
+    protected int lvlData[][];
+    protected int aniIndex, objectState, objectType;
+	protected int aniTick, hitCooldown, aniSpeed = 15;
+    private String state = IDLE; 
+    private BufferedImage[][] animations; 
+    private int xFlipped; 
+    private int wFlipped; 
+    private int arrI, arrJ, objectW, objectH, Owidth, Oheight;
+    private String Atlas; 
+    private float xSpeed, moveSpeed; 
+    private float gravity = 0.04f;
+    private boolean isAttack = false, leftwall = false, isVisible = false;
     protected Rectangle2D.Float objectRange; 
     protected float objectRangeX, objectRangeY; 
-    protected int objectRangeW, objectRangeH; 
+    protected int objectRangeW, objectRangeH;
+    protected Rectangle2D.Float hitbox; 
 
-public Object(float x, float y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+
+    public Object(float x, float y, int width, int height, int ObjectType, int arrI, int objectW, int objectH, String Atlas, int xFlipped, int wFlipped, int sizeX, int sizeH) {
+        super(x, y, width, height); 
+        this.xSpeed = this.moveSpeed; 
+        this.xFlipped = xFlipped; 
+        this.wFlipped = wFlipped;
+        this.Atlas = Atlas; 
+        this.objectType = ObjectType; 
+        this.arrI = arrI;
+        this.arrJ = arrJ;
+        this.objectW = objectW;
+        this.objectH = objectH;
+        this.Oheight = sizeH; 
+        this.Owidth = sizeX; 
+        this.objectRangeX = x-50;
+        this.objectRangeY = y-100; 
+        this.objectRangeH = height+200; 
+        this.objectRangeW = width+100; 
+        Animations(); 
+        initialize();
     }
 
-    protected void initialize() {
-        objectRange = new Rectangle2D.Float(objectRangeX, objectRangeY, objectRangeW, objectRangeH); 
-        hitbox = new Rectangle2D.Float(x, y, width, height);
+    public void loadLevelData(int[][] lvlData) {
+        this.lvlData = lvlData;
     }
 
-    public Rectangle2D.Float getHitbox() {
-        return hitbox;
+
+    public int flipX() {
+		if (xFlipped == 0)  
+			return width;
+         else 
+			return 0;
+        }
+
+	public int flipW() {
+		if (wFlipped == 1)
+			return -1;
+        else 
+			return 1;
+	}
+
+    public int flipD() { 
+        if (direction == RIGHT)
+            return LEFT; 
+        else
+            return RIGHT; 
     }
 
-    public float hitboxX() {
-        return this.x; 
-    }
+     /**
+     * Helps change images making it animate. 
+     * @author Hamad Mohammed
+     * @since December 16, 2023
+     */
+    protected void updateAnimationTick() {
+		animationTick++;
+		if (animationTick >= aniSpeed) {    
+			animationTick = 0;
+			animationIndex++;
+			if (animationIndex >= GetSpriteAmount(objectType, state))
+				animationIndex = 0;
+		}
+	}
 
-    public float hitboxY() {
-        return this.y; 
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void drawHitbox(Graphics g, int offset) {
-        g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+    public void draw(Graphics g, int xOffset) {
+        drawHitbox(g, xOffset);
+        g.drawImage(animations[findState(this.objectType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
     }
 
     /**
-     * Checks all of the corners of the entity's possible next position to see if that position can exist 
-     * 
-     * @author Ryder Hodgson
-     * @since December 20th, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity can move
+     * Loads the animations from the sprite atlas. 
+     * @author Hamad Mohammed
+     * @since December 16, 2023
      */
-
-    public boolean canMove(float x, float y, float width, float height, int[][] lvlData) {
-        if (!solidTile(x + width, y, lvlData)) {
-            if (!solidTile(x, y + height, lvlData)) {
-                if (!solidTile(x, y, lvlData)) {
-                    if (!solidTile(x + width, y + height, lvlData)) {
-                        return true;
-                    }
-                }
+    public void Animations() {
+        BufferedImage img = getSpriteAtlas(this.Atlas);
+        animations = new BufferedImage[arrI][arrJ]; 
+        for (int i = 0; i < animations.length; i++){
+            for (int j = 0; j < animations[i].length; j++){
+                animations[i][j] = img.getSubimage(j*objectW, i*objectH, objectW, objectH);
             }
         }
-        return false;
+    }
+
+    public int getAniIndex() {
+		return aniIndex;
+	}
+
+	public void getobjectState() {
+
     }
 
     /**
-     * @author Ryder Hodgson
-     * @since December 20th, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity is touching a solid tile
+     * Checks if the player is visible to the object or not
+     * @author Hamad Mohammed
+     * @since December 24, 2023
+     * @param player The instance of the player being detected. 
+     * @return Is the player visible or not
      */
+    public boolean isPlayerVisible(Player player) { 
 
-    public boolean solidTile(float x, float y, int[][] lvlData) {
-         if(x > lvlData[0].length * TILE_SIZE || x < 0) { // Right of left of the game window
-             return true;
-         }
-        if(y > GAME_HEIGHT || y < 0) { // Bottom or top of the game window
-            return true;
-        }
-        int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
-        int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
-
-        try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
-            if (lvlData[lvlY][lvlX] != 11) { // Check if the entity is on an air tile
-                        return true;
-                    }
-        } catch(Exception e) {
-            return false;
-        }
-        return false;
+        if (this.hitbox.intersects(player.hitbox)) 
+            return true; 
+        else 
+            return false; 
     }
-
-    /**
-     * @author Ryder Hodgson
-     * @since December 21st, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity is touching the floor
-     */
-
-    public boolean checkFloor(float x, float y, float width, float height, int[][] lvlData) {
-        if(!solidTile(x, y + height + 1, lvlData)) {
-            if(!solidTile(x + width, y + height + 1, lvlData)) {
-                return false;
-            }        
-        }
-        return true;
-        }
-
-    /**
-     * if the entity hits the ground or a ceiling while moving, sets the y position to compensate for the lost movement
-     * @author Kaarin Gaming / Edited by Ryder Hodgson
-     * @since December 25th, 2023
-     * @param hitbox
-     * @param airSpeed
-     * @return the new yPos
-     */
-protected static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
-		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE - 0.2); // The current tile the bottom of the entity is on, subtract 0.2 to fix inconsistency issue with the tile calculation
-		if (airSpeed > 0) { // Falling or touching floor
-			int tileY = currentTile * TILE_SIZE;
-			int yOffset = (int) (TILE_SIZE - hitbox.height);
-			return tileY + yOffset - 1;
-		} else { // Jumping or dashing up
-            return currentTile * TILE_SIZE - TILE_SIZE;
-        }	
-	}
-
-    /**
-     * if the player hits a wall while moving, sets the x position to compensate for the lost movement
-     * @author Kaarin Gaming / Edited by Ryder Hodgson
-     * @since January 2nd, 2024
-     * @param hitbox
-     * @param xSpeed
-     * @return the new xPos
-     */
-protected static float fixXPos(Rectangle2D.Float hitbox, float xSpeed) {
-		int currentTile = (int) ((hitbox.x+hitbox.width) / TILE_SIZE - 0.2); // The current tile the right of the entity is on, subtract 0.2 to fix inconsistency issue with the tile calculation
-		if (xSpeed > 0) { // Moving the right
-			int tileX = currentTile * TILE_SIZE; // The current x position of the tile the entity is on 
-			int xOffset = (int) (TILE_SIZE - hitbox.width); // Offset the new x position since moving right takes into account the right side, not the left (origin of x pos)
-			return tileX + xOffset - 1;
-		} else { // Moving to the left
-            return currentTile * TILE_SIZE - TILE_SIZE;
-        }	
-	}
-
-    protected void newState(int state) {
-		this.state = state;
-		animationTick = 0;
-		animationIndex = 0;
-	}
 
 }

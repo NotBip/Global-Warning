@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import UserInterface.LoadSave;
 import Utilities.Atlas;
@@ -28,14 +29,14 @@ public class ObjectManager{
       this.currentLevel = level;  
     }
 
-        public void update(int[][] lvlData) { 
-          for (Chest o : currentLevel.getChest()) {
-             if (chestGet == false) {
+        public void draw(Graphics g, int xOffset) { 
+            for (Chest o : currentLevel.getChest()) { 
+               o.draw(g, xOffset);
+           }
 
-             }
-             else {
+          //    for (Chest f : Fireboi) { 
+          //    f.draw(g);
+          //   }
 
-             }
-         }
         }
 }
