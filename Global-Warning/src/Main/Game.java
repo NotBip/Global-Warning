@@ -3,7 +3,6 @@ package Main;
 import java.awt.Graphics;
 
 import GameStates.*;
-import Levels.LevelManager;
 
 
 public class Game implements Runnable {

@@ -1,5 +1,6 @@
 package GameStates;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.Buttons.PAUSE_B_HEIGHT;
@@ -65,7 +66,14 @@ public class Pause {
 	 */
 
 	public void draw(Graphics g) {
-		g.drawImage(backgroundImg, GAME_WIDTH / 2 - 80, 100, 200, 200, null);
+		//dark background
+		g.setColor(new Color(0,0,0,90));
+		g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
+
+		//color for other
+		g.setColor(Color.BLACK);
+		
+		g.drawImage(backgroundImg, GAME_WIDTH / 2 - 80, GAME_HEIGHT/3, 200, 200, null);
 		menuBackB.draw(g);
 	}
 
