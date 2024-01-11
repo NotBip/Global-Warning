@@ -2,8 +2,11 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import Utilities.Constants;
 import Levels.LevelManager;
+import Levels.Level;
 import Main.Game;
+import Objects.Checkpoint;
 import Objects.ObjectManager;
 
 import static Utilities.Constants.GAME_HEIGHT;
@@ -29,6 +32,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private InventoryState inventoryState;
     public static boolean paused, inventory = false;
     //private float borderLen;
+    //private Checkpoint checkpoint = new Checkpoint( Constants.TILE_SIZE,  Constants.TILE_SIZE, 80, 100);
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public double mouseX;
@@ -38,7 +42,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
-    public static long fireRateWeapon2 = 300; // 300 milliseconds
+    public static long fireRateWeapon2 = 250; // 300 milliseconds
 
 
     public Playing(Game game) {
@@ -81,6 +85,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -178,6 +183,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
+        //Level.checkpoint.draw(g);//try
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         
