@@ -14,7 +14,8 @@ import java.awt.event.MouseListener;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y, speed1, speed2;
+    private double x, y;
+    public static double speed1,speed2;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
@@ -38,8 +39,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.y = startY;
 
         // I increased the speed to compensate for the cooldown
-        this.speed1 = 10.0;
-        this.speed2 = 7.0;
+        speed1 = 10.0;
+        speed2 = 7.0;
         setDirection(targetX, targetY);
         initialize();
     }
