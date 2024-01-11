@@ -55,14 +55,12 @@ public class InventorySlot extends Button {
 	}
 
 	private void loadHoverImgs() {
-		hvr = new BufferedImage[4];
-		BufferedImage temp = getSpriteAtlas(ITEM_HOVER_ATLAS);
-
-		hvr[0] = temp.getSubimage(0, 0, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		hvr[1] = temp.getSubimage(ITEM_HOVER_WIDTH, 0, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		hvr[2] = temp.getSubimage(0, ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		hvr[3] = temp.getSubimage(ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT, ITEM_HOVER_WIDTH, ITEM_HOVER_HEIGHT);
-		
+		hvr = new BufferedImage[5];
+		BufferedImage temp = getSpriteAtlas(HOVER_ATLAS);
+		for (int i = 0; i < 4; i++){
+			hvr[i] = temp.getSubimage(i * HOVER_WIDTH, 0, HOVER_WIDTH, HOVER_HEIGHT);
+		}
+		hvr[4] = temp.getSubimage(0, HOVER_HEIGHT, HOVER_WIDTH, HOVER_HEIGHT);
 	}
 
 
@@ -75,6 +73,7 @@ public class InventorySlot extends Button {
 	 */
 
 	public void draw(Graphics g) {
+
 		int [] num = new int[4];
 		num[0] = 3;
 		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
@@ -83,45 +82,49 @@ public class InventorySlot extends Button {
         case 1:
            g.drawImage(getSpriteAtlas(WEAPON1_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
-				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos-90, yPos-110, 160, 150, null);
-				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
+				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
+				g.drawString("Speed: "+num[0], xPos-80,yPos-40);
+				g.drawString("Fire Rate: "+num[0], xPos-80,yPos-10);
+				g.drawString("Damage: "+num[0], xPos-80,yPos+20);
 			}
 			
             break;
         case 2:
            g.drawImage(getSpriteAtlas(WEAPON2_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
-				g.drawImage(getSpriteAtlas(WEAPON_HOVER_ATLAS), xPos+40, yPos-110, 160, 150, null);
-				g.drawString("Amount: "+num[0], xPos+40,yPos-30);
+				g.drawImage(hvr[4], xPos+40, yPos-110, 130, 150, null);
+				g.drawString("Speed: "+num[0], xPos+55,yPos-40);
+				g.drawString("Fire Rate: "+num[0], xPos+55,yPos-10);
+				g.drawString("Damage: "+num[0], xPos+55,yPos+20);
 			}
 
             break;
         case 3:
 			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
-				g.drawImage(hvr[0], xPos-90, yPos-110, 130, 150, null);
-				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
+				g.drawImage(hvr[0], xPos-80, yPos-70, 100, 90, null);
+				g.drawString("Amount: "+num[0], xPos-75,yPos-20);
 			}
             break;
         case 4:
 			g.drawImage(getSpriteAtlas(POTION_ATLAS), xPos-20, yPos-20, 120, 120, null); 
 			if (index == 1)	{
-				g.drawImage(hvr[1], xPos+40, yPos-110, 130, 150, null);
-				g.drawString("Amount: "+num[0], xPos+50,yPos-30);
+				g.drawImage(hvr[1], xPos+50, yPos-70, 100, 90, null);
+				g.drawString("Amount: "+num[0], xPos+55,yPos-20);
 			}
             break;
         case 5:
 			g.drawImage(getSpriteAtlas(KEY_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
-				g.drawImage(hvr[2], xPos-90, yPos-110, 130, 150, null);
-				g.drawString("Amount: "+num[0], xPos-80,yPos-30);
+				g.drawImage(hvr[2], xPos-80, yPos-70, 100, 90, null);
+				g.drawString("Amount: "+num[0], xPos-75,yPos-20);
 			}
             break;
 		case 6:
 			g.drawImage(getSpriteAtlas(GEM_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
-				g.drawImage(hvr[3], xPos+40, yPos-110, 130, 150, null);
-				g.drawString("Amount: "+num[0], xPos+50,yPos-30);
+				g.drawImage(hvr[3], xPos+50, yPos-70, 100, 90, null);
+				g.drawString("Amount: "+num[0], xPos+55,yPos-20);
 			}
             break;
 		default:
