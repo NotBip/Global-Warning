@@ -35,8 +35,7 @@ public class Atlas {
     public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";
     public static final String INVENTORYSLOT_ATLAS = "inventory_slot_new.png";
 
-    public static final String WEAPON_HOVER_ATLAS = "weapons_hover.png";
-    public static final String ITEM_HOVER_ATLAS = "item_hover.png";
+    public static final String HOVER_ATLAS = "all_hoverboxes.png";
 
 
 

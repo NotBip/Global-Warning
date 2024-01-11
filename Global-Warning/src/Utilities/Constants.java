@@ -28,8 +28,8 @@ public class Constants {
 		public static final int DOWN = 3;
 	}
 	//hover images
-	public static final int ITEM_HOVER_WIDTH = 102;
-	public static final int ITEM_HOVER_HEIGHT = 70;
+	public static final int HOVER_WIDTH = 100;
+	public static final int HOVER_HEIGHT = 68;
 
 
 
