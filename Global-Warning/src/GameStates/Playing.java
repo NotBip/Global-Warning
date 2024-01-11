@@ -60,7 +60,9 @@ public class Playing extends State implements KeyListener, MouseListener {
      */
 
     public void loadNextLevel(int spawnType) {
+        enemyManager.resetEnemies();
         levelManager.loadNextLevel();
+        enemyManager.loadEnemies(levelManager.getCurrentLevel());
         switch(spawnType) {
             case 1: player.setSpawn(levelManager.getCurrentLevel().getLeftSpawn()); break;
             case 2: player.setSpawn(levelManager.getCurrentLevel().getRightSpawn()); break;
@@ -174,7 +176,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     public void draw(Graphics g) {
-        weapon.draw(g);
+        weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
@@ -265,7 +267,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
-            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y);
+            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset);
              bullets.add(bullet);
         }
 
@@ -352,15 +354,15 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         mouseX = e.getX();
         mouseY = e.getY();
-
+        
         if (!paused && !inventory) {
-            if (mouseX < weapon.getX()) {
+            if (mouseX < weapon.getX() - xOffset) {
                 offset = 1.7;
             } else {
                 offset = -1.8;
             }
 
-            double deltaX = weapon.getX() - mouseX;
+            double deltaX = weapon.getX() - mouseX - xOffset;
             double deltaY = weapon.getY() - mouseY;
 
             
