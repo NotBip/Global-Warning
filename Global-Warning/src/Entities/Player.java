@@ -199,9 +199,12 @@ public class Player extends Entity {
         airSpeed = jumpSpeed;
         
         // Allow the player to jump out of a dash, keeping the dashing momentum
-        canDash = true;
-        dashUpdates = 0;
-        updatesBetweenDash = 0;
+        if(!touchingWall) {
+            canDash = true;
+            dashUpdates = 0;
+            updatesBetweenDash = 0;
+        }
+        
         }
     }
 
@@ -343,7 +346,6 @@ public class Player extends Entity {
 		currentHealth += value;
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
-        System.out.println(currentHealthBarLen);
 	}
 
 }

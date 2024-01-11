@@ -141,6 +141,7 @@ public class Pause {
 		if (isIn(e, menuBackB)) {
 			if (menuBackB.getMousePressed())
 				menuBackB.applyGamestate();
+				Playing.paused = false;
 
 		}
 
