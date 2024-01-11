@@ -1,10 +1,8 @@
 package Entities.Planet1Enemies;
 
 import Entities.Enemy;
-import GameStates.Playing;
 
 import static Utilities.Atlas.FIREBOI_ATLAS;
-import static Utilities.Atlas.ZOMBIE_ATLAS;
 import static Utilities.Constants.EnemyConstants.*;
 
 public class Enemy1 extends Enemy {

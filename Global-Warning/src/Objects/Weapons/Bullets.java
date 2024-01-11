@@ -41,7 +41,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         // I increased the speed to compensate for the cooldown
         speed1 = 10.0;
         speed2 = 7.0;
-        setDirection(targetX, targetY);
+        setDirection(targetX, targetY, xOffset);
         initialize();
     }
 
