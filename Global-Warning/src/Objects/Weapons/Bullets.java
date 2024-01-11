@@ -52,7 +52,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public void setDirection(double targetX, double targetY, int xOffset) {
+        //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
+        System.out.println(angle);
+
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
     }
@@ -93,7 +96,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         hitbox.x = drawX - 5 + xOffset;
         hitbox.y = drawY - 5;
-        x = hitbox.x;
+
+        if (!Playing.inventory){
+            if (!Playing.paused){
+                x = hitbox.x;
+            }
+        }
+
         //System.out.println(drawX);
 
         if (Playing.gunIndex == 1){
