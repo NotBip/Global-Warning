@@ -8,6 +8,37 @@ import javax.imageio.ImageIO;
 public class Atlas {
     // Importing Sprite Sheets and assigning them names
     public static final String PLAYER_ATLAS = "MC.png";
+    public static final String ZOMBIE_ATLAS = "RobotEnemy.png";
+    public static final String WATERBOI_ATLAS = "Waterboi.png"; 
+    public static final String FIREBOI_ATLAS = "Fireboi.png"; 
+
+    public static final String WEAPON1_ATLAS = "gunSmol.png";
+    public static final String WEAPON2_ATLAS = "pixel_weap_blue.png";
+    public static final String WEAPON3_ATLAS = "pixel_weap_yellow.png";
+
+     public static final String BOMB_ATLAS = "bomb_transparent.png";
+     public static final String KEY_ATLAS = "key_sprite.png";
+     public static final String POTION_ATLAS = "healing_potion.png";
+     public static final String GEM_ATLAS = "gem_blue.png";
+
+     public static final String CHEST_ATLAS = "bomb_transparent.png";
+
+
+    public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
+    public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";
+    public static final String MENUTITLE_ATLAS = "menuTitle.png";
+
+    public static final String PAUSE_ATLAS = "pause_screen.png";
+    public static final String GAMEBUTTONS_ATLAS = "gamepause_buttons.png";
+
+    public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
+    public static final String SOUNDBUTTON_ATLAS = "sound_buttons.png";
+
+    public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";
+    public static final String INVENTORYSLOT_ATLAS = "inventory_slot_new.png";
+
+
+
 
      /**
       * 
@@ -32,4 +63,6 @@ public class Atlas {
         }
         return img; 
     }
+
+    
 }

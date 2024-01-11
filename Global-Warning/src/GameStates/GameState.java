@@ -1,7 +1,7 @@
 package GameStates;
 // From KaarinGaming 
 public enum GameState {
-    MENU, PLAYING;
+    MENU, PLAYING, QUIT, OPTIONS, SAVE;
 
-    public static GameState currentState = PLAYING;
+    public static GameState currentState = MENU;
 }
