@@ -15,7 +15,8 @@ import java.util.ConcurrentModificationException;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y, speed;
+    private double x, y;
+    public static double speed1,speed2;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
@@ -37,8 +38,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.lvlData = lvlData;
 
         // I increased the speed to compensate for the cooldown
-        this.speed = 10.0;
-        setDirection(targetX, targetY, xOffset);
+        speed1 = 10.0;
+        speed2 = 7.0;
+        setDirection(targetX, targetY);
         initialize();
     }
 

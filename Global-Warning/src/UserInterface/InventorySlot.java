@@ -6,6 +6,8 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import GameStates.Playing;
+import Objects.Weapons.Bullets;
 
 import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
 import static Utilities.Atlas.*;
@@ -16,6 +18,7 @@ public class InventorySlot extends Button {
     // variables
 	private int xPos, yPos, index;
 	public int item;
+	public boolean select = false;
 	private BufferedImage[] imgs;
 	private BufferedImage[] hvr;
 
@@ -73,28 +76,36 @@ public class InventorySlot extends Button {
 	 */
 
 	public void draw(Graphics g) {
-
+		//temporary number for amount of items
 		int [] num = new int[4];
 		num[0] = 3;
+
+		//draw inventory slot
 		g.drawImage(imgs[index], xPos, yPos, 80, 80, null);
+		
+		if (select ==true){
+			g.drawImage(getSpriteAtlas(SELECTION_ATLAS), xPos, yPos, 80, 80, null);
+		}
+	
 
 	switch(item) {
         case 1:
            g.drawImage(getSpriteAtlas(WEAPON1_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
-				g.drawString("Speed: "+num[0], xPos-80,yPos-40);
-				g.drawString("Fire Rate: "+num[0], xPos-80,yPos-10);
+				g.drawString("Speed: "+Bullets.speed1, xPos-80,yPos-40);
+				g.drawString("Fire Rate: "+Playing.fireRateWeapon1, xPos-80,yPos-10);
 				g.drawString("Damage: "+num[0], xPos-80,yPos+20);
 			}
+			
 			
             break;
         case 2:
            g.drawImage(getSpriteAtlas(WEAPON2_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos+40, yPos-110, 130, 150, null);
-				g.drawString("Speed: "+num[0], xPos+55,yPos-40);
-				g.drawString("Fire Rate: "+num[0], xPos+55,yPos-10);
+				g.drawString("Speed: "+Bullets.speed2, xPos+55,yPos-40);
+				g.drawString("Fire Rate: "+Playing.fireRateWeapon2, xPos+55,yPos-10);
 				g.drawString("Damage: "+num[0], xPos+55,yPos+20);
 			}
 
@@ -135,7 +146,6 @@ public class InventorySlot extends Button {
 
 	}
 
-	
 
 	/**
 	 * Updates button sprite based on mouse postion
@@ -148,6 +158,7 @@ public class InventorySlot extends Button {
 		index = 0;
 		if (getMouseOver())
 			index = 1;
+
 	}
 
 }
