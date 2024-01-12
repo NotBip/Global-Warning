@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
-import Objects.Checkpoint;
+import Objects.Saving.Checkpoint;
 import Utilities.Constants;
 
 public class Level {

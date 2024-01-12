@@ -6,8 +6,8 @@ import Utilities.Constants;
 import Levels.LevelManager;
 import Levels.Level;
 import Main.Game;
-import Objects.Checkpoint;
 import Objects.ObjectManager;
+import Objects.Saving.Checkpoint;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
