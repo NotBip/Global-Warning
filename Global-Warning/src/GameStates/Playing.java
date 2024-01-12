@@ -106,7 +106,7 @@ public class Playing extends State implements KeyListener, MouseListener {
          }
         checkBorder();
         checkTransition();
-        enemyManager.update(levelManager.getCurrentLevel().getLevelData());
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this);
     }
     }
      /**

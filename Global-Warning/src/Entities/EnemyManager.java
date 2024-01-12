@@ -1,9 +1,13 @@
 package Entities;
 
 import java.awt.Graphics;
+import java.util.List;
+
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import GameStates.Playing;
 import Levels.Level;
+import Objects.Weapons.Bullets;
 
 public class EnemyManager {
 
@@ -18,15 +22,18 @@ public class EnemyManager {
     this.currentLevel = level;
   }
 
-  public void update(int[][] lvlData) {
+  public void update(int[][] lvlData, List<Bullets> bullet, Playing playing) {
+  try { 
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       o.move(player, lvlData);
+      o.enemyHit(bullet, playing);
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
       f.move(player, lvlData);
-
+      f.enemyHit(bullet, playing);
     }
+  }  catch (Exception e) {}
   }
 
   public void draw(Graphics g, int xOffset) {

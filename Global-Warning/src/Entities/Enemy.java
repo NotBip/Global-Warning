@@ -8,8 +8,10 @@ import static Utilities.Constants.EnemyConstants.*;
 import java.awt.Graphics;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
-
+import GameStates.Playing;
+import Objects.Weapons.Bullets;
 
 import static Utilities.Constants.Directions.LEFT;
 import static Utilities.Constants.Directions.RIGHT;
@@ -297,4 +299,27 @@ public class Enemy extends Entity {
         state = WALK;
         inAir = true;
       }
+
+          /**
+     * Changes the players health depending on enemy.
+     * @author Hamad Mohammed
+     * @param value Damage being done 
+     * @since December 16, 2023
+     */
+    public void changeHealth(int value) {
+		this.currentHealth += value;
+		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
+	}
+
+    /**
+     * Changes enemy hp based on damage done. 
+     * @author Hamad Mohammed
+     */
+    public void enemyHit(List<Bullets> bullet, Playing playing) { 
+        for (Bullets b : bullet) { 
+            if(b.getHitbox().intersects(this.hitbox)) { 
+                playing.removeBullet();
+            }
+        }
+    }
 }
