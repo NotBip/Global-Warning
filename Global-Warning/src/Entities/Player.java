@@ -209,6 +209,8 @@ public class Player extends Entity {
                     playerDir = RIGHT;
                 }
                 updateAnimationTick();
+                setAnimation();
+                System.out.println(playerDir);
             }
         
         inAir = true;
@@ -238,17 +240,19 @@ public class Player extends Entity {
         updatesBetweenDash = 1;
         isDashing = true;
         canDash = false;
-        if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
+        if ((left && !right) || (!up && !down && !left && !right && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * dashSpeedMultiplier;
-        } else if (right && !left || (!up && !down && playerDir == RIGHT)) { // Set dash right
+            playerDir = LEFT;
+        } else if (right && !left || (!up && !down && !left && !right && playerDir == RIGHT)) { // Set dash right
             dashXSpeed = moveSpeed * dashSpeedMultiplier;
+            playerDir = RIGHT;
         }
         if (up && !down) { // Set dash up
             dashYSpeed = -moveSpeed * dashSpeedMultiplier;
         } else if (down && !up && inAir) { // Set dash down
             dashYSpeed = moveSpeed * dashSpeedMultiplier;
         }
-
+        
         if (up && (right || left)) { // Make the dash cover the same general distance if dashing diagonally using special triangle math
             dashXSpeed /= Math.sqrt(2);
             dashYSpeed /= Math.sqrt(2);
@@ -327,14 +331,22 @@ public class Player extends Entity {
             state = RUNNING;
             xFlipped = 0;
             wFlipped = 1;
-        } else if (!moving && playerDir == RIGHT)
+        } else if (!moving && playerDir == RIGHT) {
             state = IDLE;
+            xFlipped = 0;
+            wFlipped = 1;
+        }
+            
         else if (moving && playerDir == LEFT) {
             state = RUNNING;
             xFlipped = width;
             wFlipped = -1;
-        } else if (!moving && playerDir == 0)
+        } else if (!moving && playerDir == 0) {
             state = IDLE;
+            xFlipped = width;
+            wFlipped = -1;
+        }
+            
     }
 
     public void setDirection(int direction) {

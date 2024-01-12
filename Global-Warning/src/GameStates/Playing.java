@@ -398,15 +398,15 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         mouseX = e.getX();
         mouseY = e.getY();
-
+        
         if (!paused && !inventory) {
-            if (mouseX < weapon.getX()) {
+            if (mouseX < weapon.getX() - xOffset) {
                 offset = 1.7;
             } else {
                 offset = -1.8;
             }
 
-            double deltaX = weapon.getX() - mouseX;
+            double deltaX = weapon.getX() - mouseX - xOffset;
             double deltaY = weapon.getY() - mouseY;
 
             

@@ -105,7 +105,7 @@ public class Enemy extends Entity {
             wFlipped = flipW(); 
             xFlipped = flipX();
             leftwall = false;
-            System.out.println("CHANGE");
+            System.out.println("ooga booga");
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
