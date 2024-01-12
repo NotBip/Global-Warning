@@ -2,16 +2,14 @@ package Entities;
 
 import static Utilities.Atlas.*;
 import static Utilities.Constants.GAME_HEIGHT;
-import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
 
 import java.awt.Graphics;
-import java.awt.Robot;
-import java.awt.geom.Rectangle2D;
+
 import java.awt.image.BufferedImage;
 
-import Utilities.Atlas;
+
 
 import static Utilities.Constants.Directions.LEFT;
 import static Utilities.Constants.Directions.RIGHT;

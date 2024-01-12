@@ -1,20 +1,10 @@
 package Entities;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import GameStates.Playing;
-import UserInterface.LoadSave;
-import Utilities.Atlas;
-import Utilities.Atlas.*;
-import Entities.Entity.*;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Levels.Level;
-import static Utilities.Constants.GAME_HEIGHT;
-import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.EnemyConstants.*;
+
 
 public class EnemyManager {
 
@@ -36,6 +26,7 @@ public class EnemyManager {
 
             for (Enemy1 f : currentLevel.getFireBoi()) { 
              f.move(player, lvlData);
+
             }
         }
 
