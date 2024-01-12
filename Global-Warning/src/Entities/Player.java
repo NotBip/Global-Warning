@@ -38,16 +38,17 @@ public class Player extends Entity {
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
 
-    private float healthBarWidth = 200;
+    private float healthBarWidth; 
     private float healthBarHeight = 30;
     private float currentHealthBarLen;
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
-        this.maxHealth = 100;
+        this.maxHealth = 200;
 		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
+        this.healthBarWidth = 2 * maxHealth;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations();
         initialize();
@@ -210,7 +211,6 @@ public class Player extends Entity {
                 }
                 updateAnimationTick();
                 setAnimation();
-                System.out.println(playerDir);
             }
         
         inAir = true;

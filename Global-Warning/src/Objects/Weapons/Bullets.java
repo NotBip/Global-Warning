@@ -54,7 +54,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
     public void setDirection(double targetX, double targetY, int xOffset) {
         //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
-        System.out.println(angle);
 
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
@@ -67,7 +66,15 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 25, 2023
      */
 
-    public void move() {
+     public void move() {
+        double speed = 0;
+
+        //different guns have different speeds
+        if (Playing.gunIndex == 1){
+            speed = speed1;
+        } else if(Playing.gunIndex == 2){
+            speed = speed2;
+        }
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             x += speed * directionX;
             y += speed * directionY;
