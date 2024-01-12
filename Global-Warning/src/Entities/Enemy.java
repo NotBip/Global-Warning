@@ -123,6 +123,20 @@ public class Enemy extends Entity {
         }
         }
 
+        if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {
+           
+            direction = LEFT; 
+            wFlipped = flipW(); 
+            xFlipped = flipX();
+            leftwall = false;
+        } else if (direction == LEFT && !solidTile(hitbox.x - 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {
+             
+            direction = RIGHT; 
+            wFlipped = flipW(); 
+            xFlipped = flipX();
+            leftwall = true;
+        }
+
         if (canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
@@ -131,7 +145,7 @@ public class Enemy extends Entity {
             hitbox.x -= xSpeed;
         }
 
-        else if ((!canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && !leftwall && state != RUN) {
+        else if ((!canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && !leftwall) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
           //  enemyRange.x = fixXPos(enemyRange, xSpeed);
             direction = flipD(); 
@@ -149,6 +163,9 @@ public class Enemy extends Entity {
             hitbox.x += xSpeed;
         }
 
+
+        
+
         else if (!isAttack && leftwall && state != RUN) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             //enemyRange.x = fixXPos(enemyRange, xSpeed);
@@ -158,6 +175,12 @@ public class Enemy extends Entity {
             leftwall = false;
 
 
+        }
+
+        if (!inAir) {
+            if (!checkFloor(hitbox.x, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Check if player is not on ground
+                inAir = true;
+            }
         }
 
         // Moving vertically

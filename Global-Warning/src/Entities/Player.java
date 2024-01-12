@@ -100,6 +100,7 @@ public class Player extends Entity {
         }
 
         if (isDashing) {
+            wallJumpUpdates = 0;
             if (dashUpdates < maxDashUpdates) { // Use dash speed instead of movement speed for a specific amount of updates
                 dashUpdates++;
                 xSpeed = dashXSpeed;
@@ -121,15 +122,24 @@ public class Player extends Entity {
                 dashUpdates = 0;
             }
         } else { // Regular movement if not dashing
-            if (right && !left) { // Right
-                xSpeed += moveSpeed;
-                playerDir = RIGHT;
-                moving = true;
-            } else if (left && !right) { // Left
-                xSpeed -= moveSpeed;
-                playerDir = LEFT;
-                moving = true;
+            if(wallJumpUpdates < maxWallJumpUpdates/2 && wallJumpUpdates > 0) {
+                if(playerDir == RIGHT) {
+                    xSpeed += moveSpeed;
+                } else {
+                    xSpeed -= moveSpeed;
+                }
+            } else {
+                if (right && !left) { // Right
+                    xSpeed += moveSpeed;
+                    playerDir = RIGHT;
+                    moving = true;
+                } else if (left && !right) { // Left
+                    xSpeed -= moveSpeed;
+                    playerDir = LEFT;
+                    moving = true;
+                }
             }
+            
         }
 
         // Checking if the player has just gone into the air
@@ -193,6 +203,12 @@ public class Player extends Entity {
         if(wallJumpUpdates == 0) {
             if(touchingWall) {
                 wallJumpUpdates = 1;
+                if(playerDir == RIGHT) {
+                    playerDir = LEFT;
+                } else {
+                    playerDir = RIGHT;
+                }
+                updateAnimationTick();
             }
         
         inAir = true;

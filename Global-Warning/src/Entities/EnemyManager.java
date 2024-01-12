@@ -34,9 +34,9 @@ public class EnemyManager {
            o.move(player, lvlData); 
          }
 
-          //  for (Enemy1 f : Fireboi) { 
-          //   f.move(player);
-          //  }
+            for (Enemy1 f : currentLevel.getFireBoi()) { 
+             f.move(player, lvlData);
+            }
         }
 
         public void draw(Graphics g, int xOffset) { 
@@ -44,14 +44,18 @@ public class EnemyManager {
                o.draw(g, xOffset);
            }
 
-          //    for (Enemy1 f : Fireboi) { 
-          //    f.draw(g);
-          //   }
+              for (Enemy1 f : currentLevel.getFireBoi()) { 
+              f.draw(g, xOffset);
+             }
 
         }
         
         public void resetEnemies() {
           for(Enemy2 e : currentLevel.getWaterBoi()) {
+            e.resetEnemy();
+          }
+
+          for(Enemy1 e : currentLevel.getFireBoi()) {
             e.resetEnemy();
           }
         }
