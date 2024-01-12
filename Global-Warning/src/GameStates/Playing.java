@@ -7,6 +7,8 @@ import Entities.Planet1Enemies.Enemy2;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
+import Objects.Chest;
+import Objects.Object;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
     private Player player;
+    private Object object;
     private static Weapon1 weapon;
     public int bulletCount;
     public List<Bullets> bullets;
@@ -75,6 +78,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager = new LevelManager(this);
         player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
         enemyManager = new EnemyManager(player);
+        objectManager = new ObjectManager(object);
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
@@ -88,6 +92,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             System.out.println("no default spawn point found");
         }
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
     }
 
     public void update() {
@@ -180,6 +185,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         weapon.draw(g);
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
+        objectManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         
         for (int i = 0; i < bullets.size(); i++) {

@@ -239,6 +239,21 @@ public class Constants {
 				return 0; 
 		}
 	}
+
+	public static int GetSpriteAmount(int object_type, String object_state) {
+		switch(object_state) { 
+			case "IDLE": 
+				if(object_type == Chest) 
+				return 1; 
+
+			case "USED":
+				if(object_type == Chest)
+				return 1; 
+				
+			default: 
+				return 0; 
+		}
+	}
 	}
 }
 		

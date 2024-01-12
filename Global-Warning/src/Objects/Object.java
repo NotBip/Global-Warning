@@ -5,6 +5,10 @@ import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
 import static Utilities.Constants.TILE_SIZE;
 import static Utilities.Constants.WIDTH_IN_TILES;
+import static Utilities.Constants.ObjectConstants.GetSpriteAmount;
+import static Utilities.Constants.ObjectConstants.IDLE;
+import static Utilities.Constants.ObjectConstants.findState;
+import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.Directions;
 
 import java.awt.Color;
@@ -42,7 +46,6 @@ public class Object extends Entity{
         this.Atlas = Atlas; 
         this.objectType = ObjectType; 
         this.arrI = arrI;
-        this.arrJ = arrJ;
         this.objectW = objectW;
         this.objectH = objectH;
         this.Oheight = sizeH; 
@@ -74,12 +77,6 @@ public class Object extends Entity{
 			return 1;
 	}
 
-    public int flipD() { 
-        if (direction == RIGHT)
-            return LEFT; 
-        else
-            return RIGHT; 
-    }
 
      /**
      * Helps change images making it animate. 
@@ -98,7 +95,7 @@ public class Object extends Entity{
 
     public void draw(Graphics g, int xOffset) {
         drawHitbox(g, xOffset);
-        g.drawImage(animations[findState(this.objectType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
+        g.drawImage(animations[findState(this.objectType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Owidth * wFlipped, Oheight, null);
     }
 
     /**
@@ -133,7 +130,7 @@ public class Object extends Entity{
      */
     public boolean isPlayerVisible(Player player) { 
 
-        if (this.hitbox.intersects(player.hitbox)) 
+        if (this.hitbox.intersects(player.getHitbox())) 
             return true; 
         else 
             return false; 

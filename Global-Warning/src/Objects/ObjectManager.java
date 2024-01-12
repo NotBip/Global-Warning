@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entities.Player;
 import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import UserInterface.LoadSave;
