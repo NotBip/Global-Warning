@@ -1,6 +1,7 @@
 package Main;
 
 import java.awt.Graphics;
+import java.io.IOException;
 
 import GameStates.*;
 
@@ -68,10 +69,11 @@ public class Game implements Runnable {
      * Draws everything to the screen every frame (60FPS) depending on the game state
      * @author Ryder Hodgson
      * @param g What it uses to actually draw
+     * @throws IOException 
      * @since December 16th, 2024
      */
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         
         switch (GameState.currentState) {
             case PLAYING:

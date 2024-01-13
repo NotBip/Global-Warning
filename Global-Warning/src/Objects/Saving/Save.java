@@ -8,6 +8,7 @@ public class Save {
     
     //variables 
     int numberLevel;
+    int playerHealth;
     int cooldownWeap1;
     int cooldownWeap2;
     int damageWeap1;
@@ -19,8 +20,9 @@ public class Save {
    
     /**********************************************************
     constructors same name as base class- first with parameters and second without)*/
-    public Save (  int lvl, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
+    public Save (  int lvl, int health, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
         numberLevel = lvl;
+        playerHealth = health;
         cooldownWeap1 = cd1;
         cooldownWeap2 = cd2;
         damageWeap1 = dmg1;
@@ -34,6 +36,7 @@ public class Save {
     Blank constructor will enter null string or 0 for each field*/
     public Save () {
         numberLevel = 0;
+        playerHealth = 0;
         cooldownWeap1 = 0;
         cooldownWeap2 = 0;
         damageWeap1 = 0;
@@ -47,6 +50,7 @@ public class Save {
     Methods to assign values accessible from the child class */
     
     public void setLevel (int Level){numberLevel = Level;}
+    public void setHealth (int Health){ playerHealth = Health;}
     public void setCooldown1 (int Cooldown1){  cooldownWeap1 = Cooldown1;}
     public void setCooldown2 (int Cooldown2){cooldownWeap2 = Cooldown2;}
     public void setDamage1 (int Damage1){damageWeap1 = Damage1;}
@@ -61,6 +65,7 @@ public class Save {
     Methods to retrieve values accessible from the child class */
   
     public int getLevel (){return numberLevel;}
+    public int getHealth (){ return playerHealth;}
     public int getCooldown1 (){ return cooldownWeap1; }
     public int getCooldown2 (){ return cooldownWeap2;}
     public int getDamage1 (){return damageWeap1;}
@@ -91,6 +96,7 @@ public class Save {
     
      // write the ints to the file
         raf.writeInt (numberLevel);
+        raf.writeInt (playerHealth);
         raf.writeInt (cooldownWeap1);
         raf.writeInt (cooldownWeap2);
         raf.writeInt (damageWeap1);
@@ -117,6 +123,7 @@ public class Save {
         
         // read the ints from the file
         numberLevel = raf.readInt ();
+        playerHealth = raf.readInt ();
         cooldownWeap1 = raf.readInt ();
         cooldownWeap2 = raf.readInt ();
         damageWeap1 = raf.readInt ();

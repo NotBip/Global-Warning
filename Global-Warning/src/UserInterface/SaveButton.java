@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
+import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
 
 public class SaveButton extends Button {
@@ -22,9 +23,10 @@ public class SaveButton extends Button {
 	public String fileName;
 	public int fileNum;
 
-	public static Save save1 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1);
-    public static Save save2 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
-    public static Save save3 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,3);
+	public static Save save1 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
+    public static Save save2 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
+    public static Save save3 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
+	//0,save1.getHealth(),(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1
 
 	/**
 	 * Constructor to create button for save slots
@@ -99,9 +101,18 @@ public class SaveButton extends Button {
 		GameState.currentState = state;
 	}
 
-	public void applySave()throws IOException {
-		//writeNewBinFile(fileName, fileNum);
+
+
+	public void readSave()throws IOException {
+
 		readNewBinFile(fileName, fileNum);
+		
+	}
+
+	public static void writeSave(String name, int num)throws IOException {
+
+		writeNewBinFile(name, num);
+		
 	}
 
 	public static void writeNewBinFile(String filename, int filenum) throws IOException{
@@ -120,7 +131,8 @@ public class SaveButton extends Button {
 		RandomAccessFile raf = new RandomAccessFile(filename,"rw");
 
         switch (filenum) {
-            case 1: save1.readRec(raf);break;
+            case 1: save1.readRec(raf);
+			System.out.println("hey pie!"+save1.getGem());break;
             case 2:save2.readRec(raf);break;
             case 3:save3.readRec(raf);break;
             default:
@@ -129,5 +141,13 @@ public class SaveButton extends Button {
 		
 		raf.close();
 	} // end readNewBinFile
+
+	public String getFileName(){
+		return fileName;
+	}
+
+	public int getFileNum(){
+		return fileNum;
+	}
 
 }

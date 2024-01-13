@@ -2,6 +2,7 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import Objects.Saving.*;
 import Utilities.LoadSave;
 
 import Levels.LevelManager;
@@ -14,6 +15,7 @@ import static Utilities.Constants.GAME_WIDTH;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +88,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
-        savepoint = new Checkpoint(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63);
+        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -186,7 +188,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);

@@ -6,6 +6,7 @@ import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
 import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
+import Objects.Saving.Checkpoint;
 import UserInterface.SaveButton;
 
 import java.awt.event.*;
@@ -177,7 +178,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 if (sb.getMousePressed())
                     try {
-                        sb.applySave();
+                        sb.readSave();
+                        System.out.println("check");
+                        Checkpoint.setNumName(sb.fileName, sb.fileNum);
                         sb.applyGamestate();
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block

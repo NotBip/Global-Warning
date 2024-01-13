@@ -43,7 +43,7 @@ public class Player extends Entity {
 
     private float healthBarWidth; // The default width of the player's health bar
     private final float healthBarHeight = 30; // The default height of the player's health bar
-    private float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
+    public float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
