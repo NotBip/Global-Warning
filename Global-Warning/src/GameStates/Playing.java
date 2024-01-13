@@ -2,12 +2,9 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
-import Utilities.Constants;
 import Levels.LevelManager;
-import Levels.Level;
 import Main.Game;
 import Objects.ObjectManager;
-import Objects.Saving.Checkpoint;
 
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
@@ -85,7 +82,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
-        
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());

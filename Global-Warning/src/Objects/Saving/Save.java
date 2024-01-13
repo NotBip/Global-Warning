@@ -3,11 +3,10 @@ package Objects.Saving;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class ReadWriteSave {
+public class Save {
 	
     
     //variables 
-    int numberSave;
     int numberLevel;
     int cooldownWeap1;
     int cooldownWeap2;
@@ -20,8 +19,7 @@ public class ReadWriteSave {
    
     /**********************************************************
     constructors same name as base class- first with parameters and second without)*/
-    public ReadWriteSave ( int save,  int lvl, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
-        numberSave = save;
+    public Save (  int lvl, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
         numberLevel = lvl;
         cooldownWeap1 = cd1;
         cooldownWeap2 = cd2;
@@ -34,9 +32,7 @@ public class ReadWriteSave {
     }//end Character
     /********************************************************
     Blank constructor will enter null string or 0 for each field*/
-    public ReadWriteSave () {
-    
-        numberSave = 0;
+    public Save () {
         numberLevel = 0;
         cooldownWeap1 = 0;
         cooldownWeap2 = 0;
@@ -50,7 +46,6 @@ public class ReadWriteSave {
     /**********************************************************
     Methods to assign values accessible from the child class */
     
-    public void setSave (int Save){  numberSave = Save;}
     public void setLevel (int Level){numberLevel = Level;}
     public void setCooldown1 (int Cooldown1){  cooldownWeap1 = Cooldown1;}
     public void setCooldown2 (int Cooldown2){cooldownWeap2 = Cooldown2;}
@@ -64,8 +59,7 @@ public class ReadWriteSave {
     
     /**********************************************************
     Methods to retrieve values accessible from the child class */
-    
-    public int getSave (){  return numberSave; }
+  
     public int getLevel (){return numberLevel;}
     public int getCooldown1 (){ return cooldownWeap1; }
     public int getCooldown2 (){ return cooldownWeap2;}
@@ -96,7 +90,6 @@ public class ReadWriteSave {
         System.out.println("Working....");//to make sure it's working...lol
     
      // write the ints to the file
-        raf.writeInt (numberSave);
         raf.writeInt (numberLevel);
         raf.writeInt (cooldownWeap1);
         raf.writeInt (cooldownWeap2);
@@ -123,7 +116,6 @@ public class ReadWriteSave {
         raf.seek (0);// move pointer to position in file
         
         // read the ints from the file
-        numberSave = raf.readInt();
         numberLevel = raf.readInt ();
         cooldownWeap1 = raf.readInt ();
         cooldownWeap2 = raf.readInt ();
@@ -133,6 +125,7 @@ public class ReadWriteSave {
         amountPotion = raf.readInt ();
         amountKey = raf.readInt ();
         amountGem = raf.readInt ();
+        System.out.println(amountGem + "nah id win");
         
     }  // end readRec
 } // Character class

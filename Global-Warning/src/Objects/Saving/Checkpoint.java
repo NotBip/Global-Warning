@@ -9,10 +9,13 @@ import Objects.Weapons.*;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Checkpoint {
+import Entities.Entity;
+
+public class Checkpoint extends Entity {
    // variables
-	protected int x, y, width, height;
-	protected Rectangle bounds;
+	protected float x, y;
+	protected int width, height;
+	//protected Rectangle bounds;
 
 	/**
 	 * Constructor to create a checkpoint
@@ -21,12 +24,13 @@ public class Checkpoint {
 	 * @since January 11, 2024
 	 */
 
-	public Checkpoint(int x, int y, int width, int height) {
+	public Checkpoint(float x, float y, int width, int height) {
+        super(x, y, width, height);
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-        createBounds();
+		initialize();
 	}
 
 
@@ -39,21 +43,12 @@ public class Checkpoint {
 
 	public void draw(Graphics g) {
 	
-		g.drawImage(getSpriteAtlas(FLAG_ATLAS), x, y, width, height, null);
-        g.drawImage(getSpriteAtlas(SAVED_ATLAS), x, y-30, width, height-70, null);
+		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int)x, (int)y, width, height, null);
+        g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x, (int)y-30, width, height-70, null);
 	
 	}
 
-    /**
-	 * Create bounds
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 11, 2024
-	 */
-
-	private void createBounds() {
-		bounds = new Rectangle(x, y, width, height);
-	}
+   
 
 
 
