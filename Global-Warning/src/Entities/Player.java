@@ -18,29 +18,35 @@ public class Player extends Entity {
     private boolean moving = false; // Is the player moving?
     private boolean left, right, up, down; // What direction is being pressed
     private int playerDir = RIGHT; // The player's direction
-    private float gravity = 0.04f; // Speed of gravity
-    private float moveSpeed = 2.0f; // Default walk speed of the player
-    private float jumpSpeed = -2.75f; // Jump speed of the player
+    private final float gravity = 0.04f; // Speed of gravity
+    private final float moveSpeed = 2.0f; // Default walk speed of the player
+    private final float jumpSpeed = -2.75f; // Jump speed of the player
     private float dashXSpeed = 0; // Speed of the player's dash on the horizontal
     private float dashYSpeed = 0; // Speed of the player's dash on the vertical
     private int dashUpdates = 0; // The amount of updates that have passed while dashing
-    private int maxDashUpdates = 20; // The maximum amount of updates that can pass while dashing
+    private final int maxDashUpdates = 20; // The maximum amount of updates that can pass while dashing
     private int updatesBetweenDash = 0; // The amount of updates that have passed since the last dash
-    private int maxUpdatesBetweenDash = 60; // The cooldown between dashing
-    private float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
+    private final int maxUpdatesBetweenDash = 60; // The cooldown between dashing
+    private final float dashSpeedMultiplier = 2.5f; // The multiplier towards the player speed when dashing
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
-    private float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
+    private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
-    private int maxWallJumpUpdates = 60; // The cooldown between walljumping
+    private final int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
+    private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
+    private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
+    private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
 
-    private float healthBarWidth; 
-    private float healthBarHeight = 30;
-    private float currentHealthBarLen;
+    private float healthBarWidth; // The default width of the player's health bar
+    private final float healthBarHeight = 30; // The default height of the player's health bar
+    private float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
+
+    private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
+    private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -50,6 +56,7 @@ public class Player extends Entity {
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
+        this.currentOxygenBarLen = oxygenBarWidth;
         Animations();
         initialize();
 
@@ -122,14 +129,14 @@ public class Player extends Entity {
                 dashYSpeed = 0;
                 dashUpdates = 0;
             }
-        } else { // Regular movement if not dashing
+        } else { // Checking for wall jumping
             if(wallJumpUpdates < maxWallJumpUpdates/2 && wallJumpUpdates > 0) {
                 if(playerDir == RIGHT) {
                     xSpeed += moveSpeed;
                 } else {
                     xSpeed -= moveSpeed;
                 }
-            } else {
+            } else { // Regular movement if not dashing or walljumping
                 if (right && !left) { // Right
                     xSpeed += moveSpeed;
                     playerDir = RIGHT;
@@ -157,11 +164,49 @@ public class Player extends Entity {
             }
         }
 
+        // Check if the player is in the water
+        if(checkWater(hitbox.x, hitbox.y, lvlData)) {
+            waterUpdates++;
+            if(waterUpdates % 120 == 0 && waterUpdates > 0 && waterUpdates <= maxWaterUpdates) { // Decrease oxygen bar by 10%
+                currentOxygenBarLen -= oxygenBarWidth / 10;
+            }
+            if(waterUpdates % 120 == 0 && waterUpdates > maxWaterUpdates) { // Decrease health by 10%
+                changeHealth(-maxHealth/10);
+                currentOxygenBarLen = 0;
+            }
+            if(!isDashing) { // Make the player move slower horizontally if in water if not dashing
+                xSpeed /= 2;
+            }
+        } else { // Not in water
+            if(waterUpdates > 0) { // Slowly increase the oxygen bar back up to its maximum
+                if(waterUpdates > maxWaterUpdates + 120) {
+                    waterUpdates = maxWaterUpdates + 120;
+                    currentOxygenBarLen = 0;
+                }
+                waterUpdates--;
+                if(waterUpdates % 120 == 0 && currentOxygenBarLen < oxygenBarWidth) { // Increase oxygen bar by 10%
+                    currentOxygenBarLen += oxygenBarWidth / 10;
+                }
+            } else {
+                waterUpdates = 0;
+            }
+            checkedWater = false;
+        }
+
         // Moving vertically
         if (inAir) {
             if (canMove(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) { // Move on the vertical if possible
                 hitbox.y += airSpeed;
-                airSpeed += gravity;
+                if(checkWater(hitbox.x, hitbox.y, lvlData)) {
+                    if(!checkedWater) {
+                        airSpeed/=2;
+                        checkedWater = true;
+                    }
+                    airSpeed += gravity/2;
+                } else {
+                    airSpeed += gravity;
+                }
+                
             } else {
                 // Reset everything to do with air
                 hitbox.y = fixYPos(hitbox, airSpeed);
@@ -172,6 +217,8 @@ public class Player extends Entity {
             }
         } 
         // Moving horizontally
+        
+
             if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
                 touchingWall = false;
@@ -214,7 +261,12 @@ public class Player extends Entity {
             }
         
         inAir = true;
-        airSpeed = jumpSpeed;
+        if(checkWater(hitbox.x, hitbox.y, lvlData)) {
+            airSpeed = jumpSpeed/1.5f;
+        } else {
+            airSpeed = jumpSpeed;
+        }
+        
         
         // Allow the player to jump out of a dash, keeping the dashing momentum
         if(!touchingWall) {
@@ -318,6 +370,18 @@ public class Player extends Entity {
         g.fillRect(20, 20, (int) currentHealthBarLen, (int) healthBarHeight);
         g.setColor(Color.black);
         g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
+    }
+
+    public void drawOxygenBar(Graphics g) {
+        if(waterUpdates > 0) {
+            g.setColor(Color.BLUE);
+            g.fillRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
+            g.setColor(Color.WHITE);
+            g.fillRect(20, 60, Math.max((int) currentOxygenBarLen, 0), (int) healthBarHeight);
+            g.setColor(Color.black);
+            g.drawRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
+        }
+        
     }
 
     /**
