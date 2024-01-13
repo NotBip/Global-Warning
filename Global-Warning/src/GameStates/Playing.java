@@ -3,6 +3,7 @@ package GameStates;
 import Entities.*;
 import Objects.Weapons.*;
 import Utilities.LoadSave;
+
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
+    private Checkpoint savepoint;
     private Player player;
     private static Weapon1 weapon;
     public int bulletCount;
@@ -33,6 +35,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private Image backgroundImage;
     public static boolean paused, inventory = false;
     //private float borderLen;
+    //private Checkpoint checkpoint = new Checkpoint( Constants.TILE_SIZE,  Constants.TILE_SIZE, 80, 100);
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public double mouseX;
@@ -42,7 +45,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
-    public static long fireRateWeapon2 = 300; // 300 milliseconds
+    public static long fireRateWeapon2 = 250; // 300 milliseconds
+
 
 
     public Playing(Game game) {
@@ -82,6 +86,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+        savepoint = new Checkpoint(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -185,6 +190,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
+        savepoint.draw(g, player);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         player.drawHealthBar(g);

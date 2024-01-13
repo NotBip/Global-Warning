@@ -2,12 +2,12 @@ package Entities;
 
 import java.awt.Graphics;
 import java.util.List;
-
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import Levels.Level;
 import Objects.Weapons.Bullets;
+
 
 public class EnemyManager {
 

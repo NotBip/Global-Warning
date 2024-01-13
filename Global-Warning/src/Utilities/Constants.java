@@ -13,6 +13,7 @@ public class Constants {
     public static final int GAME_HEIGHT = HEIGHT_IN_TILES * TILE_SIZE;
     public static final int animationSpeed = 15; 
 
+
     // States
     public static final int MENU = 0;
     public static final int PLAYING = 1;
@@ -20,6 +21,11 @@ public class Constants {
 	//weapon constants
 	public static final int WEAPON_WIDTH = 50;
 	public static final int WEAPON_HEIGHT = 50;
+
+
+	//hover images
+	public static final int HOVER_WIDTH = 100;
+	public static final int HOVER_HEIGHT = 68;
 
     public static class Directions {
 		public static final int LEFT = 0;
@@ -30,6 +36,7 @@ public class Constants {
 	//hover images
 	public static final int HOVER_WIDTH = 100;
 	public static final int HOVER_HEIGHT = 68;
+
 
 
 
