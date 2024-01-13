@@ -158,7 +158,6 @@ public class InventorySlot extends Button {
 		index = 0;
 		if (getMouseOver())
 			index = 1;
-
 	}
 
 }

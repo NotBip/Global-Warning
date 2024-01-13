@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ConcurrentModificationException;
 
 public class Bullets extends Entities.Entity implements MouseListener {
 
@@ -20,7 +19,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
-    private int[][] lvlData;
 
     //upgradeable abilities (fire-rate in playing class)
     //no concept of damage yet, but public static double upgradeDamage;
@@ -33,13 +31,12 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 19, 2023
      */
 
-    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData) {
+    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset) {
         super((float) startX, (float) startY, 10, 10);
         this.weapon = weapon;
         this.playing = playing;
         this.x = startX;
         this.y = startY;
-        this.lvlData = lvlData;
 
         // I increased the speed to compensate for the cooldown
         speed1 = 10.0;
@@ -58,6 +55,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
     public void setDirection(double targetX, double targetY, int xOffset) {
         //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
+        System.out.println(angle);
 
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
@@ -70,9 +68,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 25, 2023
      */
 
-
     public void move() {
-
         double speed = 0;
 
         //different guns have different speeds
@@ -82,15 +78,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
             speed = speed2;
         }
 
-        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            x += speed * directionX;
-            y += speed * directionY;
-            hitbox.x += speed * directionX;
-            hitbox.y += speed * directionX;
-        } else {
-            playing.removeBullet();
-        }
-        
+        x += speed * directionX;
+        y += speed * directionY;
+        hitbox.x += speed * directionX;
+        hitbox.y += speed * directionX;
     }
 
     /**
@@ -158,14 +149,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public void updateBullets() {
-        try {
-            for (Bullets bullet : playing.bullets) {
-                bullet.move();
-            };
-        } catch (ConcurrentModificationException e) {
-
+        for (Bullets bullet : playing.bullets) {
+            bullet.move();
         }
-       
     }
 
     /* Getters */
