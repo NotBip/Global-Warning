@@ -2,6 +2,8 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import Objects.Saving.*;
+import Utilities.Constants;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
+    private Checkpoint savepoint;
     private Player player;
     private static Weapon1 weapon;
     public int bulletCount;
@@ -79,6 +82,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+        savepoint = new Checkpoint(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -179,7 +183,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
-        //Level.checkpoint.draw(g);//try
+        savepoint.draw(g, player);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         

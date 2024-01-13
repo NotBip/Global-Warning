@@ -221,8 +221,7 @@ public class Player extends Entity {
         if ((left && !right) || (!up && !down && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * dashSpeedMultiplier;
         } else if (right && !left || (!up && !down && playerDir == RIGHT)) { // Set dash right
-            dashXSpeed = moveSpeed * dashSpeedMultiplier;
-        }
+            dashXSpeed = moveSpeed * dashSpeedMultiplier;        }
         if (up && !down) { // Set dash up
             dashYSpeed = -moveSpeed * dashSpeedMultiplier;
         } else if (down && !up && inAir) { // Set dash down

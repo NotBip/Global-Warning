@@ -1,21 +1,15 @@
 package Objects.Saving;
 
 import static Utilities.Atlas.*;
-
-import Objects.Weapons.*;
-
-
-
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
 import Entities.Entity;
+import Entities.Player;
 
 public class Checkpoint extends Entity {
    // variables
 	protected float x, y;
 	protected int width, height;
-	//protected Rectangle bounds;
 
 	/**
 	 * Constructor to create a checkpoint
@@ -41,10 +35,14 @@ public class Checkpoint extends Entity {
 	 * @since January 11, 2024
 	 */
 
-	public void draw(Graphics g) {
+	public void draw(Graphics g, Player player) {
 	
 		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int)x, (int)y, width, height, null);
-        g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x, (int)y-30, width, height-70, null);
+
+		if (player.getHitbox().intersects(hitbox)){
+        	g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x-30, (int)y-40, width+50, height-30, null);
+		}
+		drawHitbox(g, 10);
 	
 	}
 
