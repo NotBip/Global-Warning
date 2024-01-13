@@ -27,16 +27,18 @@ public class Constants {
 	public static final int HOVER_WIDTH = 100;
 	public static final int HOVER_HEIGHT = 68;
 
-
-
-	
-
     public static class Directions {
 		public static final int LEFT = 0;
 		public static final int UP = 1;
 		public static final int RIGHT = 2;
 		public static final int DOWN = 3;
 	}
+	//hover images
+	public static final int HOVER_WIDTH = 100;
+	public static final int HOVER_HEIGHT = 68;
+
+
+
 
 
 	public static class Buttons {
@@ -142,7 +144,7 @@ public class Constants {
 		switch (enemyType) {
 
 			case Waterboi:
-				return 1; 
+				return 10; 
 			
 			case Fireboi: 
 				return 1; 

@@ -67,6 +67,8 @@ public class Level {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
 		case 1: Waterboi.add(new Enemy2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
+
+		case 2: Fireboi.add(new Enemy1(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); 
 		//flag.add(new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE,40,40));
 		break;
@@ -134,6 +136,10 @@ public class Level {
 
 	public ArrayList<Enemy2> getWaterBoi() { 
 		return Waterboi; 
+	}
+
+	public ArrayList<Enemy1> getFireBoi() { 
+		return Fireboi; 
 	}
 
 	/*public ArrayList<Entity> getEntityName() {
