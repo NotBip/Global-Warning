@@ -1,6 +1,7 @@
 package UserInterface;
 
 import GameStates.GameState;
+import GameStates.Playing;
 import Objects.Saving.Save;
 
 import java.awt.Graphics;
@@ -21,9 +22,9 @@ public class SaveButton extends Button {
 	public String fileName;
 	public int fileNum;
 
-	public static Save save1 = new Save(0,0,0,0,0,0,0,0,1);
-    public static Save save2 = new Save(0,0,0,0,0,0,0,0,2);
-    public static Save save3 = new Save(0,0,0,0,0,0,0,0,3);
+	public static Save save1 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1);
+    public static Save save2 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
+    public static Save save3 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,3);
 
 	/**
 	 * Constructor to create button for save slots

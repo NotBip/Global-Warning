@@ -87,7 +87,7 @@ public class Save {
    
      public void writeRec (RandomAccessFile raf) throws IOException {
         raf.seek (0); // move pointer to position in file
-        System.out.println("Working....");//to make sure it's working...lol
+       // System.out.println("Working....");//to make sure it's working...lol
     
      // write the ints to the file
         raf.writeInt (numberLevel);
@@ -125,7 +125,7 @@ public class Save {
         amountPotion = raf.readInt ();
         amountKey = raf.readInt ();
         amountGem = raf.readInt ();
-        System.out.println(amountGem + "nah id win");
+        //System.out.println(amountGem + "nah id win");
         
     }  // end readRec
 } // Character class
