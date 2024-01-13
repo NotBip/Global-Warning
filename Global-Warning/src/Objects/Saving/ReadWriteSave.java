@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
 public class ReadWriteSave {
 	
     
-    //variables 4 * whatver
+    //variables 
     int numberSave;
     int numberLevel;
     int cooldownWeap1;
@@ -18,20 +18,19 @@ public class ReadWriteSave {
     int amountKey;
     int amountGem;
    
-    private final long recLen = 102;
     /**********************************************************
     constructors same name as base class- first with parameters and second without)*/
-    public ReadWriteSave ( int save,  int HitPoints, int Strength, int Constitution, int Intelligence, int Wisdom, int Dexterity, int Charisma) {
-    
-        
+    public ReadWriteSave ( int save,  int lvl, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
         numberSave = save;
-        numberLevel = HitPoints;
-        cooldownWeap1 = Strength;
-        cooldownWeap2 = Constitution;
-        damageWeap1 = Intelligence;
-        damageWeap2 = Wisdom;
-        amountBomb = Dexterity;
-        amountPotion = Charisma;
+        numberLevel = lvl;
+        cooldownWeap1 = cd1;
+        cooldownWeap2 = cd2;
+        damageWeap1 = dmg1;
+        damageWeap2 = dmg2;
+        amountBomb = bomb;
+        amountPotion = potion;
+        amountKey = key;
+        amountGem = gem;
     }//end Character
     /********************************************************
     Blank constructor will enter null string or 0 for each field*/
@@ -45,31 +44,37 @@ public class ReadWriteSave {
         damageWeap2 = 0;
         amountBomb = 0;
         amountPotion = 0;
+        amountKey = 0;
+        amountGem = 0;
     }//end Character
     /**********************************************************
     Methods to assign values accessible from the child class */
     
-    public void setLevel (int Level){  numberSave = Level;}
-    public void setHitPoints (int HitPoints){numberLevel = HitPoints;}
-    public void setStrength (int Strength){  cooldownWeap1 = Strength;}
-    public void setConstitution (int Constitution){cooldownWeap2 = Constitution;}
-    public void setIntelligence (int Intelligence){damageWeap1 = Intelligence;}
-    public void setWisdom (int Wisdom){damageWeap2 = Wisdom;}
-    public void setDexterity (int Dexterity){amountBomb = Dexterity;}
-    public void setCharisma (int Charisma){amountPotion = Charisma;}
+    public void setSave (int Save){  numberSave = Save;}
+    public void setLevel (int Level){numberLevel = Level;}
+    public void setCooldown1 (int Cooldown1){  cooldownWeap1 = Cooldown1;}
+    public void setCooldown2 (int Cooldown2){cooldownWeap2 = Cooldown2;}
+    public void setDamage1 (int Damage1){damageWeap1 = Damage1;}
+    public void setDamage2 (int Damage2){damageWeap2 = Damage2;}
+    public void setBomb (int Bomb){amountBomb = Bomb;}
+    public void setPotion (int Potion){amountPotion = Potion;}
+    public void setKey (int Key){amountKey=Key;}
+    public void setGem (int Gem){amountGem = Gem;}
     
     
     /**********************************************************
     Methods to retrieve values accessible from the child class */
     
-    public int getLevel (){  return numberSave; }
-    public int getHitPoints (){return numberLevel;}
-    public int getStrength (){ return cooldownWeap1; }
-    public int getConstitution (){ return cooldownWeap2;}
-    public int getIntelligence (){return damageWeap1;}
-    public int getWisdom (){return damageWeap2;}
-    public int getDexterity (){return amountBomb;}
-    public int getCharisma (){return amountPotion;}
+    public int getSave (){  return numberSave; }
+    public int getLevel (){return numberLevel;}
+    public int getCooldown1 (){ return cooldownWeap1; }
+    public int getCooldown2 (){ return cooldownWeap2;}
+    public int getDamage1 (){return damageWeap1;}
+    public int getDamage2 (){return damageWeap2;}
+    public int getBomb (){return amountBomb;}
+    public int getPotion (){return amountPotion;}
+    public int getKey (){return amountKey;}
+    public int getGem (){return amountGem;}
     
    
    
@@ -86,11 +91,10 @@ public class ReadWriteSave {
  	 * @Throws/Exceptions: IOException
  	 * */
    
-     public void writeRec (RandomAccessFile raf, int recordNumber) throws IOException {
-        raf.seek (recordNumber * recLen); // move pointer to position in file
+     public void writeRec (RandomAccessFile raf) throws IOException {
+        raf.seek (0); // move pointer to position in file
         System.out.println("Working....");//to make sure it's working...lol
-        
-        
+    
      // write the ints to the file
         raf.writeInt (numberSave);
         raf.writeInt (numberLevel);
@@ -100,6 +104,8 @@ public class ReadWriteSave {
         raf.writeInt (damageWeap2);
         raf.writeInt (amountBomb);
         raf.writeInt (amountPotion);
+        raf.writeInt (amountKey);
+        raf.writeInt (amountGem);
    }//end writeRec
   	/**********************************************************	
 	method to read one record of information from a random access file */
@@ -113,8 +119,8 @@ public class ReadWriteSave {
   	 * @Throws/Exceptions: IOException
   	 * */
      
-     public void readRec (RandomAccessFile raf, int recNum) throws IOException   {
-        raf.seek (recNum * recLen);// move pointer to position in file
+     public void readRec (RandomAccessFile raf) throws IOException   {
+        raf.seek (0);// move pointer to position in file
         
         // read the ints from the file
         numberSave = raf.readInt();
@@ -125,6 +131,8 @@ public class ReadWriteSave {
         damageWeap2 = raf.readInt ();
         amountBomb = raf.readInt ();
         amountPotion = raf.readInt ();
+        amountKey = raf.readInt ();
+        amountGem = raf.readInt ();
         
     }  // end readRec
 } // Character class
