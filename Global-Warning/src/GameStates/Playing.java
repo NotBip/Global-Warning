@@ -2,16 +2,17 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
-import Objects.Saving.*;
-import Utilities.Constants;
+import Utilities.LoadSave;
+
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
 
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import java.awt.Graphics;
-
+import java.awt.Image;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     private LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
+
+    private Image backgroundImage;
     public static boolean paused, inventory = false;
     //private float borderLen;
     //private Checkpoint checkpoint = new Checkpoint( Constants.TILE_SIZE,  Constants.TILE_SIZE, 80, 100);
@@ -43,6 +46,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 300 milliseconds
+
 
 
     public Playing(Game game) {
@@ -86,6 +90,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -108,7 +113,7 @@ public class Playing extends State implements KeyListener, MouseListener {
          }
         checkBorder();
         checkTransition();
-        enemyManager.update(levelManager.getCurrentLevel().getLevelData());
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this);
     }
     }
      /**
@@ -180,12 +185,16 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+
     public void draw(Graphics g) {
+        g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         savepoint.draw(g, player);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        player.drawHealthBar(g);
+        player.drawOxygenBar(g);
         
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);
@@ -273,7 +282,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
-            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset);
+            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData());
              bullets.add(bullet);
         }
 
@@ -408,15 +417,15 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         mouseX = e.getX();
         mouseY = e.getY();
-
+        
         if (!paused && !inventory) {
-            if (mouseX < weapon.getX()) {
+            if (mouseX < weapon.getX() - xOffset) {
                 offset = 1.7;
             } else {
                 offset = -1.8;
             }
 
-            double deltaX = weapon.getX() - mouseX;
+            double deltaX = weapon.getX() - mouseX - xOffset;
             double deltaY = weapon.getY() - mouseY;
 
             

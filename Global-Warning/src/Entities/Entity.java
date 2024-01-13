@@ -30,6 +30,7 @@ public class Entity {
     protected Rectangle2D.Float enemyRange; 
     protected float enemyRangeX, enemyRangeY; 
     protected int enemyRangeW, enemyRangeH; 
+    protected boolean inWater;
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -109,10 +110,13 @@ public class Entity {
         }
         int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
         int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
-
+        
         try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
             if (lvlData[lvlY][lvlX] != 11) { // Check if the entity is on an air tile
-                        return true;
+                if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) {
+                    return false;
+                }    
+                return true;
                     }
         } catch(Exception e) {
             return false;
@@ -140,6 +144,18 @@ public class Entity {
         return true;
         }
 
+    public boolean checkWater(float x, float y, int[][] lvlData) {
+        int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
+        int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
+
+        if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) {
+            this.inWater = true;
+            return true;
+        } 
+
+        return false;
+    }
+
     /**
      * if the entity hits the ground or a ceiling while moving, sets the y position to compensate for the lost movement
      * @author Kaarin Gaming / Edited by Ryder Hodgson
@@ -149,6 +165,7 @@ public class Entity {
      * @return the new yPos
      */
 protected static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
+    
 		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE - 0.2); // The current tile the bottom of the entity is on, subtract 0.2 to fix inconsistency issue with the tile calculation
 		if (airSpeed > 0) { // Falling or touching floor
 			int tileY = currentTile * TILE_SIZE;
