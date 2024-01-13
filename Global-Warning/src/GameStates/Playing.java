@@ -252,7 +252,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 * @since December 29, 2023
 	 */
 
-    public void bulletCooldown(MouseEvent e) {
+    public void bulletCooldown(int x, int y) {
         long time1 = System.currentTimeMillis();
         long rate = 0;
 
@@ -265,7 +265,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         //cooldown according to the firerate of gun
         if (time1 > lastBullet + rate) {
-            spawnBullet(e.getX(), e.getY());
+            spawnBullet(x, y);
             lastBullet = time1;
         }
     }
@@ -399,7 +399,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 */
 
     public void mouseClicked(MouseEvent e) {
-        bulletCooldown(e);
+        bulletCooldown((int) mouseX, (int) mouseY);
     }
 
 
@@ -411,10 +411,11 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 */
 
     public void mouseDragged(MouseEvent e) {
-        bulletCooldown(e);
+        
 
         mouseX = e.getX();
         mouseY = e.getY();
+        bulletCooldown((int) mouseX, (int) mouseY);
         
         if (!paused && !inventory) {
             if (mouseX < weapon.getX() - xOffset) {
@@ -442,6 +443,7 @@ public class Playing extends State implements KeyListener, MouseListener {
    
     @Override
     public void mousePressed(MouseEvent e) {
+        bulletCooldown((int) mouseX, (int) mouseY);
        if (paused)
 			pauseScreen.mousePressed(e);
 
