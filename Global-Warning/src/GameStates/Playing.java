@@ -7,6 +7,7 @@ import Utilities.LoadSave;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
+import Objects.Saving.Checkpoint;
 
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
-    private Checkpoint savepoint;
     private Player player;
     private static Weapon1 weapon;
     public int bulletCount;
@@ -86,7 +86,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
-        savepoint = new Checkpoint(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -190,7 +189,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
-        savepoint.draw(g, player);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         player.drawHealthBar(g);
