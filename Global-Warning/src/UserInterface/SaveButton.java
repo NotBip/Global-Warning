@@ -23,9 +23,9 @@ public class SaveButton extends Button {
 	public String fileName;
 	public int fileNum;
 
-	public static Save save1 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
-    public static Save save2 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
-    public static Save save3 = new Save(0,0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
+	public static Save save1 = new Save();
+    public static Save save2 = new Save();
+    public static Save save3 = new Save();
 	//0,save1.getHealth(),(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1
 
 	/**
@@ -110,7 +110,7 @@ public class SaveButton extends Button {
 	}
 
 	public static void writeSave(String name, int num)throws IOException {
-
+		System.out.println("Write HP:"+ save1.getHealth());
 		writeNewBinFile(name, num);
 		
 	}
@@ -118,7 +118,8 @@ public class SaveButton extends Button {
 	public static void writeNewBinFile(String filename, int filenum) throws IOException{
 	    RandomAccessFile raf = new RandomAccessFile(filename,"rw");
         switch (filenum) {
-            case 1: save1.writeRec(raf);break;
+            case 1: save1.writeRec(raf);
+			System.out.println("HP: "+ save1.getHealth());break;
             case 2:save2.writeRec(raf);break;
             case 3:save3.writeRec(raf);break;
             default:
@@ -131,8 +132,8 @@ public class SaveButton extends Button {
 		RandomAccessFile raf = new RandomAccessFile(filename,"rw");
 
         switch (filenum) {
-            case 1: save1.readRec(raf);
-			System.out.println("hey pie!"+save1.getGem());break;
+            case 1:save1.readRec(raf);
+			System.out.println("HP: "+ save1.getHealth());break;
             case 2:save2.readRec(raf);break;
             case 3:save3.readRec(raf);break;
             default:

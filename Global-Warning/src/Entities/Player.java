@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+
+import UserInterface.SaveButton;
+
 import static Utilities.Constants.Directions.*;
 
 import static Utilities.Atlas.*;
@@ -51,7 +54,8 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.maxHealth = 200;
-		this.currentHealth = maxHealth;
+        System.out.println("current health: " + SaveButton.save1.getHealth());
+		this.currentHealth = SaveButton.save1.getHealth();;
         this.state = IDLE;
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;

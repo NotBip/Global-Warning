@@ -23,7 +23,7 @@ public class Entity {
     protected int state;
     protected boolean inAir;
     protected int maxHealth;
-    protected int currentHealth;
+    public int currentHealth;
     protected int animationTick;
     protected int animationIndex;
     protected int[][] lvlData;

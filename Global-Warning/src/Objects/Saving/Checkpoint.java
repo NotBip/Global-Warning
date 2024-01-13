@@ -51,7 +51,13 @@ public class Checkpoint extends Entity {
 			//reached = true;
 			reached = true;
 			System.out.println("ah~"+fileName);
-			System.out.println(fileNum);
+			
+			SaveButton.save1.setHealth(player.currentHealth);
+			SaveButton.save2.setHealth(player.currentHealth);
+			SaveButton.save3.setHealth(player.currentHealth);
+
+			System.out.println("ah~"+ SaveButton.save1.getHealth());
+
 			SaveButton.writeSave(fileName, fileNum);
 		
 	
