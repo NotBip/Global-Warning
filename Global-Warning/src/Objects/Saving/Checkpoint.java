@@ -55,6 +55,7 @@ public class Checkpoint extends Entity {
 			switch (fileNum) {
 				case 1:
 				SaveButton.save1.setHealth(player.currentHealth);
+				SaveButton.save1.setHold(Playing.gunIndex);
 				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
 				
@@ -62,14 +63,16 @@ public class Checkpoint extends Entity {
 					break;
 				case 2:
 				SaveButton.save2.setHealth(player.currentHealth);
+				SaveButton.save2.setHold(Playing.gunIndex);
 				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
 				
 					break;
 				case 3:
 				SaveButton.save3.setHealth(player.currentHealth);
-				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
-				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
+				SaveButton.save3.setHold(Playing.gunIndex);
+				SaveButton.save3.setCooldown1((int)Playing.fireRateWeapon1);
+				SaveButton.save3.setCooldown2((int)Playing.fireRateWeapon2);
 					
 					break;
 			

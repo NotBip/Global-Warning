@@ -23,7 +23,7 @@ import java.util.List;
 public class Playing extends State implements KeyListener, MouseListener {
     private Checkpoint savepoint;
    public static Player player;
-    private static Weapon1 weapon;
+   public static Weapon1 weapon;
     public int bulletCount;
     public List<Bullets> bullets;
     private EnemyManager enemyManager;

@@ -12,6 +12,7 @@ import java.io.RandomAccessFile;
 import static Utilities.Atlas.*;
 import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
+import static Objects.Weapons.Bullets.*;
 
 public class SaveButton extends Button {
 
@@ -135,9 +136,11 @@ public class SaveButton extends Button {
 
         switch (filenum) {
             case 1:save1.readRec(raf);
-			System.out.println("HP: "+ save1.getHealth());break;
-            case 2:save2.readRec(raf);break;
-            case 3:save3.readRec(raf);break;
+			System.out.println("Gun Index: "+ save1.getHold());break;
+            case 2:save2.readRec(raf);
+			System.out.println("Gun Index: "+ save2.getHold());break;
+            case 3:save3.readRec(raf);
+			System.out.println("Gun Index: "+ save3.getHold());break;
             default:
                 break;
         }
@@ -149,6 +152,7 @@ public class SaveButton extends Button {
         switch (fileNum) {
 			case 1:
 			Playing.player.currentHealth = SaveButton.save1.getHealth();
+			Playing.gunIndex = SaveButton.save1.getHold();
 			Playing.fireRateWeapon1 = SaveButton.save1.getCooldown1();
             Playing.fireRateWeapon1 = SaveButton.save1.getCooldown2();
 
@@ -159,6 +163,7 @@ public class SaveButton extends Button {
 				break;
 			case 2:
 			Playing.player.currentHealth = SaveButton.save2.getHealth();
+			Playing.gunIndex = SaveButton.save2.getHold();
 			Playing.fireRateWeapon1 = SaveButton.save2.getCooldown1();
             Playing.fireRateWeapon1 = SaveButton.save2.getCooldown2();
 
@@ -168,12 +173,14 @@ public class SaveButton extends Button {
 				break;
 			case 3:
 			Playing.player.currentHealth = SaveButton.save3.getHealth();
+			Playing.gunIndex = SaveButton.save3.getHold();
 			Playing.fireRateWeapon1 = SaveButton.save3.getCooldown1();
             Playing.fireRateWeapon1 = SaveButton.save3.getCooldown2();
 
 			if (SaveButton.save3.getHealth() == 0){
 				Playing.player.currentHealth = Playing.player.maxHealth;
 			}
+
 				break;
 		
 			default:
@@ -181,6 +188,8 @@ public class SaveButton extends Button {
         }
 
 			Playing.player.changeHealth(0);
+			Playing.weapon.getImage();
+			
     }
 
 	public String getFileName(){
