@@ -12,6 +12,7 @@ import java.util.List;
 
 import GameStates.Playing;
 import Objects.Weapons.Bullets;
+import Utilities.Constants.PlayerConstants;
 
 import static Utilities.Constants.Directions.LEFT;
 import static Utilities.Constants.Directions.RIGHT;
@@ -19,7 +20,7 @@ import static Utilities.Constants.Directions.RIGHT;
 public class Enemy extends Entity {
     protected int lvlData[][];
     protected int aniIndex, enemyState, enemyType;
-	protected int aniTick, hitCooldown, aniSpeed = 15;
+	protected int aniTick, hitCooldown, aniSpeed = 10;
     protected int direction = LEFT; 
     private String state = WALK; 
     private BufferedImage[][] animations; 
@@ -31,6 +32,8 @@ public class Enemy extends Entity {
     private float gravity = 0.04f;
     private boolean isAttack = false, leftwall = false, isVisible = false; 
     private int enemyRangeWidth = 80;
+    private boolean dead = false; 
+    private boolean deadOver = false; 
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -59,7 +62,7 @@ public class Enemy extends Entity {
     }
 
     protected void turnTowardsPlayer(Player player) {
-    if (isPlayerVisible(player)) { 
+    if (isPlayerVisible(player) && !dead) { 
 		if (player.hitbox.x > hitbox.x)
 			direction = RIGHT;
 		else
@@ -72,11 +75,16 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player, int[][] lvllData) {
+    if (this.currentHealth <= 0) { 
+        dead = true; 
+        state = DEAD; 
+    }
+
+    if (!dead){ 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
         enemyRange.y = this.hitbox.y-enemyRangeWidth; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
-
         if (!player.hitbox.intersects(enemyRange))
         state = WALK; 
 
@@ -91,7 +99,7 @@ public class Enemy extends Entity {
         }
         else { 
         if(!player.hitbox.intersects(enemyRange))
-        xSpeed = moveSpeed - .5f; 
+        xSpeed = moveSpeed; 
         else { 
         xSpeed = moveSpeed;
         state = RUN; 
@@ -99,7 +107,6 @@ public class Enemy extends Entity {
         aniSpeed = animationSpeed; 
         isAttack = false; 
         }
-
         if (player.hitbox.intersects(enemyRange) && !isAttack) {
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
             isVisible = true; 
@@ -107,7 +114,6 @@ public class Enemy extends Entity {
             wFlipped = flipW(); 
             xFlipped = flipX();
             leftwall = false;
-            System.out.println("ooga booga");
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
@@ -116,10 +122,9 @@ public class Enemy extends Entity {
             wFlipped = flipW(); 
             xFlipped = flipX();
             leftwall = true;
-            System.out.println("CHANGE");
             }
         else if (!player.hitbox.intersects(enemyRange)) { 
-            xSpeed = moveSpeed - .5f; 
+            xSpeed = moveSpeed; 
         }
         }
 
@@ -137,7 +142,7 @@ public class Enemy extends Entity {
             leftwall = true;
         }
 
-        if (canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall) {
+        if (canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
@@ -145,14 +150,12 @@ public class Enemy extends Entity {
             hitbox.x -= xSpeed;
         }
 
-        else if ((!canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && !leftwall) {
+        else if ((!canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack)) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
-          //  enemyRange.x = fixXPos(enemyRange, xSpeed);
             direction = flipD(); 
             leftwall = true;
             wFlipped = flipW(); 
             xFlipped = flipX(); 
-
         }
 
        if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && leftwall) { 
@@ -200,7 +203,10 @@ public class Enemy extends Entity {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
-        updateAnimationTick(); 
+    }
+    if(dead) 
+    state = DEAD; 
+    updateAnimationTick(); 
     }
 
 
@@ -243,7 +249,13 @@ public class Enemy extends Entity {
 
     public void draw(Graphics g, int xOffset) {
         drawHitbox(g, xOffset);
+        if (!deadOver)
         g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
+       
+        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
+            deadOver = true; 
+        }
+        System.out.println(deadOver);
     }
 
     /**
@@ -256,6 +268,7 @@ public class Enemy extends Entity {
         animations = new BufferedImage[arrI][arrJ]; 
         for (int i = 0; i < animations.length; i++){
             for (int j = 0; j < animations[i].length; j++){
+                if (!deadOver)
                 animations[i][j] = img.getSubimage(j*enemyW, i*enemyH, enemyW, enemyH);
             }
         }
@@ -307,7 +320,7 @@ public class Enemy extends Entity {
      * @since December 16, 2023
      */
     public void changeHealth(int value) {
-		this.currentHealth += value;
+		this.currentHealth -= value;
 		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
 	}
 
@@ -319,7 +332,16 @@ public class Enemy extends Entity {
         for (Bullets b : bullet) { 
             if(b.getHitbox().intersects(this.hitbox)) { 
                 playing.removeBullet();
+                changeHealth(PlayerConstants.getPlayerDamage(playing));
+                System.out.println(this.currentHealth);
             }
         }
+    }
+
+    public boolean isDead() { 
+        if (deadOver)
+            return true; 
+        else 
+            return false; 
     }
 }

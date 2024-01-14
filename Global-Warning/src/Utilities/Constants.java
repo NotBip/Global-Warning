@@ -1,5 +1,6 @@
 package Utilities;
 
+import GameStates.Playing;
 import Main.Game;
 
 public class Constants {
@@ -57,19 +58,21 @@ public class Constants {
 			public static final String WALK = "WALK"; 
 			public static final String RUN = "RUN"; 
 			public static final String ATTACK = "ATTACK"; 
+			public static final String DEAD = "DEAD"; 
 
 			public static final int Waterboi = 0; 
 			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
 			public static final int WATERBOI_WIDTH = 60 *(int) Game.SCALE; 
 			public static final int waterAttackSpeed = 20; 
-			public static final int waterArrI = 9;
+			public static final int waterArrI = 10;
 			public static final int waterArrJ = 8; 
 			public static final int waterW = 144; 
-			public static final int waterH = 166;
+			public static final int waterH = 165;
 			public static final int waterIdle = 0; 
 			public static final int waterWalk = 1; 
 			public static final int waterRunning = 2; 
 			public static final int waterAttack = 6; 
+			public static final int waterDead = 9; 
 			public static final float waterSpeed = 1.0f * Game.SCALE; 
 			public static final int waterSizeX = 100*(int) Game.SCALE; 
 			public static final int waterSizeY = 110*(int) Game.SCALE; 
@@ -80,7 +83,7 @@ public class Constants {
 			public static final int FIREBOI_HEIGHT = 93 *(int) Game.SCALE; 
 			public static final int FIREBOI_WIDTH = 60 *(int) Game.SCALE; 
 			public static final int fireAttackSpeed = 15; 
-			public static final int fireboiArrI = 9; 
+			public static final int fireboiArrI = 10; 
 			public static final int fireboiArrJ = 8; 
 			public static final int fireboiW = 144; 
 			public static final int fireboiH = 165;
@@ -88,6 +91,7 @@ public class Constants {
 			public static final int fireWalk = 1; 
 			public static final int fireRun = 2; 
 			public static final int fireAttack = 7; 
+			public static final int fireDead = 9; 
 			public static final float fireSpeed = 1.5f * Game.SCALE; 
 			public static final int fireSizeX = 100 *(int) Game.SCALE; 
 			public static final int fireSizeY = 110 *(int) Game.SCALE; 
@@ -118,6 +122,12 @@ public class Constants {
 			return 3; 
 			if(enemy_type == Fireboi)
 			return 6; 
+		case "DEAD": 
+			if(enemy_type == Waterboi)
+			return 6; 
+			if(enemy_type == Fireboi)
+			return 6; 
+
 		default: 
 			return 0;
 
@@ -126,8 +136,11 @@ public class Constants {
 
 	public static int getMaxEnemyHealth(int enemyType) {
 		switch (enemyType) {
-			case 0:
-				return 10; 		
+			case Fireboi:
+				return 100; 	
+			case Waterboi: 
+				return 100; 
+
 			default:
 				return 0;
 		}
@@ -140,7 +153,7 @@ public class Constants {
 				return 10; 
 			
 			case Fireboi: 
-				return 1; 
+				return 10; 
 				
 			default:
 				return 0; 
@@ -172,7 +185,13 @@ public class Constants {
 				return waterAttack; 
 				if(enemy_type == Fireboi)
 				return fireAttack; 
-			
+
+			case "DEAD": 
+				if(enemy_type == Waterboi)
+				return 9; 
+				if(enemy_type == Fireboi)
+				return 9; 
+
 			default: 
 				return 0; 
 		}
@@ -202,11 +221,22 @@ public class Constants {
 		public static int GetSpriteAmount(int player_action) {
 			switch (player_action) {
 			case IDLE:
-				return 4;
+				return 6;
             case RUNNING: 
-                return 4;
+                return 3;
 			default:
 				return 1;
+			}
+		}
+
+		public static int getPlayerDamage(Playing playing) { 
+			switch (playing.gunIndex) {
+				case 1: 
+					return 10; 
+				case 2: 
+					return 20; 
+				default:
+					return 0; 
 			}
 		}
     }

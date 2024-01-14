@@ -27,14 +27,19 @@ public class EnemyManager {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       o.move(player, lvlData);
       o.enemyHit(bullet, playing);
+      if(o.isDead())
+      currentLevel.getWaterBoi().remove(o); 
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
       f.move(player, lvlData);
       f.enemyHit(bullet, playing);
+      if(f.isDead())
+      currentLevel.getFireBoi().remove(f); 
     }
   }  catch (Exception e) {}
   }
+
 
   public void draw(Graphics g, int xOffset) {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
@@ -46,6 +51,7 @@ public class EnemyManager {
     }
 
   }
+
 
   public void resetEnemies() {
     for (Enemy2 e : currentLevel.getWaterBoi()) {

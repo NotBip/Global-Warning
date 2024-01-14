@@ -32,8 +32,8 @@ public class Player extends Entity {
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
     private float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
-    private int xFlipped = 0;
-    private int wFlipped = 1;
+    private int xFlipped = width;
+    private int wFlipped = -1;
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
@@ -185,8 +185,8 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g, int offset) {
-        //drawHitbox(g, offset);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 55 * wFlipped, 65, null);
+        drawHitbox(g, offset);
+        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
     }
 
     /**
@@ -287,10 +287,10 @@ public class Player extends Entity {
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(PLAYER_ATLAS);
-        animations = new BufferedImage[4][4];
+        animations = new BufferedImage[3][6];
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
-                animations[i][j] = img.getSubimage(j * 64, i * 64, 64, 64);
+                animations[i][j] = img.getSubimage(j * 153, i * 154, 153, 154);
             }
         }
     }
@@ -329,22 +329,22 @@ public class Player extends Entity {
     private void setAnimation() {
         if (moving && playerDir == 2) {
             state = RUNNING;
-            xFlipped = 0;
-            wFlipped = 1;
+            xFlipped = width;
+            wFlipped = -1;
         } else if (!moving && playerDir == RIGHT) {
             state = IDLE;
-            xFlipped = 0;
-            wFlipped = 1;
+            xFlipped = width;
+            wFlipped = -1;
         }
             
         else if (moving && playerDir == LEFT) {
             state = RUNNING;
-            xFlipped = width;
-            wFlipped = -1;
+            xFlipped = 0;
+            wFlipped = 1;
         } else if (!moving && playerDir == 0) {
             state = IDLE;
-            xFlipped = width;
-            wFlipped = -1;
+            xFlipped = 0;
+            wFlipped = 1;
         }
             
     }

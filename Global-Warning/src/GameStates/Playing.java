@@ -77,7 +77,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void initialize() {
         levelManager = new LevelManager(this);
-        player = new Player(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50, 45, 63); // Default spawn point
+        player = new Player(1200, GAME_HEIGHT / 2 - 50, 62, 68); // Default spawn point
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
