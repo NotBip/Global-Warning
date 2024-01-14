@@ -21,6 +21,8 @@ public class Atlas {
      public static final String POTION_ATLAS = "healing_potion.png";
      public static final String GEM_ATLAS = "gem_blue.png";
 
+     public static final String CHEST_ATLAS = "chest_closed.png";
+
 
     public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";

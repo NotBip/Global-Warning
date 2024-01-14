@@ -2,6 +2,7 @@ package Main;
 
 import java.awt.Graphics;
 
+import Entities.Player;
 import GameStates.*;
 
 

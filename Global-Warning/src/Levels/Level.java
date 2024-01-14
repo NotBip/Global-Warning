@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import Objects.Chest;
 import Utilities.Constants;
 
 public class Level {
@@ -28,6 +29,7 @@ public class Level {
 	private boolean isWindy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
+	private ArrayList<Chest> Chest = new ArrayList<Chest>();
 
 	public Level(BufferedImage img) {
 		this.img = img;
@@ -134,6 +136,10 @@ public class Level {
 
 	public ArrayList<Enemy1> getFireBoi() { 
 		return Fireboi; 
+    
+	public ArrayList<Chest> getChest() {
+		return Chest;
+
 	}
 
 	/*public ArrayList<Entity> getEntityName() {
