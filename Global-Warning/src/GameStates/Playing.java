@@ -2,6 +2,8 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import UserInterface.SaveButton;
+import Objects.Saving.*;
 import Utilities.LoadSave;
 
 import Levels.LevelManager;
@@ -15,12 +17,16 @@ import static Utilities.Constants.GAME_WIDTH;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
-    private Player player;
     private static Weapon1 weapon;
+    private Checkpoint savepoint;
+   public static Player player;
+   public static Weapon1 weapon;
+
     public int bulletCount;
     public List<Bullets> bullets;
     private EnemyManager enemyManager;
@@ -28,6 +34,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
+    public int numFile = Checkpoint.fileNum;
     private LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
@@ -46,14 +53,21 @@ public class Playing extends State implements KeyListener, MouseListener {
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 300 milliseconds
+   // public  int num = SaveButton.getFileNum();
 
 
 
     public Playing(Game game) {
         super(game);
+        System.out.println("we're in session!");
         initialize();
     }
 
+
+    public void loadNextLevel() {
+
+    }
+  
     /**
      * Loads the new level
      * 
@@ -81,6 +95,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -180,7 +195,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
@@ -238,6 +253,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double getAngle() {
         return weaponAngle;
     }
+
+    
 
     /**
 	 * Adds a cooldown between bullets shot

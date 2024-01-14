@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
+import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
+import static Objects.Weapons.Bullets.*;
 
 public class SaveButton extends Button {
 
@@ -22,9 +24,10 @@ public class SaveButton extends Button {
 	public String fileName;
 	public int fileNum;
 
-	public static Save save1 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1);
-    public static Save save2 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,2);
-    public static Save save3 = new Save(0,(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,3);
+	public static Save save1 = new Save();
+    public static Save save2 = new Save();
+    public static Save save3 = new Save();
+	//0,save1.getHealth(),(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1
 
 	/**
 	 * Constructor to create button for save slots
@@ -99,15 +102,27 @@ public class SaveButton extends Button {
 		GameState.currentState = state;
 	}
 
-	public void applySave()throws IOException {
-		//writeNewBinFile(fileName, fileNum);
+
+
+	public void readSave()throws IOException {
+
 		readNewBinFile(fileName, fileNum);
+		loadSave();
+		
+		
+	}
+
+	public static void writeSave(String name, int num)throws IOException {
+		
+		writeNewBinFile(name, num);
+		
 	}
 
 	public static void writeNewBinFile(String filename, int filenum) throws IOException{
 	    RandomAccessFile raf = new RandomAccessFile(filename,"rw");
         switch (filenum) {
-            case 1: save1.writeRec(raf);break;
+            case 1: save1.writeRec(raf);
+			System.out.println("HP: "+ save1.getHealth());break;
             case 2:save2.writeRec(raf);break;
             case 3:save3.writeRec(raf);break;
             default:
@@ -120,14 +135,69 @@ public class SaveButton extends Button {
 		RandomAccessFile raf = new RandomAccessFile(filename,"rw");
 
         switch (filenum) {
-            case 1: save1.readRec(raf);break;
-            case 2:save2.readRec(raf);break;
-            case 3:save3.readRec(raf);break;
+            case 1:save1.readRec(raf);
+			System.out.println("Gun Index: "+ save1.getHold());break;
+            case 2:save2.readRec(raf);
+			System.out.println("Gun Index: "+ save2.getHold());break;
+            case 3:save3.readRec(raf);
+			System.out.println("Gun Index: "+ save3.getHold());break;
             default:
                 break;
         }
 		
 		raf.close();
 	} // end readNewBinFile
+
+	public void loadSave(){
+        switch (fileNum) {
+			case 1:
+			Playing.player.currentHealth = SaveButton.save1.getHealth();
+			Playing.gunIndex = SaveButton.save1.getHold();
+			Playing.fireRateWeapon1 = SaveButton.save1.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save1.getCooldown2();
+
+			if (SaveButton.save1.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+
+				break;
+			case 2:
+			Playing.player.currentHealth = SaveButton.save2.getHealth();
+			Playing.gunIndex = SaveButton.save2.getHold();
+			Playing.fireRateWeapon1 = SaveButton.save2.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save2.getCooldown2();
+
+			if (SaveButton.save2.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+				break;
+			case 3:
+			Playing.player.currentHealth = SaveButton.save3.getHealth();
+			Playing.gunIndex = SaveButton.save3.getHold();
+			Playing.fireRateWeapon1 = SaveButton.save3.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save3.getCooldown2();
+
+			if (SaveButton.save3.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+
+				break;
+		
+			default:
+				break;
+        }
+
+			Playing.player.changeHealth(0);
+			Playing.weapon.getImage();
+			
+    }
+
+	public String getFileName(){
+		return fileName;
+	}
+
+	public  int getFileNum(){
+		return fileNum;
+	}
 
 }
