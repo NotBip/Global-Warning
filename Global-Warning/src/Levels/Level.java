@@ -1,5 +1,7 @@
 package Levels;
 
+import static Utilities.Constants.TILE_SIZE;
+
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,7 @@ public class Level {
 	private Point rightSpawn; // Spawn point from the right left in a room
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
+	private Checkpoint checkpoint;
 	private boolean isWindy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
@@ -70,20 +73,21 @@ public class Level {
 
 		case 2: Fireboi.add(new Enemy1(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); 
-		//flag.add(new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE,40,40));
 		break;
 		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
-		case 103: isWindy = true;
+		case 103: isWindy = true; break;
+		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63);
+			playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
 		}
 	}
 
 	public void resetEnemies() {
 		
 			Waterboi.clear();
-		
+			Fireboi.clear();
 	}
 
 	private void loadObjects(int blueValue, int x, int y) {
@@ -140,6 +144,10 @@ public class Level {
 
 	public ArrayList<Enemy1> getFireBoi() { 
 		return Fireboi; 
+	}
+
+	public Checkpoint getCheckpoint() {
+		return checkpoint;
 	}
 
 	/*public ArrayList<Entity> getEntityName() {

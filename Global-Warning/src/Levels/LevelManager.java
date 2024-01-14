@@ -73,6 +73,10 @@ public class LevelManager {
 				else
 					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
+		if(levels.get(lvlIndex).getCheckpoint()!= null) {
+			levels.get(lvlIndex).getCheckpoint().draw(g, playing.getPlayer());
+			
+		}
 	}
 
 	public void update() {
