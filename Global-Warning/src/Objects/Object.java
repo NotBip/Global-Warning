@@ -121,6 +121,17 @@ public class Object extends Entity{
 
     }
 
+    public void interactPlayer(Player player) {
+        if (isPlayerVisible(player)) { 
+            System.out.println("Touching Object!");
+            player.touchingObject = true;
+        }
+        else {
+            System.out.println("Sad :(");
+            player.touchingObject = false;
+        }
+    }
+
     /**
      * Checks if the player is visible to the object or not
      * @author Hamad Mohammed
@@ -130,8 +141,9 @@ public class Object extends Entity{
      */
     public boolean isPlayerVisible(Player player) { 
 
-        if (this.hitbox.intersects(player.getHitbox())) 
+        if (this.hitbox.intersects(player.getHitbox())) { 
             return true; 
+        }
         else 
             return false; 
     }

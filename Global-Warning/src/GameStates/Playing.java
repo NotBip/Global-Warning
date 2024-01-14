@@ -110,6 +110,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData());
+        objectManager.update(levelManager.getCurrentLevel().getLevelData());
     }
     }
      /**
@@ -318,6 +319,9 @@ public class Playing extends State implements KeyListener, MouseListener {
                  break;
             case KeyEvent.VK_SHIFT:
                 player.dash();
+                break;
+            case KeyEvent.VK_E:
+                player.interact();
                 break;
 
         }

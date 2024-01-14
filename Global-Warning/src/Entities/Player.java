@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import static Utilities.Constants.Directions.*;
+import Objects.Object;
 
 import static Utilities.Atlas.*;
 
@@ -35,6 +36,7 @@ public class Player extends Entity {
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
+    public boolean touchingObject = false; // Is the player touching an object?
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -226,6 +228,15 @@ public class Player extends Entity {
         if (up && (right || left)) { // Make the dash cover the same general distance if dashing diagonally using special triangle math
             dashXSpeed /= Math.sqrt(2);
             dashYSpeed /= Math.sqrt(2);
+        }
+    }
+
+    public void interact() {
+        if (touchingObject) {
+            System.out.println("Interact");
+        }
+        else {
+            System.out.println("No Interact");
         }
     }
 

@@ -14,7 +14,6 @@ public class Chest extends Object{
     public Chest(float x, float y) {
         super(x, y, CHEST_WIDTH, CHEST_HEIGHT, Chest, chestArrI, chestW, chestH, CHEST_ATLAS, CHEST_WIDTH, -1, chestSizeX, chestSizeY);
         super.inAir = true;
-        System.out.println("Hi, am chest! :]");
 
 }
 }

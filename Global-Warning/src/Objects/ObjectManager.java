@@ -19,7 +19,8 @@ import static Utilities.Constants.*;
 
 public class ObjectManager{
     
-        Object object; 
+  Player player;      
+  Object object; 
         private Level currentLevel; 
 
     public ObjectManager(Object object){
@@ -39,5 +40,11 @@ public class ObjectManager{
           //    f.draw(g);
           //   }
 
+        }
+
+        public void update(int[][] levelData) {
+          for (Chest o : currentLevel.getChest()) { 
+            o.interactPlayer(player); 
+          }
         }
 }
