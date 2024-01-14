@@ -1,5 +1,7 @@
 package Levels;
 
+import static Utilities.Constants.objectConstants.Spike;
+
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import Objects.Spike;
 import Utilities.Constants;
 
 public class Level {
@@ -27,6 +30,7 @@ public class Level {
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
 	public boolean isWindy = false;
+	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
@@ -71,7 +75,7 @@ public class Level {
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
-		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); 
+		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break; 
 		}
 	}
 
@@ -81,7 +85,7 @@ public class Level {
 
 	private void loadObjects(int blueValue, int x, int y) {
 		switch (blueValue) {
-		//case ObjectName (, + any other objects of same type) -> ObjectType.add(new ObjectType(x * Game.TILES_SIZE, y * Game.TILES_SIZE, blueValue));
+			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); 
 		}
 	}
 
@@ -135,7 +139,8 @@ public class Level {
 		return Fireboi; 
 	}
 
-	/*public ArrayList<Entity> getEntityName() {
-		return EntityName;
-	}*/
+	public ArrayList<Spike> getSpike() { 
+		return spike; 
+	}
+
 }

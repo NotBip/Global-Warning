@@ -342,4 +342,8 @@ public class Enemy extends Entity {
         else 
             return false; 
     }
+
+    public void dead() {
+        this.currentHealth = 0; 
+    }
 }

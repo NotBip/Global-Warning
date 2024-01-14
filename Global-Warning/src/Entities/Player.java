@@ -379,4 +379,8 @@ public class Player extends Entity {
     public boolean getWindy() { 
         return isWindy; 
     }
+
+    public void dead() { 
+        this.currentHealth = 0; 
+    }
 }

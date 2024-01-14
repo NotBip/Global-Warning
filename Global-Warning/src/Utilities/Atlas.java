@@ -39,7 +39,7 @@ public class Atlas {
     public static final String SELECTION_ATLAS = "inventory_select.png";
 
     public static final String WIND_ATLAS = "wind.png"; 
-
+    public static final String SPIKE_ATLAS = "spike.png"; 
 
 
 

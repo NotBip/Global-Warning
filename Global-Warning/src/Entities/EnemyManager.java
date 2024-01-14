@@ -7,6 +7,7 @@ import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import Levels.Level;
+import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
 
 public class EnemyManager {
@@ -22,11 +23,12 @@ public class EnemyManager {
     this.currentLevel = level;
   }
 
-  public void update(int[][] lvlData, List<Bullets> bullet, Playing playing) {
+  public void update(int[][] lvlData, List<Bullets> bullet, Playing playing, ObjectManager objectManager) {
   try { 
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       o.move(player, lvlData);
       o.enemyHit(bullet, playing);
+      objectManager.update(player, o, currentLevel);
       if(o.isDead())
       currentLevel.getWaterBoi().remove(o); 
     }
@@ -34,6 +36,7 @@ public class EnemyManager {
     for (Enemy1 f : currentLevel.getFireBoi()) {
       f.move(player, lvlData);
       f.enemyHit(bullet, playing);
+      objectManager.update(player, f, currentLevel);
       if(f.isDead())
       currentLevel.getFireBoi().remove(f); 
     }

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import GameStates.Playing;
+import Objects.Spike;
 import Utilities.Constants;
 import Utilities.LoadSave;
 
@@ -13,6 +14,7 @@ public class LevelManager {
 	private BufferedImage[] levelSprite;
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;
+	//private ArrayList<Spike> 
 	private static int lvlIndex = 7;
 	private int aniTick;
 	private int aniIndex;
@@ -40,7 +42,7 @@ public class LevelManager {
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());
 		playing.setMaxLvlOffset(newLevel.getLvlOffset());
-		//game.getPlaying().getObjectManager().loadObjects(newLevel);
+		playing.getObjectManager().loadObjects(newLevel.getLevelData()); 
 	}
 
 
@@ -70,7 +72,7 @@ public class LevelManager {
 					g.drawImage(waterSprite[aniIndex], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 				else if (index == 49)
 					g.drawImage(waterSprite[4], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
-				else
+				else if (index != 6)
 					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 	}

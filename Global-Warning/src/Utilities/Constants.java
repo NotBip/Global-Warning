@@ -240,5 +240,21 @@ public class Constants {
 			}
 		}
     }
+
+	public static class objectConstants { 
+
+		public static final int Spike = 0; 
+
+		public static int GetSpriteAmount(int objectType) { 
+			switch (objectType) { 
+				case Spike: 
+					return 1; 
+				default:
+					return 0; 
+			}
+		}
+
+		
+	}
 }
 		

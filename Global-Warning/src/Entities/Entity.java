@@ -99,7 +99,6 @@ public class Entity {
      * @param lvlData
      * @return if the entity is touching a solid tile
      */
-
     public boolean solidTile(float x, float y, int[][] lvlData) {
          if(x > lvlData[0].length * TILE_SIZE || x < 0) { // Right of left of the game window
              return true;
@@ -111,7 +110,7 @@ public class Entity {
         int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
 
         try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
-            if (lvlData[lvlY][lvlX] != 11) { // Check if the entity is on an air tile
+            if (lvlData[lvlY][lvlX] != 11 && lvlData[lvlY][lvlX] != 6) { // Check if the entity is on an air tile
                         return true;
                     }
         } catch(Exception e) {
@@ -119,6 +118,28 @@ public class Entity {
         }
         return false;
     }
+
+    /**
+     * @author Hamad Mohammed & Ryder Hodgson
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param lvlData
+     * @return
+     */
+        public boolean onSpikes(float x, float y, int[][] lvlData) { 
+            int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
+            int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
+            try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
+                if (lvlData[lvlY][lvlX] == 6) { // Check if the entity is on an air tile
+                            return true;
+                        }
+            } catch(Exception e) {
+                return false;
+            }
+            return false;
+        }
 
     /**
      * @author Ryder Hodgson

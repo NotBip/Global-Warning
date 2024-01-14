@@ -32,7 +32,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     private Environment environment; 
     private Image backgroundImage;
     public static boolean paused, inventory = false;
-    //private float borderLen;
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public double mouseX;
@@ -78,6 +77,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void initialize() {
         levelManager = new LevelManager(this);
         player = new Player(1200, GAME_HEIGHT / 2 - 50, 62, 68); // Default spawn point
+        objectManager = new ObjectManager(this); 
+        objectManager.loadObjects(levelManager.getCurrentLevel().getLevelData());
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
@@ -109,7 +110,7 @@ public class Playing extends State implements KeyListener, MouseListener {
          }
         checkBorder();
         checkTransition();
-        enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this);
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
         environment.update();
     }
     }
@@ -190,6 +191,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        objectManager.draw(g, xOffset, levelManager.getCurrentLevel());
         player.drawHealthBar(g);
 
         for (int i = 0; i < bullets.size(); i++) {
