@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import Entities.Entity;
 import Entities.Player;
+import GameStates.Playing;
 import UserInterface.SaveButton;
 
 public class Checkpoint extends Entity {
@@ -50,14 +51,32 @@ public class Checkpoint extends Entity {
 		if (player.getHitbox().intersects(hitbox) && !reached){
 			//reached = true;
 			reached = true;
-			System.out.println("ah~"+fileName);
+
+			switch (fileNum) {
+				case 1:
+				SaveButton.save1.setHealth(player.currentHealth);
+				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
+				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
+				
+
+					break;
+				case 2:
+				SaveButton.save2.setHealth(player.currentHealth);
+				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
+				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
+				
+					break;
+				case 3:
+				SaveButton.save3.setHealth(player.currentHealth);
+				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
+				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
+					
+					break;
 			
-			SaveButton.save1.setHealth(player.currentHealth);
-			SaveButton.save2.setHealth(player.currentHealth);
-			SaveButton.save3.setHealth(player.currentHealth);
-
-			System.out.println("ah~"+ SaveButton.save1.getHealth());
-
+				default:
+					break;
+			}
+			
 			SaveButton.writeSave(fileName, fileNum);
 		
 	

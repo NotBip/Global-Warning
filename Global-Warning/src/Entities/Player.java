@@ -54,8 +54,7 @@ public class Player extends Entity {
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
         this.maxHealth = 200;
-        System.out.println("current health: " + SaveButton.save1.getHealth());
-		this.currentHealth = SaveButton.save1.getHealth();;
+		this.currentHealth = maxHealth;
         this.state = IDLE;
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
@@ -446,4 +445,5 @@ public class Player extends Entity {
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
 	}
 
+    
 }

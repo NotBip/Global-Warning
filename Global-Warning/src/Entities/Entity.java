@@ -22,7 +22,7 @@ public class Entity {
     protected Rectangle2D.Float hitbox;
     protected int state;
     protected boolean inAir;
-    protected int maxHealth;
+    public int maxHealth;
     public int currentHealth;
     protected int animationTick;
     protected int animationIndex;

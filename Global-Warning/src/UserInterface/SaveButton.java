@@ -106,11 +106,13 @@ public class SaveButton extends Button {
 	public void readSave()throws IOException {
 
 		readNewBinFile(fileName, fileNum);
+		loadSave();
+		
 		
 	}
 
 	public static void writeSave(String name, int num)throws IOException {
-		System.out.println("Write HP:"+ save1.getHealth());
+		
 		writeNewBinFile(name, num);
 		
 	}
@@ -143,11 +145,49 @@ public class SaveButton extends Button {
 		raf.close();
 	} // end readNewBinFile
 
+	public void loadSave(){
+        switch (fileNum) {
+			case 1:
+			Playing.player.currentHealth = SaveButton.save1.getHealth();
+			Playing.fireRateWeapon1 = SaveButton.save1.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save1.getCooldown2();
+
+			if (SaveButton.save1.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+
+				break;
+			case 2:
+			Playing.player.currentHealth = SaveButton.save2.getHealth();
+			Playing.fireRateWeapon1 = SaveButton.save2.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save2.getCooldown2();
+
+			if (SaveButton.save2.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+				break;
+			case 3:
+			Playing.player.currentHealth = SaveButton.save3.getHealth();
+			Playing.fireRateWeapon1 = SaveButton.save3.getCooldown1();
+            Playing.fireRateWeapon1 = SaveButton.save3.getCooldown2();
+
+			if (SaveButton.save3.getHealth() == 0){
+				Playing.player.currentHealth = Playing.player.maxHealth;
+			}
+				break;
+		
+			default:
+				break;
+        }
+
+			Playing.player.changeHealth(0);
+    }
+
 	public String getFileName(){
 		return fileName;
 	}
 
-	public int getFileNum(){
+	public  int getFileNum(){
 		return fileNum;
 	}
 

@@ -2,6 +2,7 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import UserInterface.SaveButton;
 import Objects.Saving.*;
 import Utilities.LoadSave;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
     private Checkpoint savepoint;
-    private Player player;
+   public static Player player;
     private static Weapon1 weapon;
     public int bulletCount;
     public List<Bullets> bullets;
@@ -30,6 +31,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
+    public int numFile = Checkpoint.fileNum;
     private LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
@@ -48,17 +50,21 @@ public class Playing extends State implements KeyListener, MouseListener {
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 300 milliseconds
+   // public  int num = SaveButton.getFileNum();
 
 
 
     public Playing(Game game) {
         super(game);
+        System.out.println("we're in session!");
         initialize();
     }
 
     public void loadNextLevel() {
 
     }
+
+   
 
 
     /**
@@ -247,6 +253,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double getAngle() {
         return weaponAngle;
     }
+
+    
 
     /**
 	 * Adds a cooldown between bullets shot
