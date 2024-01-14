@@ -54,11 +54,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         initialize();
     }
 
-    public void loadNextLevel() {
-
-    }
-
-
     /**
      * Loads the new level
      * 

@@ -87,7 +87,7 @@ public class Level {
 	public void resetEnemies() {
 		
 			Waterboi.clear();
-		
+			Fireboi.clear();
 	}
 
 	private void loadObjects(int blueValue, int x, int y) {

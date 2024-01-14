@@ -83,7 +83,6 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
-
         // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
@@ -393,26 +392,24 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
     private void setAnimation() {
-        if (moving && playerDir == 2) {
-            state = RUNNING;
+        if(playerDir == RIGHT) {
             xFlipped = 0;
             wFlipped = 1;
-        } else if (!moving && playerDir == RIGHT) {
-            state = IDLE;
-            xFlipped = 0;
-            wFlipped = 1;
-        }
-            
-        else if (moving && playerDir == LEFT) {
-            state = RUNNING;
+            if(moving) {
+                state = RUNNING;
+            } else {
+                state = IDLE;
+            }
+        } else if (playerDir == LEFT) {
             xFlipped = width;
             wFlipped = -1;
-        } else if (!moving && playerDir == 0) {
-            state = IDLE;
-            xFlipped = width;
-            wFlipped = -1;
+            if(moving) {
+                state = RUNNING;
+            } else {
+                state = IDLE;
+            }
         }
-            
+        
     }
 
     public void setDirection(int direction) {
