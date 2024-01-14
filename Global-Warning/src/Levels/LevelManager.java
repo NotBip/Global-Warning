@@ -106,4 +106,5 @@ public class LevelManager {
 	public void setLevelIndex(int lvlIndex) {
 		LevelManager.lvlIndex = lvlIndex;
 	}
-}
+
+} 

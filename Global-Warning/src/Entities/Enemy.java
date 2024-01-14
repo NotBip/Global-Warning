@@ -255,7 +255,6 @@ public class Enemy extends Entity {
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
         }
-        System.out.println(deadOver);
     }
 
     /**
@@ -333,7 +332,6 @@ public class Enemy extends Entity {
             if(b.getHitbox().intersects(this.hitbox)) { 
                 playing.removeBullet();
                 changeHealth(PlayerConstants.getPlayerDamage(playing));
-                System.out.println(this.currentHealth);
             }
         }
     }

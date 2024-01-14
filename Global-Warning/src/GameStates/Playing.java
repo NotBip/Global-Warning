@@ -29,7 +29,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
-
+    private Environment environment; 
     private Image backgroundImage;
     public static boolean paused, inventory = false;
     //private float borderLen;
@@ -86,6 +86,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
+        this.environment = new Environment(getPlayer()); 
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -109,6 +110,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this);
+        environment.update();
     }
     }
      /**
@@ -183,12 +185,13 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, null);
+        environment.draw(g, xOffset);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         player.drawHealthBar(g);
-        
+
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);
         }

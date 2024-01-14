@@ -376,4 +376,7 @@ public class Player extends Entity {
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
 	}
 
+    public boolean getWindy() { 
+        return isWindy; 
+    }
 }
