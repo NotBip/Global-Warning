@@ -103,7 +103,7 @@ public class Game implements Runnable {
     public void initialize() {
         playing = new Playing(this);
         menu = new Menu(this);
-        save = new SaveState(this, playing);
+        save = new SaveState(this);
         options = new OptionState(this);
     }
 

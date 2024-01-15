@@ -93,6 +93,7 @@ public class Player extends Entity {
 
     public void update(Playing playing) {
         moving = false; // Stop the player movement animation in case they stop moving this update
+        System.out.println(state);
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
             state = DEAD;
