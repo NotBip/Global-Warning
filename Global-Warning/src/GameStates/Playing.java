@@ -72,11 +72,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         initialize();
     }
 
-    public void loadNextLevel() {
-
-    }
-
-
     /**
      * Loads the new level
      * 
@@ -88,6 +83,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void loadNextLevel(int spawnType) {
         enemyManager.resetEnemies();
         levelManager.loadNextLevel();
+        resetLightning();
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
         switch(spawnType) {
             case 1: player.setSpawn(levelManager.getCurrentLevel().getLeftSpawn()); break;
@@ -215,13 +211,10 @@ public class Playing extends State implements KeyListener, MouseListener {
                 lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 40, GAME_WIDTH);
             }
             if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 2) {
-                lightningHasPos = false;
-                lightningUpdates = 0;
+               resetLightning();
             }
         } else {
-            lightningHasPos = false;
-            lightningHitbox = null;
-            lightningUpdates = 0;
+            resetLightning();
         }
     }
 
@@ -233,10 +226,16 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     private void checkLightningIntersect() {
-        if(lightningHitbox != null)
+        if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
         if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos) { // fix when this happens
             player.changeHealth(-50);
         }
+    }
+
+    private void resetLightning() {
+        lightningHasPos = false;
+        lightningUpdates = 0;
+        lightningHitbox = null;
     }
 
     public void draw(Graphics g) throws IOException {
