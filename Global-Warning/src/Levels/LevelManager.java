@@ -2,6 +2,7 @@ package Levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import GameStates.Playing;
@@ -14,8 +15,7 @@ public class LevelManager {
 	private BufferedImage[] levelSprite;
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;
-	//private ArrayList<Spike> 
-	private static int lvlIndex = 7;
+	private static int lvlIndex = 8;
 	private int aniTick;
 	private int aniIndex;
 	private Playing playing;
@@ -62,7 +62,7 @@ public class LevelManager {
 			}
 	}
 
-	public void draw(Graphics g, int offset) {
+	public void draw(Graphics g, int offset) throws IOException {
 		for (int j = 0; j < levels.get(lvlIndex).getLevelData().length; j++)
 			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
 				int index = levels.get(lvlIndex).getSpriteIndex(i, j);
@@ -75,6 +75,15 @@ public class LevelManager {
 				else 
 					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
+		if(levels.get(lvlIndex).getCheckpoint()!= null) {
+			try {
+				levels.get(lvlIndex).getCheckpoint().draw(g, playing.getPlayer());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 	}
 
 	public void update() {
