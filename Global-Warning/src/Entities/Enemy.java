@@ -259,7 +259,6 @@ public class Enemy extends Entity {
 	}
 
     public void draw(Graphics g, int xOffset) {
-        drawHitbox(g, xOffset);
         if (!deadOver)
         g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
        
@@ -362,14 +361,14 @@ public class Enemy extends Entity {
         this.currentHealth = 0; 
     }
 
-    public void drawHealth(Graphics g) {
+    public void drawHealth(Graphics g, int xOffset) {
         if (isActive) { 
         g.setColor(Color.red);
-        g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+        g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
         g.setColor(Color.green);
-        g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
+        g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
         g.setColor(Color.black);
-        g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+        g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
         }
     }
     
