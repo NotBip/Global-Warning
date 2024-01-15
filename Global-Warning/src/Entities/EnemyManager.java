@@ -26,19 +26,19 @@ public class EnemyManager {
   public void update(int[][] lvlData, List<Bullets> bullet, Playing playing, ObjectManager objectManager) {
   try { 
     for (Enemy2 o : currentLevel.getWaterBoi()) {
-      o.move(player, lvlData);
-      o.enemyHit(bullet, playing);
-      objectManager.update(player, o, currentLevel);
-      if(o.isDead())
-      currentLevel.getWaterBoi().remove(o); 
+      if(!o.isDead()) {
+        o.move(player, lvlData);
+        o.enemyHit(bullet, playing);
+      }
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
-      f.move(player, lvlData);
-      f.enemyHit(bullet, playing);
-      objectManager.update(player, f, currentLevel);
-      if(f.isDead())
-      currentLevel.getFireBoi().remove(f); 
+      if(!f.isDead()) {
+        f.move(player, lvlData);
+        f.enemyHit(bullet, playing);
+      }
+      
+      
     }
   }  catch (Exception e) {}
   }
@@ -46,11 +46,17 @@ public class EnemyManager {
 
   public void draw(Graphics g, int xOffset) {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
-      o.draw(g, xOffset);
+      if(!o.isDead()) {
+        o.draw(g, xOffset);
+      }
+      
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
-      f.draw(g, xOffset);
+      if(!f.isDead()) {
+        f.draw(g, xOffset);
+      }
+      
     }
 
   }

@@ -6,8 +6,7 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import Entities.Enemy;
-import Entities.Player;
+import Entities.Planet1Enemies.*;
 import GameStates.Playing;
 import Levels.Level;
 
@@ -33,19 +32,28 @@ public class ObjectManager{
         this.lvlData = lvlData; 
     }
 
-    public void update(Player player, Enemy enemy, Level level) { 
-        checkSpikeTouch(player, enemy, level); 
+    public void update() { 
+        checkSpikeTouch(); 
     }
     
-    public void checkSpikeTouch(Player player, Enemy enemy, Level level) { 
-        for (Spike s : level.getSpike()) { 
-            if(s.getHitbox().intersects(player.getHitbox()))
-                player.dead();
-            if(s.getHitbox().intersects(enemy.getHitbox()))
-                enemy.dead(); 
-        }
+    public void checkSpikeTouch() { 
+        for(Spike s : playing.getLevelManager().getCurrentLevel().getSpike()) {
+            for(Enemy1 e : playing.getLevelManager().getCurrentLevel().getFireBoi()) {
+                if(s.getHitbox().intersects(e.getHitbox()))
+                e.dead();
+            }
+            for(Enemy2 e : playing.getLevelManager().getCurrentLevel().getWaterBoi()) {
+                if(s.getHitbox().intersects(e.getHitbox()))
+                e.dead();
+            }
+            
+            if(playing.getPlayer().getHitbox().intersects(s.getHitbox()) && !playing.getPlayer().isImmune()) {
+                playing.getPlayer().changeHealth(-20);
+                return; // stop checking the other spikes around the player if one has already been checked (multiple spikes may be intersecting)
+            } 
+        }  
     }
-
+    
     public void draw(Graphics g, int xOffset, Level level)  { 
         drawSpikes(g, xOffset, level);
     }

@@ -90,6 +90,7 @@ public class Enemy extends Entity {
 
         if (player.hitbox.intersects(hitbox)){
             aniSpeed = getAttackSpeed(this.enemyType);
+            
             checkPlayerHit(player);
             xSpeed = 0; 
             if(!isAttack){
@@ -282,11 +283,11 @@ public class Enemy extends Entity {
     }
 
     protected void checkPlayerHit(Player player) {
-        hitCooldown++; 
-        if (hitCooldown >= 110) {
-			hitCooldown = 0;
-			player.changeHealth(-getEnemyDamage(enemyType));
+        if(!player.isImmune()) {
+            player.changeHealth(-getEnemyDamage(enemyType));
         }
+			
+        
     }
 
     /**
@@ -310,6 +311,8 @@ public class Enemy extends Entity {
         currentHealth = maxHealth;
         state = WALK;
         inAir = true;
+        dead = false;
+        deadOver = false;
       }
 
           /**

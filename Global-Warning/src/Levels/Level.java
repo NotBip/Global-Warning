@@ -58,7 +58,7 @@ public class Level {
 
 	private void loadLevelData(int redValue, int x, int y) {
 		if (redValue >= 50)
-			lvlData[y][x] = 0;
+			lvlData[y][x] = 11;
 		else	
 			lvlData[y][x] = redValue;
 		switch (redValue) {

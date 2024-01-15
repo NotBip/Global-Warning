@@ -30,6 +30,7 @@ public class Entity {
     protected Rectangle2D.Float enemyRange; 
     protected float enemyRangeX, enemyRangeY; 
     protected int enemyRangeW, enemyRangeH; 
+    
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -129,10 +130,12 @@ public class Entity {
      * @return
      */
         public boolean onSpikes(float x, float y, int[][] lvlData) { 
+            
             int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
             int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
             try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
                 if (lvlData[lvlY][lvlX] == 6) { // Check if the entity is on an air tile
+                    System.out.println("oop");
                             return true;
                         }
             } catch(Exception e) {
@@ -204,5 +207,7 @@ protected static float fixXPos(Rectangle2D.Float hitbox, float xSpeed) {
 		animationTick = 0;
 		animationIndex = 0;
 	}
+
+    
 
 }

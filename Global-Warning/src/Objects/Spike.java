@@ -8,7 +8,7 @@ public class Spike extends Object {
         super(x, y, object); 
         initHitbox(32, 24);
         xDrawOffset = 0;
-		yDrawOffset = (int)(Game.SCALE * 6);
+		yDrawOffset = (int)(Game.SCALE * 8);
         hitbox.y += yDrawOffset;
     }
 }

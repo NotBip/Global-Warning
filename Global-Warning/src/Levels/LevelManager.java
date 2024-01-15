@@ -72,7 +72,7 @@ public class LevelManager {
 					g.drawImage(waterSprite[aniIndex], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 				else if (index == 49)
 					g.drawImage(waterSprite[4], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
-				else if (index != 6)
+				else 
 					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 	}

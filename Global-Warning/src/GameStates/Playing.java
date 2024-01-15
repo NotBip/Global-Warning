@@ -6,6 +6,7 @@ import Utilities.LoadSave;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
+import Objects.Spike;
 
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -111,6 +112,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
+        objectManager.update();
         environment.update();
     }
     }

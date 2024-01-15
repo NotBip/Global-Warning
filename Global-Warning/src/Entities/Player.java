@@ -37,6 +37,9 @@ public class Player extends Entity {
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
+    private boolean immune = true;
+    private int immunityUpdates = 0;
+    private int maxImmunityUpdates = 60;
 
     private float healthBarWidth; 
     private float healthBarHeight = 30;
@@ -83,6 +86,15 @@ public class Player extends Entity {
         } else {
             xSpeed = 0;    
         }
+        
+        if(immunityUpdates > 0 && immunityUpdates < maxImmunityUpdates) {
+            immunityUpdates++;
+            immune = true;
+        } else {
+            immunityUpdates = 0;
+            immune = false;   
+        }
+            
 
         // So the player can't infinitely jump up a wall super quickly
         if(wallJumpUpdates > 0) {
@@ -185,8 +197,11 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g, int offset) {
-        drawHitbox(g, offset);
-        g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
+        drawHitbox(g, offset);System.out.println(immunityUpdates);
+        //if(immunityUpdates % 8 == 0 || (immunityUpdates+1) % 8 == 0 || immunityUpdates == 0) // kind of looks the immunity flash thingo 
+            g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
+        
+        
     }
 
     /**
@@ -374,10 +389,15 @@ public class Player extends Entity {
 		currentHealth += value;
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
+        immunityUpdates = 1;
 	}
 
     public boolean getWindy() { 
         return isWindy; 
+    }
+
+    public boolean isImmune() {
+        return immune;
     }
 
     public void dead() { 
