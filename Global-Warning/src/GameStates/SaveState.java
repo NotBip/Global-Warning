@@ -5,11 +5,14 @@ import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
 import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
+import Entities.*;
 import Main.Game;
+import Objects.Saving.Checkpoint;
 import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import static Utilities.Atlas.*;
 
@@ -57,11 +60,11 @@ public class SaveState extends State implements KeyListener, MouseListener {
 
     public void makeButtons() {
         buttons[0] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 160, SAVE_B_WIDTH,
-                SAVE_B_HEIGHT, 0, GameState.PLAYING);
+                SAVE_B_HEIGHT, 0, GameState.PLAYING, "BinarySaveInfoSlot1",1);
         buttons[1] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 80, SAVE_B_WIDTH, SAVE_B_HEIGHT,
-                1, GameState.PLAYING);
+                1, GameState.PLAYING, "BinarySaveInfoSlot2",2);
         buttons[2] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset, SAVE_B_WIDTH, SAVE_B_HEIGHT, 2,
-                GameState.PLAYING);
+                GameState.PLAYING, "BinarySaveInfoSlot3",3);
     }
 
     /**
@@ -175,7 +178,15 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons) {
             if (isIn(e, sb)) {
                 if (sb.getMousePressed())
-                    sb.applyGamestate();
+                    try {
+                        sb.readSave();
+                        System.out.println("check");
+                        Checkpoint.setNumName(sb.fileName, sb.fileNum);
+                        sb.applyGamestate();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 break;
             }
         }

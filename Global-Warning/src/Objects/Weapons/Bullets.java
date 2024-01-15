@@ -22,6 +22,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private Playing playing;
     private int[][] lvlData;
 
+    //upgradeable abilities (fire-rate in playing class)
+    //no concept of damage yet, but public static double upgradeDamage;
+    
+
     /**
      * Constructor to create bullets
      * 
@@ -66,7 +70,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 25, 2023
      */
 
-     public void move() {
+
+    public void move() {
+
         double speed = 0;
 
         //different guns have different speeds
@@ -75,6 +81,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         } else if(Playing.gunIndex == 2){
             speed = speed2;
         }
+
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             x += speed * directionX;
             y += speed * directionY;

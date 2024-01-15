@@ -1,6 +1,7 @@
 package Main;
 
 import java.awt.Graphics;
+import java.io.IOException;
 
 import GameStates.*;
 
@@ -22,7 +23,8 @@ public class Game implements Runnable {
         initialize();
         panel = new gamePanel(this);
         new gameFrame(panel);
-        panel.requestFocusInWindow();
+        panel.setFocusable(true);
+        panel.requestFocus();
         startGame();
     }
 
@@ -40,10 +42,11 @@ public class Game implements Runnable {
     /**
      * Does all of the background tasks every time the game updates (120 times per second)
      * @author Ryder Hodgson
+     * @throws IOException 
      * @since December 16th, 2024
      */
 
-    public void update() {
+    public void update() throws IOException {
         switch (GameState.currentState) {
             case PLAYING:
                 playing.update();
@@ -68,10 +71,11 @@ public class Game implements Runnable {
      * Draws everything to the screen every frame (60FPS) depending on the game state
      * @author Ryder Hodgson
      * @param g What it uses to actually draw
+     * @throws IOException 
      * @since December 16th, 2024
      */
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         
         switch (GameState.currentState) {
             case PLAYING:
@@ -135,7 +139,12 @@ public class Game implements Runnable {
                 if(update >= UPS) {
                     update = 0;
                 }
-                update();
+                try {
+                    update();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 timeSinceLastUpdate--; // Don't set to 0 as a means of catching up if updates are lost
             }
 

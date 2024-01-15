@@ -12,7 +12,9 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import GameStates.Playing;
+import Objects.Chest;
 import Objects.Weapons.Bullets;
+import Utilities.Constants;
 import Utilities.Constants.PlayerConstants;
 
 import static Utilities.Constants.Directions.LEFT;
@@ -84,7 +86,8 @@ public class Enemy extends Entity {
     public void move(Player player, int[][] lvllData) {
     if (this.currentHealth <= 0) { 
         dead = true; 
-        state = DEAD; 
+        state = DEAD;
+        //healthpickup.add(new HealthPickup(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, HealthPickup)); break;
     }
 
     if (!dead){ 

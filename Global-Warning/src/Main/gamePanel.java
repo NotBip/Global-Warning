@@ -5,6 +5,7 @@ import static Utilities.Constants.GAME_WIDTH;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 
@@ -29,7 +30,12 @@ public class gamePanel extends JPanel{
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        game.draw(g);
+        try {
+            game.draw(g);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }

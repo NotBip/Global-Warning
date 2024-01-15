@@ -20,8 +20,6 @@ public class ObjectManager{
     private BufferedImage spikeImg; 
     private BufferedImage[][] chestImg; 
     private int lvlData[][];
-   
-
     
     public ObjectManager(Playing playing) { 
         this.playing = playing; 
@@ -101,10 +99,11 @@ public class ObjectManager{
 
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if(c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
+            if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
                 c.chestInteract = true; 
                 c.setState(INTERACT);
                 if (c.chestInteract = true) {
+                c.giveItem();
             }
             }
             else if (!c.chestInteract) { 
