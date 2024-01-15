@@ -245,6 +245,7 @@ public class Constants {
 
 		public static final int Spike = 0; 		
 		public static final int Chest = 1;
+		public static final int HealthPick = 2;
 
 		public static final String IDLE = "IDLE"; 
 		public static final String INTERACT = "INTERACT"; 
@@ -256,6 +257,9 @@ public class Constants {
 					return 1; 
 					if (objectType == Chest) 
 					return 5;  
+					if (objectType == HealthPick){
+						return 1;
+					}
 				case INTERACT: 
 					if (objectType == Spike) 
 					return 1; 

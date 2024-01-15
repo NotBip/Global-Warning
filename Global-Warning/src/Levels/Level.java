@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Objects.Chest;
+import Objects.HealthPickup;
 import Objects.Spike;
 import Utilities.Constants;
 
@@ -33,6 +34,7 @@ public class Level {
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
+	private ArrayList<HealthPickup> health = new ArrayList<HealthPickup>();
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
@@ -148,6 +150,10 @@ public class Level {
 
 	public ArrayList<Chest> getChest() { 
 		return chest; 
+	}
+
+	public ArrayList<HealthPickup> getHealth() { 
+		return health; 
 	}
 
 }

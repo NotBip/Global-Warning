@@ -7,7 +7,7 @@ public class HealthPickup extends Object {
     int healAmount = 10;
     public HealthPickup(int x, int y, int object) { 
         super(x, y, object);    
-        initHitbox(68, 52);
+        initHitbox(32, 32);
         xDrawOffset = 0;
         yDrawOffset = (int)(Game.SCALE * (32-this.hitbox.height));
         hitbox.y += yDrawOffset;

@@ -2,6 +2,7 @@ package Objects;
 
 import static Utilities.Atlas.CHEST_ATLAS;
 import static Utilities.Atlas.SPIKE_ATLAS;
+import static Utilities.Atlas.HEALTH_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.objectConstants.*;
 
@@ -17,7 +18,7 @@ import Levels.Level;
 public class ObjectManager{
 
     private Playing playing; 
-    private BufferedImage spikeImg; 
+    private BufferedImage spikeImg, healthImg;
     private BufferedImage[][] chestImg; 
     private int lvlData[][];
     private boolean chestInteract = false, chestOpen = false; 
@@ -33,11 +34,13 @@ public class ObjectManager{
     public void loadImage() { 
         spikeImg = getSpriteAtlas(SPIKE_ATLAS);
         
-        BufferedImage ChestSprite = getSpriteAtlas(CHEST_ATLAS); 
+        BufferedImage ChestSprite = getSpriteAtlas(CHEST_ATLAS);
         chestImg = new BufferedImage[8][5];
 		for (int i = 0; i < chestImg.length; i++)
             for (int j = 0; j < chestImg[i].length; j++)
             chestImg[i][j] = ChestSprite.getSubimage(48 * j, 32 * i, 48, 32);
+
+        healthImg = getSpriteAtlas(HEALTH_ATLAS);
 
     }
 
@@ -84,6 +87,17 @@ public class ObjectManager{
             g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().getWidth(), (int) s.getHitbox().getHeight(), null);
             }
     }
+
+    private void drawHeart(Graphics g, int xOffset, int enemyX, int enemyY) { 
+        for (HealthPickup h : playing.getLevelManager().getCurrentLevel().getHealth()) { 
+            for (Enemy1 e : playing.getLevelManager().getCurrentLevel().getFireBoi()) {
+                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) h.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
+            }
+            for (Enemy2 e : playing.getLevelManager().getCurrentLevel().getWaterBoi()) {
+                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) h.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
+            }
+        }
+        }
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 

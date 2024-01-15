@@ -12,6 +12,7 @@ import java.util.List;
 
 import GameStates.Playing;
 import Objects.Chest;
+import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
 import Utilities.Constants;
 import Utilities.Constants.PlayerConstants;
@@ -80,7 +81,7 @@ public class Enemy extends Entity {
     if (this.currentHealth <= 0) { 
         dead = true; 
         state = DEAD;
-        //healthpickup.add(new HealthPickup(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, HealthPickup)); break;
+        
     }
 
     if (!dead){ 
@@ -212,7 +213,6 @@ public class Enemy extends Entity {
     state = DEAD; 
     updateAnimationTick(); 
     }
-
 
     
     public int flipX() {
