@@ -87,7 +87,7 @@ public class ObjectManager{
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            System.out.println(c.getState());
+            //System.out.println(c.getState());
             int type = 2; 
             if (chestInteract)
                 type = 3;
@@ -102,7 +102,7 @@ public class ObjectManager{
 
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if(c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
+            if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
                 chestInteract = true; 
                 c.setState(INTERACT);
                 if (chestInteract = true) {

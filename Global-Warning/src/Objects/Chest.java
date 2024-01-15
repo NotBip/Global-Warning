@@ -20,9 +20,9 @@ public class Chest extends Object {
 
     public void giveItem() {
         Random r = new Random();
-        int randnum = r.nextInt(2-1) + 1;
+        int randnum = r.nextInt(3-1) + 1;
         int quantity = 0;
-        String item;
+        String item = "";
         switch (randnum) {
             case 1:
             item = "Potion";
@@ -31,22 +31,30 @@ public class Chest extends Object {
             item = "Bomb";
             break;
         }
-        randnum = r.nextInt(5 - 1) + 1;
+        randnum = r.nextInt(4 - 1) + 1;
         switch (randnum) {
             case 1:
             quantity = 1;
             break;
             case 2:
+            if (item == "Potion") {
+                quantity = 2;
+            }
+            else {
             quantity = 3;
+            }
             break;
             case 3:
+            if (item == "Potion") {
+                quantity = 3;
+            }
+            else {
             quantity = 5;
-            break;
-            case 4:
-            quantity = 7;
+            }
             break;
         }
         //inventory add "item", quantity
+        System.out.println("You got " + quantity + " " + item + "!");
     }
 
 
