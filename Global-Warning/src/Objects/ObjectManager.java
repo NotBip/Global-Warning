@@ -79,6 +79,7 @@ public class ObjectManager{
     public void draw(Graphics g, int xOffset)  { 
         drawSpikes(g, xOffset);
         drawChests(g, xOffset);
+        drawHeart(g, xOffset);
     }
     
     private void drawSpikes(Graphics g, int xOffset) { 
@@ -87,19 +88,22 @@ public class ObjectManager{
             }
     }
 
-    private void drawHeart(Graphics g, int xOffset, int enemyX, int enemyY) { 
-        for (HealthPickup h : playing.getLevelManager().getCurrentLevel().getHealth()) { 
+    private void drawHeart(Graphics g, int xOffset) { 
+        //for (HealthPickup h : playing.getLevelManager().getCurrentLevel().getHealth()) { 
             for (Enemy1 e : playing.getLevelManager().getCurrentLevel().getFireBoi()) {
                 if(e.isDead()) {
-                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) h.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
+                    playing.getLevelManager().getCurrentLevel().getHealth().add(new HealthPickup(1, 2, 3));
+                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) HealthPickup.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
+                System.out.println("You Killed Fire Boi");
             }
-            }
+           }
             for (Enemy2 e : playing.getLevelManager().getCurrentLevel().getWaterBoi()) {
                 if (e.isDead()) {
                 g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) h.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
-                }
+                    System.out.println("You Killed Water Boi");
             }
-        }
+            }
+        //}
         }
 
     private void drawChests(Graphics g, int xOffset) { 
