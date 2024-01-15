@@ -107,7 +107,6 @@ public class Enemy extends Entity {
             wFlipped = flipW(); 
             xFlipped = flipX();
             leftwall = false;
-            System.out.println("ooga booga");
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
@@ -116,7 +115,6 @@ public class Enemy extends Entity {
             wFlipped = flipW(); 
             xFlipped = flipX();
             leftwall = true;
-            System.out.println("CHANGE");
             }
         else if (!player.hitbox.intersects(enemyRange)) { 
             xSpeed = moveSpeed - .5f; 

@@ -25,7 +25,7 @@ public class Level {
 	private Point rightSpawn; // Spawn point from the right left in a room
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
-	private boolean isWindy = false;
+	private boolean isWindy = false, isStormy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
@@ -70,7 +70,9 @@ public class Level {
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
-		case 103: isWindy = true;
+		case 103: isWindy = true; System.out.println("windy");break;
+
+		case 105: isStormy = true;
 		}
 	}
 
@@ -126,6 +128,10 @@ public class Level {
 
 	public boolean getWindy() {
 		return isWindy;
+	}
+
+	public boolean getStormy() {
+		return isStormy;
 	}
 
 	public ArrayList<Enemy2> getWaterBoi() { 
