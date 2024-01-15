@@ -111,7 +111,7 @@ public class Entity {
         int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
 
         try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
-            if (lvlData[lvlY][lvlX] != 11 && lvlData[lvlY][lvlX] != 6) { // Check if the entity is on an air tile
+            if (lvlData[lvlY][lvlX] != 11) { // Check if the entity is on an air tile
                         return true;
                     }
         } catch(Exception e) {
