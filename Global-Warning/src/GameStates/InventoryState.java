@@ -1,6 +1,7 @@
 package GameStates;
 
 
+import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -79,7 +80,14 @@ public class InventoryState {
 	 */
 
 	public void draw(Graphics g) {
-		g.drawImage(backgroundImg, GAME_WIDTH / 2 -250, 10, 500, 420, null);
+		//dark background
+		g.setColor(new Color(0,0,0,90));
+		g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
+
+		//color for other
+		g.setColor(Color.BLACK);
+		
+		g.drawImage(backgroundImg, GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 500, 420, null);
 		 for (InventorySlot slot : slots)
             slot.draw(g);
 	}
@@ -127,7 +135,7 @@ public class InventoryState {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
+	
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -158,15 +166,20 @@ public class InventoryState {
 	 */
 
 	public void mouseReleased(MouseEvent e) {
+		 
         for (InventorySlot slot : slots){
+		slot.select = false;
             if (isIn(e, slot)) {
-			    if (slot.getMousePressed() && !Playing.paused)
+			    if (slot.getMousePressed() && !Playing.paused){
 					Playing.setGunIndex(slot.item);
+					slot.select = true;
+					
+				}
             }
 
 		}
-
 		resetButtons();
+
 
 	}
 }

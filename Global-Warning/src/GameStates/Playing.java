@@ -2,10 +2,14 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import UserInterface.SaveButton;
+import Objects.Saving.*;
 import Utilities.LoadSave;
+
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
+import Objects.Saving.Checkpoint;
 
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -15,13 +19,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.*;
+import java.io.IOException;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
-    private Player player;
-    private static Weapon1 weapon;
+    public static Weapon1 weapon;
+    private Checkpoint savepoint;
+   public static Player player;
+
     public int bulletCount;
     public List<Bullets> bullets;
     private EnemyManager enemyManager;
@@ -29,6 +36,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
+    public int numFile = Checkpoint.fileNum;
     private LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
@@ -36,14 +44,19 @@ public class Playing extends State implements KeyListener, MouseListener {
     private Image backgroundImage;
     public static boolean paused, inventory = false;
     //private float borderLen;
+    //private Checkpoint checkpoint = new Checkpoint( Constants.TILE_SIZE,  Constants.TILE_SIZE, 80, 100);
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public double mouseX;
     public double mouseY;
     public double offset;
 
+    //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
-    public long coolDown = 300; // 300 milliseconds
+    public static long fireRateWeapon1 = 300; // 300 milliseconds
+    public static long fireRateWeapon2 = 250; // 300 milliseconds
+   // public  int num = SaveButton.getFileNum();
+
 
     private int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
@@ -55,8 +68,14 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public Playing(Game game) {
         super(game);
+        System.out.println("we're in session!");
         initialize();
     }
+
+    public void loadNextLevel() {
+
+    }
+
 
     /**
      * Loads the new level
@@ -85,6 +104,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -219,7 +239,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
@@ -227,6 +247,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.draw(g, xOffset);
         drawLightning(g, xOffset);
         player.drawHealthBar(g);
+        player.drawOxygenBar(g);
         
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);
@@ -278,6 +299,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         return weaponAngle;
     }
 
+    
+
     /**
 	 * Adds a cooldown between bullets shot
 	 * 
@@ -286,10 +309,20 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 * @since December 29, 2023
 	 */
 
-    public void bulletCooldown(MouseEvent e) {
+    public void bulletCooldown(int x, int y) {
         long time1 = System.currentTimeMillis();
-        if (time1 > lastBullet + coolDown) {
-            spawnBullet(e.getX(), e.getY());
+        long rate = 0;
+
+        //check which gun is being used
+        if (gunIndex ==1 ){
+            rate = fireRateWeapon1;
+        }else if (gunIndex ==2 ) {
+            rate = fireRateWeapon2;
+        }
+
+        //cooldown according to the firerate of gun
+        if (time1 > lastBullet + rate) {
+            spawnBullet(x, y);
             lastBullet = time1;
         }
     }
@@ -423,7 +456,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 */
 
     public void mouseClicked(MouseEvent e) {
-        bulletCooldown(e);
+        bulletCooldown((int) mouseX, (int) mouseY);
     }
 
 
@@ -435,10 +468,11 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 */
 
     public void mouseDragged(MouseEvent e) {
-        bulletCooldown(e);
+        
 
         mouseX = e.getX();
         mouseY = e.getY();
+        bulletCooldown((int) mouseX, (int) mouseY);
         
         if (!paused && !inventory) {
             if (mouseX < weapon.getX() - xOffset) {
@@ -466,6 +500,7 @@ public class Playing extends State implements KeyListener, MouseListener {
    
     @Override
     public void mousePressed(MouseEvent e) {
+        bulletCooldown((int) mouseX, (int) mouseY);
        if (paused)
 			pauseScreen.mousePressed(e);
 

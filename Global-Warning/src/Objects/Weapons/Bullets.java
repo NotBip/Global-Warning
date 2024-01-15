@@ -15,11 +15,16 @@ import java.util.ConcurrentModificationException;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y, speed;
+    private double x, y;
+    public static double speed1,speed2;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
     private int[][] lvlData;
+
+    //upgradeable abilities (fire-rate in playing class)
+    //no concept of damage yet, but public static double upgradeDamage;
+    
 
     /**
      * Constructor to create bullets
@@ -37,7 +42,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.lvlData = lvlData;
 
         // I increased the speed to compensate for the cooldown
-        this.speed = 10.0;
+        speed1 = 10.0;
+        speed2 = 7.0;
         setDirection(targetX, targetY, xOffset);
         initialize();
     }
@@ -50,7 +56,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public void setDirection(double targetX, double targetY, int xOffset) {
+        //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
+
         this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
     }
@@ -62,7 +70,18 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 25, 2023
      */
 
+
     public void move() {
+
+        double speed = 0;
+
+        //different guns have different speeds
+        if (Playing.gunIndex == 1){
+            speed = speed1;
+        } else if(Playing.gunIndex == 2){
+            speed = speed2;
+        }
+
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             x += speed * directionX;
             y += speed * directionY;
@@ -91,7 +110,14 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         hitbox.x = drawX - 5 + xOffset;
         hitbox.y = drawY - 5;
-        x = hitbox.x;
+
+        if (!Playing.inventory){
+            if (!Playing.paused){
+                //adding ten sorta fixes the offset
+                x = hitbox.x;
+            }
+        }
+
         //System.out.println(drawX);
 
         if (Playing.gunIndex == 1){
