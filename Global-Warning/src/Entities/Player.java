@@ -47,6 +47,7 @@ public class Player extends Entity {
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
+    private boolean isDead = false; 
 
     private float healthBarWidth; // The default width of the player's health bar
     private final float healthBarHeight = 30; // The default height of the player's health bar
@@ -90,7 +91,12 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
-
+        if (currentHealth <= 0) { 
+            isDead = true; 
+            this.state = DEAD; 
+        }
+        
+        if (!isDead) {
         // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
@@ -243,12 +249,20 @@ public class Player extends Entity {
                 moving = false;
                 hitbox.x = fixXPos(hitbox, xSpeed);
             }
+        }
         updateAnimationTick();
         setAnimation();
     }
 
     public void draw(Graphics g, int offset) {
+        if (!isDead)// && animationIndex >= GetSpriteAmount(DEAD))
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
+        else if (animationIndex < GetSpriteAmount(DEAD)) {
+            animationIndex = 0;  
+            g.drawImage(animations[DEAD][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
+        }
+
+
     }
 
     /**
@@ -466,6 +480,10 @@ public class Player extends Entity {
 
     public void dead() { 
         this.currentHealth = 0; 
+    }
+
+    public boolean isDead() { 
+        return isDead;
     }
 
 }

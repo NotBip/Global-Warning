@@ -95,7 +95,7 @@ public class Level {
 		}
 	}
 
-	public void resetEnemies() {
+	public void resetEnemies() {	
 			Waterboi.clear();
 			Fireboi.clear();
 	}
