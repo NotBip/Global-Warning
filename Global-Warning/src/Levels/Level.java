@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
-
+import GameStates.Playing;
 import Objects.Chest;
 import Objects.Spike;
 
@@ -29,6 +29,7 @@ public class Level {
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
 	private Point windSpawn; 
+	private Playing playing;
 	private Point playerSpawn; // Default spawn point in a room
 	private Point leftSpawn; // Spawn point from the left door in a room
 	private Point rightSpawn; // Spawn point from the right left in a room
@@ -42,8 +43,9 @@ public class Level {
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
-	public Level(BufferedImage img) {
+	public Level(BufferedImage img, Playing playing) {
 		this.img = img;
+		this.playing = playing;
 		lvlData = new int[img.getHeight()][img.getWidth()];
 		loadLevel();
 		calcLvlOffsets();
@@ -85,7 +87,7 @@ public class Level {
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break; 
-		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63);
+		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63, playing);
 				  playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 105: isStormy = true; break;
 		

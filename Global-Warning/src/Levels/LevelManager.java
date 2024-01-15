@@ -49,7 +49,7 @@ public class LevelManager {
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
 		for (BufferedImage img : allLevels)
-			levels.add(new Level(img));
+			levels.add(new Level(img, playing));
 	}
 
 	private void importOutsideSprites() {
@@ -76,12 +76,8 @@ public class LevelManager {
 					g.drawImage(levelSprite[index], x - offset, y, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 		if(levels.get(lvlIndex).getCheckpoint()!= null) {
-			try {
-				levels.get(lvlIndex).getCheckpoint().draw(g, playing.getPlayer());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+				levels.get(lvlIndex).getCheckpoint().draw(g, offset);
 			
 		}
 	}

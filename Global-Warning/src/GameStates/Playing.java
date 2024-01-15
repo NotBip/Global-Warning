@@ -100,7 +100,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
-        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63);
+        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63, this);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -115,7 +115,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
     }
 
-    public void update() {
+    public void update() throws IOException {
         if (paused) {
 			pauseScreen.update();
 		} else if (inventory && !paused){
@@ -123,7 +123,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else {
             player.update();
             weapon.update();
-            
+            savepoint.update();
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
@@ -131,6 +131,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         checkLightningIntersect();
         checkBorder();
         checkTransition();
+        
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
         objectManager.update();
         environment.update();
@@ -230,7 +231,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     private void checkLightningIntersect() {
         if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
-        if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos) { // fix when this happens
+        if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos && !player.isImmune()) { // fix when this happens
             player.changeHealth(-50);
         }
     }
@@ -248,6 +249,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        savepoint.draw(g, xOffset);
         objectManager.draw(g, xOffset);
         drawLightning(g, xOffset);
         player.drawHealthBar(g);

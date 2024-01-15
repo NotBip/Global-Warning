@@ -16,6 +16,7 @@ public class Checkpoint extends Entity {
 	public static String fileName;
 	public static int fileNum;
 	boolean reached = false;
+	private Playing playing;
 
 	/**
 	 * Constructor to create a checkpoint
@@ -24,12 +25,13 @@ public class Checkpoint extends Entity {
 	 * @since January 11, 2024
 	 */
 
-	public Checkpoint(float x, float y, int width, int height) {
+	public Checkpoint(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.playing = playing;
 
 		
 		initialize();
@@ -44,17 +46,28 @@ public class Checkpoint extends Entity {
 	 * @since January 11, 2024
 	 */
 
-	public void draw(Graphics g, Player player) throws IOException {
+	public void draw(Graphics g, int xOffset) {
 	
-		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int)x, (int)y, width, height, null);
+		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int)x - xOffset, (int)y, width, height, null);
 
-		if (player.getHitbox().intersects(hitbox) && !reached){
+		
+		 if (reached){
+			g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x-30, (int)y-40, width+50, height-30, null);
+		 }
+
+		drawHitbox(g, xOffset);
+	
+	}
+
+	public void update() throws IOException {
+
+		if (playing.getPlayer().getHitbox().intersects(hitbox) && !reached){
 			//reached = true;
 			reached = true;
 
 			switch (fileNum) {
 				case 1:
-				SaveButton.save1.setHealth(player.currentHealth);
+				SaveButton.save1.setHealth(playing.getPlayer().currentHealth);
 				SaveButton.save1.setHold(Playing.gunIndex);
 				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
@@ -62,14 +75,14 @@ public class Checkpoint extends Entity {
 
 					break;
 				case 2:
-				SaveButton.save2.setHealth(player.currentHealth);
+				SaveButton.save2.setHealth(playing.getPlayer().currentHealth);
 				SaveButton.save2.setHold(Playing.gunIndex);
 				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
 				
 					break;
 				case 3:
-				SaveButton.save3.setHealth(player.currentHealth);
+				SaveButton.save3.setHealth(playing.getPlayer().currentHealth);
 				SaveButton.save3.setHold(Playing.gunIndex);
 				SaveButton.save3.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save3.setCooldown2((int)Playing.fireRateWeapon2);
@@ -84,12 +97,6 @@ public class Checkpoint extends Entity {
 		
 	
 		}
-		 if (reached){
-			g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x-30, (int)y-40, width+50, height-30, null);
-		 }
-
-		drawHitbox(g, 10);
-	
 	}
 
 	public static void setNumName(String name, int num)  {
