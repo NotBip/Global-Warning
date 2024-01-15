@@ -150,7 +150,6 @@ public class Pause {
 			if (menuBackB.getMousePressed())
 				menuBackB.applyGamestate();
 				Playing.paused = false;
-
 		}
 
 		resetButtons();
