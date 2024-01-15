@@ -105,6 +105,9 @@ public class ObjectManager{
             if(c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
                 chestInteract = true; 
                 c.setState(INTERACT);
+                if (chestInteract = true) {
+                c.runChestCode();
+            }
             }
             else if (!chestInteract) { 
                 c.setState(IDLE);
