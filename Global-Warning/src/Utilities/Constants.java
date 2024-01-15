@@ -104,9 +104,9 @@ public class Constants {
 
 		case "IDLE": 
 			if(enemy_type == Waterboi)
-			return 5; 
+			return 1; 
 			if(enemy_type == Fireboi) 
-			return 5; 
+			return 1; 
 		case "WALK":
 			 if(enemy_type == Waterboi)
 			return 6; 

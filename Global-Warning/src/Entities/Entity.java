@@ -76,9 +76,8 @@ public class Entity {
      * @param lvlData
      * @return if the entity can move
      */
-
     public boolean canMove(float x, float y, float width, float height, int[][] lvlData) {
-        if (!solidTile(x + width, y, lvlData)) {
+        if (!solidTile(x + width, y, lvlData) ) {
             if (!solidTile(x, y + height, lvlData)) {
                 if (!solidTile(x, y, lvlData)) {
                     if (!solidTile(x + width, y + height, lvlData)) {
