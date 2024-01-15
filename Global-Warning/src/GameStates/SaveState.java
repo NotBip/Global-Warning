@@ -19,6 +19,7 @@ import static Utilities.Atlas.*;
 public class SaveState extends State implements KeyListener, MouseListener {
 
     // variables
+    private Playing playing; 
     private int offset = 100;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
@@ -33,8 +34,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
      * @since January 3, 2024
      */
 
-    public SaveState(Game game) {
+    public SaveState(Game game, Playing playing) {
         super(game);
+        this.playing = playing; 
         makeButtons();
     }
 
@@ -181,7 +183,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
                     try {
                         sb.readSave();
                         System.out.println("check");
-                        Checkpoint.setNumName(sb.fileName, sb.fileNum);
+                        Checkpoint.setNumName(sb.getFileName(), sb.getFileNum());
                         sb.applyGamestate();
                     } catch (IOException e1) {
                         // TODO Auto-generated catch block
@@ -203,6 +205,18 @@ public class SaveState extends State implements KeyListener, MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
 
+    }
+
+    public SaveButton  getSaveButtons1() { 
+        return buttons[0]; 
+    }
+
+    public SaveButton getSaveButtons2() { 
+        return buttons[1]; 
+    }
+
+    public SaveButton getSaveButtons3() { 
+        return buttons[2]; 
     }
 
 }

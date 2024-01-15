@@ -48,6 +48,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseY;
     public double offset;
     private boolean playerDying; 
+    private Game game; 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
@@ -66,6 +67,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public Playing(Game game) {
         super(game);
+        this.game = game; 
         System.out.println("we're in session!");
         initialize();
     }
@@ -107,6 +109,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
         this.environment = new Environment(getPlayer()); 
 
+
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         } catch(Exception e) { // Will spawn the player at its initialization spawning coordinates
@@ -124,7 +127,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             player.update(this);
             weapon.update();
             if (getLevelManager().getCurrentLevel().getIsCheckpoint())
-            getLevelManager().getCurrentLevel().getCheckpoint().update();
+            getLevelManager().getCurrentLevel().getCheckpoint().update(game);
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
@@ -544,6 +547,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
     }
+
 
 
 }

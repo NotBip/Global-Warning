@@ -24,9 +24,9 @@ public class SaveButton extends Button {
 	public String fileName;
 	public int fileNum;
 
-	public static Save save1 = new Save();
-    public static Save save2 = new Save();
-    public static Save save3 = new Save();
+	public Save save1 = new Save();
+    public Save save2 = new Save();
+    public Save save3 = new Save();
 	//0,save1.getHealth(),(int)Playing.fireRateWeapon1,(int)Playing.fireRateWeapon2,0,0,0,0,0,1
 
 	/**
@@ -112,13 +112,12 @@ public class SaveButton extends Button {
 		
 	}
 
-	public static void writeSave(String name, int num)throws IOException {
-		
+	public void writeSave(String name, int num)throws IOException {
 		writeNewBinFile(name, num);
 		
 	}
 
-	public static void writeNewBinFile(String filename, int filenum) throws IOException{
+	public void writeNewBinFile(String filename, int filenum) throws IOException{
 	    RandomAccessFile raf = new RandomAccessFile(filename,"rw");
         switch (filenum) {
             case 1: save1.writeRec(raf);
@@ -131,7 +130,7 @@ public class SaveButton extends Button {
 		raf.close();
 	} // end writeNewBinFile
 
-	public static void readNewBinFile(String filename, int filenum) throws IOException{
+	public void readNewBinFile(String filename, int filenum) throws IOException{
 		RandomAccessFile raf = new RandomAccessFile(filename,"rw");
 
         switch (filenum) {
@@ -151,33 +150,33 @@ public class SaveButton extends Button {
 	public void loadSave(){
         switch (fileNum) {
 			case 1:
-			Playing.player.currentHealth = SaveButton.save1.getHealth();
-			Playing.gunIndex = SaveButton.save1.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save1.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save1.getCooldown2();
+			Playing.player.currentHealth = save1.getHealth();
+			Playing.gunIndex = save1.getHold();
+			Playing.fireRateWeapon1 = save1.getCooldown1();
+            Playing.fireRateWeapon1 = save1.getCooldown2();
 
-			if (SaveButton.save1.getHealth() == 0){
+			if (save1.getHealth() == 0){
 				Playing.player.currentHealth = Playing.player.maxHealth;
 			}
 
 				break;
 			case 2:
-			Playing.player.currentHealth = SaveButton.save2.getHealth();
-			Playing.gunIndex = SaveButton.save2.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save2.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save2.getCooldown2();
+			Playing.player.currentHealth = save2.getHealth();
+			Playing.gunIndex = save2.getHold();
+			Playing.fireRateWeapon1 = save2.getCooldown1();
+            Playing.fireRateWeapon1 = save2.getCooldown2();
 
-			if (SaveButton.save2.getHealth() == 0){
+			if (save2.getHealth() == 0){
 				Playing.player.currentHealth = Playing.player.maxHealth;
 			}
 				break;
 			case 3:
-			Playing.player.currentHealth = SaveButton.save3.getHealth();
-			Playing.gunIndex = SaveButton.save3.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save3.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save3.getCooldown2();
+			Playing.player.currentHealth = save3.getHealth();
+			Playing.gunIndex = save3.getHold();
+			Playing.fireRateWeapon1 = save3.getCooldown1();
+            Playing.fireRateWeapon1 = save3.getCooldown2();
 
-			if (SaveButton.save3.getHealth() == 0){
+			if (save3.getHealth() == 0){
 				Playing.player.currentHealth = Playing.player.maxHealth;
 			}
 
@@ -198,6 +197,18 @@ public class SaveButton extends Button {
 
 	public  int getFileNum(){
 		return fileNum;
+	}
+
+	public Save getSave1() { 
+		return save1;
+	}
+
+	public Save getSave2() { 
+		return save2; 
+	}
+
+	public Save getSave3() { 
+		return save3; 
 	}
 
 }

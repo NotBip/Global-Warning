@@ -3,10 +3,11 @@ package Objects.Saving;
 import static Utilities.Atlas.*;
 import java.awt.Graphics;
 import java.io.IOException;
-
+import Main.Game;
 import Entities.Entity;
 import Entities.Player;
 import GameStates.Playing;
+import Main.Game;
 import UserInterface.SaveButton;
 
 public class Checkpoint extends Entity {
@@ -14,7 +15,7 @@ public class Checkpoint extends Entity {
 	protected float x, y;
 	protected int width, height;
 	public static String fileName;
-	public static int fileNum;
+	public static  int fileNum;
 	boolean reached = false;
 	private Playing playing;
 
@@ -58,31 +59,30 @@ public class Checkpoint extends Entity {
 	
 	}
 
-	public void update() throws IOException {
+	public void update(Game game) throws IOException {
 		if (playing.getPlayer().getHitbox().intersects(hitbox) && !reached){
 			reached = true;
-
+			System.out.println(game.getSave().getSaveButtons1().save1.getHealth());
 			switch (fileNum) {
 				case 1:
-				SaveButton.save1.setHealth(playing.getPlayer().currentHealth);
-				SaveButton.save1.setHold(Playing.gunIndex);
-				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
-				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
-				
+					game.getSave().getSaveButtons1().save1.setHealth(playing.getPlayer().currentHealth);
+					game.getSave().getSaveButtons1().save1.setHold(Playing.gunIndex);
+					game.getSave().getSaveButtons1().save1.setCooldown1((int)Playing.fireRateWeapon1);
+					game.getSave().getSaveButtons1().save1.setCooldown2((int)Playing.fireRateWeapon2);
+				break;
 
-					break;
 				case 2:
-				SaveButton.save2.setHealth(playing.getPlayer().currentHealth);
-				SaveButton.save2.setHold(Playing.gunIndex);
-				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
-				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
-				
-					break;
+					game.getSave().getSaveButtons2().save2.setHealth(playing.getPlayer().currentHealth);
+					game.getSave().getSaveButtons2().save2.setHold(Playing.gunIndex);
+					game.getSave().getSaveButtons2().save2.setCooldown1((int)Playing.fireRateWeapon1);
+					game.getSave().getSaveButtons2().save2.setCooldown2((int)Playing.fireRateWeapon2);
+				break;
+
 				case 3:
-				SaveButton.save3.setHealth(playing.getPlayer().currentHealth);
-				SaveButton.save3.setHold(Playing.gunIndex);
-				SaveButton.save3.setCooldown1((int)Playing.fireRateWeapon1);
-				SaveButton.save3.setCooldown2((int)Playing.fireRateWeapon2);
+				game.getSave().getSaveButtons3().save3.setHealth(playing.getPlayer().currentHealth);
+				game.getSave().getSaveButtons3().save3.setHold(Playing.gunIndex);
+				game.getSave().getSaveButtons3().save3.setCooldown1((int)Playing.fireRateWeapon1);
+				game.getSave().getSaveButtons3().save3.setCooldown2((int)Playing.fireRateWeapon2);
 					
 					break;
 			
@@ -90,7 +90,9 @@ public class Checkpoint extends Entity {
 					break;
 			}
 			
-			SaveButton.writeSave(fileName, fileNum);
+			game.getSave().getSaveButtons1().writeSave(fileName, fileNum);
+			game.getSave().getSaveButtons2().writeSave(fileName, fileNum);
+			game.getSave().getSaveButtons3().writeSave(fileName, fileNum);
 		
 	
 		}
