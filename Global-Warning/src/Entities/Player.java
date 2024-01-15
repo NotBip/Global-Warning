@@ -248,10 +248,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g, int offset) {
-        //if(immunityUpdates % 8 == 0 || (immunityUpdates+1) % 8 == 0 || immunityUpdates == 0) // kind of looks the immunity flash thingo 
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
-        
-        
     }
 
     /**

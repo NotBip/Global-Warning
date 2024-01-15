@@ -5,6 +5,7 @@ import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import java.awt.image.BufferedImage;
@@ -36,11 +37,16 @@ public class Enemy extends Entity {
     private int enemyRangeWidth = 80;
     private boolean dead = false; 
     private boolean deadOver = false; 
-
+    private float healthBarWidth; 
+    private float healthBarHeight = 10;
+    private float currentHealthBarLen;
+    public boolean isActive = false; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
 
+        maxHealth = getMaxEnemyHealth(EnemyType);
+        currentHealth = maxHealth; 
         this.moveSpeed = speed; 
         this.xSpeed = this.moveSpeed; 
         this.xFlipped = xFlipped; 
@@ -57,8 +63,9 @@ public class Enemy extends Entity {
         this.enemyRangeY = y-enemyRangeWidth; 
         this.enemyRangeH = height+2*enemyRangeWidth; 
         this.enemyRangeW = width+2*enemyRangeWidth; 
-        maxHealth = getMaxEnemyHealth(EnemyType);
-        currentHealth = maxHealth; 
+
+        this.healthBarWidth = maxHealth;
+        this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations(); 
         initialize();
     }
@@ -327,6 +334,7 @@ public class Enemy extends Entity {
     public void changeHealth(int value) {
 		this.currentHealth -= value;
 		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
+        currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
 	}
 
     /**
@@ -335,7 +343,8 @@ public class Enemy extends Entity {
      */
     public void enemyHit(List<Bullets> bullet, Playing playing) { 
         for (Bullets b : bullet) { 
-            if(b.getHitbox().intersects(this.hitbox)) { 
+            if(b.getHitbox().intersects(this.hitbox)) {
+                isActive = true;  
                 playing.removeBullet();
                 changeHealth(PlayerConstants.getPlayerDamage(playing));
             }
@@ -352,4 +361,16 @@ public class Enemy extends Entity {
     public void dead() {
         this.currentHealth = 0; 
     }
+
+    public void drawHealth(Graphics g) {
+        if (isActive) { 
+        g.setColor(Color.red);
+        g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+        g.setColor(Color.green);
+        g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
+        g.setColor(Color.black);
+        g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)), (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+        }
+    }
+    
 }

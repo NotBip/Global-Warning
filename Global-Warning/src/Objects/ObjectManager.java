@@ -20,7 +20,6 @@ public class ObjectManager{
     private BufferedImage spikeImg; 
     private BufferedImage[][] chestImg; 
     private int lvlData[][];
-
     
     public ObjectManager(Playing playing) { 
         this.playing = playing; 

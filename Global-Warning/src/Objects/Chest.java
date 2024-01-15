@@ -5,6 +5,7 @@ import java.util.Random;
 import Main.Game;
 
 public class Chest extends Object {
+  
     protected boolean chestInteract = false, chestOpen = false; 
 
     public Chest(int x, int y, int object) { 
