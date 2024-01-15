@@ -29,9 +29,10 @@ public class Level {
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
 	private boolean isWindy = false;
+	private boolean isStormy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
-	private ArrayList<Checkpoint> flag = new ArrayList<Checkpoint>(); 
+	private Checkpoint checkpoint; 
 	//public static Checkpoint checkpoint;
 
 	public Level(BufferedImage img) {
@@ -77,11 +78,11 @@ public class Level {
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
-		case 103: isWindy = true; System.out.println("windy");break;
-
-		case 105: isStormy = true; break;
+		case 103: isWindy = true; break;
 		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63);
-			playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+			playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 105: isStormy = true; break;
+		
 		}
 	}
 
