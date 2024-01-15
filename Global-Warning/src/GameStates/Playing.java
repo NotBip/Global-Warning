@@ -47,6 +47,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseX;
     public double mouseY;
     public double offset;
+    private boolean playerDying; 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
@@ -120,7 +121,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else if (inventory && !paused){
 			inventoryState.update();
 		} else {
-            player.update();
+            player.update(this);
             weapon.update();
             if (getLevelManager().getCurrentLevel().getIsCheckpoint())
             getLevelManager().getCurrentLevel().getCheckpoint().update();
@@ -359,6 +360,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void removeBullet() {
         bullets.remove(0);
+    }
+
+    public void setPlayerDying(boolean die) { 
+        this.playerDying = die; 
     }
 
 

@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import GameStates.GameState;
+import GameStates.Playing;
 import UserInterface.SaveButton;
 
 import static Utilities.Constants.Directions.*;
@@ -89,13 +91,23 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
 
-    public void update() {
+    public void update(Playing playing) {
         moving = false; // Stop the player movement animation in case they stop moving this update
+        System.out.println(state);
         if (currentHealth <= 0) { 
-            isDead = true; 
-            this.state = DEAD; 
+            if (state != DEAD) { 
+            state = DEAD;
+            animationTick = 0;
+            animationIndex = 0; 
+            playing.setPlayerDying(true);
+            }
+             else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) {
+             GameState.currentState = GameState.MENU;   // Change to Game Over Screen. 
+            } else {
+             updateAnimationTick();
         }
-        
+        return; 
+    }   
         if (!isDead) {
         // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
@@ -255,14 +267,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g, int offset) {
-        if (!isDead)// && animationIndex >= GetSpriteAmount(DEAD))
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
-        else if (animationIndex < GetSpriteAmount(DEAD)) {
-            animationIndex = 0;  
-            g.drawImage(animations[DEAD][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
-        }
-
-
     }
 
     /**
@@ -370,7 +375,7 @@ public class Player extends Entity {
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(PLAYER_ATLAS);
-        animations = new BufferedImage[3][6];
+        animations = new BufferedImage[4][7];
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = img.getSubimage(j * 154, i * 154, 154, 154);
