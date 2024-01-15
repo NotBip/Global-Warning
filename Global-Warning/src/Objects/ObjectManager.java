@@ -106,7 +106,7 @@ public class ObjectManager{
                 chestInteract = true; 
                 c.setState(INTERACT);
                 if (chestInteract = true) {
-                c.runChestCode();
+                c.giveItem();
             }
             }
             else if (!chestInteract) { 
