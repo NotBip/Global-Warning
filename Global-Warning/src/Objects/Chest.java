@@ -4,6 +4,8 @@ import Main.Game;
 
 public class Chest extends Object {
     
+    public boolean chestInteract = false, chestOpen = false; 
+
     public Chest(int x, int y, int object) { 
         super(x, y, object);    
         initHitbox(68, 52);
