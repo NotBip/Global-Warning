@@ -410,16 +410,16 @@ public class Player extends Entity {
      */
     private void setAnimation() {
         if(playerDir == RIGHT) {
-            xFlipped = 0;
-            wFlipped = 1;
+            xFlipped = width;
+            wFlipped = -1;
             if(moving) {
                 state = RUNNING;
             } else {
                 state = IDLE;
             }
         } else if (playerDir == LEFT) {
-            xFlipped = width;
-            wFlipped = -1;
+            xFlipped = 0;
+            wFlipped = 1;
             if(moving) {
                 state = RUNNING;
             } else {
