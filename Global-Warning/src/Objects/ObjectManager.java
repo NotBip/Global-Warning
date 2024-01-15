@@ -20,7 +20,6 @@ public class ObjectManager{
     private BufferedImage spikeImg; 
     private BufferedImage[][] chestImg; 
     private int lvlData[][];
-    private boolean chestInteract = false, chestOpen = false; 
 
     
     public ObjectManager(Playing playing) { 
@@ -48,7 +47,7 @@ public class ObjectManager{
     public void update() { 
         checkSpikeTouch(); 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if(!chestOpen)
+            if(!c.chestOpen)
             c.updateAnimationTick(); 
         }
 
@@ -87,15 +86,14 @@ public class ObjectManager{
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            //System.out.println(c.getState());
             int type = 2; 
-            if (chestInteract)
+            if (c.chestInteract)
                 type = 3;
-            if (!chestInteract)
+            if (!c.chestInteract)
             g.drawImage(chestImg[type][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
-            else if (chestInteract && c.getAniIndex() <= GetSpriteAmount(Chest, c.getState())){
+            else if (c.chestInteract && c.getAniIndex() <= GetSpriteAmount(Chest, c.getState())){
             g.drawImage(chestImg[3][GetSpriteAmount(Chest, c.getState())-1], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null); 
-            chestOpen = true; 
+            c.chestOpen = true; 
             }
         }
     }
@@ -103,13 +101,13 @@ public class ObjectManager{
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
             if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
-                chestInteract = true; 
+                c.chestInteract = true; 
                 c.setState(INTERACT);
-                if (chestInteract = true) {
+                if (c.chestInteract = true) {
                 c.giveItem();
             }
             }
-            else if (!chestInteract) { 
+            else if (!c.chestInteract) { 
                 c.setState(IDLE);
             }
         }
