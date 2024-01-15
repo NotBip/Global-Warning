@@ -38,10 +38,9 @@ public class Level {
 	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
 	private Checkpoint checkpoint;
+	private boolean isStormy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
-	private ArrayList<Checkpoint> flag = new ArrayList<Checkpoint>(); 
-	//public static Checkpoint checkpoint;
 
 	public Level(BufferedImage img) {
 		this.img = img;
@@ -88,7 +87,9 @@ public class Level {
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break; 
 		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63);
-			playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE);
+			playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
+		case 105: isStormy = true; break;
+		
 		}
 	}
 
@@ -144,6 +145,10 @@ public class Level {
 
 	public boolean getWindy() {
 		return isWindy;
+	}
+
+	public boolean getStormy() {
+		return isStormy;
 	}
 
 	public ArrayList<Enemy2> getWaterBoi() { 

@@ -14,10 +14,13 @@ import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.*;
 import java.io.IOException;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,13 @@ public class Playing extends State implements KeyListener, MouseListener {
    // public  int num = SaveButton.getFileNum();
 
 
+    private int lightningUpdates; // The total updates that have passed before a complete lightning cycle
+    private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
+    private int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
+    private float lightningPosX;
+    private Rectangle2D.Float lightningHitbox;
+
+    private boolean lightningHasPos = false;
 
     public Playing(Game game) {
         super(game);
@@ -60,11 +70,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         initialize();
     }
 
-
-    public void loadNextLevel() {
-
-    }
-  
     /**
      * Loads the new level
      * 
@@ -76,6 +81,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void loadNextLevel(int spawnType) {
         enemyManager.resetEnemies();
         levelManager.loadNextLevel();
+        resetLightning();
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
         switch(spawnType) {
             case 1: player.setSpawn(levelManager.getCurrentLevel().getLeftSpawn()); break;
@@ -117,9 +123,12 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else {
             player.update();
             weapon.update();
+            
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
+        updateLightning();
+        checkLightningIntersect();
         checkBorder();
         checkTransition();
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
@@ -196,6 +205,41 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+    private void updateLightning() {
+        if(levelManager.getCurrentLevel().getStormy()) {
+            lightningUpdates++;
+            if(lightningUpdates >= lightningPosCooldown && !lightningHasPos) {
+                lightningPosX = player.getHitbox().x + player.getMoveSpeed();
+                lightningHasPos = true;
+                lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 40, GAME_WIDTH);
+            }
+            if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 2) {
+               resetLightning();
+            }
+        } else {
+            resetLightning();
+        }
+    }
+
+    private void drawLightning(Graphics g, int xOffset) {
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos) {
+            g.setColor(Color.yellow);
+            g.fillRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
+        }
+    }
+
+    private void checkLightningIntersect() {
+        if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
+        if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos) { // fix when this happens
+            player.changeHealth(-50);
+        }
+    }
+
+    private void resetLightning() {
+        lightningHasPos = false;
+        lightningUpdates = 0;
+        lightningHitbox = null;
+    }
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
@@ -205,6 +249,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         objectManager.draw(g, xOffset);
+        drawLightning(g, xOffset);
         player.drawHealthBar(g);
         player.drawOxygenBar(g);
         

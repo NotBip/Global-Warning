@@ -34,6 +34,7 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
+    private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
@@ -89,6 +90,7 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
+
         // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
