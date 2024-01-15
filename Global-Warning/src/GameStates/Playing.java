@@ -337,6 +337,8 @@ public class Playing extends State implements KeyListener, MouseListener {
             case KeyEvent.VK_SHIFT:
                 player.dash();
                 break;
+            case KeyEvent.VK_E: 
+                 this.getObjectManager().chestInteract(); 
 
         }
     }

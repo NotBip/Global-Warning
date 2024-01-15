@@ -1,7 +1,7 @@
 package Levels;
 
 import static Utilities.Constants.objectConstants.Spike;
-
+import static Utilities.Constants.objectConstants.Chest;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import Objects.Chest;
 import Objects.Spike;
 import Utilities.Constants;
 
@@ -31,6 +32,7 @@ public class Level {
 	private Point rightTransition; // Transition point into the right door in a room
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
+	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
@@ -85,7 +87,8 @@ public class Level {
 
 	private void loadObjects(int blueValue, int x, int y) {
 		switch (blueValue) {
-			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); 
+			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
+			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break; 
 		}
 	}
 
@@ -141,6 +144,10 @@ public class Level {
 
 	public ArrayList<Spike> getSpike() { 
 		return spike; 
+	}
+
+	public ArrayList<Chest> getChest() { 
+		return chest; 
 	}
 
 }

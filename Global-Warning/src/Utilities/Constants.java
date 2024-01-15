@@ -244,11 +244,17 @@ public class Constants {
 	public static class objectConstants { 
 
 		public static final int Spike = 0; 
+		public static final int Chest = 1;
+		
+		public static final String IDLE = "IDLE"; 
 
-		public static int GetSpriteAmount(int objectType) { 
-			switch (objectType) { 
-				case Spike: 
+		public static int GetSpriteAmount(int objectType, String objectState) { 
+			switch (objectState) { 
+				case IDLE: 
+					if (objectType == Spike)
 					return 1; 
+					if (objectType == Chest) 
+					return 1;  
 				default:
 					return 0; 
 			}

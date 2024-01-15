@@ -24,7 +24,7 @@ public class Object{
 		if (aniTick >= aniSpeed) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= GetSpriteAmount(object)) {
+			if (aniIndex >= GetSpriteAmount(object, IDLE)) {
 				aniIndex = 0;
             }
         }   
