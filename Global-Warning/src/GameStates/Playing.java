@@ -193,7 +193,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
-        objectManager.draw(g, xOffset, levelManager.getCurrentLevel());
+        objectManager.draw(g, xOffset);
         player.drawHealthBar(g);
 
         for (int i = 0; i < bullets.size(); i++) {
@@ -305,7 +305,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     public void keyPressed(KeyEvent e) {
-
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
                 player.setLeft(true);
@@ -338,7 +337,8 @@ public class Playing extends State implements KeyListener, MouseListener {
                 player.dash();
                 break;
             case KeyEvent.VK_E: 
-                 this.getObjectManager().chestInteract(); 
+                objectManager.setChestInteract();;
+                break; 
 
         }
     }

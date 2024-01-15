@@ -12,6 +12,7 @@ public class Object{
 	protected boolean doAnimation, active = true;
 	protected int aniTick, aniIndex, aniSpeed = 15; ;
 	protected int xDrawOffset, yDrawOffset;
+	protected String state = IDLE; 
     
     public Object(int x, int y, int object) {
 		this.x = x;
@@ -24,7 +25,7 @@ public class Object{
 		if (aniTick >= aniSpeed) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= GetSpriteAmount(object, IDLE)) {
+			if (aniIndex >= GetSpriteAmount(object, this.state)) {
 				aniIndex = 0;
             }
         }   
@@ -78,5 +79,13 @@ public class Object{
 
 	public int getAniTick() {
 		return aniTick;
+	}
+
+	public void setState(String state) { 
+		this.state = state; 
+	}
+
+	public String getState() { 
+		return state; 
 	}
 }
