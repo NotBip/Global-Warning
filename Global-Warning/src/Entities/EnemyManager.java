@@ -48,7 +48,7 @@ public class EnemyManager {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       if(!o.isDead()) {
         o.draw(g, xOffset);
-        o.drawHealth(g);
+        o.drawHealth(g, xOffset);
       }
       
     }
@@ -56,7 +56,7 @@ public class EnemyManager {
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
         f.draw(g, xOffset);
-        f.drawHealth(g);
+        f.drawHealth(g, xOffset);
       }
       
     }
