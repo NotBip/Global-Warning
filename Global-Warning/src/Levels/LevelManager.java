@@ -2,6 +2,7 @@ package Levels;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import GameStates.Playing;
@@ -60,7 +61,7 @@ public class LevelManager {
 			}
 	}
 
-	public void draw(Graphics g, int offset) {
+	public void draw(Graphics g, int offset) throws IOException {
 		for (int j = 0; j < levels.get(lvlIndex).getLevelData().length; j++)
 			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
 				int index = levels.get(lvlIndex).getSpriteIndex(i, j);

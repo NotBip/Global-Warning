@@ -22,10 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
-    private static Weapon1 weapon;
+    public static Weapon1 weapon;
     private Checkpoint savepoint;
    public static Player player;
-   public static Weapon1 weapon;
 
     public int bulletCount;
     public List<Bullets> bullets;
