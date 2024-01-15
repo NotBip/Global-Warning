@@ -261,7 +261,6 @@ public class Enemy extends Entity {
     public void draw(Graphics g, int xOffset) {
         if (!deadOver)
         g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
-       
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
         }

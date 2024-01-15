@@ -40,6 +40,7 @@ public class Level {
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
 	private Checkpoint checkpoint;
 	private boolean isStormy = false;
+	private  boolean isCheckpoint = false; 
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
@@ -79,7 +80,6 @@ public class Level {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
 		case 1: Waterboi.add(new Enemy2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
-
 		case 2: Fireboi.add(new Enemy1(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
@@ -88,6 +88,7 @@ public class Level {
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
 		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break; 
 		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63, playing);
+				  isCheckpoint = true; 
 				  playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 105: isStormy = true; break;
 		
@@ -170,5 +171,9 @@ public class Level {
 
 	public Checkpoint getCheckpoint() {
 		return checkpoint;
+	}
+
+	public boolean getIsCheckpoint() { 
+		return isCheckpoint; 
 	}
 }

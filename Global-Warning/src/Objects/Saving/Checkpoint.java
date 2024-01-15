@@ -48,11 +48,10 @@ public class Checkpoint extends Entity {
 
 	public void draw(Graphics g, int xOffset) {
 	
-		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int)x - xOffset, (int)y, width, height, null);
+		g.drawImage(getSpriteAtlas(FLAG_ATLAS), (int) x - xOffset, (int) y, width, height, null);
 
-		
 		 if (reached){
-			g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x-30, (int)y-40, width+50, height-30, null);
+			g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x - 30 - xOffset, (int)y-40, width+50, height-30, null);
 		 }
 
 		drawHitbox(g, xOffset);
@@ -60,9 +59,7 @@ public class Checkpoint extends Entity {
 	}
 
 	public void update() throws IOException {
-
 		if (playing.getPlayer().getHitbox().intersects(hitbox) && !reached){
-			//reached = true;
 			reached = true;
 
 			switch (fileNum) {

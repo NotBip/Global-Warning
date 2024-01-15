@@ -26,8 +26,7 @@ import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
     public static Weapon1 weapon;
-    private Checkpoint savepoint;
-   public static Player player;
+    public static Player player;
 
     public int bulletCount;
     public List<Bullets> bullets;
@@ -100,7 +99,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
-        savepoint = new Checkpoint(GAME_WIDTH / 2-300, GAME_HEIGHT / 2 +200, 45, 63, this);
+       // savepoint = new Checkpoint(GAME_WIDTH / 2-300, 100, 45, 63, this);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
@@ -123,7 +122,8 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else {
             player.update();
             weapon.update();
-            savepoint.update();
+            if (getLevelManager().getCurrentLevel().getIsCheckpoint())
+            getLevelManager().getCurrentLevel().getCheckpoint().update();
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
@@ -249,7 +249,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
-        savepoint.draw(g, xOffset);
+        if (getLevelManager().getCurrentLevel().getIsCheckpoint())
+        getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
         objectManager.draw(g, xOffset);
         drawLightning(g, xOffset);
         player.drawHealthBar(g);
