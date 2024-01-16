@@ -102,7 +102,8 @@ public class Player extends Entity {
             playing.setPlayerDying(true);
             }
              else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) {
-             GameState.currentState = GameState.MENU;   // Change to Game Over Screen. 
+                //this.changeHealth(maxHealth);
+                GameState.currentState = GameState.MENU;   // Change to Game Over Screen. 
             } else {
              updateAnimationTick();
         }
