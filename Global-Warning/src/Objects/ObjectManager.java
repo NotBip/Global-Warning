@@ -64,9 +64,10 @@ public class ObjectManager{
 
                 } else if (c.getState() != DOORSTOP) { 
                     c.updateAnimationTick(); 
-                }
-                return; 
             }
+            return; 
+
+         }
         }
         
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
@@ -122,8 +123,10 @@ public class ObjectManager{
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
             if(c.getState() == IDLE)
             g.drawImage(chestImg[2][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
-            if(c.chestInteract && c.getState() != IDLE)
+            if(c.chestInteract && c.getState() != IDLE){
             g.drawImage(chestImg[3][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            System.out.println("DRAWING CHESTS");
+            }
             if(c.chestInteract && c.getState() == DOORSTOP)
             g.drawImage(chestImg[3][4], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
         }
