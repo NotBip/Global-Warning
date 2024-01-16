@@ -44,8 +44,7 @@ public class Environment {
     }
 
     public void drawLightning(Graphics g, int xOffset) { 
-        System.out.println("asdasd");
-            g.drawImage(this.lightningImg[0][animationLightningIndex], (int) playing.lightningHitbox.x - xOffset - 20, (int) -100, (int) 214, (int) GAME_HEIGHT, null);
+        g.drawImage(this.lightningImg[0][animationLightningIndex], (int) playing.lightningHitbox.x - xOffset - 20, (int) -(GAME_HEIGHT-playing.lightningHeight), (int) 214, (int) GAME_HEIGHT, null);
     }
 
 

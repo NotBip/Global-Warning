@@ -321,6 +321,8 @@ public class Enemy extends Entity {
         inAir = true;
         dead = false;
         deadOver = false;
+        currentHealthBarLen = healthBarWidth;
+        isActive = false;
       }
 
           /**

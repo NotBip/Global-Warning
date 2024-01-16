@@ -14,6 +14,8 @@ import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.HEIGHT_IN_TILES;
+import static Utilities.Constants.TILE_SIZE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -60,6 +62,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
     private int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
     public float lightningPosX;
+    public float lightningHeight;
     public Rectangle2D.Float lightningHitbox;
     public boolean lightningHasPos = false;
 
@@ -211,8 +214,15 @@ public class Playing extends State implements KeyListener, MouseListener {
             lightningUpdates++;
             if(lightningUpdates >= lightningPosCooldown && !lightningHasPos) {
                 lightningPosX = player.getHitbox().x + player.getMoveSpeed();
+                int currentTileX = (int) (lightningPosX / TILE_SIZE);
+                 for(int i = 0; i < HEIGHT_IN_TILES; i++) {
+                    if(levelManager.getCurrentLevel().getLevelData()[i][currentTileX] != 11) {
+                        lightningHeight = i * TILE_SIZE;
+                        break;
+                    }
+                }
                 lightningHasPos = true;
-                lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 40, GAME_WIDTH);
+                lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 32, lightningHeight);
             }
             if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 2) {
                resetLightning();
@@ -228,7 +238,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
         }
 
-        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos) 
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
             environment.drawLightning(g, xOffset);
         
     }
