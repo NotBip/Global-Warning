@@ -419,6 +419,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                 break;
             case KeyEvent.VK_E: 
                 objectManager.setChestInteract();;
+                objectManager.setDoorInteract();
                 break; 
 
         }

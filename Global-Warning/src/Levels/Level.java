@@ -2,6 +2,7 @@ package Levels;
 
 import static Utilities.Constants.objectConstants.Spike;
 import static Utilities.Constants.objectConstants.Chest;
+import static Utilities.Constants.objectConstants.Door;
 import static Utilities.Constants.TILE_SIZE;
 import java.awt.Color;
 import java.awt.Point;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
+import Objects.BarrierDoor;
 import Objects.Chest;
 import Objects.Spike;
 
@@ -37,6 +39,7 @@ public class Level {
 	private Point rightTransition; // Transition point into the right door in a room
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
+	private ArrayList<BarrierDoor> door = new ArrayList<BarrierDoor>(); 
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
 	private Checkpoint checkpoint;
 	private boolean isStormy = false;
@@ -104,6 +107,7 @@ public class Level {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
 			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break;
+			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 		}
 	}
 
@@ -167,6 +171,10 @@ public class Level {
 
 	public ArrayList<Chest> getChest() { 
 		return chest; 
+	}
+
+	public ArrayList<BarrierDoor> getDoor() {
+		return door;
 	}
 
 	public Checkpoint getCheckpoint() {
