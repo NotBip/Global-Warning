@@ -37,7 +37,6 @@ public class Player extends Entity {
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
     private boolean hasKey = true; // If the player has a key
-    private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
@@ -268,7 +267,8 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics g, int offset) {
-            g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 75 * wFlipped, 83, null);
+            g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 65 * wFlipped, 70, null);
+         //   drawHitbox(g, offset);
     }
 
     /**
@@ -379,7 +379,7 @@ public class Player extends Entity {
         animations = new BufferedImage[4][7];
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
-                animations[i][j] = img.getSubimage(j * 154, i * 154, 154, 154);
+                animations[i][j] = img.getSubimage(j * 113, i * 113, 113, 113);
             }
         }
     }
