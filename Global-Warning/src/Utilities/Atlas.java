@@ -17,6 +17,8 @@ public class Atlas {
     public static final String WEAPON3_ATLAS = "pixel_weap_yellow.png";
 
      public static final String BOMB_ATLAS = "bomb_transparent.png";
+     public static final String NOTHING_ATLAS = "no_bomb.png";
+
      public static final String KEY_ATLAS = "key_sprite.png";
      public static final String POTION_ATLAS = "healing_potion.png";
      public static final String GEM_ATLAS = "gem_blue.png";
