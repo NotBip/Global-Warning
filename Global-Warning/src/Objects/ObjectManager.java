@@ -58,13 +58,14 @@ public class ObjectManager{
         }
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (d.doorOpen) { 
-                if (d.getState() == INTERACT) { 
+                if (d.getState() != INTERACT && d.getState() != DOORSTOP) { 
+                    d.setState(INTERACT);
                     d.aniTick = 0; 
                     d.aniIndex = 0; 
                 }
                 else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1) { 
                     d.doorInteract = true;
-                    d.setState(IDLE);  
+                    d.setState(DOORSTOP);
                 } else { 
                     d.updateAnimationTick(); 
                 }
@@ -88,7 +89,7 @@ public class ObjectManager{
             if(playing.getPlayer().getHitbox().intersects(s.getHitbox()) && !playing.getPlayer().isImmune()) {
                 playing.getPlayer().changeHealth(-20);
                 return; // stop checking the other spikes around the player if one has already been checked (multiple spikes may be intersecting)
-            } 
+            }  
         }  
     }
     
@@ -124,7 +125,7 @@ public class ObjectManager{
             g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
             if(d.doorInteract && d.getState() != IDLE)
             g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
-            if(d.doorInteract && d.getState() == IDLE)
+            if(d.doorInteract && d.getState() == DOORSTOP)
             g.drawImage(doorImg[0][9], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
 
         }

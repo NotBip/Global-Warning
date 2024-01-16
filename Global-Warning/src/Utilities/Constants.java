@@ -250,6 +250,7 @@ public class Constants {
 
 		public static final String IDLE = "IDLE"; 
 		public static final String INTERACT = "INTERACT"; 
+		public static final String DOORSTOP = "DOORSTOP"; 
 
 		public static int GetSpriteAmount(int objectType, String objectState) { 
 			switch (objectState) { 
@@ -265,6 +266,9 @@ public class Constants {
 					return 5; 
 					if (objectType == Door)
 					return 10;
+				case DOORSTOP: 
+					if(objectType == Door) 
+					return 10; 
 				default:
 					return 0; 
 			}
