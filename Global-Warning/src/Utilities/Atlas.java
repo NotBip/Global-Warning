@@ -42,6 +42,7 @@ public class Atlas {
     public static final String SPIKE_ATLAS = "spike.png"; 
     public static final String CHEST_ATLAS = "Chests.png"; 
     public static final String LIGHTNING_ATLAS = "Lightning.png"; 
+    public static final String DOOR_ATLAS = "door.png";
 
     public static final String FLAG_ATLAS = "flag_green.png";
     public static final String SAVED_ATLAS = "saved_text.png";
