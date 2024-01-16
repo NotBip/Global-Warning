@@ -62,10 +62,10 @@ public class ObjectManager{
                     d.aniTick = 0; 
                     d.aniIndex = 0; 
                 }
-                else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1) { 
+                else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1 && d.getState() != DOORSTOP) { 
                     d.doorInteract = true;
                     d.setState(DOORSTOP);
-                } else { 
+                } else if (d.getState() != DOORSTOP) { 
                     d.updateAnimationTick(); 
                 }
                 return; 
@@ -122,9 +122,9 @@ public class ObjectManager{
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if(d.getState() == IDLE)
             g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
-            if(d.doorInteract && d.getState() != IDLE)
+            else if(d.doorInteract && d.getState() != IDLE && d.getState() != DOORSTOP)
             g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
-            if(d.doorInteract && d.getState() == DOORSTOP)
+            else if(d.doorInteract && d.getState() == DOORSTOP)
             g.drawImage(doorImg[0][9], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
 
         }
@@ -132,12 +132,19 @@ public class ObjectManager{
 
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
-                c.setState(INTERACT);
-                c.giveItem();
-            }
-            else {
-                c.setState(IDLE);
+            if (c.chestOpen) { 
+                if (c.getState() != INTERACT && c.getState() != DOORSTOP) { 
+                    c.setState(INTERACT);
+                    c.aniTick = 0; 
+                    c.aniIndex = 0; 
+                }
+                else if (c.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && c.aniTick >= c.aniSpeed - 1 && c.getState() != DOORSTOP) { 
+                    c.chestInteract = true;
+                    c.setState(DOORSTOP);
+                } else if (c.getState() != DOORSTOP) { 
+                    c.updateAnimationTick(); 
+                }
+                return; 
             }
         }
     }
@@ -153,11 +160,6 @@ public class ObjectManager{
                 else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.getPlayer().getKey() == false) {
                 System.out.println("You don't have the BALLS");
             }
-                else if (d.getState() != INTERACT) { 
-                    d.setState(IDLE);
-                    d.doorInteract = false; 
-                    d.doorOpen = false; 
-                }
         }
     }
 }
