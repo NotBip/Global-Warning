@@ -40,7 +40,7 @@ public class Enemy extends Entity {
     private float healthBarWidth; 
     private float healthBarHeight = 10;
     private float currentHealthBarLen;
-    public boolean isActive = false; 
+    public boolean isActive = true; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -215,8 +215,10 @@ public class Enemy extends Entity {
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
     }
-    if(dead) 
-    state = DEAD; 
+    if(dead && state != DEAD) {
+        state = DEAD; 
+        animationIndex = 0;
+    }
     updateAnimationTick(); 
     }
 
@@ -322,7 +324,7 @@ public class Enemy extends Entity {
         dead = false;
         deadOver = false;
         currentHealthBarLen = healthBarWidth;
-        isActive = false;
+        isActive = true;
       }
 
           /**
