@@ -251,26 +251,14 @@ public class Constants {
 		public static final int Chest = 1;
 		public static final int Door = 2;
 
-		public static final String IDLE = "IDLE"; 
-		public static final String INTERACT = "INTERACT"; 
-		public static final String DOORSTOP = "DOORSTOP"; 
 
-		public static int GetSpriteAmount(int objectType, String objectState) { 
-			switch (objectState) { 
-				case IDLE: 
-					if (objectType == Spike || objectType == Door)
-					return 1; 
-					if (objectType == Chest) 
-					return 5;  
-				case INTERACT: 
-					if (objectType == Spike) 
-					return 1; 
-					if (objectType == Chest) 
+		public static int GetSpriteAmount(int objectType) { 
+			switch (objectType) { 
+				case Spike: 
+					return 0;  
+				case Chest: 
 					return 5; 
-					if (objectType == Door)
-					return 10;
-				case DOORSTOP: 
-					if(objectType == Door) 
+				case Door: 
 					return 10; 
 				default:
 					return 0; 

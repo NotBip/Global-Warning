@@ -6,7 +6,7 @@ import Main.Game;
 
 public class Chest extends Object {
   
-    protected boolean chestInteract = false, chestOpen = false; 
+    protected boolean chestInteract = false, chestOpen = false, chestOpened = false;   
 
     public Chest(int x, int y, int object) { 
         super(x, y, object);    

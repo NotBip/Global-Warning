@@ -1,23 +1,28 @@
-package Objects;
+package Objects; 
 
+import static Utilities.Constants.objectConstants.Chest;
+import static Utilities.Constants.objectConstants.Door;
+import static Utilities.Constants.objectConstants.GetSpriteAmount;
+
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
-import static Utilities.Constants.objectConstants.*;
+
 import Main.Game;
 
-public class Object{
-    
-    protected int x, y, object;
+
+public class Object {
+
+	protected int x, y, objType;
 	protected Rectangle2D.Float hitbox;
 	protected boolean doAnimation, active = true;
-	protected int aniTick, aniIndex, aniSpeed = 15; ;
+	protected int aniTick, aniIndex, aniSpeed = 25;
 	protected int xDrawOffset, yDrawOffset;
-	protected String state = IDLE; 
-    
-    public Object(int x, int y, int object) {
+
+	public Object(int x, int y, int objType) {
 		this.x = x;
 		this.y = y;
-		this.object = object;
+		this.objType = objType;
 	}
 
 	protected void updateAnimationTick() {
@@ -25,16 +30,24 @@ public class Object{
 		if (aniTick >= aniSpeed) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= GetSpriteAmount(object, this.state)) {
+			if (aniIndex >= GetSpriteAmount(objType)) {
 				aniIndex = 0;
-            }
-        }   
-    }
+				if (objType == Door || objType == Chest)
+					doAnimation = false;
+					active = false;
+		}
+	}
+}
 
 	public void reset() {
 		aniIndex = 0;
 		aniTick = 0;
 		active = true;
+
+		if (objType == Door || objType == Chest )
+			doAnimation = false;
+		else
+			doAnimation = true;
 	}
 
 	protected void initHitbox(int width, int height) {
@@ -42,11 +55,12 @@ public class Object{
 	}
 
 	public void drawHitbox(Graphics g, int xLvlOffset) {
+		g.setColor(Color.PINK);
 		g.drawRect((int) hitbox.x - xLvlOffset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
 	}
 
 	public int getObjType() {
-		return object;
+		return objType;
 	}
 
 	public Rectangle2D.Float getHitbox() {
@@ -81,11 +95,4 @@ public class Object{
 		return aniTick;
 	}
 
-	public void setState(String state) { 
-		this.state = state; 
-	}
-
-	public String getState() { 
-		return state; 
-	}
 }
