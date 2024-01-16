@@ -52,9 +52,24 @@ public class ObjectManager{
     public void update() { 
         checkSpikeTouch(); 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if(!c.chestOpen)
-            c.updateAnimationTick(); 
+            if (c.chestOpen) { 
+                if (c.getState() != INTERACT && c.getState() != DOORSTOP) { 
+                    c.setState(INTERACT);
+                    c.aniTick = 0; 
+                    c.aniIndex = 0; 
+                }
+                else if (c.aniIndex == GetSpriteAmount(Chest, INTERACT) - 1 && c.aniTick >= c.aniSpeed - 1) { 
+                    c.chestInteract = true;
+                    c.setState(DOORSTOP);
+
+                } else if (c.getState() != DOORSTOP) { 
+                    c.updateAnimationTick(); 
+            }
+            return; 
+
+         }
         }
+        
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (d.doorOpen) { 
                 if (d.getState() != INTERACT && d.getState() != DOORSTOP) { 
@@ -62,7 +77,7 @@ public class ObjectManager{
                     d.aniTick = 0; 
                     d.aniIndex = 0; 
                 }
-                else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1 && d.getState() != DOORSTOP) { 
+                else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1) { 
                     d.doorInteract = true;
                     d.setState(DOORSTOP);
                 } else if (d.getState() != DOORSTOP) { 
@@ -106,15 +121,14 @@ public class ObjectManager{
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            int type = 2; 
-            if (c.chestInteract)
-                type = 3;
-            if (!c.chestInteract)
-            g.drawImage(chestImg[type][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
-            else if (c.chestInteract && c.getAniIndex() <= GetSpriteAmount(Chest, c.getState())){
-            g.drawImage(chestImg[3][GetSpriteAmount(Chest, c.getState())-1], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null); 
-            c.chestOpen = true; 
+            if(c.getState() == IDLE)
+            g.drawImage(chestImg[2][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            if(c.chestInteract && c.getState() != IDLE){
+            g.drawImage(chestImg[3][c.getAniIndex()], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            System.out.println("DRAWING CHESTS");
             }
+            if(c.chestInteract && c.getState() == DOORSTOP)
+            g.drawImage(chestImg[3][4], (int) c.getHitbox().x - xOffset, (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
         }
     }
 
@@ -122,9 +136,9 @@ public class ObjectManager{
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if(d.getState() == IDLE)
             g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
-            else if(d.doorInteract && d.getState() != IDLE && d.getState() != DOORSTOP)
+            if(d.doorInteract && d.getState() != IDLE)
             g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
-            else if(d.doorInteract && d.getState() == DOORSTOP)
+            if(d.doorInteract && d.getState() == DOORSTOP)
             g.drawImage(doorImg[0][9], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
 
         }
@@ -132,19 +146,11 @@ public class ObjectManager{
 
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
-            if (c.chestOpen) { 
-                if (c.getState() != INTERACT && c.getState() != DOORSTOP) { 
-                    c.setState(INTERACT);
-                    c.aniTick = 0; 
-                    c.aniIndex = 0; 
-                }
-                else if (c.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && c.aniTick >= c.aniSpeed - 1 && c.getState() != DOORSTOP) { 
-                    c.chestInteract = true;
-                    c.setState(DOORSTOP);
-                } else if (c.getState() != DOORSTOP) { 
-                    c.updateAnimationTick(); 
-                }
-                return; 
+            if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
+                c.chestInteract = true; 
+                c.setState(INTERACT);
+                c.chestOpen = true; 
+                System.out.println("You opened the door!");
             }
         }
     }
