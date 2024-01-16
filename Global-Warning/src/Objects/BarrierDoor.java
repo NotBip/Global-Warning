@@ -3,7 +3,8 @@ package Objects;
 import Main.Game;
 
 public class BarrierDoor extends Object {
-    protected boolean doorInteract = false, doorOpen = false, doorDone = false;
+    protected boolean doorInteract = false, doorOpen = false;
+    
 
     public BarrierDoor(int x, int y, int object) { 
         super(x, y, object); 
