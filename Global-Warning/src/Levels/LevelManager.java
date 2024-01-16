@@ -15,7 +15,7 @@ public class LevelManager {
 	private BufferedImage[] levelSprite;
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;
-	private static int lvlIndex = 7;
+	private static int lvlIndex = 8;
 	private int aniTick;
 	private int aniIndex;
 	private Playing playing;

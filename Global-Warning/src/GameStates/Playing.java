@@ -59,10 +59,9 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
     private int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
-    private float lightningPosX;
-    private Rectangle2D.Float lightningHitbox;
-
-    private boolean lightningHasPos = false;
+    public float lightningPosX;
+    public Rectangle2D.Float lightningHitbox;
+    public boolean lightningHasPos = false;
 
     public Playing(Game game) {
         super(game);
@@ -105,7 +104,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
-        this.environment = new Environment(getPlayer()); 
+        this.environment = new Environment(this); 
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -224,10 +223,14 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     private void drawLightning(Graphics g, int xOffset) {
-        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos) {
-            g.setColor(Color.yellow);
-            g.fillRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
+        if(lightningUpdates >= lightningPosCooldown && lightningHasPos) {
+            g.setColor(Color.RED);
+            g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
         }
+
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos) 
+            environment.drawLightning(g, xOffset);
+        
     }
 
     private void checkLightningIntersect() {
