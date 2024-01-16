@@ -90,7 +90,7 @@ public class Level {
 		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63, playing);
 				  isCheckpoint = true; 
 				  playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
-		case 105: isStormy = true; break;
+		case 105: isStormy = false; break;
 		
 		}
 	}
