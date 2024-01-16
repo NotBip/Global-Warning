@@ -2,6 +2,7 @@ package Levels;
 
 import static Utilities.Constants.objectConstants.Spike;
 import static Utilities.Constants.objectConstants.Chest;
+import static Utilities.Constants.objectConstants.Door;
 import static Utilities.Constants.TILE_SIZE;
 import java.awt.Color;
 import java.awt.Point;
@@ -10,9 +11,8 @@ import java.util.ArrayList;
 
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
-
+import Objects.BarrierDoor;
 import Objects.Chest;
-import Objects.HealthPickup;
 import Objects.Spike;
 
 import Objects.Saving.Checkpoint;
@@ -37,8 +37,8 @@ public class Level {
 	private Point rightTransition; // Transition point into the right door in a room
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
+	private ArrayList<BarrierDoor> door = new ArrayList<BarrierDoor>(); 
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
-	private ArrayList<HealthPickup> health = new ArrayList<HealthPickup>();
 	private Checkpoint checkpoint;
 	private boolean isStormy = false;
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
@@ -103,6 +103,7 @@ public class Level {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
 			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break;
+			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 		}
 	}
 
@@ -168,11 +169,12 @@ public class Level {
 		return chest; 
 	}
 
-	public ArrayList<HealthPickup> getHealth() { 
-		return health; 
+	public ArrayList<BarrierDoor> getDoor() {
+		return door;
 	}
 
 	public Checkpoint getCheckpoint() {
 		return checkpoint;
 	}
+
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import GameStates.Playing;
 import Objects.Chest;
+import Objects.Object;
 import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
 import Utilities.Constants;
@@ -36,7 +37,7 @@ public class Enemy extends Entity {
     private boolean isAttack = false, leftwall = false, isVisible = false; 
     private int enemyRangeWidth = 80;
     private boolean dead = false; 
-    private boolean deadOver = false; 
+    private boolean deadOver = false;
 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {

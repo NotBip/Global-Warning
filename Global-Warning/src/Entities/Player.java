@@ -34,6 +34,7 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
+    private boolean hasKey = true; // If the player has a key
     private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
@@ -469,6 +470,14 @@ public class Player extends Entity {
 
     public void dead() { 
         this.currentHealth = 0; 
+    }
+
+    public boolean getKey() {
+        return hasKey;
+    }
+
+    public void setKey(boolean hasKey) {
+        this.hasKey = hasKey;
     }
 
 }

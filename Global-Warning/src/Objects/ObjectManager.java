@@ -2,7 +2,7 @@ package Objects;
 
 import static Utilities.Atlas.CHEST_ATLAS;
 import static Utilities.Atlas.SPIKE_ATLAS;
-import static Utilities.Atlas.HEALTH_ATLAS;
+import static Utilities.Atlas.DOOR_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.objectConstants.*;
 
@@ -18,8 +18,8 @@ import Levels.Level;
 public class ObjectManager{
 
     private Playing playing; 
-    private BufferedImage spikeImg, healthImg;
-    private BufferedImage[][] chestImg; 
+    private BufferedImage spikeImg;
+    private BufferedImage[][] chestImg, doorImg; 
     private int lvlData[][];
 
     
@@ -38,10 +38,13 @@ public class ObjectManager{
 		for (int i = 0; i < chestImg.length; i++)
             for (int j = 0; j < chestImg[i].length; j++)
             chestImg[i][j] = ChestSprite.getSubimage(48 * j, 32 * i, 48, 32);
-
-        healthImg = getSpriteAtlas(HEALTH_ATLAS);
-
-    }
+        
+        BufferedImage DoorSprite = getSpriteAtlas(DOOR_ATLAS);
+        doorImg = new BufferedImage[1][10];
+		for (int i = 0; i < doorImg.length; i++)
+            for (int j = 0; j < doorImg[i].length; j++)
+            doorImg[i][j] = DoorSprite.getSubimage(594 * j, 706 * i, 594, 706);
+        }
 
     public void loadObjects(int[][] lvlData) { 
         this.lvlData = lvlData; 
@@ -52,6 +55,21 @@ public class ObjectManager{
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
             if(!c.chestOpen)
             c.updateAnimationTick(); 
+        }
+        for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
+            if (d.doorOpen) { 
+                if (d.getState() == INTERACT) { 
+                    d.aniTick = 0; 
+                    d.aniIndex = 0; 
+                }
+                else if (d.aniIndex == GetSpriteAmount(Door, INTERACT) - 1 && d.aniTick >= d.aniSpeed - 1) { 
+                    d.doorInteract = true;
+                    d.setState(IDLE);  
+                } else { 
+                    d.updateAnimationTick(); 
+                }
+                return; 
+            }
         }
 
     }
@@ -73,13 +91,11 @@ public class ObjectManager{
             } 
         }  
     }
-
-
     
     public void draw(Graphics g, int xOffset)  { 
         drawSpikes(g, xOffset);
         drawChests(g, xOffset);
-        drawHeart(g, xOffset);
+        drawDoors(g, xOffset);
     }
     
     private void drawSpikes(Graphics g, int xOffset) { 
@@ -87,24 +103,6 @@ public class ObjectManager{
             g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().getWidth(), (int) s.getHitbox().getHeight(), null);
             }
     }
-
-    private void drawHeart(Graphics g, int xOffset) { 
-        //for (HealthPickup h : playing.getLevelManager().getCurrentLevel().getHealth()) { 
-            for (Enemy1 e : playing.getLevelManager().getCurrentLevel().getFireBoi()) {
-                if(e.isDead()) {
-                    playing.getLevelManager().getCurrentLevel().getHealth().add(new HealthPickup(1, 2, 3));
-                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) HealthPickup.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
-                System.out.println("You Killed Fire Boi");
-            }
-           }
-            for (Enemy2 e : playing.getLevelManager().getCurrentLevel().getWaterBoi()) {
-                if (e.isDead()) {
-                g.drawImage(spikeImg, (int) e.getHitbox().x - xOffset, (int) e.getHitbox().y, (int) h.getHitbox().getWidth(), (int) h.getHitbox().getHeight(), null);
-                    System.out.println("You Killed Water Boi");
-            }
-            }
-        //}
-        }
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
@@ -120,18 +118,46 @@ public class ObjectManager{
         }
     }
 
+    private void drawDoors(Graphics g, int xOffset) { 
+        for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
+            if(d.getState() == IDLE)
+            g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+            if(d.doorInteract && d.getState() != IDLE)
+            g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+            if(d.doorInteract && d.getState() == IDLE)
+            g.drawImage(doorImg[0][9], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+
+        }
+    }
+
     public void setChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
             if(c.getHitbox().intersects(playing.getPlayer().getHitbox()) && c.getState() != INTERACT) { 
-                c.chestInteract = true; 
                 c.setState(INTERACT);
-                if (c.chestInteract = true) {
                 c.giveItem();
             }
-            }
-            else if (!c.chestInteract) { 
+            else {
                 c.setState(IDLE);
             }
+        }
+    }
+
+    public void setDoorInteract() { 
+        for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
+            if(d.getHitbox().intersects(playing.getPlayer().getHitbox()) && d.getState() != INTERACT && playing.getPlayer().getKey() == true) { 
+                d.doorInteract = true; 
+                d.setState(INTERACT);
+                d.doorOpen = true; 
+                System.out.println("You opened the door!");
+            }
+                else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.getPlayer().getKey() == false) {
+                System.out.println("You don't have the BALLS");
+            }
+                else if (d.getState() != INTERACT) { 
+                    d.setState(IDLE);
+                    d.doorInteract = false; 
+                    d.doorOpen = false; 
+                }
         }
     }
 }
