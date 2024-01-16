@@ -7,6 +7,7 @@ import java.io.IOException;
 import Entities.Entity;
 import Entities.Player;
 import GameStates.Playing;
+import Levels.LevelManager;
 import UserInterface.SaveButton;
 
 public class Checkpoint extends Entity {
@@ -68,6 +69,7 @@ public class Checkpoint extends Entity {
 				SaveButton.save1.setHold(Playing.gunIndex);
 				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
+				SaveButton.save1.setLevel(LevelManager.lvlIndex);
 				
 
 					break;
@@ -76,6 +78,7 @@ public class Checkpoint extends Entity {
 				SaveButton.save2.setHold(Playing.gunIndex);
 				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
+				SaveButton.save2.setLevel(LevelManager.lvlIndex);
 				
 					break;
 				case 3:
@@ -83,6 +86,7 @@ public class Checkpoint extends Entity {
 				SaveButton.save3.setHold(Playing.gunIndex);
 				SaveButton.save3.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save3.setCooldown2((int)Playing.fireRateWeapon2);
+				SaveButton.save3.setLevel(LevelManager.lvlIndex);
 					
 					break;
 			

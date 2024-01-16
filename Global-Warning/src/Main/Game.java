@@ -12,7 +12,7 @@ public class Game implements Runnable {
     public static final float SCALE = 1f; 
     int update = 0;
     private Thread gameThread;
-    private Playing playing;
+    public Playing playing;
     private Menu menu;
     private OptionState options;
     private SaveState save;

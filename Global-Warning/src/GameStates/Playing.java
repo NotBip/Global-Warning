@@ -26,7 +26,7 @@ import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
     public static Weapon1 weapon;
-    public static Player player;
+    public  Player player;
 
     public int bulletCount;
     public List<Bullets> bullets;
@@ -36,7 +36,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int xOffset;
     private int maxOffsetX;
     public int numFile = Checkpoint.fileNum;
-    private LevelManager levelManager;
+    public static LevelManager levelManager;
     private Pause pauseScreen;
     private InventoryState inventoryState;
     private Environment environment; 

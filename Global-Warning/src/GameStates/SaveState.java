@@ -25,6 +25,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     private SaveButton[] buttons = new SaveButton[3];
+    public Game game;
 
     /**
      * Constructor for save state
@@ -35,6 +36,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
 
     public SaveState(Game game) {
         super(game);
+        this.game = game;
         makeButtons();
     }
 
@@ -179,7 +181,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 if (sb.getMousePressed())
                     try {
-                        sb.readSave();
+                        sb.readSave(game.playing);
                         System.out.println("check");
                         Checkpoint.setNumName(sb.fileName, sb.fileNum);
                         sb.applyGamestate();

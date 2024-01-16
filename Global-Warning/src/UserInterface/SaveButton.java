@@ -2,6 +2,8 @@ package UserInterface;
 
 import GameStates.GameState;
 import GameStates.Playing;
+import Levels.LevelManager;
+
 import Objects.Saving.Save;
 
 import java.awt.Graphics;
@@ -13,6 +15,7 @@ import static Utilities.Atlas.*;
 import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
 import static Objects.Weapons.Bullets.*;
+import static GameStates.Playing.*;
 
 public class SaveButton extends Button {
 
@@ -104,10 +107,10 @@ public class SaveButton extends Button {
 
 
 
-	public void readSave()throws IOException {
+	public void readSave(Playing playing)throws IOException {
 
 		readNewBinFile(fileName, fileNum);
-		loadSave();
+		loadSave(playing);
 		
 		
 	}
@@ -121,8 +124,7 @@ public class SaveButton extends Button {
 	public static void writeNewBinFile(String filename, int filenum) throws IOException{
 	    RandomAccessFile raf = new RandomAccessFile(filename,"rw");
         switch (filenum) {
-            case 1: save1.writeRec(raf);
-			System.out.println("HP: "+ save1.getHealth());break;
+            case 1: save1.writeRec(raf);break;
             case 2:save2.writeRec(raf);break;
             case 3:save3.writeRec(raf);break;
             default:
@@ -148,37 +150,40 @@ public class SaveButton extends Button {
 		raf.close();
 	} // end readNewBinFile
 
-	public void loadSave(){
+	public void loadSave(Playing playing){
         switch (fileNum) {
 			case 1:
-			Playing.player.currentHealth = SaveButton.save1.getHealth();
-			Playing.gunIndex = SaveButton.save1.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save1.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save1.getCooldown2();
+			playing.player.currentHealth = save1.getHealth();
+			Playing.gunIndex = save1.getHold();
+			Playing.fireRateWeapon1 = save1.getCooldown1();
+           	Playing.fireRateWeapon1 = save1.getCooldown2();
+			LevelManager.lvlIndex = save1.getLevel();
 
-			if (SaveButton.save1.getHealth() == 0){
-				Playing.player.currentHealth = Playing.player.maxHealth;
+			if (save1.getHealth() == 0){
+				playing.player.currentHealth = playing.player.maxHealth;
 			}
 
 				break;
 			case 2:
-			Playing.player.currentHealth = SaveButton.save2.getHealth();
-			Playing.gunIndex = SaveButton.save2.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save2.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save2.getCooldown2();
+			playing.player.currentHealth = save2.getHealth();
+			Playing.gunIndex = save2.getHold();
+			Playing.fireRateWeapon1 = save2.getCooldown1();
+            Playing.fireRateWeapon1 = save2.getCooldown2();
+			LevelManager.lvlIndex = save2.getLevel();
 
-			if (SaveButton.save2.getHealth() == 0){
-				Playing.player.currentHealth = Playing.player.maxHealth;
+			if (save2.getHealth() == 0){
+				playing.player.currentHealth = playing.player.maxHealth;
 			}
 				break;
 			case 3:
-			Playing.player.currentHealth = SaveButton.save3.getHealth();
-			Playing.gunIndex = SaveButton.save3.getHold();
-			Playing.fireRateWeapon1 = SaveButton.save3.getCooldown1();
-            Playing.fireRateWeapon1 = SaveButton.save3.getCooldown2();
+			playing.player.currentHealth = save3.getHealth();
+			Playing.gunIndex = save3.getHold();
+			Playing.fireRateWeapon1 = save3.getCooldown1();
+            Playing.fireRateWeapon1 = save3.getCooldown2();
+			LevelManager.lvlIndex = save3.getLevel();
 
-			if (SaveButton.save3.getHealth() == 0){
-				Playing.player.currentHealth = Playing.player.maxHealth;
+			if (save3.getHealth() == 0){
+				playing.player.currentHealth = playing.player.maxHealth;
 			}
 
 				break;
@@ -187,8 +192,10 @@ public class SaveButton extends Button {
 				break;
         }
 
-			Playing.player.changeHealth(0);
+
+			playing.player.changeHealth(0);
 			Playing.weapon.getImage();
+			playing.loadNextLevel(0);
 			
     }
 
