@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import GameStates.GameState;
+import GameStates.Playing;
 import UserInterface.SaveButton;
 
 import static Utilities.Constants.Directions.*;
@@ -47,6 +49,7 @@ public class Player extends Entity {
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
+    private boolean isDead = false; 
 
     private float healthBarWidth; // The default width of the player's health bar
     private final float healthBarHeight = 30; // The default height of the player's health bar
@@ -88,9 +91,24 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
 
-    public void update() {
+    public void update(Playing playing) {
         moving = false; // Stop the player movement animation in case they stop moving this update
-
+        if (currentHealth <= 0) { 
+            if (state != DEAD) { 
+            state = DEAD;
+            animationTick = 0;
+            animationIndex = 0; 
+            playing.setPlayerDying(true);
+            }
+             else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) {
+                //this.changeHealth(maxHealth);
+                GameState.currentState = GameState.MENU;   // Change to Game Over Screen. 
+            } else {
+             updateAnimationTick();
+        }
+        return; 
+    }   
+        if (!isDead) {
         // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
@@ -243,6 +261,7 @@ public class Player extends Entity {
                 moving = false;
                 hitbox.x = fixXPos(hitbox, xSpeed);
             }
+        }
         updateAnimationTick();
         setAnimation();
     }
@@ -356,7 +375,7 @@ public class Player extends Entity {
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(PLAYER_ATLAS);
-        animations = new BufferedImage[3][6];
+        animations = new BufferedImage[4][7];
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = img.getSubimage(j * 154, i * 154, 154, 154);
@@ -466,6 +485,10 @@ public class Player extends Entity {
 
     public void dead() { 
         this.currentHealth = 0; 
+    }
+
+    public boolean isDead() { 
+        return isDead;
     }
 
 }

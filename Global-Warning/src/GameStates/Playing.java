@@ -14,6 +14,8 @@ import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.HEIGHT_IN_TILES;
+import static Utilities.Constants.TILE_SIZE;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -47,6 +49,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseX;
     public double mouseY;
     public double offset;
+    private boolean playerDying; 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
@@ -58,10 +61,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     private int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
     private int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
-    private float lightningPosX;
-    private Rectangle2D.Float lightningHitbox;
-
-    private boolean lightningHasPos = false;
+    public float lightningPosX;
+    public float lightningHeight;
+    public Rectangle2D.Float lightningHitbox;
+    public boolean lightningHasPos = false;
 
     public Playing(Game game) {
         super(game);
@@ -104,7 +107,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         inventoryState = new InventoryState(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
-        this.environment = new Environment(getPlayer()); 
+        this.environment = new Environment(this); 
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -120,7 +123,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else if (inventory && !paused){
 			inventoryState.update();
 		} else {
-            player.update();
+            player.update(this);
             weapon.update();
             if (getLevelManager().getCurrentLevel().getIsCheckpoint())
             getLevelManager().getCurrentLevel().getCheckpoint().update();
@@ -211,8 +214,15 @@ public class Playing extends State implements KeyListener, MouseListener {
             lightningUpdates++;
             if(lightningUpdates >= lightningPosCooldown && !lightningHasPos) {
                 lightningPosX = player.getHitbox().x + player.getMoveSpeed();
+                int currentTileX = (int) (lightningPosX / TILE_SIZE);
+                 for(int i = 0; i < HEIGHT_IN_TILES; i++) {
+                    if(levelManager.getCurrentLevel().getLevelData()[i][currentTileX] != 11) {
+                        lightningHeight = i * TILE_SIZE;
+                        break;
+                    }
+                }
                 lightningHasPos = true;
-                lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 40, GAME_WIDTH);
+                lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 32, lightningHeight);
             }
             if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 2) {
                resetLightning();
@@ -223,10 +233,14 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     private void drawLightning(Graphics g, int xOffset) {
-        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos) {
-            g.setColor(Color.yellow);
-            g.fillRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
+        if(lightningUpdates >= lightningPosCooldown && lightningHasPos) {
+            g.setColor(Color.RED);
+            g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
         }
+
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
+            environment.drawLightning(g, xOffset);
+        
     }
 
     private void checkLightningIntersect() {
@@ -359,6 +373,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void removeBullet() {
         bullets.remove(0);
+    }
+
+    public void setPlayerDying(boolean die) { 
+        this.playerDying = die; 
     }
 
 
