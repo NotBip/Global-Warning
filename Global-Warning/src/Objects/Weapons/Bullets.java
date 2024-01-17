@@ -1,6 +1,7 @@
 package Objects.Weapons;
 
 import GameStates.Playing;
+import javafx.event.ActionEvent;
 
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -16,11 +17,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
     private double x, y;
-    public static double speed1,speed2;
+    public static double speed1,speed2,speed3;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
     private int[][] lvlData;
+    private double time;
+    
 
     //upgradeable abilities (fire-rate in playing class)
     //no concept of damage yet, but public static double upgradeDamage;
@@ -33,19 +36,24 @@ public class Bullets extends Entities.Entity implements MouseListener {
      * @since December 19, 2023
      */
 
-    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData) {
+    public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData, double time) {
         super((float) startX, (float) startY, 10, 10);
         this.weapon = weapon;
         this.playing = playing;
         this.x = startX;
         this.y = startY;
         this.lvlData = lvlData;
+        this.time = time;
 
         // I increased the speed to compensate for the cooldown
         speed1 = 10.0;
         speed2 = 7.0;
+        speed3 = 1.0;
         setDirection(targetX, targetY, xOffset);
+        setTime();
+        //System.out.println("X: " + (directionX * speed3) + " Y: " + (directionY * speed3));
         initialize();
+
     }
 
     /**
@@ -81,7 +89,11 @@ public class Bullets extends Entities.Entity implements MouseListener {
         } else if(Playing.gunIndex == 2){
             speed = speed2;
         }
+        else if (Playing.gunIndex == 3) {
+            speed = speed3;
+        }
 
+        if (Playing.gunIndex < 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             x += speed * directionX;
             y += speed * directionY;
@@ -90,6 +102,19 @@ public class Bullets extends Entities.Entity implements MouseListener {
         } else {
             playing.removeBullet();
         }
+    }
+    else if (Playing.gunIndex == 3) {
+        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
+            //System.out.println("Time: " + time);
+            x += speed * directionX;;
+            y -= speed * (directionY * this.time) - (0.5 * 9.8 * Math.pow(this.time, 2));
+            hitbox.x += speed * directionX;
+            hitbox.y -= speed * (directionY * this.time) - (0.5 * 9.8 * Math.pow(this.time, 2));
+        } else {
+            System.out.println("Initiate Explosion");
+            playing.removeBullet();
+        }
+    }
         
     }
 
@@ -126,9 +151,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
         } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
             g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
-        } else {
-            //g2d.setColor(Color.ORANGE);
-           // g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+        } else if (Playing.gunIndex == 3){
+            g2d.setColor(Color.ORANGE);
+            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
         }
 
 
@@ -161,6 +186,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         try {
             for (Bullets bullet : playing.bullets) {
                 bullet.move();
+                this.time += 0.008;
             };
         } catch (ConcurrentModificationException e) {
 
@@ -169,6 +195,14 @@ public class Bullets extends Entities.Entity implements MouseListener {
     }
 
     /* Getters */
+
+    public void setTime() {
+        this.time = 0;
+    }
+
+    public double getTime() {
+        return this.time;
+    }
 
     public int getDrawX() {
         return (int) Math.round(x);

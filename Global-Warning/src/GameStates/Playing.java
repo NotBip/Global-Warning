@@ -55,7 +55,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
-    public static long fireRateWeapon2 = 250; // 300 milliseconds
+    public static long fireRateWeapon2 = 250; // 250 milliseconds
+    public static long fireRateWeapon3 = 500; // 500 milliseconds
    // public  int num = SaveButton.getFileNum();
 
 
@@ -290,7 +291,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
      public static void setGunIndex(int item){
-        if (item <3){
+        if (item <4){
             gunIndex = item;
             weapon.getImage();
         }
@@ -341,6 +342,9 @@ public class Playing extends State implements KeyListener, MouseListener {
         }else if (gunIndex ==2 ) {
             rate = fireRateWeapon2;
         }
+        else if (gunIndex == 3) {
+            rate = fireRateWeapon3;
+        }
 
         //cooldown according to the firerate of gun
         if (time1 > lastBullet + rate) {
@@ -359,7 +363,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
-            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData());
+            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
         }
 

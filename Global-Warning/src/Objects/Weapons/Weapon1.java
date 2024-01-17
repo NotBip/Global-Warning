@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import static Utilities.Constants.*;
+import static Utilities.Constants.Directions.RIGHT;
 
 public class Weapon1 implements MouseMotionListener {
 
@@ -67,6 +68,7 @@ public class Weapon1 implements MouseMotionListener {
 
         if (!Playing.paused && !Playing.inventory){
            // System.out.println(playing.getAngle());
+           if (Playing.gunIndex < 3){
             if (playing.mouseX < this.x-xOffset){
                 this.xFlipped = 0; 
                 this. wFlipped = 1; 
@@ -75,6 +77,17 @@ public class Weapon1 implements MouseMotionListener {
                 this.xFlipped = 70;
                 this.wFlipped = -1; 
             }
+        }
+        else {
+            if (playing.getPlayer().getDirection() == RIGHT){
+                this.xFlipped = 0; 
+                this. wFlipped = 1; 
+            }
+            else {
+                this.xFlipped = 70;
+                this.wFlipped = -1; 
+            }
+        }
         }
         g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
         g2d.setTransform(oldXForm);
@@ -104,8 +117,13 @@ public class Weapon1 implements MouseMotionListener {
             this.img = getSpriteAtlas(WEAPON1_ATLAS); 
         } else if (Playing.gunIndex == 2){
             this.img = getSpriteAtlas(WEAPON2_ATLAS); 
-        } else {
-            //this.img = getSpriteAtlas(WEAPON3_ATLAS); 
+        } else if (Playing.gunIndex == 3){
+            if (playing.getPlayer().getBomb() == true){
+                this.img = getSpriteAtlas(BOMB_ATLAS);
+                }
+                else {
+                this.img = getSpriteAtlas(NOTHING_ATLAS);
+                } 
         }
     }
 

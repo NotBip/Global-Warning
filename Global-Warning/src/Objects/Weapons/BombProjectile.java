@@ -1,6 +1,7 @@
 package Objects.Weapons;
 
 import GameStates.Playing;
+import javafx.geometry.Point2D;
 
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -12,13 +13,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ConcurrentModificationException;
 
+import javax.swing.JPanel;
+
 public class BombProjectile extends Entities.Entity implements MouseListener {
 
     // variables
     private double x, y;
     public static double speed1,speed2;
     private double directionX, directionY;
-    private Weapon1 weapon;
+    private BombEquip weapon;
     private Playing playing;
     private int[][] lvlData;
 
@@ -33,7 +36,7 @@ public class BombProjectile extends Entities.Entity implements MouseListener {
      * @since December 19, 2023
      */
 
-    public BombProjectile(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData) {
+    public BombProjectile(BombEquip weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData) {
         super((float) startX, (float) startY, 10, 10);
         this.weapon = weapon;
         this.playing = playing;
@@ -59,7 +62,7 @@ public class BombProjectile extends Entities.Entity implements MouseListener {
         //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
-        this.directionX = Math.cos(angle);
+        //this.directionX = Math.cos(angle);
         this.directionY = Math.sin(angle);
     }
 
@@ -73,22 +76,16 @@ public class BombProjectile extends Entities.Entity implements MouseListener {
 
     public void move() {
 
-        double speed = 0;
-
-        //different guns have different speeds
-        if (Playing.gunIndex == 1){
-            speed = speed1;
-        } else if(Playing.gunIndex == 2){
-            speed = speed2;
-        }
+        double speed = 1;
 
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            x += speed * directionX;
-            y += speed * directionY;
+            x += speed * Math.cos(directionX * (Math.PI / 180));
+            y += speed * Math.sin(directionY * (Math.PI / 180));
             hitbox.x += speed * directionX;
             hitbox.y += speed * directionX;
         } else {
-            playing.removeBullet();
+            //playing.removeBullet();
+            System.out.println("Initiate Explosion");
         }
         
     }
@@ -120,16 +117,8 @@ public class BombProjectile extends Entities.Entity implements MouseListener {
 
         //System.out.println(drawX);
 
-        if (Playing.gunIndex == 1){
-            g2d.setColor(Color.PINK);
-            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
-        } else if (Playing.gunIndex ==2 ){
-            g2d.setColor(Color.BLUE);
-            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
-        } else {
-            //g2d.setColor(Color.ORANGE);
-           // g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
-        }
+        g2d.setColor(Color.WHITE);
+        g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
 
 
         // draw bullet hitbox
