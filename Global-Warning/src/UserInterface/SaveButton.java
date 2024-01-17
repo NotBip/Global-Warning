@@ -153,6 +153,7 @@ public class SaveButton extends Button {
 	public void loadSave(Playing playing){
         switch (fileNum) {
 			case 1:
+			System.out.println("save 1: loaded");
 			playing.player.currentHealth = save1.getHealth();
 			Playing.gunIndex = save1.getHold();
 			Playing.fireRateWeapon1 = save1.getCooldown1();
@@ -165,6 +166,7 @@ public class SaveButton extends Button {
 
 				break;
 			case 2:
+			System.out.println("save 2: loaded");
 			playing.player.currentHealth = save2.getHealth();
 			Playing.gunIndex = save2.getHold();
 			Playing.fireRateWeapon1 = save2.getCooldown1();
@@ -176,6 +178,7 @@ public class SaveButton extends Button {
 			}
 				break;
 			case 3:
+			System.out.println("save 3: loaded");
 			playing.player.currentHealth = save3.getHealth();
 			Playing.gunIndex = save3.getHold();
 			Playing.fireRateWeapon1 = save3.getCooldown1();

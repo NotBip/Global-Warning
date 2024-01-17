@@ -2,12 +2,15 @@ package GameStates;
 
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.Buttons.PAUSE_B_HEIGHT;
+import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
 import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 import Entities.*;
 import Main.Game;
 import Objects.Saving.Checkpoint;
+import UserInterface.InGameButton;
 import UserInterface.SaveButton;
 
 import java.awt.event.*;
@@ -24,7 +27,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
     private int width = GAME_WIDTH;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
-    private SaveButton[] buttons = new SaveButton[3];
+    public static SaveButton[] buttons = new SaveButton[3];
+    private InGameButton menuBack;
     public Game game;
 
     /**
@@ -50,6 +54,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     public void update() {
         for (SaveButton sb : buttons)
             sb.update();
+        menuBack.update();
 
     }
 
@@ -67,6 +72,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
                 1, GameState.PLAYING, "BinarySaveInfoSlot2",2);
         buttons[2] = new SaveButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset, SAVE_B_WIDTH, SAVE_B_HEIGHT, 2,
                 GameState.PLAYING, "BinarySaveInfoSlot3",3);
+        menuBack = new InGameButton(GAME_WIDTH / 2 -10, GAME_HEIGHT / 2+190, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
+                GameState.MENU);
     }
 
     /**
@@ -79,10 +86,10 @@ public class SaveState extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
-        g.drawImage(this.imgtitle, GAME_WIDTH / 3, 0, 300, 150, null);
+        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +50, 0, 350, 200, null);
         for (SaveButton sb : buttons)
             sb.draw(g);
-
+        menuBack.draw(g);
     }
 
     /**
@@ -95,6 +102,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     private void resetButtons() {
         for (SaveButton sb : buttons)
             sb.resetButtons();
+        menuBack.resetButtons();
 
     }
 
@@ -136,6 +144,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     public void mouseMoved(MouseEvent e) {
         for (SaveButton sb : buttons)
             sb.setMouseOver(false);
+        menuBack.setMouseOver(false);
 
         for (SaveButton sb : buttons)
             if (isIn(e, sb)) {
@@ -143,6 +152,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
                 break;
 
             }
+        if (Pause.isIn(e, menuBack)) {
+            menuBack.setMouseOver(true);
+         }
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -164,6 +176,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons) {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
+            }
+            if (Pause.isIn(e, menuBack)) {
+                menuBack.setMousePressed(true);
             }
 
         }
@@ -191,6 +206,13 @@ public class SaveState extends State implements KeyListener, MouseListener {
                     }
                 break;
             }
+        }
+
+        if (Pause.isIn(e, menuBack)) {
+            if (menuBack.getMousePressed()) {
+                menuBack.applyGamestate();
+            }
+
         }
 
         resetButtons();

@@ -24,9 +24,10 @@ public class Atlas {
 
     public static final String MENUBUTTON_ATLAS = "menuButtonRecolor.png";
     public static final String MENUBACKGROUND_ATLAS = "backgroundImage.png";
-    public static final String MENUTITLE_ATLAS = "menuTitle.png";
+    public static final String MENUTITLE_ATLAS = "new_title.png";
 
     public static final String PAUSE_ATLAS = "pause_screen.png";
+    public static final String OVER_ATLAS = "game_over.png";
     public static final String GAMEBUTTONS_ATLAS = "gamepause_buttons.png";
 
     public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
@@ -34,10 +35,11 @@ public class Atlas {
 
     public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";
     public static final String INVENTORYSLOT_ATLAS = "inventory_slot_new.png";
-   // public static final String LOADING_ATLAS = "load_screens.png";
+    public static final String LOADING_ATLAS = "loading_sprites.png";
 
     public static final String HOVER_ATLAS = "all_hoverboxes.png";
     public static final String SELECTION_ATLAS = "inventory_select.png";
+    public static final String CONTROLS_ATLAS = "controls_explain.png";
 
     public static final String WIND_ATLAS = "wind.png"; 
     public static final String SPIKE_ATLAS = "spike.png"; 

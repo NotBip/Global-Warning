@@ -8,18 +8,23 @@ import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 
 import UserInterface.InGameButton;
+import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
+import Levels.LevelManager;
+import Objects.Saving.Checkpoint;
+import Objects.Saving.Save;
+
 import static Utilities.Atlas.*;
 
-public class Pause {
+public class Death {
 
 	// variables
 	private Playing playing;
-	private BufferedImage backgroundImg = getSpriteAtlas(PAUSE_ATLAS);
-	private InGameButton menuBackB;
+	private BufferedImage backgroundImg = getSpriteAtlas(OVER_ATLAS);
+	private InGameButton menuBackB, replayB;
 
 	/**
 	 * Constructor to create pause overlay
@@ -28,7 +33,7 @@ public class Pause {
 	 * @since January 5, 2024
 	 */
 
-	public Pause(Playing playing) {
+	public Death(Playing playing) {
 		this.playing = playing;
 		makeButton();
 
@@ -42,8 +47,10 @@ public class Pause {
 	 */
 
 	public void makeButton() {
-		menuBackB = new InGameButton(GAME_WIDTH / 2 - 10, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
+		menuBackB = new InGameButton(GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
 				GameState.MENU);
+        replayB = new InGameButton(GAME_WIDTH / 2 + 50, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 1,
+				GameState.PLAYING);
 
 	}
 
@@ -56,6 +63,7 @@ public class Pause {
 
 	public void update() {
 		menuBackB.update();
+        replayB.update();
 	}
 
 	/**
@@ -73,8 +81,9 @@ public class Pause {
 		//color for other
 		g.setColor(Color.BLACK);
 		
-		g.drawImage(backgroundImg, GAME_WIDTH / 2 - 80, GAME_HEIGHT/3, 200, 200, null);
+		g.drawImage(backgroundImg, 500, 150, 300, 300, null);
 		menuBackB.draw(g);
+        replayB.draw(g);
 	}
 
 	/**
@@ -86,6 +95,7 @@ public class Pause {
 
 	private void resetButtons() {
 		menuBackB.resetButtons();
+        replayB.resetButtons();
 
 	}
 
@@ -109,9 +119,14 @@ public class Pause {
 
 	public void mouseMoved(MouseEvent e) {
 		menuBackB.setMouseOver(false);
+        replayB.setMouseOver(false);
 
 		if (isIn(e, menuBackB)) {
 			menuBackB.setMouseOver(true);
+		}
+
+        if (isIn(e, replayB)) {
+			replayB.setMouseOver(true);
 		}
 	}
 
@@ -136,6 +151,10 @@ public class Pause {
 			menuBackB.setMousePressed(true);
 
 		}
+        if (isIn(e, replayB)) {
+			replayB.setMousePressed(true);
+
+		}
 	}
 
 	/**
@@ -150,7 +169,29 @@ public class Pause {
 			if (menuBackB.getMousePressed())
 				menuBackB.applyGamestate();
 				Playing.paused = false;
-				Playing.dead = false;
+                Playing.dead = false;
+		}
+
+        if (isIn(e, replayB)) {
+			if (replayB.getMousePressed())
+
+                switch (Checkpoint.fileNum) {
+                    case 1:
+                    SaveState.buttons[0].loadSave(playing);
+                        break;
+                    case 2:
+                    SaveState.buttons[1].loadSave(playing);
+                        break;
+                    case 3:
+                    SaveState.buttons[2].loadSave(playing);
+                        break;
+                    default:
+                        break;
+                }
+        
+				replayB.applyGamestate();
+				Playing.paused = false;
+                Playing.dead = false;
 		}
 
 		resetButtons();

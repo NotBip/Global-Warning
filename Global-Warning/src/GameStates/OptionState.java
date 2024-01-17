@@ -66,7 +66,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
                 SOUND_B_HEIGHT, 0);
         buttons[1] = new SoundButton(GAME_WIDTH / 2 + offset, GAME_HEIGHT / 2 + offset - 140, SOUND_B_WIDTH,
                 SOUND_B_HEIGHT, 1);
-        menuBack = new InGameButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
+        menuBack = new InGameButton(GAME_WIDTH / 2 -10, GAME_HEIGHT / 2-offset, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
                 GameState.MENU);
     }
 
@@ -80,7 +80,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
-        g.drawImage(this.imgtitle, GAME_WIDTH / 3, 0, 300, 150, null);
+        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +50, 0, 350, 200, null);
 
         for (SoundButton sb : buttons)
             sb.draw(g);

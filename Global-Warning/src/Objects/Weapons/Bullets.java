@@ -110,13 +110,14 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         hitbox.x = drawX - 5 + xOffset;
         hitbox.y = drawY - 5;
-
-        if (!Playing.inventory){
-            if (!Playing.paused){
-                //adding ten sorta fixes the offset
-                x = hitbox.x;
+        if (!Playing.dead){
+            if (!Playing.inventory){
+                if (!Playing.paused){
+                    //adding ten sorta fixes the offset
+                    x = hitbox.x;
+                }
             }
-        }
+         }
 
         //System.out.println(drawX);
 

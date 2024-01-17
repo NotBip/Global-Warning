@@ -22,6 +22,7 @@ public class Menu extends State implements KeyListener, MouseListener {
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
+    BufferedImage teachControls = getSpriteAtlas(CONTROLS_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     private MenuButton[] buttons = new MenuButton[3];
 
@@ -78,7 +79,8 @@ public class Menu extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
-        g.drawImage(this.imgtitle, GAME_WIDTH / 3, 0, 300, 150, null);
+        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +50, 0, 350, 200, null);
+        g.drawImage(this.teachControls, GAME_WIDTH-350, 40, 300, 400, null);
         for (MenuButton mb : buttons)
             mb.draw(g);
 
