@@ -1,5 +1,10 @@
 package Levels;
 
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS_FIRE;
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS_ICE;
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS_STORM;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,9 +18,13 @@ import Utilities.LoadSave;
 public class LevelManager {
 
 	private BufferedImage[] levelSprite;
+	private BufferedImage[] levelSpriteDefault;
+	private BufferedImage[] levelSpriteFire;
+	private BufferedImage[] levelSpriteIce;
+	
 	private BufferedImage[] waterSprite;
 	private ArrayList<Level> levels;
-	public static int lvlIndex = 7;
+	public static int lvlIndex = 0;
 	private int aniTick;
 	private int aniIndex;
 	private Playing playing;
@@ -37,8 +46,19 @@ public class LevelManager {
 	}
 
 	public void loadNextLevel() {
+		
 		Level newLevel = levels.get(lvlIndex);
 		//game.getPlaying().getEnemyManager().generateEnemies();
+		if(levels.get(lvlIndex).getWindy()) { //|| levels.get(lvlIndex).getStormy()) {
+			levelSprite = levelSpriteDefault;
+			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_STORM));
+		} else if (levels.get(lvlIndex).getStormy()) {
+			levelSprite = levelSpriteFire;
+			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_FIRE));
+		} else {
+			levelSprite = levelSpriteIce;
+			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_ICE));
+		}
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());
 		playing.setMaxLvlOffset(newLevel.getLvlOffset());
@@ -54,11 +74,25 @@ public class LevelManager {
 
 	private void importOutsideSprites() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
-		levelSprite = new BufferedImage[48];
+		levelSpriteDefault = new BufferedImage[48];
 		for (int j = 0; j < 4; j++)
 			for (int i = 0; i < 12; i++) {
 				int index = j * 12 + i;
-				levelSprite[index] = img.getSubimage(i * 32, j * 32, 32, 32);
+				levelSpriteDefault[index] = img.getSubimage(i * 32, j * 32, 32, 32);
+			}
+		img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS_FIRE);
+		levelSpriteFire = new BufferedImage[48];
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 12; i++) {
+				int index = j * 12 + i;
+				levelSpriteFire[index] = img.getSubimage(i * 32, j * 32, 32, 32);
+			}
+		img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS_ICE);
+		levelSpriteIce = new BufferedImage[48];
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 12; i++) {
+				int index = j * 12 + i;
+				levelSpriteIce[index] = img.getSubimage(i * 32, j * 32, 32, 32);
 			}
 	}
 
@@ -84,6 +118,10 @@ public class LevelManager {
 
 	public void update() {
 		updateWaterAnimation();
+	}
+
+	public void setLevelType() {
+		
 	}
 
 	private void updateWaterAnimation() {

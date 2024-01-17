@@ -14,6 +14,8 @@ public class LoadSave {
 	// INITIALIZE ALL IMAGES HERE
 	//public static final String PLAYER_ATLAS = "player_sprites.png";
 	public static final String LEVEL_ATLAS = "outside_sprites.png";
+	public static final String LEVEL_ATLAS_FIRE = "outside_fire_sprites.png";
+	public static final String LEVEL_ATLAS_ICE = "outside_ice_sprites.png";
 	/*public static final String MENU_BUTTONS = "button_atlas.png";
 	public static final String MENU_BACKGROUND = "menu_background.png";
 	public static final String PAUSE_BACKGROUND = "pause_menu.png";
