@@ -6,11 +6,14 @@ import static Utilities.Constants.Buttons.PAUSE_B_HEIGHT;
 import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.Buttons.SAVE_B_HEIGHT;
 import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
+import static Utilities.Constants.Buttons.RESET_B_WIDTH;
+import static Utilities.Constants.Buttons.RESET_B_HEIGHT;
 import static Utilities.Constants.GAME_HEIGHT;
 import Entities.*;
 import Main.Game;
 import Objects.Saving.Checkpoint;
 import UserInterface.InGameButton;
+import UserInterface.ResetSaveButton;
 import UserInterface.SaveButton;
 
 import java.awt.event.*;
@@ -28,6 +31,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     public static SaveButton[] buttons = new SaveButton[3];
+    private ResetSaveButton[] resetbuttons = new ResetSaveButton[3];
     private InGameButton menuBack;
     public Game game;
 
@@ -55,6 +59,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons)
             sb.update();
         menuBack.update();
+        for (ResetSaveButton rb : resetbuttons)
+            rb.update();
 
     }
 
@@ -74,6 +80,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
                 GameState.PLAYING, "BinarySaveInfoSlot3",3);
         menuBack = new InGameButton(GAME_WIDTH / 2 -10, GAME_HEIGHT / 2+190, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
                 GameState.MENU);
+        resetbuttons [0] = new ResetSaveButton(GAME_WIDTH / 2 +120, GAME_HEIGHT / 2-40, RESET_B_WIDTH, RESET_B_HEIGHT,"BinarySaveInfoSlot1",1);
+        resetbuttons [1] = new ResetSaveButton(GAME_WIDTH / 2 +120, GAME_HEIGHT / 2+35, RESET_B_WIDTH, RESET_B_HEIGHT,"BinarySaveInfoSlot2",2);
+        resetbuttons [2] = new ResetSaveButton(GAME_WIDTH / 2 +120, GAME_HEIGHT / 2+110, RESET_B_WIDTH, RESET_B_HEIGHT,"BinarySaveInfoSlot3",3);
     }
 
     /**
@@ -90,6 +99,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons)
             sb.draw(g);
         menuBack.draw(g);
+        for (ResetSaveButton rb : resetbuttons)
+            rb.draw(g);
     }
 
     /**
@@ -103,6 +114,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons)
             sb.resetButtons();
         menuBack.resetButtons();
+        for (ResetSaveButton rb : resetbuttons)
+            rb.resetButtons();
 
     }
 
@@ -116,6 +129,17 @@ public class SaveState extends State implements KeyListener, MouseListener {
     private boolean isIn(MouseEvent e, SaveButton b) {
         return b.getBounds().contains(e.getX(), e.getY());
     }
+
+    /**
+	 * Checks if cursor X and Y position overlap button bounds
+	 * 
+	 * @author Nusayba Hamou
+	 * @since January 5, 2024
+	 */
+
+	public static boolean isIn(MouseEvent e, ResetSaveButton b) {
+		return b.getBounds().contains(e.getX(), e.getY());
+	}
 
     /* Mouse events */
 
@@ -145,6 +169,8 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons)
             sb.setMouseOver(false);
         menuBack.setMouseOver(false);
+        for (ResetSaveButton rb : resetbuttons)
+            rb.setMouseOver(false);
 
         for (SaveButton sb : buttons)
             if (isIn(e, sb)) {
@@ -155,6 +181,12 @@ public class SaveState extends State implements KeyListener, MouseListener {
         if (Pause.isIn(e, menuBack)) {
             menuBack.setMouseOver(true);
          }
+
+         for (ResetSaveButton rb : resetbuttons){
+            if (isIn(e, rb)) {
+                rb.setMouseOver(true);
+            }
+        }
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -177,10 +209,17 @@ public class SaveState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
             }
-            if (Pause.isIn(e, menuBack)) {
-                menuBack.setMousePressed(true);
-            }
 
+        }
+
+        if (Pause.isIn(e, menuBack)) {
+            menuBack.setMousePressed(true);
+        }
+
+        for (ResetSaveButton rb : resetbuttons){
+            if (isIn(e, rb)) {
+                rb.setMousePressed(true);
+            }
         }
     }
 
@@ -213,6 +252,21 @@ public class SaveState extends State implements KeyListener, MouseListener {
                 menuBack.applyGamestate();
             }
 
+        }
+
+        for (ResetSaveButton rb : resetbuttons){
+            if (isIn(e, rb)) {
+                if (rb.getMousePressed()){
+                    try {
+                        rb.resetSave();
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                    System.out.print("reset!");
+
+                }
+            }
         }
 
         resetButtons();

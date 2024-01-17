@@ -41,7 +41,7 @@ public class Constants {
 		public static final int B_HEIGHT = 56;
 
 		public static final int SAVE_B_WIDTH = 200;
-		public static final int SAVE_B_HEIGHT = 66;
+		public static final int SAVE_B_HEIGHT = 64;
 
 		public static final int PAUSE_B_WIDTH = 56;
 		public static final int PAUSE_B_HEIGHT = 56;
@@ -51,6 +51,9 @@ public class Constants {
 
 		public static final int SOUND_B_WIDTH = 42;
 		public static final int SOUND_B_HEIGHT = 42;
+
+		public static final int RESET_B_WIDTH = 100;
+		public static final int RESET_B_HEIGHT = 46;
 	}
 
 	public static class EnemyConstants {

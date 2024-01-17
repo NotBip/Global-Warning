@@ -27,13 +27,14 @@ public class Atlas {
     public static final String MENUBACKGROUND_ATLAS_STORM = "storm_background.png";
     public static final String MENUBACKGROUND_ATLAS_FIRE = "fire_background.png";
     public static final String MENUBACKGROUND_ATLAS_ICE = "ice_background.png";
-    public static final String MENUTITLE_ATLAS = "menuTitle.png";
+    public static final String MENUTITLE_ATLAS = "new_title.png";
 
     public static final String PAUSE_ATLAS = "pause_screen.png";
     public static final String OVER_ATLAS = "game_over.png";
     public static final String GAMEBUTTONS_ATLAS = "gamepause_buttons.png";
 
-    public static final String SAVEBUTTON_ATLAS = "save_buttons_try.png";
+    public static final String SAVEBUTTON_ATLAS = "add_save_buttons.png";
+    public static final String RESETBUTTON_ATLAS = "reset_save_buttons.png";
     public static final String SOUNDBUTTON_ATLAS = "sound_buttons.png";
 
     public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";

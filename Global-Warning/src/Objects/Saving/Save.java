@@ -3,6 +3,8 @@ package Objects.Saving;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import GameStates.Playing;
+
 public class Save {
 	
     
@@ -19,33 +21,19 @@ public class Save {
     int amountKey;
     int amountGem;
    
-    /**********************************************************
-    constructors same name as base class- first with parameters and second without)*/
-    public Save (  int lvl, int wep, int health, int cd1, int cd2, int dmg1, int dmg2, int bomb, int potion, int key, int gem) {
-        numberLevel = lvl;
-        weaponHold = wep;
-        playerHealth = health;
-        cooldownWeap1 = cd1;
-        cooldownWeap2 = cd2;
-        damageWeap1 = dmg1;
-        damageWeap2 = dmg2;
-        amountBomb = bomb;
-        amountPotion = potion;
-        amountKey = key;
-        amountGem = gem;
-    }//end Character
+  
     /********************************************************
     Blank constructor will enter null string or 0 for each field*/
     public Save () {
         numberLevel = 0;
-        weaponHold = 0;
+        weaponHold = 2;
         playerHealth = 0;
-        cooldownWeap1 = 0;
-        cooldownWeap2 = 0;
+        cooldownWeap1 = 300;
+        cooldownWeap2 = 300;
         damageWeap1 = 0;
         damageWeap2 = 0;
         amountBomb = 0;
-        amountPotion = 0;
+        amountPotion = 3;
         amountKey = 0;
         amountGem = 0;
     }//end Character
@@ -126,20 +114,26 @@ public class Save {
      
      public void readRec (RandomAccessFile raf) throws IOException   {
         raf.seek (0);// move pointer to position in file
+
+        if (raf.length()!=0){
         
-        // read the ints from the file
-        numberLevel = raf.readInt ();
-        weaponHold = raf.readInt ();
-        playerHealth = raf.readInt ();
-        cooldownWeap1 = raf.readInt ();
-        cooldownWeap2 = raf.readInt ();
-        damageWeap1 = raf.readInt ();
-        damageWeap2 = raf.readInt ();
-        amountBomb = raf.readInt ();
-        amountPotion = raf.readInt ();
-        amountKey = raf.readInt ();
-        amountGem = raf.readInt ();
-        //System.out.println(amountGem + "nah id win");
+            // read the ints from the file
+            numberLevel = raf.readInt ();
+            weaponHold = raf.readInt ();
+            playerHealth = raf.readInt ();
+            cooldownWeap1 = raf.readInt ();
+            cooldownWeap2 = raf.readInt ();
+            damageWeap1 = raf.readInt ();
+            damageWeap2 = raf.readInt ();
+            amountBomb = raf.readInt ();
+            amountPotion = raf.readInt ();
+            amountKey = raf.readInt ();
+            amountGem = raf.readInt ();
+            
+        } else {
+            System.out.println("it's empty");
+        }
+        
         
     }  // end readRec
 } // Character class
