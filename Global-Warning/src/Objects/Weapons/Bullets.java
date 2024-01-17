@@ -1,7 +1,7 @@
 package Objects.Weapons;
 
 import GameStates.Playing;
-import javafx.event.ActionEvent;
+//import javafx.event.ActionEvent;
 
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
@@ -16,7 +16,7 @@ import java.util.ConcurrentModificationException;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y;
+    private double x, y, vertX, vertY, initX, initY;
     public static double speed1,speed2,speed3;
     private double directionX, directionY;
     private Weapon1 weapon;
@@ -42,6 +42,12 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.playing = playing;
         this.x = startX;
         this.y = startY;
+        this.initX = startX;
+        this.initY = startY;
+        this.vertX = targetX - startX;
+        this.vertY = targetY - startY;
+        System.out.println("X: " + x + " vertX: " + vertX);
+        System.out.println("Y: " + y + " vertY: " + vertY);
         this.lvlData = lvlData;
         this.time = time;
 
@@ -106,10 +112,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
     else if (Playing.gunIndex == 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             //System.out.println("Time: " + time);
-            x += speed * directionX;;
-            y -= speed * (directionY * this.time) - (0.5 * 9.8 * Math.pow(this.time, 2));
+            x += speed * directionX;
+            y += speed * Math.pow((speed - (vertX + initX)), 2) + (vertY + initY);
             hitbox.x += speed * directionX;
-            hitbox.y -= speed * (directionY * this.time) - (0.5 * 9.8 * Math.pow(this.time, 2));
+            hitbox.y += speed * Math.pow((speed - (vertX + initX)), 2) + (vertY + initY);
         } else {
             System.out.println("Initiate Explosion");
             playing.removeBullet();
