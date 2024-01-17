@@ -61,9 +61,9 @@ public class Playing extends State implements KeyListener, MouseListener {
    // public  int num = SaveButton.getFileNum();
 
 
-    private int lightningUpdates; // The total updates that have passed before a complete lightning cycle
-    private int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
-    private int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
+    public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
+    public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
+    public int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
     public float lightningPosX;
     public float lightningHeight;
     public Rectangle2D.Float lightningHitbox;
@@ -137,8 +137,8 @@ public class Playing extends State implements KeyListener, MouseListener {
             bullets.get(i).updateBullets();
          }
         updateLightning();
-        checkLightningIntersect();
         checkBorder();
+        checkLightningIntersect();
         checkTransition();
         
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
@@ -215,6 +215,13 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+    public void checkLightningIntersect() {
+        if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
+        if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos && !player.isImmune()) { // fix when this happens
+            player.changeHealth(-50);
+        }
+    }
+
     private void updateLightning() {
         if(levelManager.getCurrentLevel().getStormy()) {
             lightningUpdates++;
@@ -239,21 +246,15 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     private void drawLightning(Graphics g, int xOffset) {
-        if(lightningUpdates >= lightningPosCooldown && lightningHasPos) {
+        if(lightningUpdates >= lightningPosCooldown && lightningHasPos && lightningUpdates <= lightningPosCooldown + lightningSpawnCooldown) {
             g.setColor(Color.RED);
+            if(lightningUpdates % 8 <= 2)
             g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
         }
 
         if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
             environment.drawLightning(g, xOffset);
         
-    }
-
-    private void checkLightningIntersect() {
-        if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
-        if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos && !player.isImmune()) { // fix when this happens
-            player.changeHealth(-50);
-        }
     }
 
     private void resetLightning() {

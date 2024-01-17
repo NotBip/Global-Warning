@@ -328,17 +328,12 @@ public class Enemy extends Entity {
         isActive = true;
       }
 
-          /**
-     * Changes the players health depending on enemy.
-     * @author Hamad Mohammed
-     * @param value Damage being done 
-     * @since December 16, 2023
-     */
-    public void changeHealth(int value) {
-		this.currentHealth -= value;
-		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
-        currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
-	}
+      public void checkLightningIntersect(Playing playing) {
+        if(playing.lightningHitbox != null && playing.lightningUpdates >= playing.lightningPosCooldown + playing.lightningSpawnCooldown)
+        if(hitbox.intersects(playing.lightningHitbox) && playing.lightningHasPos) { // fix when this happens
+            dead();
+        }
+    }
 
     /**
      * Changes enemy hp based on damage done. 
@@ -362,7 +357,8 @@ public class Enemy extends Entity {
     }
 
     public void dead() {
-        this.currentHealth = 0; 
+        this.currentHealth = 0;
+        this.currentHealthBarLen = 0; 
     }
 
     public void drawHealth(Graphics g, int xOffset) {
