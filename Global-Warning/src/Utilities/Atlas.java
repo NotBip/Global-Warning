@@ -10,7 +10,8 @@ public class Atlas {
     public static final String PLAYER_ATLAS = "cautionaut.png";
     public static final String ZOMBIE_ATLAS = "RobotEnemy.png";
     public static final String WATERBOI_ATLAS = "Waterboi.png"; 
-    public static final String FIREBOI_ATLAS = "Fireboi.png"; 
+    public static final String FIREBOI_ATLAS = "Fireboi.png";
+    public static final String DEMONBOI_ATLAS = "Demonboi.png";
 
     public static final String WEAPON1_ATLAS = "gunSmol.png";
     public static final String WEAPON2_ATLAS = "pixel_weap_blue.png";
