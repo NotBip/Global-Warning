@@ -56,7 +56,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 250 milliseconds
-    public static long fireRateWeapon3 = 500; // 500 milliseconds
+    public static long fireRateWeapon3 = 1000; // 500 milliseconds
    // public  int num = SaveButton.getFileNum();
 
 

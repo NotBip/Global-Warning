@@ -16,7 +16,7 @@ import java.util.ConcurrentModificationException;
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    private double x, y, vertX, vertY, initX, initY;
+    private double x, y, vertX, vertY, initX, initY, targetX, targetY;
     public static double speed1,speed2,speed3;
     private double directionX, directionY;
     private Weapon1 weapon;
@@ -44,8 +44,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.y = startY;
         this.initX = startX;
         this.initY = startY;
-        this.vertX = targetX - startX;
+        this.vertX = targetX - startX + xOffset;
         this.vertY = targetY - startY;
+        this.targetX = targetX + xOffset - startX;
+        this.targetY = targetY - startY;
         System.out.println("X: " + x + " vertX: " + vertX);
         System.out.println("Y: " + y + " vertY: " + vertY);
         this.lvlData = lvlData;
@@ -74,6 +76,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
         this.directionX = Math.cos(angle);
+        System.out.println("DirectionX: " + directionX);
         this.directionY = Math.sin(angle);
     }
 
@@ -104,7 +107,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
             x += speed * directionX;
             y += speed * directionY;
             hitbox.x += speed * directionX;
-            hitbox.y += speed * directionX;
+            hitbox.y += speed * directionY;
         } else {
             playing.removeBullet();
         }
@@ -113,9 +116,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             //System.out.println("Time: " + time);
             x += speed * directionX;
-            y += speed * Math.pow((speed - (vertX + initX)), 2) + (vertY + initY);
+            y -= -speed * (0.5 * 9.8 * Math.pow(this.time, 2));
             hitbox.x += speed * directionX;
-            hitbox.y += speed * Math.pow((speed - (vertX + initX)), 2) + (vertY + initY);
+            hitbox.y -= -speed * (0.5 * 9.8 * Math.pow(this.time, 2));
         } else {
             System.out.println("Initiate Explosion");
             playing.removeBullet();
