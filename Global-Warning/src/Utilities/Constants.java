@@ -110,8 +110,8 @@ public class Constants {
 			public static final int demonAttack = 2; 
 			public static final int demonDead = 4; 
 			public static final float demonSpeed = 1.5f * Game.SCALE; 
-			public static final int demonSizeX = 100 *(int) Game.SCALE; 
-			public static final int demonSizeY = 110 *(int) Game.SCALE; 
+			public static final int demonSizeX = 260 *(int) Game.SCALE; 
+			public static final int demonSizeY = 253 *(int) Game.SCALE; 
 
 
 
@@ -257,7 +257,7 @@ public class Constants {
 				return 3; 
 			case Fireboi: 
 				return 6; 
-			case demonboiArrJ: 
+			case Demonboi: 
 				return 9; 
 			default: 
 				return 0;  
