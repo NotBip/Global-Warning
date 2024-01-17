@@ -268,7 +268,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g, int offset) {
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 65 * wFlipped, 70, null);
-            drawHitbox(g, offset);
+            //drawHitbox(g, offset);
     }
 
     /**

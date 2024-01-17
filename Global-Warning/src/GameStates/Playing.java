@@ -12,6 +12,8 @@ import Objects.ObjectManager;
 import Objects.Spike;
 import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS_FIRE;
+import static Utilities.Atlas.MENUBACKGROUND_ATLAS_STORM;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
@@ -377,6 +379,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void setPlayerDying(boolean die) { 
         this.playerDying = die; 
+    }
+
+    public void setBackGround(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
     }
 
 
