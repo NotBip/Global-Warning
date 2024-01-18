@@ -29,14 +29,15 @@ public class Enemy extends Entity {
     protected int direction = LEFT; 
     private String state = WALK; 
     private BufferedImage[][] animations; 
-    private int xFlipped; 
-    private int wFlipped; 
+    private int xFlipped, xEnemyFlipped; 
+    private int wFlipped, wEnemyFlipped; 
     private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
     private boolean isAttack = false, leftwall = false, isVisible = false; 
-    private int enemyRangeWidth = 80;
+    private int enemyRangeWidth = 200;
+    private int enemyRangeHeight = 80; 
     private boolean dead = false; 
     private boolean deadOver = false; 
     public float healthBarWidth = 100; 
@@ -63,8 +64,8 @@ public class Enemy extends Entity {
         this.Eheight = sizeH; 
         this.Ewidth = sizeX; 
         this.enemyRangeX = x-enemyRangeWidth;
-        this.enemyRangeY = y-enemyRangeWidth; 
-        this.enemyRangeH = height+2*enemyRangeWidth; 
+        this.enemyRangeY = y-enemyRangeHeight; 
+        this.enemyRangeH = height+2*enemyRangeHeight; 
         this.enemyRangeW = width+2*enemyRangeWidth;
 
         Animations(); 
@@ -93,10 +94,10 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
-        enemyRange.x = this.hitbox.x-enemyRangeWidth; 
-        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
-        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
-        enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
+        enemyRange.x = xEnemyFlipped + (this.hitbox.x-enemyRangeWidth + 100); 
+        enemyRange.y = this.hitbox.y-enemyRangeHeight; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
+        enemyRange.width = (int) wFlipped*(this.hitbox.width+2*enemyRangeWidth); 
         if (!player.hitbox.intersects(enemyRange))
         state = WALK; 
 
@@ -124,16 +125,16 @@ public class Enemy extends Entity {
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
             isVisible = true; 
             direction = LEFT; 
-            wFlipped = flipW(); 
-            xFlipped = flipX();
+            flipW(); 
+            flipX();
             leftwall = false;
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
             isVisible = false; 
             direction = RIGHT; 
-            wFlipped = flipW(); 
-            xFlipped = flipX();
+            flipW(); 
+            flipX();
             leftwall = true;
             }
         else if (!player.hitbox.intersects(enemyRange)) { 
@@ -144,14 +145,14 @@ public class Enemy extends Entity {
         if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {
            
             direction = LEFT; 
-            wFlipped = flipW(); 
-            xFlipped = flipX();
+            flipW(); 
+            flipX();
             leftwall = false;
         } else if (direction == LEFT && !solidTile(hitbox.x - 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {
              
             direction = RIGHT; 
-            wFlipped = flipW(); 
-            xFlipped = flipX();
+            flipW(); 
+            flipX();
             leftwall = true;
         }
 
@@ -167,8 +168,8 @@ public class Enemy extends Entity {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             direction = flipD(); 
             leftwall = true;
-            wFlipped = flipW(); 
-            xFlipped = flipX(); 
+            flipW(); 
+            flipX(); 
         }
 
        if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && leftwall) { 
@@ -186,8 +187,8 @@ public class Enemy extends Entity {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             //enemyRange.x = fixXPos(enemyRange, xSpeed);
             direction = flipD(); 
-            wFlipped = flipW(); 
-            xFlipped = flipX();
+            flipW(); 
+            flipX();
             leftwall = false;
 
 
@@ -221,19 +222,27 @@ public class Enemy extends Entity {
     }
 
     
-    public int flipX() {
-		if (xFlipped == 0)  
-			return width;
-         else 
-			return 0;
+    public void flipX() {
+		if (xFlipped == 0){  
+			xFlipped = width;
+        }
+        else if (xFlipped == width)
+            xFlipped = 0; 
+
+        if(xEnemyFlipped == 0)  
+            xEnemyFlipped = (int) enemyRange.width; 
+        else if (xEnemyFlipped == (int) enemyRange.width)
+            xEnemyFlipped = 0; 
+        
+
         }
 
-	public int flipW() {
-		if (wFlipped == 1)
-			return -1;
-        else 
-			return 1;
-	}
+	public void flipW() {
+		if (wFlipped == 1 )
+			wFlipped = -1;
+        else if (wFlipped == -1)
+            wFlipped = 1; 
+    }
 
     public int flipD() { 
         if (direction == RIGHT)
