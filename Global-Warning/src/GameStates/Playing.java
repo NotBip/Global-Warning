@@ -47,7 +47,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     private Environment environment; 
     private Image backgroundImage;
     public static boolean paused, inventory, dead = false;
-    public static boolean first = true;
     private double weaponAngle = 0;
     public static int gunIndex = 1;
     public long loadtime = 0;
@@ -284,16 +283,8 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (inventory) {
             inventoryState.draw(g);
-
-            if (first){
-                long time1 = System.currentTimeMillis();
-                if (time1 > loadtime+2000)
-                    first = false;
-                else{
-                    loadtime = time1;
-            }
+        
         }
-    }
 
         if (paused) {
 			pauseScreen.draw(g);

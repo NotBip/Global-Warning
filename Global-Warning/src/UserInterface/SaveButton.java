@@ -2,7 +2,6 @@ package UserInterface;
 
 import GameStates.GameState;
 import GameStates.Playing;
-import GameStates.SaveState;
 import Levels.LevelManager;
 
 import Objects.Saving.Save;

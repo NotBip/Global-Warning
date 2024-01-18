@@ -33,7 +33,6 @@ public class InventoryState {
 
 	public InventoryState(Playing playing) {
 		this.playing = playing;
-		loadLoadImgs();
 		makeSlots();
 
 	}
@@ -102,10 +101,6 @@ public class InventoryState {
 		g.drawImage(backgroundImg, GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 500, 420, null);
 		 for (InventorySlot slot : slots)
             slot.draw(g);
-
-		if (Playing.first){
-			g.drawImage(loadImgs[0], GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 200, 91, null);
-		}
 
 	}
 
