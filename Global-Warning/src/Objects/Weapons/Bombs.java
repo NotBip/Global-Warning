@@ -20,7 +20,7 @@ public class Bombs extends Entity {
 
     BufferedImage img, bombImg;
     private BufferedImage[][] animations;
-    private  int animationTick, animationIndex, aniSpeed = 15;
+    private  int animationTick, animationIndex, aniSpeed = 5;
     private double x, y, vertX, vertY, initX, initY, targetX, targetY;
     public static double speed = 1;
     private double directionX, directionY;
@@ -49,8 +49,8 @@ public class Bombs extends Entity {
         this.targetY = targetY - startY;
         this.playing = playing; 
         this.weapon = weapon; 
-        System.out.println("X: " + x + " vertX: " + vertX);
-        System.out.println("Y: " + y + " vertY: " + vertY);
+        // System.out.println("X: " + x + " vertX: " + vertX);
+        // System.out.println("Y: " + y + " vertY: " + vertY);
         loadImage(); 
         initialize();
     }
@@ -96,13 +96,12 @@ public class Bombs extends Entity {
             
         } else {
             playing.BombReady = false; 
-            System.out.println("EXPLOSION ASD AT: " + hitbox.x + "y: " + hitbox.y);
+        //    System.out.println("EXPLOSION ASD AT: " + hitbox.x + "y: " + hitbox.y);
             explode = true; 
-            System.out.println("Initiate Explosion");
+           // System.out.println("Initiate Explosion");
             //playing.removeBomb();
         }
     }
-    updateAnimationTick();   
     }
 
     public void draw(Graphics g, int xOffset) {
@@ -120,8 +119,10 @@ public class Bombs extends Entity {
         drawHitbox(g, xOffset);
 
         if(explode){ 
+            updateAnimationTick();   
+            System.out.println(animationIndex);
             drawBombAnimation(g, xOffset);
-            if(animationIndex == 5 && animationTick >= animationSpeed - 1){ 
+            if(animationIndex >= 5 && animationTick >= aniSpeed - 1){ 
             playing.BombReady = true; 
             playing.removeBomb();
             }
@@ -150,7 +151,7 @@ public class Bombs extends Entity {
 
     private void updateAnimationTick() {
         animationTick++;
-        if (animationTick >= animationSpeed) {
+        if (animationTick >= aniSpeed) {
             animationTick = 0;
             animationIndex++;
             if (animationIndex >= 6)
