@@ -27,6 +27,7 @@ public class Atlas {
     public static final String MENUBACKGROUND_ATLAS_STORM = "storm_background.png";
     public static final String MENUBACKGROUND_ATLAS_FIRE = "fire_background.png";
     public static final String MENUBACKGROUND_ATLAS_ICE = "ice_background.png";
+    public static final String MENUTITLE_ATLAS = "menuTitle.png";
 
     public static final String PAUSE_ATLAS = "pause_screen.png";
     public static final String OVER_ATLAS = "game_over.png";
