@@ -98,9 +98,9 @@ public class Constants {
 			public static final int fireSizeY = 110 *(int) Game.SCALE; 
 
 			public static final int Demonboi = 2; 
-			public static final int DEMONBOI_HEIGHT = 253 * (int) Game.SCALE; 
-			public static final int DEMONBOI_WIDTH = 240 *(int) Game.SCALE; 
-			public static final int demonAttackSpeed = 15; 
+			public static final int DEMONBOI_HEIGHT = 247 * (int) Game.SCALE; 
+			public static final int DEMONBOI_WIDTH = 250 *(int) Game.SCALE; 
+			public static final int demonAttackSpeed = 10; 
 			public static final int demonboiArrI = 5; 
 			public static final int demonboiArrJ = 22; 
 			public static final int demonboiW = 288; 
@@ -110,7 +110,7 @@ public class Constants {
 			public static final int demonAttack = 2; 
 			public static final int demonDead = 4; 
 			public static final float demonSpeed = 1.5f * Game.SCALE; 
-			public static final int demonSizeX = 260 *(int) Game.SCALE; 
+			public static final int demonSizeX = 290 *(int) Game.SCALE; 
 			public static final int demonSizeY = 253 *(int) Game.SCALE; 
 
 
@@ -145,7 +145,7 @@ public class Constants {
 			if(enemy_type == Fireboi)
 			return 6;
 			if(enemy_type == Demonboi)
-			return 13;  
+			return 14;  
 		case "DEAD": 
 			if(enemy_type == Waterboi)
 			return 6; 
@@ -245,6 +245,8 @@ public class Constants {
 				return waterAttackSpeed; 
 			case Fireboi: 
 				return fireAttackSpeed;
+			case Demonboi: 
+				return demonAttackSpeed; 
 			default:
 				return 0;
 		}

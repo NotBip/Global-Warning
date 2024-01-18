@@ -118,7 +118,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     public void update() throws IOException {
-        System.out.println(this.getLevelManager().getCurrentLevel().getStormy());
         if (paused) {
 			pauseScreen.update();
 		} else if (inventory && !paused){
