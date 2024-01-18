@@ -16,7 +16,7 @@ public class Checkpoint extends Entity {
 	protected int width, height;
 	public static String fileName;
 	public static int fileNum;
-	boolean reached = false;
+	public boolean reached = false;
 	private Playing playing;
 
 	/**
@@ -105,6 +105,12 @@ public class Checkpoint extends Entity {
 		fileNum = num;
 		System.out.println(fileName);
 		System.out.println(fileNum);
+
+	}
+
+	public void resetReached()  {
+		reached = false;
+
 	}
 
    

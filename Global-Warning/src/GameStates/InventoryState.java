@@ -101,6 +101,17 @@ public class InventoryState {
 		g.drawImage(backgroundImg, GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 500, 420, null);
 		 for (InventorySlot slot : slots)
             slot.draw(g);
+		
+		drawHealth(g);
+	}
+
+	public void drawHealth(Graphics g) {
+		g.setColor(Color.red);
+		g.fillRect(400, 500, playing.player.getHealthWidth()/2, playing.player.getHealthHeight()/2);
+		g.setColor(Color.green);
+		g.fillRect(400, 500, playing.player.getHealthLength()/2, playing.player.getHealthHeight()/2);
+		g.setColor(Color.black);
+		g.drawRect(400, 500, playing.player.getHealthWidth()/2, playing.player.getHealthHeight()/2);
 
 	}
 

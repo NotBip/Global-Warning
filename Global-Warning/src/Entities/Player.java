@@ -409,6 +409,18 @@ public class Player extends Entity {
         g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
     }
 
+    public int getHealthWidth(){
+        return (int)healthBarWidth;
+    }
+
+    public int getHealthHeight(){
+        return (int)healthBarHeight;
+    }
+
+    public int getHealthLength(){
+        return (int)currentHealthBarLen;
+    }
+
     public void drawOxygenBar(Graphics g) {
         if(waterUpdates > 0) {
             g.setColor(Color.BLUE);

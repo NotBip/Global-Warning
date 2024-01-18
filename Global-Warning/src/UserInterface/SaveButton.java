@@ -151,6 +151,7 @@ public class SaveButton extends Button {
 	} // end readNewBinFile
 
 	public void loadSave(Playing playing){
+		Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
         switch (fileNum) {
 			case 1:
 			System.out.println("save 1: loaded");

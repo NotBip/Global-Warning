@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import GameStates.GameState;
+import GameStates.Playing;
+import Levels.LevelManager;
+import Objects.Saving.Checkpoint;
 import Objects.Saving.Save;
 
 import static Utilities.Atlas.RESETBUTTON_ATLAS;
@@ -83,6 +86,7 @@ public class ResetSaveButton extends Button {
 
 	public void resetSave() throws IOException{
 		System.out.println(fileNum);
+		Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
 		switch (fileNum) {
 			case 1:
 			SaveButton.save1 = new Save();
