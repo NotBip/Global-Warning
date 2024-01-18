@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
@@ -46,6 +47,7 @@ public class Level {
 	private  boolean isCheckpoint = false; 
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
+	private ArrayList<Boss> Demonboi = new ArrayList<Boss>(); 
 
 	private boolean fireLevel;
 	private boolean spaceLevel;
@@ -89,6 +91,7 @@ public class Level {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
 		case 1: Waterboi.add(new Enemy2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 2: Fireboi.add(new Enemy1(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
+		case 10: Demonboi.add(new Boss(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
@@ -109,6 +112,7 @@ public class Level {
 	public void resetEnemies() {	
 			Waterboi.clear();
 			Fireboi.clear();
+			Demonboi.clear(); 
 	}
 
 	private void loadObjects(int blueValue, int x, int y) {
@@ -187,6 +191,10 @@ public class Level {
 
 	public ArrayList<Enemy1> getFireBoi() { 
 		return Fireboi; 
+	}
+
+	public ArrayList<Boss> getDemonBoi() { 
+		return Demonboi; 
 	}
 
 	public ArrayList<Spike> getSpike() { 

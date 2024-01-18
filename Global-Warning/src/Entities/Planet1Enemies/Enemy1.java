@@ -12,6 +12,7 @@ public class Enemy1 extends Enemy {
         super.inAir = true;
         super.lvlData = lvlData;
         super.maxHealth = getMaxEnemyHealth(Fireboi);
+        super.isBoss = false; 
 }
 
 

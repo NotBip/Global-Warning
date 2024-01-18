@@ -67,6 +67,7 @@ public class Entity {
     public void drawHitbox(Graphics g, int offset) {
         g.setColor(Color.white);
         g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+        g.drawRect((int) enemyRange.x-offset, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     /* 

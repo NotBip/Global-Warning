@@ -280,8 +280,9 @@ public class Playing extends State implements KeyListener, MouseListener {
         environment.draw(g, xOffset);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
-        enemyManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        enemyManager.draw(g, xOffset);
+
         if (getLevelManager().getCurrentLevel().getIsCheckpoint())
         getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
         objectManager.draw(g, xOffset);

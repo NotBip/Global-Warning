@@ -25,7 +25,7 @@ import static Utilities.Constants.Directions.RIGHT;
 public class Enemy extends Entity {
     protected int lvlData[][];
     protected int aniIndex, enemyState, enemyType;
-	protected int aniTick, hitCooldown, aniSpeed = 10;
+	protected int aniTick, hitCooldown, aniSpeed;
     protected int direction = LEFT; 
     private String state = WALK; 
     private BufferedImage[][] animations; 
@@ -39,7 +39,11 @@ public class Enemy extends Entity {
     private int enemyRangeWidth = 80;
     private boolean dead = false; 
     private boolean deadOver = false; 
+    public float healthBarWidth = 100; 
+    public float healthBarHeight = 10;
+    private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = true; 
+    protected boolean isBoss = false; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -61,11 +65,8 @@ public class Enemy extends Entity {
         this.enemyRangeX = x-enemyRangeWidth;
         this.enemyRangeY = y-enemyRangeWidth; 
         this.enemyRangeH = height+2*enemyRangeWidth; 
-        this.enemyRangeW = width+2*enemyRangeWidth; 
+        this.enemyRangeW = width+2*enemyRangeWidth;
 
-        this.healthBarWidth = 100;
-        this.healthBarHeight = 10;
-        this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations(); 
         initialize();
     }
@@ -87,8 +88,8 @@ public class Enemy extends Entity {
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
-        animationIndex = 0;
     }
+
 
     if (!dead){ 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
@@ -256,6 +257,8 @@ public class Enemy extends Entity {
 	}
 
     public void draw(Graphics g, int xOffset) {
+        g.setColor(Color.white);
+        drawHitbox(g, xOffset);
         if (!deadOver)
         g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
@@ -288,11 +291,10 @@ public class Enemy extends Entity {
     }
 
     protected void checkPlayerHit(Player player) {
-        if(!player.isImmune()) {
-            player.changeHealth(-getEnemyDamage(enemyType));
-        }
-			
-        
+        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1) 
+            player.changeHealth(-getEnemyDamage(enemyType)); 
+        else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex)
+            player.changeHealth(-getEnemyDamage(enemyType));  
     }
 
     /**
@@ -303,7 +305,6 @@ public class Enemy extends Entity {
      * @return Is the player visible or not
      */
     public boolean isPlayerVisible(Player player) { 
-
         if (this.hitbox.intersects(player.hitbox)) 
             return true; 
         else 
@@ -318,7 +319,7 @@ public class Enemy extends Entity {
         inAir = true;
         dead = false;
         deadOver = false;
-        currentHealthBarLen = healthBarWidth;
+        currentHealthBarLen = maxHealth;
         isActive = true;
       }
 
@@ -328,6 +329,17 @@ public class Enemy extends Entity {
             dead();
         }
     }
+          /**
+     * Changes the players health depending on enemy.
+     * @author Hamad Mohammed
+     * @param value Damage being done 
+     * @since December 16, 2023
+     */
+    public void changeHealth(int value) {
+		this.currentHealth -= value;
+		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
+        currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float) maxHealth);
+	}
 
     /**
      * Changes enemy hp based on damage done. 
@@ -363,14 +375,22 @@ public class Enemy extends Entity {
     }
 
     public void drawHealth(Graphics g, int xOffset) {
-        if (isActive) { 
+        if (isActive && !isBoss) { 
         g.setColor(Color.red);
         g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
         g.setColor(Color.green);
         g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
         g.setColor(Color.black);
         g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
-        }
+         }
+         else if (isBoss)
+         g.setColor(Color.red);
+         g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
+         g.setColor(Color.green);
+         g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) currentHealthBarLen, (int) healthBarHeight);
+         g.setColor(Color.black);
+         g.drawRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
+
     }
     
 }

@@ -103,6 +103,23 @@ public class Constants {
 			public static final int fireSizeX = 100 *(int) Game.SCALE; 
 			public static final int fireSizeY = 110 *(int) Game.SCALE; 
 
+			public static final int Demonboi = 2; 
+			public static final int DEMONBOI_HEIGHT = 247 * (int) Game.SCALE; 
+			public static final int DEMONBOI_WIDTH = 250 *(int) Game.SCALE; 
+			public static final int demonAttackSpeed = 10; 
+			public static final int demonboiArrI = 5; 
+			public static final int demonboiArrJ = 22; 
+			public static final int demonboiW = 288; 
+			public static final int demonboiH = 160;
+			public static final int demonIdle = 0; 
+			public static final int demonWalk = 1; 
+			public static final int demonAttack = 2; 
+			public static final int demonDead = 4; 
+			public static final float demonSpeed = 1.5f * Game.SCALE; 
+			public static final int demonSizeX = 290 *(int) Game.SCALE; 
+			public static final int demonSizeY = 253 *(int) Game.SCALE; 
+
+
 
 			
 			
@@ -114,11 +131,15 @@ public class Constants {
 			return 1; 
 			if(enemy_type == Fireboi) 
 			return 1; 
+			if(enemy_type == Demonboi)
+			return 5; 
 		case "WALK":
 			 if(enemy_type == Waterboi)
 			return 6; 
 			 if(enemy_type == Fireboi)
 			return 7;
+			 if(enemy_type == Demonboi)
+			return 10; 
 		case "RUN": 
 			 if(enemy_type == Waterboi)
 			return 5; 
@@ -128,12 +149,16 @@ public class Constants {
 			if(enemy_type == Waterboi)
 			return 3; 
 			if(enemy_type == Fireboi)
-			return 6; 
+			return 6;
+			if(enemy_type == Demonboi)
+			return 14;  
 		case "DEAD": 
 			if(enemy_type == Waterboi)
 			return 6; 
 			if(enemy_type == Fireboi)
 			return 6; 
+			if(enemy_type == Demonboi)
+			return 21; 
 
 		default: 
 			return 0;
@@ -147,7 +172,8 @@ public class Constants {
 				return 100; 	
 			case Waterboi: 
 				return 150; 
-
+			case Demonboi: 
+				return 2000; 
 			default:
 				return 0;
 		}
@@ -158,10 +184,13 @@ public class Constants {
 
 			case Waterboi:
 				return 10; 
-			
+
 			case Fireboi: 
 				return 10; 
-				
+			
+			case Demonboi: 
+				return 25; 
+
 			default:
 				return 0; 
 		}
@@ -174,30 +203,40 @@ public class Constants {
 				return waterIdle; 
 				if(enemy_type == Fireboi)
 				return fireIdle; 
+				if(enemy_type == Demonboi)
+				return demonIdle; 
 
 			case "WALK":
 				if(enemy_type == Waterboi)
 				return waterWalk; 
 				if(enemy_type == Fireboi) 
 				return fireWalk; 
+				if(enemy_type == Demonboi)
+				return demonWalk; 
 			
 			case "RUN": 
 				if(enemy_type == Waterboi)
 				return waterRunning; 
 				if(enemy_type == Fireboi)
 				return fireRun; 
+				if(enemy_type == Demonboi)
+				return demonWalk; 
 			
 			case "ATTACK": 
 				if(enemy_type == Waterboi) 
 				return waterAttack; 
 				if(enemy_type == Fireboi)
 				return fireAttack; 
+				if(enemy_type == Demonboi)
+				return demonAttack; 
 
 			case "DEAD": 
 				if(enemy_type == Waterboi)
 				return 9; 
 				if(enemy_type == Fireboi)
 				return 9; 
+				if(enemy_type == Demonboi)
+				return demonDead; 
 
 			default: 
 				return 0; 
@@ -212,8 +251,24 @@ public class Constants {
 				return waterAttackSpeed; 
 			case Fireboi: 
 				return fireAttackSpeed;
+			case Demonboi: 
+				return demonAttackSpeed; 
 			default:
 				return 0;
+		}
+	}
+
+	public static int getFinalAttack(int enemy_type) { 
+		switch (enemy_type) {
+
+			case Waterboi: 
+				return 3; 
+			case Fireboi: 
+				return 6; 
+			case Demonboi: 
+				return 9; 
+			default: 
+				return 0;  
 		}
 	}
 
