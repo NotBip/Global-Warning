@@ -42,7 +42,7 @@ public class Enemy extends Entity {
     public float healthBarWidth = 100; 
     public float healthBarHeight = 10;
     private float currentHealthBarLen = healthBarWidth;
-    public boolean isActive = true; 
+    public boolean isActive = false; 
     protected boolean isBoss = false; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -88,6 +88,7 @@ public class Enemy extends Entity {
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
+        animationIndex = 0;
     }
 
 
@@ -319,8 +320,8 @@ public class Enemy extends Entity {
         inAir = true;
         dead = false;
         deadOver = false;
-        currentHealthBarLen = maxHealth;
-        isActive = true;
+        currentHealthBarLen = healthBarWidth;
+        isActive = false;
       }
 
       public void checkLightningIntersect(Playing playing) {
@@ -336,7 +337,7 @@ public class Enemy extends Entity {
      * @since December 16, 2023
      */
     public void changeHealth(int value) {
-		this.currentHealth -= value;
+		this.currentHealth += value;
 		this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float) maxHealth);
 	}
@@ -372,6 +373,7 @@ public class Enemy extends Entity {
     public void dead() {
         this.currentHealth = 0;
         this.currentHealthBarLen = 0; 
+        animationIndex = 0;
     }
 
     public void drawHealth(Graphics g, int xOffset) {
