@@ -38,7 +38,7 @@ public class Level {
 	private Point leftTransition; // Transition point into the left door in a room
 	private Point rightTransition; // Transition point into the right door in a room
 	public boolean isWindy = false;
-	private ArrayList<Spike> spike = new ArrayList<Spike>(); 
+	private ArrayList<Spike> spike = new ArrayList<Spike>();
 	private ArrayList<BarrierDoor> door = new ArrayList<BarrierDoor>(); 
 	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
 	private Checkpoint checkpoint;

@@ -37,6 +37,8 @@ public class Player extends Entity {
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
     private boolean hasKey = true; // If the player has a key
+    private boolean hasBomb = true; // If the player has a bomb
+    private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
@@ -450,6 +452,10 @@ public class Player extends Entity {
         this.playerDir = direction;
     }
 
+    public float getDirection() {
+        return this.playerDir;
+    }
+
     public float getMoveSpeed() {
         return moveSpeed;
     }
@@ -496,6 +502,14 @@ public class Player extends Entity {
 
     public void setKey(boolean hasKey) {
         this.hasKey = hasKey;
+    }
+
+    public boolean getBomb() {
+        return hasBomb;
+    }
+
+    public void setBomb(boolean hasBomb) {
+        this.hasBomb = hasBomb;
     }
 
 }
