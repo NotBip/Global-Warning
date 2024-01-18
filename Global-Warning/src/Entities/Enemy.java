@@ -346,12 +346,19 @@ public class Enemy extends Entity {
      */
     public void enemyHit(List<Bullets> bullet, Playing playing) { 
         for (Bullets b : bullet) { 
-            if(b.getHitbox().intersects(this.hitbox)) {
+            if(b.getHitbox().intersects(this.hitbox) && playing.gunIndex != 3) {
                 isActive = true;  
                 playing.removeBullet();
                 changeHealth(PlayerConstants.getPlayerDamage(playing));
             }
         }
+        /*for (Explosions e : explosion) { 
+            if(e.getHitbox().intersects(this.hitbox)) {
+                isActive = true;  
+                playing.removeBullet();
+                changeHealth(PlayerConstants.getPlayerDamage(playing) * 5);
+            }
+        }*/
     }
 
     public boolean isDead() { 

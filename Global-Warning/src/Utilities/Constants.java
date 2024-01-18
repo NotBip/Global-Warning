@@ -250,6 +250,7 @@ public class Constants {
 		public static final int Spike = 0; 		
 		public static final int Chest = 1;
 		public static final int Door = 2;
+		public static final int Explosion = 3;
 
 		public static final String IDLE = "IDLE"; 
 		public static final String INTERACT = "INTERACT"; 

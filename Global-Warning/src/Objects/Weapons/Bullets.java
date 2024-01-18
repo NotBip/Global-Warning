@@ -2,20 +2,29 @@ package Objects.Weapons;
 
 import GameStates.Playing;
 //import javafx.event.ActionEvent;
+import Objects.Spike;
+import Utilities.Constants;
 
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.WEAPON_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
+import static Utilities.Constants.WEAPON_HEIGHT;
+import static Utilities.Atlas.BOMB_ATLAS;
+import static Utilities.Atlas.getSpriteAtlas;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
+    BufferedImage img;
     private double x, y, vertX, vertY, initX, initY, targetX, targetY;
     public static double speed1,speed2,speed3;
     private double directionX, directionY;
@@ -23,6 +32,9 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private Playing playing;
     private int[][] lvlData;
     private double time;
+    private boolean explode;
+    private int xFlipped = 0; 
+    private int wFlipped = 1;
     
 
     //upgradeable abilities (fire-rate in playing class)
@@ -91,6 +103,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
     public void move() {
 
         double speed = 0;
+        double tempChange = 0;
 
         //different guns have different speeds
         if (Playing.gunIndex == 1){
@@ -114,11 +127,25 @@ public class Bullets extends Entities.Entity implements MouseListener {
     }
     else if (Playing.gunIndex == 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            //System.out.println("Time: " + time);
-            x += speed * directionX;
-            y -= -speed * (0.5 * 9.8 * Math.pow(this.time, 2));
-            hitbox.x += speed * directionX;
-            hitbox.y -= -speed * (0.5 * 9.8 * Math.pow(this.time, 2));
+            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
+            // Change x of bomb
+            tempChange = speed * ((vertX / initX) * 10);
+            //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
+            x += tempChange;
+            hitbox.x += tempChange;
+            //System.out.print(", NewX: " + x + "; OldY: " + y );
+
+            tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
+            if ((time + (vertY / initY)) > 0){
+            y += tempChange;
+            hitbox.y += tempChange;
+            }
+            else {
+                y -= tempChange;
+                hitbox.y -= tempChange; 
+            }
+            //System.out.println(", YDel: " + tempChange + ", NewY: " + y);
+            
         } else {
             System.out.println("Initiate Explosion");
             playing.removeBullet();
@@ -138,17 +165,19 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         // bullet spawns
         Graphics2D g2d = (Graphics2D) g;
+        
+        getImage();
 
         int drawX = (int) Math.round(x - xOffset);
         int drawY = (int) Math.round(y);
 
-        hitbox.x = drawX - 5 + xOffset;
-        hitbox.y = drawY - 5;
+            hitbox.x = drawX - 5 + xOffset;
+            hitbox.y = drawY - 5;
 
         if (!Playing.inventory){
             if (!Playing.paused){
                 //adding ten sorta fixes the offset
-                x = hitbox.x;
+                //x = hitbox.x;
             }
         }
 
@@ -161,8 +190,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
             g2d.setColor(Color.BLUE);
             g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
         } else if (Playing.gunIndex == 3){
-            g2d.setColor(Color.ORANGE);
-            g2d.fillOval(drawX - 5, drawY - 5, 10, 10);
+            g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
         }
 
 
@@ -182,6 +210,16 @@ public class Bullets extends Entities.Entity implements MouseListener {
             }
         }
 
+    }
+
+    public void getImage() {
+        /*if (Playing.gunIndex == 1){
+            this.img = getSpriteAtlas(WEAPON1_ATLAS); 
+        } else if (Playing.gunIndex == 2){
+            this.img = getSpriteAtlas(WEAPON2_ATLAS);
+        } else */if (Playing.gunIndex == 3){
+                this.img = getSpriteAtlas(BOMB_ATLAS);
+        }
     }
 
     /**
