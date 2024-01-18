@@ -4,7 +4,9 @@ package GameStates;
 import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.HOVER_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
+import Utilities.Atlas.*;
 
 import UserInterface.InventorySlot;
 
@@ -19,6 +21,7 @@ public class InventoryState {
     private int position = 100;
 	private Playing playing;
 	private BufferedImage backgroundImg = getSpriteAtlas(INVENTORY_ATLAS);
+	private BufferedImage [] loadImgs;
 	private InventorySlot[] slots= new InventorySlot[6];
 
 	/**
@@ -30,6 +33,7 @@ public class InventoryState {
 
 	public InventoryState(Playing playing) {
 		this.playing = playing;
+		loadLoadImgs();
 		makeSlots();
 
 	}
@@ -58,6 +62,14 @@ public class InventoryState {
         slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6);
 		
 
+	}
+
+	private void loadLoadImgs() {
+		loadImgs = new BufferedImage[2];
+		BufferedImage temp = getSpriteAtlas(LOADING_ATLAS);
+		for (int i = 0; i < loadImgs.length; i++){
+			loadImgs[i] = temp.getSubimage(i * LOAD_WIDTH, 0, LOAD_WIDTH, LOAD_HEIGHT);
+		}
 	}
 
 	/**
@@ -90,6 +102,11 @@ public class InventoryState {
 		g.drawImage(backgroundImg, GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 500, 420, null);
 		 for (InventorySlot slot : slots)
             slot.draw(g);
+
+		if (Playing.first){
+			g.drawImage(loadImgs[0], GAME_WIDTH / 2 -250, GAME_HEIGHT/5, 200, 91, null);
+		}
+
 	}
 
 	/**
@@ -180,6 +197,14 @@ public class InventoryState {
 		}
 		resetButtons();
 
+
+	}
+
+	public void reset() {
+		for (InventorySlot slot : slots){
+			slot.select = false;
+		
+		}
 
 	}
 }

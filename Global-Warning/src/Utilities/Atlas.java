@@ -37,12 +37,12 @@ public class Atlas {
     public static final String RESETBUTTON_ATLAS = "reset_save_buttons.png";
     public static final String SOUNDBUTTON_ATLAS = "sound_buttons.png";
 
-    public static final String INVENTORY_ATLAS = "inventory_menu-overlay.png";
+    public static final String INVENTORY_ATLAS = "nice_inventory-overlay.png";
     public static final String INVENTORYSLOT_ATLAS = "inventory_slot_new.png";
     public static final String LOADING_ATLAS = "loading_sprites.png";
 
     public static final String HOVER_ATLAS = "all_hoverboxes.png";
-    public static final String SELECTION_ATLAS = "inventory_select.png";
+    public static final String SELECTION_ATLAS = "select.png";
     public static final String CONTROLS_ATLAS = "controls_explain.png";
 
     public static final String WIND_ATLAS = "wind.png"; 

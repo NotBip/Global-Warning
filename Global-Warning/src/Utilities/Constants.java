@@ -54,6 +54,9 @@ public class Constants {
 
 		public static final int RESET_B_WIDTH = 100;
 		public static final int RESET_B_HEIGHT = 46;
+
+		public static final int LOAD_WIDTH = 133;
+		public static final int LOAD_HEIGHT = 91;
 	}
 
 	public static class EnemyConstants {

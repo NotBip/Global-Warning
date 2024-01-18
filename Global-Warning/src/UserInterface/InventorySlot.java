@@ -85,7 +85,7 @@ public class InventorySlot extends Button {
 		
 		if (select ==true){
 			g.drawImage(getSpriteAtlas(SELECTION_ATLAS), xPos, yPos, 80, 80, null);
-		}
+		} 
 	
 
 	switch(item) {
@@ -160,5 +160,6 @@ public class InventorySlot extends Button {
 			index = 1;
 
 	}
+
 
 }
