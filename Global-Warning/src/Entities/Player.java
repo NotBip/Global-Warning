@@ -2,6 +2,10 @@ package Entities;
 
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
+import Items.Key;
+import Items.Bomb;
+import Items.UpgradeGem;
+import Items.HealPotion;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,6 +22,10 @@ import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
+    Key key = new Key();
+    Bomb bomb = new Bomb();
+    HealPotion potion = new HealPotion();
+    UpgradeGem gem = new UpgradeGem();
     private BufferedImage[][] animations;
     private int lvlData[][];
     private boolean moving = false; // Is the player moving?
@@ -38,6 +46,8 @@ public class Player extends Entity {
     private boolean isWindy = false; // If the level the player is on is windy
     private boolean hasKey = true; // If the player has a key
     private boolean hasBomb = true; // If the player has a bomb
+    private boolean hasUpgrade = true; // If the player has an upgrade
+    private boolean hasPotion = true; // If the player has a potion
     private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
@@ -504,6 +514,15 @@ public class Player extends Entity {
         this.hasKey = hasKey;
     }
 
+    public void updateKey(){
+        if (key.getQuantity() > 0) {
+            setKey(true);
+        }
+        else {
+            setKey(false);
+        }
+    }
+
     public boolean getBomb() {
         return hasBomb;
     }
@@ -512,4 +531,46 @@ public class Player extends Entity {
         this.hasBomb = hasBomb;
     }
 
+    public void updateBomb(){
+        if (bomb.getQuantity() > 0) {
+            setBomb(true);
+        }
+        else {
+            setBomb(false);
+        }
+    }
+
+    public boolean getUpgrade() {
+        return hasUpgrade;
+    }
+
+    public void setUpgrade(boolean hasUpgrade) {
+        this.hasUpgrade = hasUpgrade;
+    }
+
+    public void updateUpgrade(){
+        if (gem.getQuantity() > 0) {
+            setUpgrade(true);
+        }
+        else {
+            setUpgrade(false);
+        }
+    }
+
+    public boolean getPotion() {
+        return hasPotion;
+    }
+
+    public void setPotion(boolean hasPotion) {
+        this.hasPotion = hasPotion;
+    }
+
+    public void updatePotion(){
+        if (potion.getQuantity() > 0) {
+            setPotion(true);
+        }
+        else {
+            setPotion(false);
+        }
+    }
 }
