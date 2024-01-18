@@ -33,6 +33,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public int bulletCount;
     public List<Bullets> bullets;
+    public List<Bombs> bombs; 
     private EnemyManager enemyManager;
     private ObjectManager objectManager;
     private int borderLen = (int) (0.4 * GAME_WIDTH);
@@ -51,8 +52,11 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseY;
     public double offset;
     private boolean playerDying; 
+    public boolean BombReady = true; 
+
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
+    public long lastBomb = 0; 
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 250 milliseconds
@@ -110,6 +114,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
         this.environment = new Environment(this); 
+        bombs = new ArrayList<>(); 
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -132,7 +137,10 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).updateBullets();
          }
-        updateLightning();
+         for (int i = 0; i < bombs.size(); i++) { 
+            bombs.get(i).updateBombs();
+         }
+        updateLightning(); 
         checkLightningIntersect();
         checkBorder();
         checkTransition();
@@ -276,6 +284,10 @@ public class Playing extends State implements KeyListener, MouseListener {
             bullets.get(i).draw(g, xOffset);
         }
 
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).draw(g, xOffset);
+        }
+
         if (inventory) {
             inventoryState.draw(g);
         }
@@ -291,7 +303,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
      public static void setGunIndex(int item){
-        if (item <4){
+        if (item < 4){
             gunIndex = item;
             weapon.getImage();
         }
@@ -342,14 +354,28 @@ public class Playing extends State implements KeyListener, MouseListener {
         }else if (gunIndex ==2 ) {
             rate = fireRateWeapon2;
         }
-        else if (gunIndex == 3) {
-            rate = fireRateWeapon3;
-        }
+        // else if (gunIndex == 3) {
+        //     rate = fireRateWeapon3;
+        // }
 
         //cooldown according to the firerate of gun
         if (time1 > lastBullet + rate) {
             spawnBullet(x, y);
             lastBullet = time1;
+        }
+    }
+
+    public void bombCooldown(int x, int y) {
+        long time1 = System.currentTimeMillis();
+        long rate = 0;
+
+            rate = fireRateWeapon3;
+        
+
+        //cooldown according to the firerate of gun
+        if (time1 > lastBomb + rate && BombReady) {
+            spawnBomb(x, y);
+            lastBomb = time1;
         }
     }
 
@@ -369,6 +395,15 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     }
 
+    private void spawnBomb(int x, int y) {
+
+        if (!paused && !inventory){
+             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
+             bombs.add(bomb);
+         }
+ 
+     }
+
     /**
 	 * Removes bullet from bullet list
 	 * 
@@ -379,6 +414,11 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void removeBullet() {
         bullets.remove(0);
     }
+
+    public void removeBomb() {
+        bombs.remove(0);
+    }
+
 
     public void setPlayerDying(boolean die) { 
         this.playerDying = die; 
@@ -489,7 +529,11 @@ public class Playing extends State implements KeyListener, MouseListener {
 	 */
 
     public void mouseClicked(MouseEvent e) {
+        if(gunIndex != 3)
         bulletCooldown((int) mouseX, (int) mouseY);
+        else if (gunIndex == 3)
+        bombCooldown((int) mouseX, (int) mouseY);
+        
     }
 
 
@@ -505,7 +549,11 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         mouseX = e.getX();
         mouseY = e.getY();
+        if(gunIndex != 3)
         bulletCooldown((int) mouseX, (int) mouseY);
+        else if (gunIndex == 3)
+        bombCooldown((int) mouseX, (int) mouseY);
+
         
         if (!paused && !inventory) {
             if (mouseX < weapon.getX() - xOffset) {
@@ -533,7 +581,11 @@ public class Playing extends State implements KeyListener, MouseListener {
    
     @Override
     public void mousePressed(MouseEvent e) {
+        if(gunIndex != 3)
         bulletCooldown((int) mouseX, (int) mouseY);
+        else if(gunIndex == 3)
+        bombCooldown((int) mouseX, (int) mouseY);
+
        if (paused)
 			pauseScreen.mousePressed(e);
 

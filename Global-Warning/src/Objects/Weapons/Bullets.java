@@ -7,8 +7,10 @@ import Utilities.Constants;
 
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.WEAPON_WIDTH;
+import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.WEAPON_HEIGHT;
+import static Utilities.Atlas.BOMBEXPLODE_ATLAS;
 import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 
@@ -25,6 +27,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
     BufferedImage img;
+    private BufferedImage[][] animations;
+    private  int animationTick, animationIndex, aniSpeed = 15;
     private double x, y, vertX, vertY, initX, initY, targetX, targetY;
     public static double speed1,speed2,speed3;
     private double directionX, directionY;
@@ -32,9 +36,12 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private Playing playing;
     private int[][] lvlData;
     private double time;
-    private boolean explode;
+    private boolean explode = false;
     private int xFlipped = 0; 
     private int wFlipped = 1;
+    private int explodePosX = 0; 
+    private int explodePosY = 0; 
+
     
 
     //upgradeable abilities (fire-rate in playing class)
@@ -88,7 +95,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
         this.directionX = Math.cos(angle);
-        System.out.println("DirectionX: " + directionX);
+        //System.out.println("DirectionX: " + directionX);
         this.directionY = Math.sin(angle);
     }
 
@@ -125,33 +132,37 @@ public class Bullets extends Entities.Entity implements MouseListener {
             playing.removeBullet();
         }
     }
-    else if (Playing.gunIndex == 3) {
-        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
-            // Change x of bomb
-            tempChange = speed * ((vertX / initX) * 10);
-            //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
-            x += tempChange;
-            hitbox.x += tempChange;
-            //System.out.print(", NewX: " + x + "; OldY: " + y );
+    // else if (Playing.gunIndex == 3) {
+    //     if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
+    //         //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
+    //         // Change x of bomb
+    //         tempChange = speed * ((vertX / initX) * 10);
+    //         //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
+    //         x += tempChange;
+    //         hitbox.x += tempChange;
+    //         //System.out.print(", NewX: " + x + "; OldY: " + y );
 
-            tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
-            if ((time + (vertY / initY)) > 0){
-            y += tempChange;
-            hitbox.y += tempChange;
-            }
-            else {
-                y -= tempChange;
-                hitbox.y -= tempChange; 
-            }
-            //System.out.println(", YDel: " + tempChange + ", NewY: " + y);
+    //         tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
+    //         if ((time + (vertY / initY)) > 0){
+    //         y += tempChange;
+    //         hitbox.y += tempChange;
+    //         }
+    //         else {
+    //             y -= tempChange;
+    //             hitbox.y -= tempChange; 
+    //         }
+    //         //System.out.println(", YDel: " + tempChange + ", NewY: " + y);
+    //         explodePosX = (int) hitbox.x; 
+    //         explodePosY = (int) hitbox.y;
             
-        } else {
-            System.out.println("Initiate Explosion");
-            playing.removeBullet();
-        }
-    }
-        
+    //     } else {
+    //         System.out.println("EXPLOSION ASD AT: " + hitbox.x + "y: " + hitbox.y);
+    //         explode = true; 
+    //         System.out.println("Initiate Explosion");
+    //         playing.removeBullet();
+    //     }
+    // }
+    // updateAnimationTick();    
     }
 
     /**
@@ -189,9 +200,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
         } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
             g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
-        } else if (Playing.gunIndex == 3){
-            g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
-        }
+        } 
+        // else if (Playing.gunIndex == 3){
+        //     g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
+        // }
 
 
         // draw bullet hitbox
@@ -210,6 +222,11 @@ public class Bullets extends Entities.Entity implements MouseListener {
             }
         }
 
+        // if (explode){ 
+        //     System.out.println("EXPLOSION AT: " + explodePosX + "y: " + explodePosY);
+        // }
+       // g.drawImage(animations[9][animationIndex], (int) hitbox.x-xOffset , (int) hitbox.y, 64, 64, null);
+
     }
 
     public void getImage() {
@@ -221,6 +238,28 @@ public class Bullets extends Entities.Entity implements MouseListener {
                 this.img = getSpriteAtlas(BOMB_ATLAS);
         }
     }
+
+    // private void loadImage() { 
+    //     BufferedImage img = getSpriteAtlas(BOMBEXPLODE_ATLAS); 
+    //     animations = new BufferedImage[10][15]; 
+    //     for (int i = 0; i < animations.length; i++) {
+    //         for (int j = 0; j < animations[i].length; j++) {
+    //             animations[i][j] = img.getSubimage(j * 32, i * 32, 32, 32);
+    //         }
+    //     }
+    // }
+
+    // private void updateAnimationTick() {
+    //     animationTick++;
+    //     if (animationTick >= animationSpeed) {
+    //         animationTick = 0;
+    //         animationIndex++;
+    //         if (animationIndex >= 6)
+    //             animationIndex = 0;
+    //     }
+    // }
+    
+
 
     /**
      * update bullets for shooting animation
@@ -240,6 +279,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         }
        
     }
+
+
 
     /* Getters */
 
