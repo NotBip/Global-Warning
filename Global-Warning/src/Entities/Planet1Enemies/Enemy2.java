@@ -11,7 +11,7 @@ public class Enemy2 extends Enemy {
         super(x, y, WATERBOI_WIDTH+20, WATERBOI_HEIGHT, Waterboi, waterArrI, waterArrJ, waterW, waterH, WATERBOI_ATLAS, WATERBOI_WIDTH, -1, waterSpeed, waterSizeX, waterSizeY);    
         super.inAir = true; 
         super.lvlData = lvlData; 
-        super.maxHealth = 150;
+        super.maxHealth = getMaxEnemyHealth(Waterboi);
 
     }
     
