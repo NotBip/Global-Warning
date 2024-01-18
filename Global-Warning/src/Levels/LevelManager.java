@@ -49,15 +49,18 @@ public class LevelManager {
 		
 		Level newLevel = levels.get(lvlIndex);
 		//game.getPlaying().getEnemyManager().generateEnemies();
-		if(levels.get(lvlIndex).getWindy()) { //|| levels.get(lvlIndex).getStormy()) {
+		if(levels.get(lvlIndex).isStormLevel()) { //|| levels.get(lvlIndex).getStormy()) {
 			levelSprite = levelSpriteDefault;
 			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_STORM));
-		} else if (levels.get(lvlIndex).getStormy()) {
+		} else if (levels.get(lvlIndex).isFireLevel()) {
 			levelSprite = levelSpriteFire;
 			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_FIRE));
-		} else {
+		} else if (levels.get(lvlIndex).isIceLevel()) {
 			levelSprite = levelSpriteIce;
 			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS_ICE));
+		} else {
+			levelSprite = levelSpriteDefault;
+			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS));
 		}
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());

@@ -32,6 +32,10 @@ public class Entity {
     protected int enemyRangeW, enemyRangeH; 
     protected boolean inWater;
 
+    protected float healthBarWidth; // The default width of the player's health bar
+    protected float healthBarHeight;; // The default height of the player's health bar
+    public float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
+
     public Entity(float x, float y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -64,6 +68,21 @@ public class Entity {
         g.setColor(Color.white);
         g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
     }
+
+    /* 
+    * Changes the players health depending on enemy.
+    * @author Hamad Mohammed
+    * @param value Damage being done 
+    * @since December 16, 2023
+    */
+   public void changeHealth(int value) {
+    currentHealth += value;
+    currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
+    currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
+       System.out.println(healthBarWidth);
+   }
+
+    
 
     /**
      * Checks all of the corners of the entity's possible next position to see if that position can exist 

@@ -47,6 +47,11 @@ public class Level {
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 
+	private boolean fireLevel;
+	private boolean spaceLevel;
+	private boolean iceLevel;
+	private boolean stormLevel;
+
 	public Level(BufferedImage img, Playing playing) {
 		this.img = img;
 		this.playing = playing;
@@ -94,7 +99,10 @@ public class Level {
 				  isCheckpoint = true; 
 				  playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 105: isStormy = true; break;
-		
+		case 106: spaceLevel = true; break;
+		case 107: fireLevel = true; break;
+		case 108: iceLevel = true; break;
+		case 109: stormLevel = true; break;
 		}
 	}
 
@@ -155,6 +163,22 @@ public class Level {
 
 	public boolean getStormy() {
 		return isStormy;
+	}
+
+	public boolean isSpaceLevel() {
+		return spaceLevel;
+	}
+
+	public boolean isFireLevel() {
+		return fireLevel;
+	}
+
+	public boolean isIceLevel() {
+		return iceLevel;
+	}
+
+	public boolean isStormLevel() {
+		return stormLevel;
 	}
 
 	public ArrayList<Enemy2> getWaterBoi() { 

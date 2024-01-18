@@ -51,10 +51,6 @@ public class Player extends Entity {
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
     private boolean isDead = false; 
 
-    private float healthBarWidth; // The default width of the player's health bar
-    private final float healthBarHeight = 30; // The default height of the player's health bar
-    public float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
-
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
 
@@ -65,6 +61,7 @@ public class Player extends Entity {
         this.state = IDLE;
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
+        this.healthBarHeight = 30;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         this.currentOxygenBarLen = oxygenBarWidth;
         Animations();

@@ -146,7 +146,7 @@ public class Constants {
 			case Fireboi:
 				return 100; 	
 			case Waterboi: 
-				return 100; 
+				return 150; 
 
 			default:
 				return 0;

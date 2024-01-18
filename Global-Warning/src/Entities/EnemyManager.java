@@ -29,6 +29,7 @@ public class EnemyManager {
       if(!o.isDead()) {
         o.move(player, lvlData);
         o.enemyHit(bullet, playing);
+        o.checkLightningIntersect(playing);
       }
     }
 
@@ -36,6 +37,7 @@ public class EnemyManager {
       if(!f.isDead()) {
         f.move(player, lvlData);
         f.enemyHit(bullet, playing);
+        f.checkLightningIntersect(playing);
       }
       
       
@@ -63,6 +65,7 @@ public class EnemyManager {
 
   }
 
+ 
 
   public void resetEnemies() {
     for (Enemy2 e : currentLevel.getWaterBoi()) {
