@@ -39,9 +39,6 @@ public class Enemy extends Entity {
     private int enemyRangeWidth = 80;
     private boolean dead = false; 
     private boolean deadOver = false; 
-    private float healthBarWidth; 
-    private float healthBarHeight = 10;
-    private float currentHealthBarLen;
     public boolean isActive = true; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -66,7 +63,8 @@ public class Enemy extends Entity {
         this.enemyRangeH = height+2*enemyRangeWidth; 
         this.enemyRangeW = width+2*enemyRangeWidth; 
 
-        this.healthBarWidth = maxHealth;
+        this.healthBarWidth = 100;
+        this.healthBarHeight = 10;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         Animations(); 
         initialize();
@@ -86,10 +84,10 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player, int[][] lvllData) {
-    if (this.currentHealth <= 0) { 
+    if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
-        
+        animationIndex = 0;
     }
 
     if (!dead){ 
@@ -217,10 +215,6 @@ public class Enemy extends Entity {
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
     }
-    if(dead && state != DEAD) {
-        state = DEAD; 
-        animationIndex = 0;
-    }
     updateAnimationTick(); 
     }
 
@@ -344,7 +338,7 @@ public class Enemy extends Entity {
             if(b.getHitbox().intersects(this.hitbox)) {
                 isActive = true;  
                 playing.removeBullet();
-                changeHealth(PlayerConstants.getPlayerDamage(playing));
+                changeHealth(-PlayerConstants.getPlayerDamage(playing));
             }
         }
     }

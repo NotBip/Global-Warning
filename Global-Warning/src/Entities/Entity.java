@@ -33,7 +33,7 @@ public class Entity {
     protected boolean inWater;
 
     protected float healthBarWidth; // The default width of the player's health bar
-    protected final float healthBarHeight = 30; // The default height of the player's health bar
+    protected float healthBarHeight;; // The default height of the player's health bar
     public float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
 
     public Entity(float x, float y, int width, int height) {
@@ -76,9 +76,10 @@ public class Entity {
     * @since December 16, 2023
     */
    public void changeHealth(int value) {
-       this.currentHealth -= value;
-       this.currentHealth = Math.max(Math.min(this.currentHealth, this.maxHealth), 0);
-       this.currentHealthBarLen = this.healthBarWidth * ((float)currentHealth / (float)maxHealth);
+    currentHealth += value;
+    currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
+    currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
+       System.out.println(healthBarWidth);
    }
 
     

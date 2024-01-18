@@ -61,6 +61,7 @@ public class Player extends Entity {
         this.state = IDLE;
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
+        this.healthBarHeight = 30;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         this.currentOxygenBarLen = oxygenBarWidth;
         Animations();
