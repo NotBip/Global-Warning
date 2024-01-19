@@ -86,7 +86,9 @@ public class ResetSaveButton extends Button {
 
 	public void resetSave() throws IOException{
 		System.out.println(fileNum);
-		Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
+		if (Playing.levelManager.getCurrentLevel().getCheckpoint()!= null) {
+			Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
+		}
 		switch (fileNum) {
 			case 1:
 			SaveButton.save1 = new Save();

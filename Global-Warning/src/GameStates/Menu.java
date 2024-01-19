@@ -79,7 +79,7 @@ public class Menu extends State implements KeyListener, MouseListener {
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
-        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +50, 0, 350, 200, null);
+        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +40, 0, 350, 200, null);
         g.drawImage(this.teachControls, GAME_WIDTH-350, 40, 300, 400, null);
         for (MenuButton mb : buttons)
             mb.draw(g);
