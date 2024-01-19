@@ -175,7 +175,7 @@ public class Death {
 
         if (isIn(e, replayB)) {
 			if (replayB.getMousePressed())
-
+			playing.resetAll();
                 switch (Checkpoint.fileNum) {
                     case 1:
                     SaveState.buttons[0].loadSave(playing);

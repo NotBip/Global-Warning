@@ -85,6 +85,7 @@ public class Player extends Entity {
 
     public void reset() {
         xSpeed = 0;
+        airSpeed = 0;
         dashXSpeed = 0;
         dashYSpeed = 0;
         dashUpdates = 0;
@@ -101,7 +102,6 @@ public class Player extends Entity {
         waterUpdates = 0;
         immunityUpdates = 1;
         currentOxygenBarLen = oxygenBarWidth;
-        
     }
 
     /**

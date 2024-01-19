@@ -385,14 +385,14 @@ public class Enemy extends Entity {
         g.setColor(Color.black);
         g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
          }
-         else if (isBoss)
+         else if (isBoss) {
          g.setColor(Color.red);
          g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
          g.setColor(Color.green);
          g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) currentHealthBarLen, (int) healthBarHeight);
          g.setColor(Color.black);
          g.drawRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
-
+         }
     }
     
 }

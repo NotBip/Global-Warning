@@ -320,6 +320,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         bullets.clear();
         bulletCount = 0;
         bombs.clear();
+        lastBomb = 0;
+        BombReady = true;
     }
 
      public static void setGunIndex(int item){
@@ -468,6 +470,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                 player.setDown(true);
                 break;
             case KeyEvent.VK_SPACE:
+            if(!inventory && !paused && !dead)
                 player.jump();
                 break;
             case KeyEvent.VK_ESCAPE:
@@ -488,10 +491,14 @@ public class Playing extends State implements KeyListener, MouseListener {
                  }
                  break;
             case KeyEvent.VK_SHIFT:
+            if(!inventory && !paused && !dead) {
                 player.dash();
+            }
                 break;
             case KeyEvent.VK_E: 
+            if(!inventory && !paused && !dead) {
                 objectManager.checkInteracts();
+            }
                 break; 
 
         }
@@ -561,8 +568,11 @@ public class Playing extends State implements KeyListener, MouseListener {
     public void mouseClicked(MouseEvent e) {
         if(gunIndex != 3)
         bulletCooldown((int) mouseX, (int) mouseY);
-        else if (gunIndex == 3)
-        bombCooldown((int) mouseX, (int) mouseY);
+        else if (gunIndex == 3) {
+bombCooldown((int) mouseX, (int) mouseY);
+System.out.println("ooga booga");
+        }
+        
         
     }
 
