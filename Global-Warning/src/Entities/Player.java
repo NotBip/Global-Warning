@@ -22,9 +22,7 @@ import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
-    Key key = new Key();
-    Bomb bomb = new Bomb();
-    HealPotion potion = new HealPotion();
+    HealPotion potion = new HealPotion(this);
     UpgradeGem gem = new UpgradeGem();
     private BufferedImage[][] animations;
     private int lvlData[][];
@@ -61,7 +59,11 @@ public class Player extends Entity {
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
-    private boolean isDead = false; 
+    private boolean isDead = false;
+    HealPotion heal = new HealPotion(this);
+    Bomb bomb = new Bomb();
+    Key key = new Key();
+    UpgradeGem upgrade = new UpgradeGem();
 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
@@ -572,5 +574,9 @@ public class Player extends Entity {
         else {
             setPotion(false);
         }
+    }
+
+    public void usePotion() {
+        this.currentHealth += potion.getHealingAmount();
     }
 }

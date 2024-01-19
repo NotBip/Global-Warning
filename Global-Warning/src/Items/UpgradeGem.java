@@ -1,9 +1,11 @@
 package Items;
 
 import Main.Game;
+import Entities.Player;
 
 public class UpgradeGem {
     
+    Player player;
     int damageBoost = 75;
     int firerateBoost = 10;
     int quantity = 0;
@@ -14,6 +16,7 @@ public class UpgradeGem {
 
     public void useItem() {
         quantity --;
+        player.updateUpgrade();
     }
 
     public int getQuantity() {

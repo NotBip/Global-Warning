@@ -7,6 +7,8 @@ import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HOVER_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 import Utilities.Atlas.*;
+import Items.HealPotion;
+import Items.UpgradeGem;
 
 import UserInterface.InventorySlot;
 
@@ -20,6 +22,9 @@ public class InventoryState {
     // variables
     private int position = 100;
 	private Playing playing;
+	private HealPotion heal;
+	private UpgradeGem upgrade;
+
 	private BufferedImage backgroundImg = getSpriteAtlas(INVENTORY_ATLAS);
 	private BufferedImage [] loadImgs;
 	private InventorySlot[] slots= new InventorySlot[6];
@@ -183,15 +188,21 @@ public class InventoryState {
 		slot.select = false;
             if (isIn(e, slot)) {
 			    if (slot.getMousePressed() && !Playing.paused){
+					if(slot.item < 4) {
 					Playing.setGunIndex(slot.item);
+					}
+					else if (slot.item == 4) {
+						Potion.useItem();
+					}
+					else if (slot.item == 6) {
+						UpgradeGem.useItem();
+					}
+				}
 					slot.select = true;
 					
 				}
             }
-
-		}
 		resetButtons();
-
 
 	}
 
