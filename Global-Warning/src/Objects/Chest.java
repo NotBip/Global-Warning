@@ -1,5 +1,6 @@
 package Objects;
 
+import java.awt.Graphics;
 import java.util.Random;
 
 import Main.Game;
@@ -18,6 +19,10 @@ public class Chest extends Object {
 
     public void update() { 
         updateAnimationTick(); 
+    }
+
+    public void drawItem (Graphics g){
+        
     }
 
     public void giveItem() {

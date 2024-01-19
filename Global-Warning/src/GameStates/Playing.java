@@ -289,6 +289,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         drawLightning(g, xOffset);
         player.drawHealthBar(g);
         player.drawOxygenBar(g);
+        player.drawItem(g);
         
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);

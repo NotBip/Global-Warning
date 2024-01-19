@@ -145,6 +145,7 @@ public class ObjectManager{
 	 	if (c.getAniIndex() == 4 && c.getAniTick() == 0 && c.chestOpen && !c.chestOpened){
 			c.chestOpen = (false);
             c.chestOpened = true;
+            c.giveItem();
         }   
 		}
 	}
