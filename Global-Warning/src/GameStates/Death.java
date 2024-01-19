@@ -170,6 +170,7 @@ public class Death {
 				menuBackB.applyGamestate();
 				Playing.paused = false;
                 Playing.dead = false;
+				playing.resetAll();
 		}
 
         if (isIn(e, replayB)) {

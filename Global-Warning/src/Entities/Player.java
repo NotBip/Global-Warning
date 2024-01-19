@@ -83,6 +83,27 @@ public class Player extends Entity {
         hitbox.y = y;
     }
 
+    public void reset() {
+        xSpeed = 0;
+        dashXSpeed = 0;
+        dashYSpeed = 0;
+        dashUpdates = 0;
+        updatesBetweenDash = 0;
+        isDashing = false;
+        canDash = true;
+        playerDir = RIGHT;
+        wallJumpUpdates = 0;
+        moving = false;
+        animationIndex = 0;
+        animationTick = 0;
+        state = IDLE;
+        inAir = true;
+        waterUpdates = 0;
+        immunityUpdates = 1;
+        currentOxygenBarLen = oxygenBarWidth;
+        
+    }
+
     /**
      * Updates the player's position, direction and sprite 
      * 

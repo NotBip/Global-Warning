@@ -313,8 +313,13 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
        
 
-    public void reset() {
-
+    public void resetAll() {
+        player.reset();
+        enemyManager.resetEnemies();
+        resetLightning();
+        bullets.clear();
+        bulletCount = 0;
+        bombs.clear();
     }
 
      public static void setGunIndex(int item){
