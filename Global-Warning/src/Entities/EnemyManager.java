@@ -29,6 +29,7 @@ public class EnemyManager {
   try { 
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       if(!o.isDead()) {
+        System.out.println(o.xEnemyFlipped);
         o.move(player, lvlData);
         o.enemyHit(bullet, playing);
         o.checkLightningIntersect(playing);

@@ -29,8 +29,8 @@ public class Enemy extends Entity {
     protected int direction = LEFT; 
     private String state = WALK; 
     private BufferedImage[][] animations; 
-    private int xFlipped, xEnemyFlipped; 
-    private int wFlipped, wEnemyFlipped; 
+    public int xFlipped, xEnemyFlipped; 
+    public int wFlipped, wEnemyFlipped; 
     private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
     private String Atlas; 
     private float xSpeed, moveSpeed; 
@@ -55,6 +55,8 @@ public class Enemy extends Entity {
         this.xSpeed = this.moveSpeed; 
         this.xFlipped = xFlipped; 
         this.wFlipped = wFlipped;
+        this.wEnemyFlipped = -1; 
+        this.xEnemyFlipped = enemyW; 
         this.Atlas = Atlas; 
         this.enemyType = EnemyType; 
         this.arrI = arrI;
@@ -94,10 +96,11 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
-        enemyRange.x = xEnemyFlipped + (this.hitbox.x-enemyRangeWidth + 100); 
+        enemyRange.x = //xEnemyFlipped + 
+        (this.hitbox.x-enemyRangeWidth+100); 
         enemyRange.y = this.hitbox.y-enemyRangeHeight; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
-        enemyRange.width = (int) wFlipped*(this.hitbox.width+2*enemyRangeWidth); 
+        enemyRange.width =  wEnemyFlipped*(this.hitbox.width+2*enemyRangeWidth); 
         if (!player.hitbox.intersects(enemyRange))
         state = WALK; 
 
@@ -226,22 +229,27 @@ public class Enemy extends Entity {
 		if (xFlipped == 0){  
 			xFlipped = width;
         }
-        else if (xFlipped == width)
+        else 
             xFlipped = 0; 
 
         if(xEnemyFlipped == 0)  
-            xEnemyFlipped = (int) enemyRange.width; 
-        else if (xEnemyFlipped == (int) enemyRange.width)
+            xEnemyFlipped = enemyRangeW; 
+        else
             xEnemyFlipped = 0; 
         
 
         }
 
 	public void flipW() {
-		if (wFlipped == 1 )
+		if (wFlipped == 1)
 			wFlipped = -1;
-        else if (wFlipped == -1)
-            wFlipped = 1; 
+        else 
+            wFlipped = 1;
+
+        if (wEnemyFlipped == 1)
+        wEnemyFlipped = -1;
+        else 
+        wEnemyFlipped = 1; 
     }
 
     public int flipD() { 

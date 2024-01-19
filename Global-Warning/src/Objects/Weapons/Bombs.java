@@ -120,7 +120,6 @@ public class Bombs extends Entity {
 
         if(explode){ 
             updateAnimationTick();   
-            System.out.println(animationIndex);
             drawBombAnimation(g, xOffset);
             if(animationIndex >= 5 && animationTick >= aniSpeed - 1){ 
             playing.BombReady = true; 
