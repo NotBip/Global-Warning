@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import GameStates.GameState;
 import GameStates.Playing;
+import Objects.Weapons.Bombs;
 import UserInterface.SaveButton;
 
 import static Utilities.Constants.Directions.*;
@@ -91,6 +92,11 @@ public class Player extends Entity {
      */
 
     public void update(Playing playing) {
+        for(Bombs b : playing.getBombs()) { 
+            if(b.explode)
+                if(this.getHitbox().intersects(b.bombHitbox))
+                    this.changeHealth(-maxHealth);
+        }
         moving = false; // Stop the player movement animation in case they stop moving this update
         if (currentHealth <= 0) { 
             if (state != DEAD) { 

@@ -29,8 +29,7 @@ public class EnemyManager {
   try { 
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       if(!o.isDead()) {
-        System.out.println(o.xEnemyFlipped);
-        o.move(player, lvlData);
+        o.move(player, lvlData, playing);
         o.enemyHit(bullet, playing);
         o.checkLightningIntersect(playing);
       }
@@ -38,7 +37,7 @@ public class EnemyManager {
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
-        f.move(player, lvlData);
+        f.move(player, lvlData, playing);
         f.enemyHit(bullet, playing);
         f.checkLightningIntersect(playing);
       }
@@ -46,7 +45,7 @@ public class EnemyManager {
 
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
-        b.move(player, lvlData);
+        b.move(player, lvlData, playing);
         b.enemyHit(bullet, playing);
       }
     }

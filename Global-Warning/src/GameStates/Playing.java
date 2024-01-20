@@ -322,7 +322,10 @@ public class Playing extends State implements KeyListener, MouseListener {
             gunIndex = item;
             weapon.getImage();
         }
+    }
 
+    public List<Bombs> getBombs() { 
+        return bombs; 
     }
 
     public Weapon1 getWeapon1() {

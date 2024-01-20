@@ -15,6 +15,7 @@ import GameStates.Playing;
 import Objects.Chest;
 import Objects.Object;
 import Objects.ObjectManager;
+import Objects.Weapons.Bombs;
 import Objects.Weapons.Bullets;
 import Utilities.Constants;
 import Utilities.Constants.PlayerConstants;
@@ -44,7 +45,7 @@ public class Enemy extends Entity {
     public float healthBarHeight = 10;
     private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
-    protected boolean isBoss = false; 
+    protected boolean isBoss = false;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -87,7 +88,7 @@ public class Enemy extends Entity {
         this.lvlData = lvlData;
     }
 
-    public void move(Player player, int[][] lvllData) {
+    public void move(Player player, int[][] lvllData, Playing playing) {
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
@@ -96,11 +97,16 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
-        enemyRange.x = //xEnemyFlipped + 
-        (this.hitbox.x-enemyRangeWidth+100); 
-        enemyRange.y = this.hitbox.y-enemyRangeHeight; 
-        enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
-        enemyRange.width =  wEnemyFlipped*(this.hitbox.width+2*enemyRangeWidth); 
+        for (Bombs b : playing.getBombs()) { 
+            if(b.explode)
+                if(b.hitbox.intersects(this.hitbox)) 
+                    this.changeHealth(-50);
+
+        }
+        enemyRange.x = this.hitbox.x-enemyRangeWidth; 
+        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
+        enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
         if (!player.hitbox.intersects(enemyRange))
         state = WALK; 
 

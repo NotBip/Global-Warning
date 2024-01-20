@@ -10,6 +10,7 @@ import static Utilities.Constants.animationSpeed;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 
@@ -27,12 +28,18 @@ public class Bombs extends Entity {
     private Playing playing;
     private int[][] lvlData;
     private double time;
-    private boolean explode = false;
+    public boolean explode = false;
     private int xFlipped = 0; 
     private int wFlipped = 1;
     private int explodePosX = 0; 
     private int explodePosY = 0; 
     private Weapon1 weapon;
+    private float bombRangeX; 
+    private float bombRangeY; 
+    private float bombRangeW; 
+    private float bombRangeH; 
+    public Rectangle2D.Float bombHitbox; 
+
 
 
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
@@ -49,6 +56,8 @@ public class Bombs extends Entity {
         this.targetY = targetY - startY;
         this.playing = playing; 
         this.weapon = weapon; 
+        this.bombHitbox = new Rectangle2D.Float((float)startX, (float)startY, 128, 128);
+
         // System.out.println("X: " + x + " vertX: " + vertX);
         // System.out.println("Y: " + y + " vertY: " + vertY);
         loadImage(); 
@@ -65,13 +74,17 @@ public class Bombs extends Entity {
     }
 
     public void update() { 
-
         double tempChange = 0;
 
     if (Playing.gunIndex == 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
             //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
             // Change x of bomb
+            this.bombHitbox.x = hitbox.x-32; 
+            this.bombHitbox.y = hitbox.y-32; 
+            this.bombHitbox.width = 128; 
+            this.bombHitbox.height = 128; 
+    
             if(playing.BombReady)
             playing.BombReady = false; 
 
@@ -132,6 +145,8 @@ public class Bombs extends Entity {
     }
 
     public void drawBombAnimation(Graphics g, int xOffset) { 
+        g.setColor(Color.white);
+        g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
         g.drawImage(animations[9][animationIndex], (int) hitbox.x-32-xOffset , (int) hitbox.y-32, 128, 128, null);
     }
 
