@@ -4,6 +4,8 @@ import static Utilities.Atlas.FIREBALL_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -12,22 +14,26 @@ import Entities.Entity;
 public class Fireballs extends Entity {
 
     private BufferedImage[][] fireballAnimations;
-    private int animationTick, animationIndex, aniSpeed = 5;
+    private int animationTick, animationIndex, aniSpeed = 15;
     private float x, y; 
-    private Rectangle2D.Float fireballHitbox; 
+    public Rectangle2D.Float fireballHitbox; 
+    
     public Fireballs(float x, float y) {
-        super(100, 100, 120, 80);
-        x = 100; 
+        super(x, 100, 120, 80);
+        this.x = x; 
         y = 100; 
-        fireballHitbox = new Rectangle2D.Float(100, 100, 120, 80); 
+        fireballHitbox = new Rectangle2D.Float(x, 70, 100, 60); 
+        super.inAir = true; 
         loadImage();
     }
 
 
     public void update() { 
-        y += 1.5; 
-        fireballHitbox.y = y; 
+
+        fireballHitbox.y += 2; 
+        System.out.println(y);
         updateAnimationTick(); 
+
     }
 
     private void loadImage() { 
@@ -35,7 +41,7 @@ public class Fireballs extends Entity {
         fireballAnimations = new BufferedImage[1][5]; 
         for (int i = 0; i < fireballAnimations.length; i++) {
             for (int j = 0; j < fireballAnimations[i].length; j++) {
-                fireballAnimations[i][j] = fireball.getSubimage(j * 60, i * 40, 60, 40);
+                fireballAnimations[i][j] = fireball.getSubimage(j * 66, i * 34, 66, 34);
             }
         }
     }
@@ -51,9 +57,12 @@ public class Fireballs extends Entity {
     }
 
     public void drawFireBall(Graphics g, int xOffset) { 
-        System.out.println(y);
+        Graphics2D g2d = (Graphics2D)g; 
+        AffineTransform oldXForm = g2d.getTransform();
+        g2d.rotate(Math.PI/2, fireballHitbox.x, fireballHitbox.y);
         g.drawRect((int) fireballHitbox.x, (int)  fireballHitbox.y, (int)  fireballHitbox.width, (int) fireballHitbox.height);
-        g.drawImage(fireballAnimations[0][animationIndex], (int) 100 - xOffset, (int) y, 120, 80, null); 
+        g.drawImage(fireballAnimations[0][animationIndex], (int) fireballHitbox.x - xOffset, (int) fireballHitbox.y, 120, 80, null); 
+        g2d.setTransform(oldXForm);
     }
 
 

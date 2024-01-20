@@ -90,7 +90,7 @@ public class Weapon1 implements MouseMotionListener {
         }
         }
         g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
-        g2d.setTransform(oldXForm);
+            g2d.setTransform(oldXForm);
 
      }
 

@@ -2,6 +2,7 @@ package Entities;
 
 import static Utilities.Atlas.*;
 import static Utilities.Constants.GAME_HEIGHT;
+import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
 
@@ -48,8 +49,9 @@ public class Enemy extends Entity {
     private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
     protected boolean isBoss = false;
+    public int fireballCooldown = 40; // How long it takes after choosing a position for lightning to strike
     private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
-
+    public int fireballUpdate = 0; 
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -103,9 +105,14 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
+        fireballUpdate++; 
         magicAttack(); 
         for (Fireballs f : fireballs) { 
-            f.update();
+            if(canMove(f.fireballHitbox.x, f.fireballHitbox.y, f.fireballHitbox.width, f.fireballHitbox.height, lvllData)) { 
+                f.update();
+            }
+            else 
+                fireballs.remove(f); 
         }
         
         for (Bombs b : playing.getBombs()) { 
@@ -434,10 +441,11 @@ public class Enemy extends Entity {
     }
 
     public void magicAttack() { 
-        if(fireballs.isEmpty())
+        if(fireballUpdate  >= fireballCooldown)
             if(this.enemyType == Demonboi)
                 if(state == MAGIC){ 
-                    fireballs.add(new Fireballs(100, 100));
+                    fireballs.add(new Fireballs((int) (Math.random()*(GAME_WIDTH-200)+100), 100));
+                    fireballUpdate = 0; 
                 }
     }
 
