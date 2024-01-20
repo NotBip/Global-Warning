@@ -9,6 +9,7 @@ import Utilities.LoadSave;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.ObjectManager;
+import Objects.Sign;
 import Objects.Spike;
 import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
@@ -32,6 +33,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     //public static Weapon1 weapon;
     public static Weapon1 weapon;
     public  Player player;
+    private Game game;
 
     public int bulletCount;
     public List<Bullets> bullets;
@@ -70,7 +72,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
-    public int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
+    public int lightningSpawnCooldown = 120; // How long it takes after choosing a position for lightning to strike
     public float lightningPosX;
     public float lightningHeight;
     public Rectangle2D.Float lightningHitbox;
@@ -78,6 +80,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public Playing(Game game) {
         super(game);
+        this.game = game;
         System.out.println("we're in session!");
         initialize();
     }
@@ -130,6 +133,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
 
     public void update() throws IOException {
+        if(!game.getPanel().inFocus) {
+            paused = true;
+        }
+
         if(dead){
             gameOver.update();
         }else if (paused) {
@@ -150,6 +157,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         updateLightning(); 
         checkLightningIntersect();
         checkBorder();
+        checkTouchingSign();
         checkLightningIntersect();
         checkTransition();
         
@@ -238,7 +246,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         if(levelManager.getCurrentLevel().getStormy()) {
             lightningUpdates++;
             if(lightningUpdates >= lightningPosCooldown && !lightningHasPos) {
-                lightningPosX = player.getHitbox().x + player.getMoveSpeed();
+                lightningPosX = player.getHitbox().x + player.getXSpeed();
                 int currentTileX = (int) (lightningPosX / TILE_SIZE);
                  for(int i = 0; i < HEIGHT_IN_TILES; i++) {
                     if(levelManager.getCurrentLevel().getLevelData()[i][currentTileX] != 11) {
@@ -249,7 +257,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                 lightningHasPos = true;
                 lightningHitbox = new Rectangle2D.Float(lightningPosX, 0, 32, lightningHeight);
             }
-            if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 2) {
+            if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown * 1.5) {
                resetLightning();
             }
         } else {
@@ -260,19 +268,27 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void drawLightning(Graphics g, int xOffset) {
         if(lightningUpdates >= lightningPosCooldown && lightningHasPos && lightningUpdates <= lightningPosCooldown + lightningSpawnCooldown) {
             g.setColor(Color.RED);
-            if(lightningUpdates % 8 <= 2)
-            g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
+            if(lightningUpdates % 10 <= 3) { // Flash the lightning warning before it strikes
+                g.fillRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
+            }
         }
-
-        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) {
             environment.drawLightning(g, xOffset);
-        
+        }
     }
 
     private void resetLightning() {
         lightningHasPos = false;
         lightningUpdates = 0;
         lightningHitbox = null;
+    }
+
+    private void checkTouchingSign() {
+        for(Sign s : levelManager.getCurrentLevel().getSigns()) {
+            if(player.getHitbox().intersects(s.getHitbox()) && !s.hasBeenRead()) {
+                s.setHasBeenRead(true);
+            }
+        }
     }
 
     public void draw(Graphics g) throws IOException {
@@ -282,6 +298,12 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.draw(g, xOffset);
         levelManager.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
+
+        for(Sign s: levelManager.getCurrentLevel().getSigns()) {
+            if(s.hasBeenRead()) {
+                s.drawText(g, xOffset, s.getText());
+            }
+        }
 
         if (getLevelManager().getCurrentLevel().getIsCheckpoint())
         getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
@@ -411,7 +433,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
-            Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
+            Bullets bullet = new Bullets(weapon, this, player.getHitbox().x + player.getHitbox().width/2, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
         }
 
@@ -420,7 +442,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBomb(int x, int y) {
 
         if (!paused && !inventory){
-             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
+             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, player.getHitbox().x + player.getHitbox().width/2-5, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
          }
  
@@ -480,6 +502,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                         inventoryState.reset();
                     } else {
                         paused = !paused;
+                        player.pauseReset();
                     }
                  }
                  break;
@@ -487,7 +510,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                  if (!paused && !dead){
 			         inventory = !inventory;
                      inventoryState.reset();
-                     
+                     player.pauseReset();
                  }
                  break;
             case KeyEvent.VK_SHIFT:
@@ -570,7 +593,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         bulletCooldown((int) mouseX, (int) mouseY);
         else if (gunIndex == 3) {
 bombCooldown((int) mouseX, (int) mouseY);
-System.out.println("ooga booga");
+
         }
         
         

@@ -19,12 +19,12 @@ public class gameFrame extends JFrame{
 
             @Override
             public void windowGainedFocus(WindowEvent e) {
-                
+                panel.inFocus = true;
             }
 
             @Override
             public void windowLostFocus(WindowEvent e) {
-                
+                panel.inFocus = false;
             }
             
         });

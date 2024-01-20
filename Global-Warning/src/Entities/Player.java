@@ -38,21 +38,19 @@ public class Player extends Entity {
     private boolean isWindy = false; // If the level the player is on is windy
     private boolean hasKey = true; // If the player has a key
     private boolean hasBomb = true; // If the player has a bomb
-    private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
-    private int xFlipped = 0;
-    private int wFlipped = 1;
+    private int xFlipped = 0; // 0 = origin of where the player is drawn is from the top left, width = top right
+    private int wFlipped = 1; // 1 = width goes from left to right, -1 = width goes from right to left
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private final int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
-    private boolean immune = true;
-    private int immunityUpdates = 0;
-    private int maxImmunityUpdates = 60;
+    private boolean immune = true; // Is the player immune from damage?
+    private int immunityUpdates = 0; // The amount of updates that have passed since the player last took damage
+    private int maxImmunityUpdates = 60; // The maximum amount of time the player can be immune
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
-    private boolean isDead = false; 
-
+    private boolean isDead = false; // Is the player dead?
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
 
@@ -93,6 +91,8 @@ public class Player extends Entity {
         isDashing = false;
         canDash = true;
         playerDir = RIGHT;
+        left = false;
+        right = false;
         wallJumpUpdates = 0;
         moving = false;
         animationIndex = 0;
@@ -102,6 +102,11 @@ public class Player extends Entity {
         waterUpdates = 0;
         immunityUpdates = 1;
         currentOxygenBarLen = oxygenBarWidth;
+    }
+
+    public void pauseReset() {
+        left = false;
+        right = false;
     }
 
     /**
@@ -367,6 +372,17 @@ public class Player extends Entity {
             dashXSpeed /= Math.sqrt(2);
             dashYSpeed /= Math.sqrt(2);
         }
+    }
+
+    public boolean checkWater(float x, float y, int[][] lvlData) {
+        int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
+        int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
+
+        if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) {
+            return true;
+        } 
+
+        return false;
     }
 
     public void setLeft(boolean left) {

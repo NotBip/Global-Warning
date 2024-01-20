@@ -61,6 +61,7 @@ public class ObjectManager{
         drawSpikes(g, xOffset);
         drawChests(g, xOffset);
         drawDoors(g, xOffset);
+        //drawTutorialSigns(g, xOffset);
     }
 
     public void checkInteracts() { 
@@ -90,6 +91,13 @@ public class ObjectManager{
         for (Spike s : playing.getLevelManager().getCurrentLevel().getSpike()) { 
             g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().getWidth(), (int) s.getHitbox().getHeight(), null);
             }
+    }
+
+    private void drawTutorialSigns(Graphics g, int xOffset) {
+        for (Sign s : playing.getLevelManager().getCurrentLevel().getSigns()) {
+            s.drawHitbox(g, xOffset);
+            g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) (s.getHitbox().y + s.getHitbox().height), (int) s.getHitbox().getWidth(), (int) SIGN_HEIGHT, null);
+        }
     }
 
     private void drawChests(Graphics g, int xOffset) { 

@@ -1,8 +1,7 @@
 package Levels;
 
-import static Utilities.Constants.objectConstants.Spike;
-import static Utilities.Constants.objectConstants.Chest;
-import static Utilities.Constants.objectConstants.Door;
+import static Utilities.Constants.objectConstants.*;
+
 import static Utilities.Constants.TILE_SIZE;
 import java.awt.Color;
 import java.awt.Point;
@@ -15,6 +14,7 @@ import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.Sign;
 import Objects.Spike;
 
 import Objects.Saving.Checkpoint;
@@ -48,6 +48,10 @@ public class Level {
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 	private ArrayList<Boss> Demonboi = new ArrayList<Boss>(); 
+	private ArrayList<Sign> signs = new ArrayList<Sign>();
+
+	private String[] tutorialText = {"Use WASD to MOVE!", "Press SPACE to JUMP!", "Jump on a wall to WALLJUMP", "Press SHIFT to DASH!"};
+	private int tutorialTextIndex = 0;
 
 	private boolean fireLevel;
 	private boolean spaceLevel;
@@ -120,6 +124,7 @@ public class Level {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
 			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break;
 			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
+			case 1: signs.add(new Sign(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Sign, tutorialText[tutorialTextIndex++]));
 		}
 	}
 
@@ -207,6 +212,10 @@ public class Level {
 
 	public ArrayList<BarrierDoor> getDoor() {
 		return door;
+	}
+
+	public ArrayList<Sign> getSigns() {
+		return signs;
 	}
 
 	public Checkpoint getCheckpoint() {

@@ -14,6 +14,7 @@ import UserInputs.MouseInputs;
 
 public class gamePanel extends JPanel{
     private Game game;
+    public boolean inFocus = true;
 
     public gamePanel(Game game) {
         this.game = game;

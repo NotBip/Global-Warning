@@ -67,7 +67,6 @@ public class Weapon1 implements MouseMotionListener {
         g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
 
         if (!Playing.paused && !Playing.inventory && !Playing.dead){
-           // System.out.println(playing.getAngle());
            if (Playing.gunIndex < 3){
             if (playing.mouseX < this.x-xOffset){
                 this.xFlipped = 0; 

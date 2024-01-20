@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import GameStates.Playing;
+import Objects.Sign;
 import Objects.Spike;
 import Utilities.Constants;
 import Utilities.LoadSave;
@@ -61,6 +62,10 @@ public class LevelManager {
 		} else {
 			levelSprite = levelSpriteDefault;
 			playing.setBackGround(LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS));
+		}
+		for(Sign s : newLevel.getSigns()) {
+			s.setHasBeenRead(false);
+			s.setTextOpacity(0);
 		}
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());

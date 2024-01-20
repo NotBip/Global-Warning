@@ -168,6 +168,10 @@ public class Game implements Runnable {
         return options;
     }
 
+    public gamePanel getPanel() {
+        return panel;
+    }
+
 
 
 }

@@ -26,7 +26,7 @@ public class Save {
     Blank constructor will enter null string or 0 for each field*/
     public Save () {
         numberLevel = 0;
-        weaponHold = 2;
+        weaponHold = 1;
         playerHealth = 0;
         cooldownWeap1 = 300;
         cooldownWeap2 = 300;

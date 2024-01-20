@@ -7,6 +7,7 @@ import static Utilities.Constants.EnemyConstants.*;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -45,6 +46,10 @@ public class Enemy extends Entity {
     public boolean isActive = false; 
     protected boolean isBoss = false; 
 
+    protected Rectangle2D.Float enemyRange; 
+    protected float enemyRangeX, enemyRangeY; 
+    protected int enemyRangeW, enemyRangeH; 
+
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
 
@@ -66,6 +71,7 @@ public class Enemy extends Entity {
         this.enemyRangeY = y-enemyRangeWidth; 
         this.enemyRangeH = height+2*enemyRangeWidth; 
         this.enemyRangeW = width+2*enemyRangeWidth;
+        this.enemyRange = new Rectangle2D.Float(enemyRangeX, enemyRangeY, enemyRangeW, enemyRangeH); 
 
         Animations(); 
         initialize();
@@ -258,13 +264,18 @@ public class Enemy extends Entity {
 	}
 
     public void draw(Graphics g, int xOffset) {
-        g.setColor(Color.white);
-        drawHitbox(g, xOffset);
+        
         if (!deadOver)
         g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
         }
+    }
+
+    public void drawHitbox(Graphics g, int xOffset) {
+        g.setColor(Color.white);
+        super.drawHitbox(g, xOffset);
+        g.drawRect((int) enemyRange.x-xOffset, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     /**
@@ -287,8 +298,8 @@ public class Enemy extends Entity {
 		return aniIndex;
 	}
 
-	public void getEnemyState() {
-
+	public String getEnemyState() {
+        return state;
     }
 
     protected void checkPlayerHit(Player player) {
@@ -326,7 +337,7 @@ public class Enemy extends Entity {
 
       public void checkLightningIntersect(Playing playing) {
         if(playing.lightningHitbox != null && playing.lightningUpdates >= playing.lightningPosCooldown + playing.lightningSpawnCooldown)
-        if(hitbox.intersects(playing.lightningHitbox) && playing.lightningHasPos) { // fix when this happens
+        if(hitbox.intersects(playing.lightningHitbox) && playing.lightningHasPos) { 
             dead();
         }
     }
@@ -371,9 +382,15 @@ public class Enemy extends Entity {
     }
 
     public void dead() {
-        this.currentHealth = 0;
-        this.currentHealthBarLen = 0; 
-        animationIndex = 0;
+        if(!dead) {
+            state = DEAD;
+            dead = true;
+            this.isActive = true;
+            this.currentHealth = 0;
+            this.currentHealthBarLen = 0; 
+            animationIndex = 0;
+        }
+        
     }
 
     public void drawHealth(Graphics g, int xOffset) {

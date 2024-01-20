@@ -67,8 +67,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.vertY = targetY - startY;
         this.targetX = targetX + xOffset - startX;
         this.targetY = targetY - startY;
-        System.out.println("X: " + x + " vertX: " + vertX);
-        System.out.println("Y: " + y + " vertY: " + vertY);
         this.lvlData = lvlData;
         this.time = time;
 
@@ -95,7 +93,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
         this.directionX = Math.cos(angle);
-        //System.out.println("DirectionX: " + directionX);
         this.directionY = Math.sin(angle);
     }
 

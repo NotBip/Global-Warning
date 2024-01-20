@@ -49,8 +49,6 @@ public class Bombs extends Entity {
         this.targetY = targetY - startY;
         this.playing = playing; 
         this.weapon = weapon; 
-        // System.out.println("X: " + x + " vertX: " + vertX);
-        // System.out.println("Y: " + y + " vertY: " + vertY);
         loadImage(); 
         initialize();
     }
@@ -60,7 +58,6 @@ public class Bombs extends Entity {
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
         this.directionX = Math.cos(angle);
-        //System.out.println("DirectionX: " + directionX);
         this.directionY = Math.sin(angle);
     }
 
@@ -70,16 +67,16 @@ public class Bombs extends Entity {
 
     if (Playing.gunIndex == 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
             // Change x of bomb
             if(playing.BombReady)
             playing.BombReady = false; 
 
-            tempChange = speed * ((vertX / initX) * 10);
-            //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
+            tempChange = Math.min(speed * ((vertX / initX) * 10), 3 * speed); // cap out the speed at 3 * the speed
+            if(tempChange < 0) { // cap out if bomb is moving at negative speed
+                tempChange = Math.max(tempChange, -3);
+            }
             x += tempChange;
             hitbox.x += tempChange;
-            //System.out.print(", NewX: " + x + "; OldY: " + y );
 
             tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
             if ((time + (vertY / initY)) > 0){
@@ -90,15 +87,12 @@ public class Bombs extends Entity {
                 y -= tempChange;
                 hitbox.y -= tempChange; 
             }
-            //System.out.println(", YDel: " + tempChange + ", NewY: " + y);
             explodePosX = (int) hitbox.x; 
             explodePosY = (int) hitbox.y;
             
         } else {
             playing.BombReady = false; 
-        //    System.out.println("EXPLOSION ASD AT: " + hitbox.x + "y: " + hitbox.y);
             explode = true; 
-           // System.out.println("Initiate Explosion");
             //playing.removeBomb();
         }
     }
@@ -120,16 +114,12 @@ public class Bombs extends Entity {
 
         if(explode){ 
             updateAnimationTick();   
-            System.out.println(animationIndex);
             drawBombAnimation(g, xOffset);
             if(animationIndex >= 5 && animationTick >= aniSpeed - 1){ 
             playing.BombReady = true; 
             playing.removeBomb();
             }
         }
-
-
-
     }
 
     public void drawBombAnimation(Graphics g, int xOffset) { 

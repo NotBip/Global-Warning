@@ -1,40 +1,31 @@
 package Entities;
 
 import static Utilities.Constants.GAME_HEIGHT;
-import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.HEIGHT_IN_TILES;
 import static Utilities.Constants.TILE_SIZE;
-import static Utilities.Constants.WIDTH_IN_TILES;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 
-import Main.Game;
-
 public class Entity {
-    protected float x;
-    protected float y;
-    protected int width;
-    protected int height;
-    protected float xSpeed;
-    protected float airSpeed;
-    protected Rectangle2D.Float hitbox;
-    protected int state;
-    protected boolean inAir;
-    public int maxHealth;
-    public int currentHealth;
-    protected int animationTick;
-    protected int animationIndex;
-    protected int[][] lvlData;
-    protected Rectangle2D.Float enemyRange; 
-    protected float enemyRangeX, enemyRangeY; 
-    protected int enemyRangeW, enemyRangeH; 
-    protected boolean inWater;
+    protected float x; // x coordinate of left side of the entity
+    protected float y; // y coordinate of top side of the entity
+    protected int width; // width of the entity
+    protected int height; // height of the entity
+    protected float xSpeed; // horizontal speed of the entity
+    protected float airSpeed; // vertical speed of the entity
+    protected Rectangle2D.Float hitbox; // hitbox of the entity
+    protected int state; // current state of entity
+    protected boolean inAir; // is the entity in the air?
+    public int maxHealth; // maximum health of the entity
+    public int currentHealth; // current health of the entity
+    protected int animationTick; // ticker that increases every update, change animation index based on animation speed
+    protected int animationIndex; // current index/sprite of animation to be drawn, updates when animation tick exceeds animation speed
+    protected int[][] lvlData; // data of the current room
 
-    protected float healthBarWidth; // The default width of the player's health bar
-    protected float healthBarHeight;; // The default height of the player's health bar
-    public float currentHealthBarLen; // The current width of the player's health bar (depending on damage taken)
+    protected float healthBarWidth; // The default width of the entity's health bar
+    protected float healthBarHeight;; // The default height of the entity's health bar
+    public float currentHealthBarLen; // The current width of the entity's health bar (depending on damage taken)
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;
@@ -44,7 +35,6 @@ public class Entity {
     }
 
     protected void initialize() {
-        enemyRange = new Rectangle2D.Float(enemyRangeX, enemyRangeY, enemyRangeW, enemyRangeH); 
         hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
@@ -67,7 +57,6 @@ public class Entity {
     public void drawHitbox(Graphics g, int offset) {
         g.setColor(Color.white);
         g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
-        g.drawRect((int) enemyRange.x-offset, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     /* 
@@ -82,8 +71,6 @@ public class Entity {
     currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
        System.out.println(healthBarWidth);
    }
-
-    
 
     /**
      * Checks all of the corners of the entity's possible next position to see if that position can exist 
@@ -132,7 +119,7 @@ public class Entity {
         
         try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
             if (lvlData[lvlY][lvlX] != 11) { // Check if the entity is on an air tile
-                if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) {
+                if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) { // Check water tiles
                     return false;
                 }    
                 return true;
@@ -142,30 +129,6 @@ public class Entity {
         }
         return false;
     }
-
-    /**
-     * @author Hamad Mohammed & Ryder Hodgson
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return
-     */
-        public boolean onSpikes(float x, float y, int[][] lvlData) { 
-            
-            int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
-            int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
-            try { // Catch possible errors where the x and/or y tiles are still somehow calculated to be out of the bounds of the window
-                if (lvlData[lvlY][lvlX] == 6) { // Check if the entity is on an air tile
-                    System.out.println("oop");
-                            return true;
-                        }
-            } catch(Exception e) {
-                return false;
-            }
-            return false;
-        }
 
     /**
      * @author Ryder Hodgson
@@ -186,18 +149,6 @@ public class Entity {
         }
         return true;
         }
-
-    public boolean checkWater(float x, float y, int[][] lvlData) {
-        int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
-        int lvlY = (int) (y / TILE_SIZE); // The current tile the entity is on in the vertical
-
-        if(lvlData[lvlY][lvlX] == 48 || lvlData[lvlY][lvlX] == 49) {
-            this.inWater = true;
-            return true;
-        } 
-
-        return false;
-    }
 
     /**
      * if the entity hits the ground or a ceiling while moving, sets the y position to compensate for the lost movement

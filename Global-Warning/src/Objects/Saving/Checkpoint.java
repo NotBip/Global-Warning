@@ -8,6 +8,7 @@ import Entities.Entity;
 import Entities.Player;
 import GameStates.Playing;
 import Levels.LevelManager;
+import Objects.Chest;
 import UserInterface.SaveButton;
 
 public class Checkpoint extends Entity {
@@ -55,7 +56,7 @@ public class Checkpoint extends Entity {
 			g.drawImage(getSpriteAtlas(SAVED_ATLAS), (int)x - 30 - xOffset, (int)y-40, width+50, height-30, null);
 		 }
 
-		drawHitbox(g, xOffset);
+		//drawHitbox(g, xOffset);
 	
 	}
 
