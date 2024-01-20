@@ -66,6 +66,7 @@ public class Constants {
 			public static final String RUN = "RUN"; 
 			public static final String ATTACK = "ATTACK"; 
 			public static final String DEAD = "DEAD"; 
+			public static final String MAGIC = "MAGIC"; 
 
 			public static final int Waterboi = 0; 
 			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
@@ -107,10 +108,10 @@ public class Constants {
 			public static final int DEMONBOI_HEIGHT = 247 * (int) Game.SCALE; 
 			public static final int DEMONBOI_WIDTH = 250 *(int) Game.SCALE; 
 			public static final int demonAttackSpeed = 10; 
-			public static final int demonboiArrI = 5; 
+			public static final int demonboiArrI = 6; 
 			public static final int demonboiArrJ = 22; 
 			public static final int demonboiW = 288; 
-			public static final int demonboiH = 160;
+			public static final int demonboiH = 161;
 			public static final int demonIdle = 0; 
 			public static final int demonWalk = 1; 
 			public static final int demonAttack = 2; 
@@ -159,6 +160,13 @@ public class Constants {
 			return 6; 
 			if(enemy_type == Demonboi)
 			return 21; 
+		case "MAGIC":
+			if(enemy_type == Demonboi)
+			return 5; 
+			if(enemy_type == Fireboi)
+			return 6; 
+			if(enemy_type == Waterboi)
+			return 3;
 
 		default: 
 			return 0;
@@ -237,6 +245,13 @@ public class Constants {
 				return 9; 
 				if(enemy_type == Demonboi)
 				return demonDead; 
+			case "MAGIC": 
+				if(enemy_type == Waterboi)
+				return waterAttack; 
+				if(enemy_type == Fireboi)
+				return fireAttack; 
+				if(enemy_type == Demonboi)
+				return 5; 
 
 			default: 
 				return 0; 

@@ -9,8 +9,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
+import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Chest;
 import Objects.Object;
@@ -46,6 +48,8 @@ public class Enemy extends Entity {
     private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
     protected boolean isBoss = false;
+    private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
+
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -70,6 +74,7 @@ public class Enemy extends Entity {
         this.enemyRangeY = y-enemyRangeHeight; 
         this.enemyRangeH = height+2*enemyRangeHeight; 
         this.enemyRangeW = width+2*enemyRangeWidth;
+        
 
         Animations(); 
         initialize();
@@ -89,6 +94,7 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player, int[][] lvllData, Playing playing) {
+    
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
@@ -97,6 +103,11 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
+        magicAttack(); 
+        for (Fireballs f : fireballs) { 
+            f.update();
+        }
+        
         for (Bombs b : playing.getBombs()) { 
             if(b.explode)
                 if(b.hitbox.intersects(this.hitbox)) 
@@ -116,7 +127,7 @@ public class Enemy extends Entity {
             checkPlayerHit(player);
             xSpeed = 0; 
             if(!isAttack){
-            state = ATTACK; 
+            state = MAGIC; 
             isAttack = true; 
             }
         }
@@ -288,6 +299,10 @@ public class Enemy extends Entity {
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
         }
+
+        for (Fireballs f : fireballs) { 
+            f.drawFireBall(g, xOffset);
+        }
     }
 
     /**
@@ -417,5 +432,17 @@ public class Enemy extends Entity {
          g.drawRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
 
     }
+
+    public void magicAttack() { 
+        if(fireballs.isEmpty())
+            if(this.enemyType == Demonboi)
+                if(state == MAGIC){ 
+                    fireballs.add(new Fireballs(100, 100));
+                }
+    }
+
+    // private ArrayList<fure getFireballs() { 
+
+    // }
     
 }
