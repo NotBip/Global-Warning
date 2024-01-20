@@ -40,11 +40,6 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
-    private boolean hasKey = true; // If the player has a key
-    private boolean hasBomb = true; // If the player has a bomb
-    private boolean hasUpgrade = true; // If the player has an upgrade
-    private boolean hasPotion = true; // If the player has a potion
-    private boolean isStormy = false; // If the level the player is on is stormy
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0;
     private int wFlipped = 1;
@@ -504,74 +499,6 @@ public class Player extends Entity {
 
     public boolean isDead() { 
         return isDead;
-    }
-    
-    public boolean getKey() {
-        return hasKey;
-    }
-
-    public void setKey(boolean hasKey) {
-        this.hasKey = hasKey;
-    }
-
-    public void updateKey(){
-        if (key.getQuantity() > 0) {
-            setKey(true);
-        }
-        else {
-            setKey(false);
-        }
-    }
-
-    public boolean getBomb() {
-        return hasBomb;
-    }
-
-    public void setBomb(boolean hasBomb) {
-        this.hasBomb = hasBomb;
-    }
-
-    public void updateBomb(){
-        if (bomb.getQuantity() > 0) {
-            setBomb(true);
-        }
-        else {
-            setBomb(false);
-        }
-    }
-
-    public boolean getUpgrade() {
-        return hasUpgrade;
-    }
-
-    public void setUpgrade(boolean hasUpgrade) {
-        this.hasUpgrade = hasUpgrade;
-    }
-
-    public void updateUpgrade(){
-        if (upgrade.getQuantity() > 0) {
-            setUpgrade(true);
-        }
-        else {
-            setUpgrade(false);
-        }
-    }
-
-    public boolean getPotion() {
-        if (heal.getQuantity() > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public void setPotion(boolean hasPotion) {
-        this.hasPotion = hasPotion;
-    }
-
-    public void usePotion() {
-        this.currentHealth += heal.getHealingAmount();
     }
 
     public int getItemQuantity(int item) {
