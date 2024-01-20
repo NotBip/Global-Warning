@@ -14,6 +14,7 @@ import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
 import static Utilities.Atlas.*;
 import static Utilities.Constants.*;
 import static Utilities.Constants.Buttons.*;
+import Entities.Player;
 import Items.HealPotion;
 import Items.Bomb;
 import Items.Key;
@@ -27,6 +28,11 @@ public class InventorySlot extends Button {
 	public boolean select = false;
 	private BufferedImage[] imgs;
 	private BufferedImage[] hvr;
+	Playing playing;
+	//HealPotion heal = new HealPotion(playing.player);
+	//Bomb bomb = new Bomb(playing.player);;
+	//Key key = new Key(playing.player);;
+	//UpgradeGem upgrade = new UpgradeGem(playing.player);;
 
 	/**
 	 * Constructor to create button for inventory slot
@@ -35,12 +41,16 @@ public class InventorySlot extends Button {
 	 * @since January 5, 2024
 	 */
 
-	public InventorySlot(int xPos, int yPos, int width, int height, int item) {
+	public InventorySlot(int xPos, int yPos, int width, int height, int item, Playing playing) {
 		super(xPos, yPos, width, height);
-
+		this.playing = playing;
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.item = item;
+		this.healnum = playing.player.getItemQuantity(1);
+		//this.bombnum = player.getItemQuantity(2);
+		//this.keynum = player.getItemQuantity(3);
+		//this.upgradenum = player.getItemQuantity(4);
 
 		
 		loadImgs();
@@ -120,28 +130,28 @@ public class InventorySlot extends Button {
 			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[0], xPos-80, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+bombnum, xPos-75,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(2), xPos-75,yPos-20);
 			}
             break;
         case 4:
 			g.drawImage(getSpriteAtlas(POTION_ATLAS), xPos-20, yPos-20, 120, 120, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[1], xPos+50, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+healnum, xPos+55,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(1), xPos+55,yPos-20);
 			}
             break;
         case 5:
 			g.drawImage(getSpriteAtlas(KEY_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[2], xPos-80, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+keynum, xPos-75,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(3), xPos-75,yPos-20);
 			}
             break;
 		case 6:
 			g.drawImage(getSpriteAtlas(GEM_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[3], xPos+50, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+upgradenum, xPos+55,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(4), xPos+55,yPos-20);
 			}
             break;
 		default:

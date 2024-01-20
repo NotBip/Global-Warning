@@ -404,17 +404,18 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
+                System.out.println("Spawn Bullet");
             Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
+            }
         }
-
-    }
 
     private void spawnBomb(int x, int y) {
 
-        if (!paused && !inventory){
+        if (!paused && !inventory && player.getItemQuantity(2) > 0){
              Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
+             player.useItem(2);
          }
  
      }

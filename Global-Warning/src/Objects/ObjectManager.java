@@ -120,6 +120,7 @@ public class ObjectManager{
              if (!c.chestInteract) { 
                     if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
                         c.chestInteract = true;
+                        c.giveItem(playing.player);
                         return; 
                     }
              }
@@ -129,9 +130,13 @@ public class ObjectManager{
     public void checkDoorInteract() { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract) { 
-                if (d.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
-                    d.doorInteract = true; 
+                if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) > 0) { 
+                    d.doorInteract = true;
+                    playing.player.useItem(3);
                     return; 
+                }
+                else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) == 0) {
+                    System.out.println("YOU DON'T HAVE THE BALLS");
                 }
             }
         }

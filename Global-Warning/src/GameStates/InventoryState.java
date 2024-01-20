@@ -11,6 +11,8 @@ import Items.HealPotion;
 import Items.UpgradeGem;
 
 import UserInterface.InventorySlot;
+import Items.HealPotion;
+import Items.UpgradeGem;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -51,19 +53,19 @@ public class InventoryState {
 
 	public void makeSlots(){
 		//first slot
-		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2-position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1); 
+		slots[0] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2-position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,1, playing); 
 		//second slot
-		slots[1] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2);
+		slots[1] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 -position , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,2, playing);
 		
 		//3rd slot (under first slot)
-       slots[2] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,3);
+       slots[2] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,3, playing);
 	   //4th slot
-        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,4);
+        slots[3] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 , INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,4, playing);
 
 		//5th slot (final row)
-        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,5);
+        slots[4] = new InventorySlot(GAME_WIDTH / 2 , GAME_HEIGHT / 2 +position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,5, playing);
 		//6th slot
-        slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6);
+        slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6, playing);
 		
 
 	}
@@ -192,10 +194,10 @@ public class InventoryState {
 					Playing.setGunIndex(slot.item);
 					}
 					else if (slot.item == 4) {
-						Potion.useItem();
+						playing.getPlayer().useItem(1);
 					}
 					else if (slot.item == 6) {
-						UpgradeGem.useItem();
+						playing.getPlayer().useItem(2);
 					}
 				}
 					slot.select = true;

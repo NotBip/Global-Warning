@@ -1,28 +1,33 @@
 package Items;
 
 import Main.Game;
+import Entities.Player;
 
 public class Key {
     
-    private int quantity;
+    int quantity = 1;
 
-    public Key(){
+    private Player player;
+    public Key(Player player) {
+        this.player = player;
+        this.quantity = quantity;
     }
 
+
     public void addItem(int addQuantity) { 
-        quantity += addQuantity;
+        this.quantity += addQuantity;
     }
 
     public void useItem() {
-        quantity --;
+        this.quantity --;
     }
 
     public int getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(int savedQuantity) {
-        quantity = savedQuantity;
+        this.quantity = savedQuantity;
     }
 
 }

@@ -5,33 +5,40 @@ import Entities.Player;
 
 public class UpgradeGem {
     
-    Player player;
     int damageBoost = 75;
     int firerateBoost = 10;
     int quantity = 0;
 
+    private Player player;
+    public UpgradeGem(Player player) {
+        this.player = player;
+        this.quantity = quantity;
+        this.damageBoost = damageBoost;
+        this.firerateBoost = firerateBoost;
+    }
+
+
     public void addItem(int addQuantity) { 
-        quantity += addQuantity;
+        this.quantity += addQuantity;
     }
 
     public void useItem() {
-        quantity --;
-        player.updateUpgrade();
+        this.quantity --;
     }
 
     public int getQuantity() {
-        return quantity;
+        return this.quantity;
     }
 
     public void setQuantity(int savedQuantity) {
-        quantity = savedQuantity;
+        this.quantity = savedQuantity;
     }
 
-    public int getDamageBoostAmount() {
+    public int getDamageBoost() {
         return damageBoost;
     }
 
-    public int getFirerateBoostAmount() {
+    public int getFirerateBoost() {
         return firerateBoost;
     }
 

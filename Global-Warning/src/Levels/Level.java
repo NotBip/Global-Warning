@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entities.Player;
 import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
@@ -33,6 +34,7 @@ public class Level {
 	private int maxLvlOffsetX;
 	private Point windSpawn; 
 	private Playing playing;
+	private Player player;
 	private Point playerSpawn; // Default spawn point in a room
 	private Point leftSpawn; // Spawn point from the left door in a room
 	private Point rightSpawn; // Spawn point from the right left in a room
@@ -57,6 +59,7 @@ public class Level {
 	public Level(BufferedImage img, Playing playing) {
 		this.img = img;
 		this.playing = playing;
+		this.player = playing.player;
 		lvlData = new int[img.getHeight()][img.getWidth()];
 		loadLevel();
 		calcLvlOffsets();
@@ -118,7 +121,7 @@ public class Level {
 	private void loadObjects(int blueValue, int x, int y) {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
-			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break;
+			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
 			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 		}
 	}
