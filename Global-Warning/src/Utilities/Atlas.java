@@ -60,6 +60,7 @@ public class Atlas {
     public static final String SAVED_ATLAS = "saved_text.png";
     public static final String CURSOR_ATLAS = "cursor.png"; 
     public static final String CURSOR2_ATLAS = "Curser.png"; 
+    public static final String HEALTH_ATLAS = "HealthBar.png"; 
 
 
 

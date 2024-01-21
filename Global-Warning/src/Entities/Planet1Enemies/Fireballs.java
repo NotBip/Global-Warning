@@ -17,22 +17,23 @@ public class Fireballs extends Entity {
     private BufferedImage[][] fireballAnimations;
     private int animationTick, animationIndex, aniSpeed = 15;
     private float x, y; 
-    public Rectangle2D.Float fireballHitbox; 
+    // public Rectangle2D.Float fireballHitbox; 
     private Playing playing; 
     
     public Fireballs(float x, float y) {
-        super(0, 0, 0, 0);
+        super(x, y, 70, 20);
         this.x = x; 
         this.y = y; 
-        fireballHitbox = new Rectangle2D.Float(this.x, this.y, 100, 80); 
+        // fireballHitbox = new Rectangle2D.Float(this.x, this.y, 100, 80); 
         super.inAir = true; 
         loadImage();
+        initialize();
     }
 
 
     public void update(Playing playing) { 
-        this.playing = playing; 
-        fireballHitbox.y += 2; 
+        this.playing = playing;
+        hitbox.y += 2; 
         updateAnimationTick(); 
 
     }
@@ -60,10 +61,10 @@ public class Fireballs extends Entity {
     public void drawFireBall(Graphics g, int xOffset) { 
         Graphics2D g2d = (Graphics2D)g; 
         AffineTransform oldXForm = g2d.getTransform();
-        g2d.rotate(Math.PI/2, fireballHitbox.x, fireballHitbox.y);
-        g.drawRect((int) fireballHitbox.x, (int)  fireballHitbox.y, (int)  fireballHitbox.width, (int) fireballHitbox.height);
-        g.drawImage(fireballAnimations[0][animationIndex], (int) fireballHitbox.x - xOffset, (int) fireballHitbox.y, 120, 80, null);
-
+        g2d.rotate(Math.PI/2, hitbox.x, hitbox.y);
+        // g.drawRect((int) fireballHitbox.x, (int)  fireballHitbox.y, (int)  fireballHitbox.width, (int) fireballHitbox.height);
+        g.drawImage(fireballAnimations[0][animationIndex], (int) hitbox.x - 40 - xOffset, (int) hitbox.y-34, 120, 80, null);
+        drawHitbox(g, xOffset);
 
         g2d.setTransform(oldXForm);
     }

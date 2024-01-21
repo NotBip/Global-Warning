@@ -154,39 +154,39 @@ public class SaveButton extends Button {
         switch (fileNum) {
 			case 1:
 			System.out.println("save 1: loaded");
-			playing.player.currentHealth = save1.getHealth();
+			playing.player.changeHealth(save1.getHealth());
 			Playing.gunIndex = save1.getHold();
 			Playing.fireRateWeapon1 = save1.getCooldown1();
            	Playing.fireRateWeapon1 = save1.getCooldown2();
 			LevelManager.lvlIndex = save1.getLevel();
 
 			if (save1.getHealth() == 0){
-				playing.player.currentHealth = playing.player.maxHealth;
+				playing.player.changeHealth(playing.player.maxHealth);
 			}
 
 				break;
 			case 2:
 			System.out.println("save 2: loaded");
-			playing.player.currentHealth = save2.getHealth();
+			playing.player.changeHealth(save2.getHealth());
 			Playing.gunIndex = save2.getHold();
 			Playing.fireRateWeapon1 = save2.getCooldown1();
             Playing.fireRateWeapon1 = save2.getCooldown2();
 			LevelManager.lvlIndex = save2.getLevel();
 
 			if (save2.getHealth() == 0){
-				playing.player.currentHealth = playing.player.maxHealth;
+				playing.player.changeHealth(playing.player.maxHealth);
 			}
 				break;
 			case 3:
 			System.out.println("save 3: loaded");
-			playing.player.currentHealth = save3.getHealth();
+			playing.player.changeHealth(save3.getHealth());
 			Playing.gunIndex = save3.getHold();
 			Playing.fireRateWeapon1 = save3.getCooldown1();
             Playing.fireRateWeapon1 = save3.getCooldown2();
 			LevelManager.lvlIndex = save3.getLevel();
 
 			if (save3.getHealth() == 0){
-				playing.player.currentHealth = playing.player.maxHealth;
+				playing.player.changeHealth(playing.player.maxHealth);
 			}
 
 				break;

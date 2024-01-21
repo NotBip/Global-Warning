@@ -2,6 +2,7 @@ package GameStates;
 
 import Entities.*;
 import Objects.Weapons.*;
+import UserInterface.HealthBar;
 import UserInterface.SaveButton;
 import Objects.Saving.*;
 import Utilities.LoadSave;
@@ -35,6 +36,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public int bulletCount;
     public List<Bullets> bullets;
+    private HealthBar healthBar; 
     public List<Bombs> bombs; 
     private EnemyManager enemyManager;
     private ObjectManager objectManager;
@@ -105,13 +107,14 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void initialize() {
         levelManager = new LevelManager(this);
-        player = new Player(1200, GAME_HEIGHT / 2 - 50, 58, 64); // Default spawn point
+        player = new Player(1200, GAME_HEIGHT / 2 - 50, 58, 64, this); // Default spawn point
         objectManager = new ObjectManager(this); 
         objectManager.loadObjects(levelManager.getCurrentLevel().getLevelData());
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
+        healthBar = new HealthBar(this); 
        // savepoint = new Checkpoint(GAME_WIDTH / 2-300, 100, 45, 63, this);
         pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
@@ -156,6 +159,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
         objectManager.update();
         environment.update();
+        healthBar.update();
     }
     }
      /**
@@ -287,9 +291,9 @@ public class Playing extends State implements KeyListener, MouseListener {
         getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
         objectManager.draw(g, xOffset);
         drawLightning(g, xOffset);
-        player.drawHealthBar(g);
-        player.drawOxygenBar(g);
-        
+        // player.drawHealthBar(g);
+        // player.drawOxygenBar(g);
+        healthBar.draw(g, xOffset);
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);
         }
@@ -350,6 +354,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public double getAngle() {
         return weaponAngle;
+    }
+
+    public HealthBar getHealthBar() { 
+        return healthBar; 
     }
 
     

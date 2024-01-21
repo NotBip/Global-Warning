@@ -146,7 +146,7 @@ public class Bombs extends Entity {
 
     public void drawBombAnimation(Graphics g, int xOffset) { 
         g.setColor(Color.white);
-        g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
+        // g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
         g.drawImage(animations[9][animationIndex], (int) hitbox.x-32-xOffset , (int) hitbox.y-32, 128, 128, null);
     }
 

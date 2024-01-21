@@ -143,13 +143,12 @@ public class Enemy extends Entity {
         fireballUpdate++; 
         magicAttack(playing); 
         for (Fireballs f : fireballs) { 
-            if(f.fireballHitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
+            if(f.hitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
                 playing.getPlayer().changeHealth(-15);
                 fireballs.remove(f); 
             }
-            if(canMove(f.fireballHitbox.x, f.fireballHitbox.y, f.fireballHitbox.width, f.fireballHitbox.height, lvllData)) { 
+            if(canMove(f.hitbox.x, f.hitbox.y, f.hitbox.width, f.hitbox.height, lvllData)) { 
                 f.update(playing);
-  
             }
             else 
                 fireballs.remove(f); 
@@ -381,10 +380,13 @@ public class Enemy extends Entity {
     }
 
     protected void checkPlayerHit(Player player) {
-        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1) 
+        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1){  
             player.changeHealth(-getEnemyDamage(enemyType)); 
-        else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex)
+            
+        } else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex) { 
             player.changeHealth(-getEnemyDamage(enemyType));  
+        
+        }
     }
 
     /**

@@ -88,7 +88,7 @@ public class ObjectManager{
     
     private void drawSpikes(Graphics g, int xOffset) { 
         for (Spike s : playing.getLevelManager().getCurrentLevel().getSpike()) { 
-            g.drawRect((int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().width, (int) s.getHitbox().height);
+            // g.drawRect((int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().width, (int) s.getHitbox().height);
             g.drawImage(spikeImg, (int) (s.getHitbox().x - xOffset)-10, (int) s.getHitbox().y, (int) s.spikeW, (int) s.spikeH, null);
             }
     }

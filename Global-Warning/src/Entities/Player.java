@@ -53,14 +53,15 @@ public class Player extends Entity {
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
     private boolean isDead = false; 
-
+    private Playing playing; 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
 
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.maxHealth = 200;
 		this.currentHealth = maxHealth;
+        this.playing = playing; 
         this.state = IDLE;
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
@@ -275,7 +276,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g, int offset) {
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 63 * wFlipped, 68, null);
-            drawHitbox(g, offset);
+            // drawHitbox(g, offset);
     }
 
     /**
@@ -407,26 +408,26 @@ public class Player extends Entity {
         }
     }
 
-    public void drawHealthBar(Graphics g) {
-        g.setColor(Color.red);
-        g.fillRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
-        g.setColor(Color.green);
-        g.fillRect(20, 20, (int) currentHealthBarLen, (int) healthBarHeight);
-        g.setColor(Color.black);
-        g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
-    }
+    // public void drawHealthBar(Graphics g) {
+    //     g.setColor(Color.red);
+    //     g.fillRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
+    //     g.setColor(Color.green);
+    //     g.fillRect(20, 20, (int) currentHealthBarLen, (int) healthBarHeight);
+    //     g.setColor(Color.black);
+    //     g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
+    // }
 
-    public void drawOxygenBar(Graphics g) {
-        if(waterUpdates > 0) {
-            g.setColor(Color.BLUE);
-            g.fillRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
-            g.setColor(Color.WHITE);
-            g.fillRect(20, 60, Math.max((int) currentOxygenBarLen, 0), (int) healthBarHeight);
-            g.setColor(Color.black);
-            g.drawRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
-        }
+    // public void drawOxygenBar(Graphics g) {
+    //     if(waterUpdates > 0) {
+    //         g.setColor(Color.BLUE);
+    //         g.fillRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
+    //         g.setColor(Color.WHITE);
+    //         g.fillRect(20, 60, Math.max((int) currentOxygenBarLen, 0), (int) healthBarHeight);
+    //         g.setColor(Color.black);
+    //         g.drawRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
+    //     }
         
-    }
+    // }
 
     /**
      * Changes animations based on input.
@@ -485,6 +486,11 @@ public class Player extends Entity {
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
         immunityUpdates = 1;
+        if(0 > Math.signum(value))
+        playing.getHealthBar().removeHP((float) Math.abs(value)/maxHealth);
+        if(0 < Math.signum(value) || currentHealth == maxHealth )
+        playing.getHealthBar().addHP((float) Math.abs(value)/maxHealth);
+        
 	}
 
     public boolean getWindy() { 
