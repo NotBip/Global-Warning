@@ -6,21 +6,35 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import Entities.Player;
 import GameStates.Playing;
 import Objects.Weapons.Bullets;
+import Utilities.Constants.PlayerConstants;
 
 import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
 import static Utilities.Atlas.*;
 import static Utilities.Constants.*;
 import static Utilities.Constants.Buttons.*;
+import Entities.Player;
+import Items.HealPotion;
+import Items.Bomb;
+import Items.Key;
+import Items.UpgradeGem;
 
 public class InventorySlot extends Button {
-    // variables
-	private int xPos, yPos, index;
+	// variables
+	private int xPos, yPos, index; 
+	private int bombnum, healnum, keynum, upgradenum = 0;
 	public int item;
 	public boolean select = false;
 	private BufferedImage[] imgs;
 	private BufferedImage[] hvr;
+	Playing playing;
+	PlayerConstants constants;
+	//HealPotion heal = new HealPotion(playing.player);
+	//Bomb bomb = new Bomb(playing.player);;
+	//Key key = new Key(playing.player);;
+	//UpgradeGem upgrade = new UpgradeGem(playing.player);;
 
 	/**
 	 * Constructor to create button for inventory slot
@@ -29,12 +43,16 @@ public class InventorySlot extends Button {
 	 * @since January 5, 2024
 	 */
 
-	public InventorySlot(int xPos, int yPos, int width, int height, int item) {
+	public InventorySlot(int xPos, int yPos, int width, int height, int item, Playing playing) {
 		super(xPos, yPos, width, height);
-
+		this.playing = playing;
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.item = item;
+		this.healnum = playing.player.getItemQuantity(1);
+		//this.bombnum = player.getItemQuantity(2);
+		//this.keynum = player.getItemQuantity(3);
+		//this.upgradenum = player.getItemQuantity(4);
 
 		
 		loadImgs();
@@ -94,8 +112,8 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed1, xPos-80,yPos-40);
-				g.drawString("Fire Rate: "+Playing.fireRateWeapon1, xPos-80,yPos-10);
-				g.drawString("Damage: "+num[0], xPos-80,yPos+20);
+				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 1), xPos-80,yPos-10);
+				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 1), xPos-80,yPos+20);
 			}
 			
 			
@@ -105,8 +123,8 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos+40, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed2, xPos+55,yPos-40);
-				g.drawString("Fire Rate: "+Playing.fireRateWeapon2, xPos+55,yPos-10);
-				g.drawString("Damage: "+num[0], xPos+55,yPos+20);
+				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 2), xPos+55,yPos-10);
+				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 2), xPos+55,yPos+20);
 			}
 
             break;
@@ -114,28 +132,28 @@ public class InventorySlot extends Button {
 			g.drawImage(getSpriteAtlas(BOMB_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[0], xPos-80, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+num[0], xPos-75,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(2), xPos-75,yPos-20);
 			}
             break;
         case 4:
 			g.drawImage(getSpriteAtlas(POTION_ATLAS), xPos-20, yPos-20, 120, 120, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[1], xPos+50, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+num[0], xPos+55,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(1), xPos+55,yPos-20);
 			}
             break;
         case 5:
 			g.drawImage(getSpriteAtlas(KEY_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[2], xPos-80, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+num[0], xPos-75,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(3), xPos-75,yPos-20);
 			}
             break;
 		case 6:
 			g.drawImage(getSpriteAtlas(GEM_ATLAS), xPos+15, yPos+15, 50, 50, null); 
 			if (index == 1)	{
 				g.drawImage(hvr[3], xPos+50, yPos-70, 100, 90, null);
-				g.drawString("Amount: "+num[0], xPos+55,yPos-20);
+				g.drawString("Amount: "+playing.player.getItemQuantity(4), xPos+55,yPos-20);
 			}
             break;
 		default:
@@ -145,7 +163,6 @@ public class InventorySlot extends Button {
 	   
 
 	}
-
 
 	/**
 	 * Updates button sprite based on mouse postion
@@ -160,6 +177,5 @@ public class InventorySlot extends Button {
 			index = 1;
 
 	}
-
 
 }

@@ -107,6 +107,14 @@ public class ObjectManager{
             c.drawItem(g,(int)c.getHitbox().x - xOffset);//draws item final anim
         }
         }
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()){
+            if (!c.chestInteract && !c.chestOpen && !c.chestOpened)
+            g.drawImage(chestImg[2][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            if (c.chestInteract && c.chestOpen && !c.chestOpened)
+            g.drawImage(chestImg[3][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            if (c.chestInteract && !c.chestOpen && c.chestOpened)
+            g.drawImage(chestImg[3][GetSpriteAmount(Chest)-1], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+        }
     }
 
     private void drawDoors(Graphics g, int xOffset) { 
@@ -126,18 +134,32 @@ public class ObjectManager{
              if (!c.chestInteract) { 
                     if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
                         c.chestInteract = true;
+                        c.giveItem(playing.player);
                         return; 
                     }
              }
         }
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()) { 
+            if (!c.chestInteract) { 
+                   if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
+                       c.chestInteract = true;
+                       c.giveItem(playing.player);
+                       return; 
+                   }
+            }
+       }
     }
 
     public void checkDoorInteract() { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract) { 
-                if (d.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
-                    d.doorInteract = true; 
+                if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) > 0) { 
+                    d.doorInteract = true;
+                    playing.player.useItem(3, playing);
                     return; 
+                }
+                else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) == 0) {
+                    System.out.println("YOU DON'T HAVE THE BALLS");
                 }
             }
         }
@@ -152,6 +174,15 @@ public class ObjectManager{
 			c.chestOpen = (false);
             c.chestOpened = true;
             c.giveItem();
+        }   
+		}
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()) {
+			if (c.chestInteract && !c.chestOpened)
+				    c.chestOpen = true; 
+			c.update();
+	 	if (c.getAniIndex() == 4 && c.getAniTick() == 0 && c.chestOpen && !c.chestOpened){
+			c.chestOpen = (false);
+            c.chestOpened = true;
         }   
 		}
 	}

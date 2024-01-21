@@ -18,7 +18,12 @@ import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import static Utilities.Atlas.*;
 
@@ -208,18 +213,44 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons) {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
+                playSound(1);
             }
 
         }
 
         if (Pause.isIn(e, menuBack)) {
             menuBack.setMousePressed(true);
+            playSound(2);
         }
 
         for (ResetSaveButton rb : resetbuttons){
             if (isIn(e, rb)) {
                 rb.setMousePressed(true);
+                playSound(3);
             }
+        }
+    }
+
+    public void playSound(int sound) {
+        String filepath;
+        if (sound == 1){
+            filepath = "Global-Warning/res/audio/complete.wav";
+        }
+        else if (sound == 2){
+            filepath = "Global-Warning/res/audio/button2.wav";
+        }
+        else {
+            filepath = "Global-Warning/res/audio/off.wav";
+        }
+        File musicPath = new File(filepath);
+        try {
+        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInput);
+        clip.start();
+        }
+        catch(Exception e) {
+            System.out.println(e);
         }
     }
 

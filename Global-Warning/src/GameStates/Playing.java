@@ -5,6 +5,11 @@ import Objects.Weapons.*;
 import UserInterface.SaveButton;
 import Objects.Saving.*;
 import Utilities.LoadSave;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 import Levels.LevelManager;
 import Main.Game;
@@ -56,7 +61,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseY;
     public double offset;
     private boolean playerDying; 
-    public boolean BombReady = true; 
+    public boolean BombReady = true;
+    private String filepath = "";
 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
@@ -119,7 +125,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
         this.environment = new Environment(this); 
-        bombs = new ArrayList<>(); 
+        bombs = new ArrayList<>();
+        playMusic();
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -127,6 +134,26 @@ public class Playing extends State implements KeyListener, MouseListener {
             System.out.println("no default spawn point found");
         }
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
+    }
+
+    private void playMusic() {
+        filepath = "Global-Warning/res/audio/Main.wav";
+        try {
+            File musicPath = new File(filepath);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
+            }
+            else {
+                System.out.println("Can't Find Music File");
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void update() throws IOException {
@@ -147,7 +174,8 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bombs.size(); i++) { 
             bombs.get(i).updateBombs();
          }
-        updateLightning(); 
+        updateLightning();
+
         checkLightningIntersect();
         checkBorder();
         checkLightningIntersect();
@@ -158,7 +186,15 @@ public class Playing extends State implements KeyListener, MouseListener {
         environment.update();
     }
     }
-     /**
+
+    public void updateFirerateUpgrade() {
+        fireRateWeapon1 = fireRateWeapon1 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 1: " + fireRateWeapon1);
+        fireRateWeapon2 = fireRateWeapon2 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 2: " + fireRateWeapon2);
+    }
+
+    /**
      * Checks if that player has gone past the camera border
      * 
      * @author Ryder Hodgson
@@ -266,6 +302,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
             environment.drawLightning(g, xOffset);
+            
         
     }
 
@@ -381,6 +418,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+
     public void bombCooldown(int x, int y) {
         long time1 = System.currentTimeMillis();
         long rate = 0;
@@ -405,17 +443,18 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBullet(int x, int y) {
 
        if (!paused && !inventory){
+                System.out.println("Spawn Bullet");
             Bullets bullet = new Bullets(weapon, this, weapon.getX() + 50, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
+            }
         }
-
-    }
 
     private void spawnBomb(int x, int y) {
 
-        if (!paused && !inventory){
+        if (!paused && !inventory && player.getItemQuantity(2) > 0){
              Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
+             player.useItem(2, this);
          }
  
      }
