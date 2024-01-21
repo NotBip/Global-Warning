@@ -94,9 +94,10 @@ public class Player extends Entity {
     public void update(Playing playing) {
         for(Bombs b : playing.getBombs()) { 
             if(b.explode)
-                if(this.getHitbox().intersects(b.bombHitbox))
+                if(this.getHitbox().intersects(b.bombHitbox) && !isImmune())
                     this.changeHealth(-maxHealth);
         }
+        
         moving = false; // Stop the player movement animation in case they stop moving this update
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
@@ -274,7 +275,7 @@ public class Player extends Entity {
 
     public void draw(Graphics g, int offset) {
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 63 * wFlipped, 68, null);
-            //drawHitbox(g, offset);
+            drawHitbox(g, offset);
     }
 
     /**

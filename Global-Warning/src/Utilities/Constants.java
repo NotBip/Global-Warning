@@ -104,9 +104,9 @@ public class Constants {
 			public static final int fireSizeX = 100 *(int) Game.SCALE; 
 			public static final int fireSizeY = 110 *(int) Game.SCALE; 
 
-			public static final int Demonboi = 2; 
-			public static final int DEMONBOI_HEIGHT = 247 * (int) Game.SCALE; 
-			public static final int DEMONBOI_WIDTH = 250 *(int) Game.SCALE; 
+			public static final int Demonboi = 2;
+			public static final int DEMONBOI_HEIGHT = 200 * (int) Game.SCALE; 
+			public static final int DEMONBOI_WIDTH = 180 *(int) Game.SCALE; 
 			public static final int demonAttackSpeed = 10; 
 			public static final int demonboiArrI = 6; 
 			public static final int demonboiArrJ = 22; 
@@ -117,8 +117,8 @@ public class Constants {
 			public static final int demonAttack = 2; 
 			public static final int demonDead = 4; 
 			public static final float demonSpeed = 1.5f * Game.SCALE; 
-			public static final int demonSizeX = 290 *(int) Game.SCALE; 
-			public static final int demonSizeY = 253 *(int) Game.SCALE; 
+			public static final int demonSizeX = 288 * 2 *(int) Game.SCALE; 
+			public static final int demonSizeY = 161 * 2 *(int) Game.SCALE; 
 
 
 

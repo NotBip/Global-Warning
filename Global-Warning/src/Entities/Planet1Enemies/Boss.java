@@ -1,6 +1,7 @@
 package Entities.Planet1Enemies;
 
 import static Utilities.Atlas.DEMONBOI_ATLAS;
+import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.EnemyConstants.*;
 
 import Entities.Enemy;
@@ -14,6 +15,7 @@ public class Boss extends Enemy {
         super.isBoss = true; 
         super.healthBarWidth = 500; 
         super.healthBarHeight = 50; 
+        super.enemyRangeWidth = GAME_WIDTH; 
     }
     
 }

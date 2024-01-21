@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.stax.StAXResult;
+
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Chest;
@@ -40,8 +42,8 @@ public class Enemy extends Entity {
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
     private boolean isAttack = false, leftwall = false, isVisible = false; 
-    private int enemyRangeWidth = 200;
-    private int enemyRangeHeight = 80; 
+    protected int enemyRangeWidth = 200;
+    protected int enemyRangeHeight = 80; 
     private boolean dead = false; 
     private boolean deadOver = false; 
     public float healthBarWidth = 100; 
@@ -52,6 +54,13 @@ public class Enemy extends Entity {
     public int fireballCooldown = 40; // How long it takes after choosing a position for lightning to strike
     private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
     public int fireballUpdate = 0; 
+    public boolean bombHit = false; 
+    private int bossXOffset = 0; 
+    private int bossYOffset = 0; 
+    public int magicTimer = 600; // How long it takes after choosing a position for lightning to strike
+    public int magicState = 0; 
+    private boolean check = false; 
+
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -76,7 +85,7 @@ public class Enemy extends Entity {
         this.enemyRangeY = y-enemyRangeHeight; 
         this.enemyRangeH = height+2*enemyRangeHeight; 
         this.enemyRangeW = width+2*enemyRangeWidth;
-        
+        currentHealthBarLen = healthBarWidth;
 
         Animations(); 
         initialize();
@@ -96,7 +105,18 @@ public class Enemy extends Entity {
     }
 
     public void move(Player player, int[][] lvllData, Playing playing) {
-    
+    if (isBoss){
+        bossXOffset = 200; 
+        bossYOffset = 115; 
+        if(direction == RIGHT)
+        bossXOffset *= -1;
+
+    }
+    else { 
+        bossXOffset = 0; 
+        bossYOffset = 0; 
+    }
+
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
@@ -105,11 +125,30 @@ public class Enemy extends Entity {
 
 
     if (!dead){ 
+
+        if(playing.getPlayer().getHitbox().intersects(hitbox) && !check){ 
+            animationIndex = 0; 
+            check = true; 
+        } else if (!playing.getPlayer().getHitbox().intersects(hitbox))
+            check = false; 
+
+        if(state == MAGIC)
+            xSpeed = 0; 
+        else
+            xSpeed = moveSpeed; 
+
+        if(playing.getBombs().isEmpty())
+        bombHit = false; 
+
         fireballUpdate++; 
-        magicAttack(); 
+        magicAttack(playing); 
         for (Fireballs f : fireballs) { 
             if(canMove(f.fireballHitbox.x, f.fireballHitbox.y, f.fireballHitbox.width, f.fireballHitbox.height, lvllData)) { 
-                f.update();
+                f.update(playing);
+                if(f.fireballHitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
+                    playing.getPlayer().changeHealth(-15);
+                    fireballs.remove(f); 
+                }
             }
             else 
                 fireballs.remove(f); 
@@ -117,39 +156,42 @@ public class Enemy extends Entity {
         
         for (Bombs b : playing.getBombs()) { 
             if(b.explode)
-                if(b.hitbox.intersects(this.hitbox)) 
+                if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
                     this.changeHealth(-50);
-
+                    bombHit = true; 
+                }
+                
         }
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
         enemyRange.y = this.hitbox.y-enemyRangeWidth; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
-        if (!player.hitbox.intersects(enemyRange))
+        if (!player.hitbox.intersects(enemyRange) && state != MAGIC)
         state = WALK; 
 
         if (player.hitbox.intersects(hitbox)){
             aniSpeed = getAttackSpeed(this.enemyType);
-            
             checkPlayerHit(player);
             xSpeed = 0; 
             if(!isAttack){
-            state = MAGIC; 
+            state = ATTACK; 
             isAttack = true; 
             }
         }
         else { 
-        if(!player.hitbox.intersects(enemyRange))
+        if(!player.hitbox.intersects(enemyRange) && state != MAGIC) { 
         xSpeed = moveSpeed; 
-        else { 
+        }else if (state != MAGIC) { 
         xSpeed = moveSpeed;
         state = RUN; 
         }
+
         aniSpeed = animationSpeed; 
         isAttack = false; 
         }
-        if (player.hitbox.intersects(enemyRange) && !isAttack) {
+        if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
+            bossXOffset *= 1; 
             isVisible = true; 
             direction = LEFT; 
             flipW(); 
@@ -158,6 +200,7 @@ public class Enemy extends Entity {
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
+            bossXOffset *= -1; 
             isVisible = false; 
             direction = RIGHT; 
             flipW(); 
@@ -183,7 +226,7 @@ public class Enemy extends Entity {
             leftwall = true;
         }
 
-        if (canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall) {
+        if (canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall && state != MAGIC) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
@@ -191,7 +234,7 @@ public class Enemy extends Entity {
             hitbox.x -= xSpeed;
         }
 
-        else if ((!canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack)) {
+        else if ((!canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && state != MAGIC)) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             direction = flipD(); 
             leftwall = true;
@@ -199,7 +242,7 @@ public class Enemy extends Entity {
             flipX(); 
         }
 
-       if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack) && leftwall) { 
+       if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && state != MAGIC) && leftwall) { 
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
@@ -210,7 +253,7 @@ public class Enemy extends Entity {
 
         
 
-        else if (!isAttack && leftwall && state != RUN) {
+        else if (!isAttack && leftwall && state != RUN && state != MAGIC) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             //enemyRange.x = fixXPos(enemyRange, xSpeed);
             direction = flipD(); 
@@ -299,10 +342,10 @@ public class Enemy extends Entity {
 	}
 
     public void draw(Graphics g, int xOffset) {
-        g.setColor(Color.white);
-        drawHitbox(g, xOffset);
+        // g.setColor(Color.white);
+        // drawHitbox(g, xOffset);
         if (!deadOver)
-        g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) (hitbox.x - xOffset) + xFlipped, (int) hitbox.y, Ewidth * wFlipped, Eheight, null);
+        g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
         }
@@ -375,7 +418,8 @@ public class Enemy extends Entity {
             dead();
         }
     }
-          /**
+    
+    /**
      * Changes the players health depending on enemy.
      * @author Hamad Mohammed
      * @param value Damage being done 
@@ -399,13 +443,6 @@ public class Enemy extends Entity {
                 changeHealth(-PlayerConstants.getPlayerDamage(playing));
             }
         }
-        /*for (Explosions e : explosion) { 
-            if(e.getHitbox().intersects(this.hitbox)) {
-                isActive = true;  
-                playing.removeBullet();
-                changeHealth(PlayerConstants.getPlayerDamage(playing) * 5);
-            }
-        }*/
     }
 
     public boolean isDead() { 
@@ -430,17 +467,27 @@ public class Enemy extends Entity {
         g.setColor(Color.black);
         g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
          }
-         else if (isBoss)
+         else if (isActive && isBoss) {
          g.setColor(Color.red);
-         g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
+         g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
          g.setColor(Color.green);
-         g.fillRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) currentHealthBarLen, (int) healthBarHeight);
+         g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) currentHealthBarLen, (int) healthBarHeight);
          g.setColor(Color.black);
-         g.drawRect((int) ((this.getHitbox().width/4)) - xOffset, GAME_HEIGHT - 30, (int) healthBarWidth, (int) healthBarHeight);
+         g.drawRect((int) (GAME_WIDTH/3.3  - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
+         }
 
     }
 
-    public void magicAttack() { 
+    public void magicAttack(Playing playing) { 
+        magicState++;
+        if(enemyType == Demonboi)
+            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*20000) + 1) < 20 && state != MAGIC)
+                state = MAGIC; 
+            if(magicState >= magicTimer) { 
+                state = WALK; 
+                magicState = 0; 
+            }
+
         if(fireballUpdate  >= fireballCooldown)
             if(this.enemyType == Demonboi)
                 if(state == MAGIC){ 
@@ -448,9 +495,4 @@ public class Enemy extends Entity {
                     fireballUpdate = 0; 
                 }
     }
-
-    // private ArrayList<fure getFireballs() { 
-
-    // }
-    
 }
