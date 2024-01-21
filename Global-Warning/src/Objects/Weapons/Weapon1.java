@@ -9,6 +9,10 @@ import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 import java.awt.Graphics2D;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;

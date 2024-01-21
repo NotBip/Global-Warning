@@ -16,6 +16,7 @@ import Entities.Planet1Enemies.Enemy2;
 import GameStates.Playing;
 import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.KeyChest;
 import Objects.Spike;
 
 import Objects.Saving.Checkpoint;
@@ -43,7 +44,8 @@ public class Level {
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>();
 	private ArrayList<BarrierDoor> door = new ArrayList<BarrierDoor>(); 
-	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
+	private ArrayList<Chest> chest = new ArrayList<Chest>();
+	private ArrayList<KeyChest> keychest = new ArrayList<KeyChest>();
 	private Checkpoint checkpoint;
 	private boolean isStormy = false;
 	private  boolean isCheckpoint = false; 
@@ -122,6 +124,7 @@ public class Level {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
 			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
+			case 150: keychest.add(new KeyChest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
 			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 		}
 	}
@@ -206,6 +209,10 @@ public class Level {
 
 	public ArrayList<Chest> getChest() { 
 		return chest; 
+	}
+
+	public ArrayList<KeyChest> getKeyChest() {
+		return keychest;
 	}
 
 	public ArrayList<BarrierDoor> getDoor() {

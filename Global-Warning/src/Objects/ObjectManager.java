@@ -101,6 +101,14 @@ public class ObjectManager{
             if (c.chestInteract && !c.chestOpen && c.chestOpened)
             g.drawImage(chestImg[3][GetSpriteAmount(Chest)-1], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
         }
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()){
+            if (!c.chestInteract && !c.chestOpen && !c.chestOpened)
+            g.drawImage(chestImg[2][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            if (c.chestInteract && c.chestOpen && !c.chestOpened)
+            g.drawImage(chestImg[3][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            if (c.chestInteract && !c.chestOpen && c.chestOpened)
+            g.drawImage(chestImg[3][GetSpriteAmount(Chest)-1], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+        }
     }
 
     private void drawDoors(Graphics g, int xOffset) { 
@@ -125,6 +133,15 @@ public class ObjectManager{
                     }
              }
         }
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()) { 
+            if (!c.chestInteract) { 
+                   if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
+                       c.chestInteract = true;
+                       c.giveItem(playing.player);
+                       return; 
+                   }
+            }
+       }
     }
 
     public void checkDoorInteract() { 
@@ -144,6 +161,15 @@ public class ObjectManager{
 
     private void updateChests() {
 		for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) {
+			if (c.chestInteract && !c.chestOpened)
+				    c.chestOpen = true; 
+			c.update();
+	 	if (c.getAniIndex() == 4 && c.getAniTick() == 0 && c.chestOpen && !c.chestOpened){
+			c.chestOpen = (false);
+            c.chestOpened = true;
+        }   
+		}
+        for (KeyChest c : playing.getLevelManager().getCurrentLevel().getKeyChest()) {
 			if (c.chestInteract && !c.chestOpened)
 				    c.chestOpen = true; 
 			c.update();

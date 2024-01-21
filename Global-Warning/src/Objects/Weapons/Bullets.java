@@ -13,6 +13,10 @@ import static Utilities.Constants.WEAPON_HEIGHT;
 import static Utilities.Atlas.BOMBEXPLODE_ATLAS;
 import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -20,6 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -80,7 +85,22 @@ public class Bullets extends Entities.Entity implements MouseListener {
         setTime();
         //System.out.println("X: " + (directionX * speed3) + " Y: " + (directionY * speed3));
         initialize();
+        playSound();
 
+    }
+
+    public void playSound() {
+        String filepath = "Global-Warning/res/audio/Gun.wav";
+        File musicPath = new File(filepath);
+        try {
+        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioInput);
+        clip.start();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
     }
 
     /**
