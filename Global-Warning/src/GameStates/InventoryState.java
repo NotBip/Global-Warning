@@ -4,9 +4,7 @@ package GameStates;
 import java.awt.Color;
 import java.awt.Graphics;
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.HOVER_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
-import Utilities.Atlas.*;
 
 import UserInterface.InventorySlot;
 
@@ -19,9 +17,7 @@ import static Utilities.Atlas.*;
 public class InventoryState {
     // variables
     private int position = 100;
-	private Playing playing;
 	private BufferedImage backgroundImg = getSpriteAtlas(INVENTORY_ATLAS);
-	private BufferedImage [] loadImgs;
 	private InventorySlot[] slots= new InventorySlot[6];
 
 	/**
@@ -31,8 +27,7 @@ public class InventoryState {
 	 * @since January 5, 2024
 	 */
 
-	public InventoryState(Playing playing) {
-		this.playing = playing;
+	public InventoryState() {
 		makeSlots();
 
 	}
@@ -61,14 +56,6 @@ public class InventoryState {
         slots[5] = new InventorySlot(GAME_WIDTH / 2 +position, GAME_HEIGHT / 2 + position, INVENTORY_B_WIDTH, INVENTORY_B_HEIGHT,6);
 		
 
-	}
-
-	private void loadLoadImgs() {
-		loadImgs = new BufferedImage[2];
-		BufferedImage temp = getSpriteAtlas(LOADING_ATLAS);
-		for (int i = 0; i < loadImgs.length; i++){
-			loadImgs[i] = temp.getSubimage(i * LOAD_WIDTH, 0, LOAD_WIDTH, LOAD_HEIGHT);
-		}
 	}
 
 	/**

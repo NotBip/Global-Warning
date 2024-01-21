@@ -8,14 +8,11 @@ import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 
 import UserInterface.InGameButton;
-import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-import Levels.LevelManager;
 import Objects.Saving.Checkpoint;
-import Objects.Saving.Save;
 
 import static Utilities.Atlas.*;
 

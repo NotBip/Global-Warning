@@ -5,12 +5,9 @@ import static Utilities.Atlas.getSpriteAtlas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import GameStates.GameState;
 import Objects.Saving.Save;
 
 import static Utilities.Atlas.RESETBUTTON_ATLAS;
-import static Utilities.Atlas.SOUNDBUTTON_ATLAS;
 import static Utilities.Constants.Buttons.*;
 
 public class ResetSaveButton extends Button {

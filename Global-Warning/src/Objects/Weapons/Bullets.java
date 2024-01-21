@@ -1,16 +1,9 @@
 package Objects.Weapons;
 
 import GameStates.Playing;
-//import javafx.event.ActionEvent;
-import Objects.Spike;
-import Utilities.Constants;
 
 import static Utilities.Constants.GAME_WIDTH;
-import static Utilities.Constants.WEAPON_WIDTH;
-import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.GAME_HEIGHT;
-import static Utilities.Constants.WEAPON_HEIGHT;
-import static Utilities.Atlas.BOMBEXPLODE_ATLAS;
 import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 
@@ -20,29 +13,19 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
     BufferedImage img;
-    private BufferedImage[][] animations;
-    private  int animationTick, animationIndex, aniSpeed = 15;
-    private double x, y, vertX, vertY, initX, initY, targetX, targetY;
+    private double x, y;
     public static double speed1,speed2,speed3;
     private double directionX, directionY;
     private Weapon1 weapon;
     private Playing playing;
     private int[][] lvlData;
     private double time;
-    private boolean explode = false;
-    private int xFlipped = 0; 
-    private int wFlipped = 1;
-    private int explodePosX = 0; 
-    private int explodePosY = 0; 
-
-    
 
     //upgradeable abilities (fire-rate in playing class)
     //no concept of damage yet, but public static double upgradeDamage;
@@ -61,12 +44,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.playing = playing;
         this.x = startX;
         this.y = startY;
-        this.initX = startX;
-        this.initY = startY;
-        this.vertX = targetX - startX + xOffset;
-        this.vertY = targetY - startY;
-        this.targetX = targetX + xOffset - startX;
-        this.targetY = targetY - startY;
         this.lvlData = lvlData;
         this.time = time;
 
@@ -107,7 +84,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
     public void move() {
 
         double speed = 0;
-        double tempChange = 0;
 
         //different guns have different speeds
         if (Playing.gunIndex == 1){

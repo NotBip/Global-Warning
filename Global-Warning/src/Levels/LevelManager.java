@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import GameStates.Playing;
 import Objects.Sign;
-import Objects.Spike;
 import Utilities.Constants;
 import Utilities.LoadSave;
 
@@ -81,7 +80,6 @@ public class LevelManager {
 		playing.getPlayer().loadLevelData(newLevel.getLevelData());
 		playing.getPlayer().setWindy(newLevel.getWindy());
 		playing.setMaxLvlOffset(newLevel.getLvlOffset());
-		playing.getObjectManager().loadObjects(newLevel.getLevelData()); 
 	}
 
 

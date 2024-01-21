@@ -1,20 +1,18 @@
 package GameStates;
 
 import Entities.*;
+import Entities.Planet1Enemies.Enemy1;
+import Entities.Planet1Enemies.Enemy2;
 import Objects.Weapons.*;
-import UserInterface.SaveButton;
-import Objects.Saving.*;
 import Utilities.LoadSave;
 
 import Levels.LevelManager;
 import Main.Game;
+import Objects.BarrierDoor;
 import Objects.ObjectManager;
 import Objects.Sign;
-import Objects.Spike;
 import Objects.Saving.Checkpoint;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
-import static Utilities.Atlas.MENUBACKGROUND_ATLAS_FIRE;
-import static Utilities.Atlas.MENUBACKGROUND_ATLAS_STORM;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
@@ -57,8 +55,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseX;
     public double mouseY;
     public double offset;
-    private boolean playerDying; 
     public boolean BombReady = true; 
+
 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
@@ -125,14 +123,13 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager = new LevelManager(this);
         player = new Player(1200, GAME_HEIGHT / 2 - 50, 58, 64); // Default spawn point
         objectManager = new ObjectManager(this); 
-        objectManager.loadObjects(levelManager.getCurrentLevel().getLevelData());
         enemyManager = new EnemyManager(player);
         levelManager.loadNextLevel();
         weapon = new Weapon1(player, this);
         bullets = new ArrayList<>();
        // savepoint = new Checkpoint(GAME_WIDTH / 2-300, 100, 45, 63, this);
-        pauseScreen = new Pause(this);
-        inventoryState = new InventoryState(this);
+        pauseScreen = new Pause();
+        inventoryState = new InventoryState();
         gameOver = new Death(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
@@ -171,7 +168,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 		} else if (inventory && !paused){
 			inventoryState.update();
 		} else {
-            player.update(this);
+            player.update();
             weapon.update();
             if (getLevelManager().getCurrentLevel().getIsCheckpoint())
             getLevelManager().getCurrentLevel().getCheckpoint().update();
@@ -181,6 +178,7 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bombs.size(); i++) { 
             bombs.get(i).updateBombs();
          }
+        checkTouchingDoor();
         updateLightning(); 
         checkLightningIntersect();
         checkBorder();
@@ -396,6 +394,33 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+    private void checkTouchingDoor() {
+        for(BarrierDoor d : levelManager.getCurrentLevel().getDoor()) {
+            if(player.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                player.setBehindDoor(true);
+            } else {
+                player.setBehindDoor(false);
+            }
+
+            for(Enemy2 e : levelManager.getCurrentLevel().getWaterBoi()) {
+                if(e.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    e.setBehindDoor(true);
+                    System.out.println("scree I'm stuckkk");
+                } else {
+                    e.setBehindDoor(false);
+                }
+            }
+
+            for(Enemy1 e : levelManager.getCurrentLevel().getFireBoi()) {
+                if(e.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    e.setBehindDoor(true);
+                } else {
+                    e.setBehindDoor(false);
+                }
+            }
+        }
+    }
+
     /*
 	* Method Name: draw
 	* Author: Ryder Hodgson
@@ -588,11 +613,6 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void removeBomb() {
         bombs.remove(0);
-    }
-
-
-    public void setPlayerDying(boolean die) { 
-        this.playerDying = die; 
     }
 
     public void setBackGround(Image backgroundImage) {

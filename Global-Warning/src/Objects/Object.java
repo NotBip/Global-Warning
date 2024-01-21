@@ -16,7 +16,7 @@ public class Object {
 	protected int x, y, objType;
 	protected Rectangle2D.Float hitbox;
 	protected boolean doAnimation, active = true;
-	protected int aniTick, aniIndex, aniSpeed = 25;
+	protected int aniTick, aniIndex, aniSpeed;
 	protected int xDrawOffset, yDrawOffset;
 
 	public Object(int x, int y, int objType) {

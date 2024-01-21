@@ -12,10 +12,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
-import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
-import static Objects.Weapons.Bullets.*;
-import static GameStates.Playing.*;
 
 public class SaveButton extends Button {
 

@@ -9,7 +9,6 @@ import static Utilities.Constants.Buttons.SAVE_B_WIDTH;
 import static Utilities.Constants.Buttons.RESET_B_WIDTH;
 import static Utilities.Constants.Buttons.RESET_B_HEIGHT;
 import static Utilities.Constants.GAME_HEIGHT;
-import Entities.*;
 import Main.Game;
 import Objects.Saving.Checkpoint;
 import UserInterface.InGameButton;

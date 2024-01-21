@@ -21,6 +21,8 @@ public class KeyInputs implements KeyListener{
             panel.getGame().getPlaying().keyPressed(e);
         case MENU:
             panel.getGame().getMenu().keyPressed(e);
+        default:
+            break;
        }
     }
 
@@ -31,6 +33,8 @@ public class KeyInputs implements KeyListener{
             panel.getGame().getPlaying().keyReleased(e);
         case MENU:
             panel.getGame().getMenu().keyReleased(e);
+        default:
+            break;
        }
     }
 

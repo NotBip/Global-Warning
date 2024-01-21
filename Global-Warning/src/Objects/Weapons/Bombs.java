@@ -5,7 +5,6 @@ import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.WEAPON_HEIGHT;
 import static Utilities.Constants.WEAPON_WIDTH;
-import static Utilities.Constants.animationSpeed;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,7 +20,7 @@ public class Bombs extends Entity {
     BufferedImage img, bombImg;
     private BufferedImage[][] animations;
     private  int animationTick, animationIndex, aniSpeed = 5;
-    private double x, y, vertX, vertY, initX, initY, targetX, targetY;
+    private double x, y, vertX, vertY, initX, initY;
     public static double speed = 1;
     private double directionX, directionY;
     private Playing playing;
@@ -30,9 +29,6 @@ public class Bombs extends Entity {
     private boolean explode = false;
     private int xFlipped = 0; 
     private int wFlipped = 1;
-    private int explodePosX = 0; 
-    private int explodePosY = 0; 
-    private Weapon1 weapon;
 
 
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
@@ -45,10 +41,7 @@ public class Bombs extends Entity {
         this.initY = startY;
         this.vertX = targetX - startX + xOffset;
         this.vertY = targetY - startY;
-        this.targetX = targetX + xOffset - startX;
-        this.targetY = targetY - startY;
         this.playing = playing; 
-        this.weapon = weapon; 
         loadImage(); 
         initialize();
     }
@@ -87,8 +80,6 @@ public class Bombs extends Entity {
                 y -= tempChange;
                 hitbox.y -= tempChange; 
             }
-            explodePosX = (int) hitbox.x; 
-            explodePosY = (int) hitbox.y;
             
         } else {
             playing.BombReady = false; 

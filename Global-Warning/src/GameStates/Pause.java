@@ -17,7 +17,6 @@ import static Utilities.Atlas.*;
 public class Pause {
 
 	// variables
-	private Playing playing;
 	private BufferedImage backgroundImg = getSpriteAtlas(PAUSE_ATLAS);
 	private InGameButton menuBackB;
 
@@ -28,8 +27,7 @@ public class Pause {
 	 * @since January 5, 2024
 	 */
 
-	public Pause(Playing playing) {
-		this.playing = playing;
+	public Pause() {
 		makeButton();
 
 	}

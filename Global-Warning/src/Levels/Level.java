@@ -31,7 +31,6 @@ public class Level {
 	private int lvlTilesWide;
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
-	private Point windSpawn; 
 	private Playing playing;
 	private Point playerSpawn; // Default spawn point in a room
 	private Point leftSpawn; // Spawn point from the left door in a room
@@ -48,9 +47,11 @@ public class Level {
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 	private ArrayList<Boss> Demonboi = new ArrayList<Boss>(); 
-	private ArrayList<Sign> signs = new ArrayList<Sign>();
 
-	private String[] tutorialText = {"Use WASD to MOVE!", "Press SPACE to JUMP!", "Jump on a wall to WALLJUMP", "Press SHIFT to DASH!"};
+	// Used only for the tutorial
+	private ArrayList<Sign> signs = new ArrayList<Sign>();
+	private String[] tutorialText = {"Use WASD to MOVE!", "Press SPACE to JUMP!", "HOLD jump on a wall to WALL JUMP", "Press SHIFT to DASH!", "SHOOT enemies with the MOUSE!", 
+									"Press I to open the INVENTORY!", "Press E to interact with OBJECTS!"};
 	private int tutorialTextIndex = 0;
 
 	private boolean fireLevel;
@@ -115,7 +116,7 @@ public class Level {
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 101: leftTransition = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 102: rightTransition = new Point((x+1) * Constants.TILE_SIZE - 1, y * Constants.TILE_SIZE); break;
-		case 103: isWindy = true; windSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break; 
+		case 103: isWindy = true; break; 
 		case 104: checkpoint = new Checkpoint(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE - TILE_SIZE, 45, 63, playing);
 				  isCheckpoint = true; 
 				  playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;

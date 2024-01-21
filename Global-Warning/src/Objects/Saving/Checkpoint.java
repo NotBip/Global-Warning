@@ -5,10 +5,8 @@ import java.awt.Graphics;
 import java.io.IOException;
 
 import Entities.Entity;
-import Entities.Player;
 import GameStates.Playing;
 import Levels.LevelManager;
-import Objects.Chest;
 import UserInterface.SaveButton;
 
 public class Checkpoint extends Entity {

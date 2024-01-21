@@ -10,8 +10,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import GameStates.Playing;
-import Levels.Level;
-import Levels.LevelManager;
 
 public class Environment {
         

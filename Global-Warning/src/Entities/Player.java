@@ -8,9 +8,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import GameStates.GameState;
 import GameStates.Playing;
-import UserInterface.SaveButton;
 
 import static Utilities.Constants.Directions.*;
 
@@ -53,6 +51,7 @@ public class Player extends Entity {
     private boolean isDead = false; // Is the player dead?
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
+    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -156,20 +155,18 @@ public class Player extends Entity {
 	* Creation Date: Decemeber 16th, 2023
 	* Modified Date: January 14th, 2024
 *//** Description: Updates everything to do with the player
-	* @param playing used literally only for setting a flag for the player dying
 	* @return n/a
 	* Dependencies: setPlayerDying, GetSpriteAmount, updateAnimationTick, canMove, checkFloor, checkWater, changeHealth, fixYPos, fixXPos, setAnimation
 	* Throws/Exceptions: n/a
 	*/
 
-    public void update(Playing playing) {
+    public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
             state = DEAD;
             animationTick = 0;
             animationIndex = 0; 
-            playing.setPlayerDying(true);
             }
              else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) {
                 //this.changeHealth(maxHealth);
@@ -324,7 +321,7 @@ public class Player extends Entity {
         } 
         // Moving horizontally
         
-            if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
+            if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !stuckBehindDoor) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
                 touchingWall = false;
             } else {

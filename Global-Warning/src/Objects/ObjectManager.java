@@ -7,25 +7,18 @@ import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.objectConstants.*;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import Entities.Player;
 import Entities.Planet1Enemies.*;
 import GameStates.Playing;
-import Levels.Level;
 
 public class ObjectManager{
 
     private Playing playing; 
     private BufferedImage spikeImg;
     private BufferedImage[][] chestImg, doorImg; 
-    private int lvlData[][];
     
     public ObjectManager(Playing playing) { 
         this.playing = playing; 
-        lvlData = playing.getLevelManager().getCurrentLevel().getLevelData(); 
         loadImage(); 
 
     }
@@ -45,10 +38,6 @@ public class ObjectManager{
             for (int j = 0; j < doorImg[i].length; j++)
             doorImg[i][j] = DoorSprite.getSubimage(594 * j, 706 * i, 594, 706);
         }
-
-    public void loadObjects(int[][] lvlData) { 
-        this.lvlData = lvlData; 
-    }
 
     public void update() { 
         checkSpikeTouch(); 
@@ -107,11 +96,11 @@ public class ObjectManager{
     private void drawDoors(Graphics g, int xOffset) { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract && !d.doorOpen && !d.doorOpened)
-            g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+            g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) (130 - d.getHitbox().width), (int) d.getHitbox().height, null);
             if (d.doorInteract && d.doorOpen && !d.doorOpened)
-            g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+            g.drawImage(doorImg[0][d.getAniIndex()], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) (130 - d.getHitbox().width), (int) d.getHitbox().height, null);
             if (d.doorInteract && !d.doorOpen && d.doorOpened)
-            g.drawImage(doorImg[0][GetSpriteAmount(Door) - 1], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) d.getHitbox().width, (int) d.getHitbox().height, null);
+            g.drawImage(doorImg[0][GetSpriteAmount(Door) - 1], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) (130 - d.getHitbox().width), (int) d.getHitbox().height, null);
 
         }
     }
@@ -130,7 +119,7 @@ public class ObjectManager{
     public void checkDoorInteract() { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract) { 
-                if (d.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
+                if (d.interactHitbox.intersects(playing.getPlayer().getHitbox())) { 
                     d.doorInteract = true; 
                     return; 
                 }
