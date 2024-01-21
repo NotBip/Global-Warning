@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
+
+import Objects.Chest;
 import Objects.Saving.Checkpoint;
 import static Utilities.Constants.Buttons.*;
 import static Objects.Weapons.Bullets.*;
@@ -151,9 +153,17 @@ public class SaveButton extends Button {
 	} // end readNewBinFile
 
 	public void loadSave(Playing playing){
-		if (Playing.levelManager.getCurrentLevel().getCheckpoint()!= null) {
-			Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
+		if (levelManager.getCurrentLevel().getCheckpoint()!= null) {
+			levelManager.getCurrentLevel().getCheckpoint().resetReached();
 		}
+		if (levelManager.getCurrentLevel().getChest()!= null) {
+			for (Chest chest : levelManager.getCurrentLevel().getChest()){
+				chest.resetChests();
+			}
+		
+		}
+
+
         switch (fileNum) {
 			case 1:
 			System.out.println("save 1: loaded");

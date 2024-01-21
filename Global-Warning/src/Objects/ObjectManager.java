@@ -94,12 +94,18 @@ public class ObjectManager{
 
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()){
-            if (!c.chestInteract && !c.chestOpen && !c.chestOpened)
+            if (!c.chestInteract && !c.chestOpen && !c.chestOpened){
+            c.resetAnimation();//reset get item animation
             g.drawImage(chestImg[2][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
-            if (c.chestInteract && c.chestOpen && !c.chestOpened)
+            }
+            if (c.chestInteract && c.chestOpen && !c.chestOpened){
             g.drawImage(chestImg[3][c.getAniIndex()], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
-            if (c.chestInteract && !c.chestOpen && c.chestOpened)
+          
+            }
+            if (c.chestInteract && !c.chestOpen && c.chestOpened){
             g.drawImage(chestImg[3][GetSpriteAmount(Chest)-1], (int) c.getHitbox().x - xOffset , (int) c.getHitbox().y, (int) c.getHitbox().width, (int) c.getHitbox().height, null);
+            c.drawItem(g,(int)c.getHitbox().x - xOffset);//draws item final anim
+        }
         }
     }
 

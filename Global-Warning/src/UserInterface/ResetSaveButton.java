@@ -9,6 +9,7 @@ import java.io.IOException;
 import GameStates.GameState;
 import GameStates.Playing;
 import Levels.LevelManager;
+import Objects.Chest;
 import Objects.Saving.Checkpoint;
 import Objects.Saving.Save;
 
@@ -89,6 +90,14 @@ public class ResetSaveButton extends Button {
 		if (Playing.levelManager.getCurrentLevel().getCheckpoint()!= null) {
 			Playing.levelManager.getCurrentLevel().getCheckpoint().resetReached();
 		}
+
+		if (Playing.levelManager.getCurrentLevel().getChest()!= null) {
+			for (Chest chest :Playing.levelManager.getCurrentLevel().getChest()){
+				chest.resetChests();
+			}
+		
+		}
+
 		switch (fileNum) {
 			case 1:
 			SaveButton.save1 = new Save();
