@@ -90,7 +90,7 @@ public class Enemy extends Entity {
         Animations(); 
         initialize();
     }
-    
+
     protected void turnTowardsPlayer(Player player) {
     if (isPlayerVisible(player) && !dead) { 
 		if (player.hitbox.x > hitbox.x)
@@ -484,8 +484,6 @@ public class Enemy extends Entity {
         magicState++; 
         else 
         magicState= 0; 
-
-        System.out.println(magicState);
 
         if(enemyType == Demonboi)
             if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC)

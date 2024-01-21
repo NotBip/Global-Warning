@@ -12,6 +12,7 @@ import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.WEAPON_HEIGHT;
 import static Utilities.Atlas.BOMBEXPLODE_ATLAS;
 import static Utilities.Atlas.BOMB_ATLAS;
+import static Utilities.Atlas.BULLETS_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 
 import java.awt.Color;
@@ -19,14 +20,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class Bullets extends Entities.Entity implements MouseListener {
 
     // variables
-    BufferedImage img;
+    BufferedImage img, bulletBlue, bulletPurple;
     private BufferedImage[][] animations;
     private  int animationTick, animationIndex, aniSpeed = 15;
     private double x, y, vertX, vertY, initX, initY, targetX, targetY;
@@ -36,6 +39,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
     private Playing playing;
     private int[][] lvlData;
     private double time;
+    private boolean shoot = false; 
+    private double theta = 0; 
     private boolean explode = false;
     private int xFlipped = 0; 
     private int wFlipped = 1;
@@ -56,7 +61,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public Bullets(Weapon1 weapon, Playing playing, double startX, double startY, double targetX, double targetY, int xOffset, int[][] lvlData, double time) {
-        super((float) startX, (float) startY, 10, 10);
+        super((float) startX - 5, (float) startY - 5, 22, 22);
         this.weapon = weapon;
         this.playing = playing;
         this.x = startX;
@@ -67,8 +72,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         this.vertY = targetY - startY;
         this.targetX = targetX + xOffset - startX;
         this.targetY = targetY - startY;
-        System.out.println("X: " + x + " vertX: " + vertX);
-        System.out.println("Y: " + y + " vertY: " + vertY);
+        // System.out.println("X: " + x + " vertX: " + vertX);
+        // System.out.println("Y: " + y + " vertY: " + vertY);
         this.lvlData = lvlData;
         this.time = time;
 
@@ -79,6 +84,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
         setDirection(targetX, targetY, xOffset);
         setTime();
         //System.out.println("X: " + (directionX * speed3) + " Y: " + (directionY * speed3));
+        getImage(); 
         initialize();
 
     }
@@ -173,17 +179,35 @@ public class Bullets extends Entities.Entity implements MouseListener {
      */
 
     public void draw(Graphics g, int xOffset) {
-
         // bullet spawns
         Graphics2D g2d = (Graphics2D) g;
-        
-        getImage();
-
         int drawX = (int) Math.round(x - xOffset);
         int drawY = (int) Math.round(y);
+        AffineTransform oldXForm = g2d.getTransform();
+ 
+            // if(theta > Math.PI/2)
+            //     theta; 
 
-            hitbox.x = drawX - 5 + xOffset;
-            hitbox.y = drawY - 5;
+            if(theta < 0){ 
+            hitbox.y = (float) y;
+            hitbox.x = (float) (x);
+            } else {  
+            hitbox.y = (float) y - 25; 
+            hitbox.x = (float) x - 25; 
+            }
+        
+            if(!shoot){ 
+                theta = playing.getAngle(); 
+
+            if(weapon.xFlipped == 0) { 
+                theta += Math.PI;  
+            }
+
+                
+            if(!playing.bullets.isEmpty())
+                shoot = true; 
+            }
+            g2d.rotate(theta , drawX - 5 , drawY - 5);
 
         if (!Playing.inventory){
             if (!Playing.paused){
@@ -196,18 +220,25 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         if (Playing.gunIndex == 1){
             g2d.setColor(Color.PINK);
-            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
+            // g2d.fillOval(drawX - 5 , drawY - 5, 64, 64);
+            g.drawImage(bulletPurple, drawX - 5 , drawY - 5, 42, 42, null);
+
+
         } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
-            g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
+            // g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
+            g.drawImage(bulletBlue, drawX - 5 , drawY - 5, 42, 42, null);
+
         } 
+        g2d.setTransform(oldXForm);
+
+        
         // else if (Playing.gunIndex == 3){
         //     g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
         // }
 
-
         // draw bullet hitbox
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         drawHitbox(g, xOffset);
 
         // if there is at least one bullet in the list...
@@ -230,6 +261,10 @@ public class Bullets extends Entities.Entity implements MouseListener {
     }
 
     public void getImage() {
+        BufferedImage img = getSpriteAtlas(BULLETS_ATLAS); 
+        bulletBlue = img.getSubimage(0, 0, 42, 56);
+        bulletPurple = img.getSubimage(0, 56, 42, 56); 
+
         /*if (Playing.gunIndex == 1){
             this.img = getSpriteAtlas(WEAPON1_ATLAS); 
         } else if (Playing.gunIndex == 2){

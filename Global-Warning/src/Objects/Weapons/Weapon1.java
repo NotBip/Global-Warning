@@ -25,7 +25,7 @@ public class Weapon1 implements MouseMotionListener {
     MouseInputs mouse;
     Playing playing;
     
-    private int xFlipped = 0; 
+    public int xFlipped = 0; 
     private int wFlipped = 1; 
     
     protected float x=0;
@@ -69,23 +69,25 @@ public class Weapon1 implements MouseMotionListener {
         if (!Playing.paused && !Playing.inventory && !Playing.dead){
            // System.out.println(playing.getAngle());
            if (Playing.gunIndex < 3){
-            if (playing.mouseX < this.x-xOffset){
+            if (playing.mouseX < this.x){
                 this.xFlipped = 0; 
-                this. wFlipped = 1; 
+                this.wFlipped = 1; 
             }
             else {
-                this.xFlipped = 70;
+                this.xFlipped = WEAPON_WIDTH;
                 this.wFlipped = -1; 
             }
         }
         else {
             if (playing.getPlayer().getDirection() == RIGHT){
-                this.xFlipped = 0; 
-                this. wFlipped = 1; 
+                g2d.setTransform(oldXForm);
+                this.xFlipped = 46;
+                this.wFlipped = -1; 
             }
             else {
-                this.xFlipped = 70;
-                this.wFlipped = -1; 
+                g2d.setTransform(oldXForm);
+                this.xFlipped = 0; 
+                this. wFlipped = 1; 
             }
         }
         }
@@ -101,7 +103,11 @@ public class Weapon1 implements MouseMotionListener {
      */
 
     public void update() {
-        this.x = player.getHitbox().x;
+        if(xFlipped == 0)
+        this.x = (float) player.getHitbox().getCenterX() - player.getHitbox().width - 10;
+        else 
+        this.x = (float) player.getHitbox().getCenterX() + 20;
+
         this.y = player.getHitbox().y-20;
      }
 
