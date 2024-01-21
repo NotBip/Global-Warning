@@ -297,9 +297,35 @@ public class Constants {
 		public static int getPlayerDamage(Playing playing) { 
 			switch (playing.gunIndex) {
 				case 1: 
-					return 10; 
+					System.out.println(playing.gunIndex);
+					System.out.println("I'm Returning 10 Damage!");
+					return 10 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
 				case 2: 
-					return 20; 
+				System.out.println(playing.gunIndex);
+				System.out.println("I'm Returning 20 Damage!");
+					return 20 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
+				default:
+					return 0; 
+			}
+		}
+
+		public static int getPlayerDamage(Playing playing, int gun) { 
+			switch (gun) {
+				case 1: 
+					return 10 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
+				case 2: 
+					return 20 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
+				default:
+					return 0; 
+			}
+		}
+
+		public static int getGunFirerate(Playing playing, int gun) { 
+			switch (gun) {
+				case 1: 
+					return (int) Playing.fireRateWeapon1; 
+				case 2: 
+					return (int) Playing.fireRateWeapon2; 
 				default:
 					return 0; 
 			}
@@ -329,5 +355,6 @@ public class Constants {
 
 		
 	}
+
 }
 		

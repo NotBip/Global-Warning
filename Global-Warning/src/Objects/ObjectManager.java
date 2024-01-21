@@ -132,7 +132,7 @@ public class ObjectManager{
             if (!d.doorInteract) { 
                 if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) > 0) { 
                     d.doorInteract = true;
-                    playing.player.useItem(3);
+                    playing.player.useItem(3, playing);
                     return; 
                 }
                 else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) == 0) {

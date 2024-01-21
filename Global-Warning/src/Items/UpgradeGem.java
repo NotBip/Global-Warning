@@ -5,9 +5,10 @@ import Entities.Player;
 
 public class UpgradeGem {
     
-    int damageBoost = 75;
-    int firerateBoost = 10;
-    int quantity = 0;
+    int damageBoost = 10;
+    int firerateBoost = -20;
+    int quantity = 3;
+    int numUpgrades = 0;
 
     private Player player;
     public UpgradeGem(Player player) {
@@ -24,6 +25,7 @@ public class UpgradeGem {
 
     public void useItem() {
         this.quantity --;
+        this.numUpgrades ++;
     }
 
     public int getQuantity() {
@@ -40,6 +42,10 @@ public class UpgradeGem {
 
     public int getFirerateBoost() {
         return firerateBoost;
+    }
+
+    public int getNumUpgrades() {
+        return numUpgrades;
     }
 
 }

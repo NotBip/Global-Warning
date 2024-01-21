@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import Entities.Player;
 import GameStates.Playing;
 import Objects.Weapons.Bullets;
+import Utilities.Constants.PlayerConstants;
 
 import static Utilities.Atlas.INVENTORYSLOT_ATLAS;
 import static Utilities.Atlas.*;
@@ -29,6 +30,7 @@ public class InventorySlot extends Button {
 	private BufferedImage[] imgs;
 	private BufferedImage[] hvr;
 	Playing playing;
+	PlayerConstants constants;
 	//HealPotion heal = new HealPotion(playing.player);
 	//Bomb bomb = new Bomb(playing.player);;
 	//Key key = new Key(playing.player);;
@@ -110,8 +112,8 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed1, xPos-80,yPos-40);
-				g.drawString("Fire Rate: "+Playing.fireRateWeapon1, xPos-80,yPos-10);
-				g.drawString("Damage: "+num[0], xPos-80,yPos+20);
+				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 1), xPos-80,yPos-10);
+				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 1), xPos-80,yPos+20);
 			}
 			
 			
@@ -121,8 +123,8 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos+40, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed2, xPos+55,yPos-40);
-				g.drawString("Fire Rate: "+Playing.fireRateWeapon2, xPos+55,yPos-10);
-				g.drawString("Damage: "+num[0], xPos+55,yPos+20);
+				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 2), xPos+55,yPos-10);
+				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 2), xPos+55,yPos+20);
 			}
 
             break;

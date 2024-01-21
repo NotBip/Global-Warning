@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import GameStates.Playing;
+import Items.UpgradeGem;
 import Objects.Chest;
 import Objects.Object;
 import Objects.ObjectManager;
@@ -351,7 +352,7 @@ public class Enemy extends Entity {
             if(b.getHitbox().intersects(this.hitbox) && playing.gunIndex != 3) {
                 isActive = true;  
                 playing.removeBullet();
-                changeHealth(-PlayerConstants.getPlayerDamage(playing));
+                changeHealth(-(PlayerConstants.getPlayerDamage(playing) + (playing.getPlayer().getUpgradeGem().getNumUpgrades() * playing.getPlayer().getUpgradeGem().getDamageBoost())));
             }
         }
         /*for (Explosions e : explosion) { 

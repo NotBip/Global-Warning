@@ -147,7 +147,8 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bombs.size(); i++) { 
             bombs.get(i).updateBombs();
          }
-        updateLightning(); 
+        updateLightning();
+
         checkLightningIntersect();
         checkBorder();
         checkLightningIntersect();
@@ -158,7 +159,14 @@ public class Playing extends State implements KeyListener, MouseListener {
         environment.update();
     }
     }
-     /**
+     public void updateFirerateUpgrade() {
+        fireRateWeapon1 = fireRateWeapon1 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 1: " + fireRateWeapon1);
+        fireRateWeapon2 = fireRateWeapon2 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 2: " + fireRateWeapon2);
+    }
+
+    /**
      * Checks if that player has gone past the camera border
      * 
      * @author Ryder Hodgson
@@ -380,6 +388,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+
     public void bombCooldown(int x, int y) {
         long time1 = System.currentTimeMillis();
         long rate = 0;
@@ -415,7 +424,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         if (!paused && !inventory && player.getItemQuantity(2) > 0){
              Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
-             player.useItem(2);
+             player.useItem(2, this);
          }
  
      }

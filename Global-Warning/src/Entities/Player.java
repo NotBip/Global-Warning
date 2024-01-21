@@ -516,7 +516,7 @@ public class Player extends Entity {
         }
     }
 
-    public void useItem(int item) {
+    public void useItem(int item, Playing playing) {
         if (getItemQuantity(item) > 0) {
         switch (item) {
             case 1:
@@ -531,6 +531,7 @@ public class Player extends Entity {
             break;
             case 4:
             upgrade.useItem();
+            playing.updateFirerateUpgrade();
             break;
             default:
         }
@@ -557,4 +558,8 @@ public class Player extends Entity {
             default:
         }
 }
+
+    public UpgradeGem getUpgradeGem() {
+        return upgrade;
+    }
 }
