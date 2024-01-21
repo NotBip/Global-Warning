@@ -90,6 +90,20 @@ public class Level {
 		}
 	}
 
+	/*
+	* Method Name: loadEntities
+	* Author: Ryder Hodgson
+	* Creation Date: December 25th, 2023
+	* Modified Date: January 20th, 2024
+*//** Description: Adds all enemies, spawn points, transition points, level themes and weather from the level image pixel file
+    * @param greenValue The value of green found in the current pixel in the level file
+	* @param x the x value of the current pixel
+	* @param y the y value of the current pixel
+	* @return n/a
+	* Dependencies: Enemy2, Enemy1, Boss, Point, Checkpoint
+	* Throws/Exceptions: n/a
+	*/
+
 	private void loadEntities(int greenValue, int x, int y) {
 		switch (greenValue) {
 		//case EntityName -> EntityName.add(new EntityName(x * Game.TILES_SIZE, y * Game.TILES_SIZE));
@@ -112,6 +126,17 @@ public class Level {
 		case 109: stormLevel = true; break;
 		}
 	}
+
+/*
+	* Method Name: resetEnemies
+	* Author: Ryder Hodgson
+	* Creation Date: January 10th, 2024
+	* Modified Date: January 18th, 2024
+*//** Description: Deletes all enemies from a room (to be readded when re-entering)
+	* @return n/a
+	* Dependencies: Enemy2, Enemy1, Boss
+	* Throws/Exceptions: n/a
+	*/
 
 	public void resetEnemies() {	
 			Waterboi.clear();

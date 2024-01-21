@@ -37,6 +37,20 @@ public class Sign extends Object{
         this.textOpacity = textOpacity;
     }
 
+/*
+	* Method Name: drawText
+	* Author: Ryder Hodgson
+	* Creation Date: January 20th, 2024
+	* Modified Date: January 20th, 2024
+*//** Description: Draws text to the screen
+	* @param g What it actually draws with
+    * @param xOffset An offset to the x value of the text based on the current camera position
+    * @param text The text to be drawn
+	* @return n/a
+	* Dependencies: 
+	* Throws/Exceptions: n/a
+	*/
+
     public void drawText(Graphics g, int xOffset, String text) {
         g.setColor(new Color(255,255,255,textOpacity+=2));
         if(textOpacity > 253) { // fade in the text

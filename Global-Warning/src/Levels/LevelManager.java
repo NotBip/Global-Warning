@@ -46,6 +46,17 @@ public class LevelManager {
 		waterSprite[4] = LoadSave.GetSpriteAtlas(LoadSave.WATER_BOTTOM);
 	}
 
+	/*
+	* Method Name: loadNextLevel
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: January 17th, 2024
+*//** Description: Loads the tiles and objects when entering a room
+	* @return n/a
+	* Dependencies: Playing, Level, Sign, 
+	* Throws/Exceptions: n/a
+	*/
+
 	public void loadNextLevel() {
 		
 		Level newLevel = levels.get(lvlIndex);
@@ -79,6 +90,17 @@ public class LevelManager {
 		for (BufferedImage img : allLevels)
 			levels.add(new Level(img, playing));
 	}
+
+	/*
+	* Method Name: importOutsideSprites
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: January 17th, 2024
+*//** Description: Imports all the tile sprites needed for each room
+	* @return n/a
+	* Dependencies: BufferedImage, LoadSave 
+	* Throws/Exceptions: n/a
+	*/
 
 	private void importOutsideSprites() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);

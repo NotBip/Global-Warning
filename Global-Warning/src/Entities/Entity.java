@@ -72,18 +72,21 @@ public class Entity {
        System.out.println(healthBarWidth);
    }
 
-    /**
-     * Checks all of the corners of the entity's possible next position to see if that position can exist 
-     * 
-     * @author Ryder Hodgson
-     * @since December 20th, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity can move
-     */
+     /*
+	* Method Name: canMove
+	* Author: Ryder Hodgson
+	* Creation Date: December 20th, 2023
+	* Modified Date: December 20th, 2023
+*//** Description: Checks the next position of an entity to see if it is a possible position
+	* @param x the next x position of the entity
+    * @param y the next y position of the entity
+    * @param width the width of the entity
+    * @param height the height of the entity
+    * @param lvlData the data of the current level
+	* @return Can the entity move here?
+	* Dependencies: solidTile
+	* Throws/Exceptions: false
+	*/
     public boolean canMove(float x, float y, float width, float height, int[][] lvlData) {
         if (!solidTile(x + width, y, lvlData) ) {
             if (!solidTile(x, y + height, lvlData)) {
@@ -97,16 +100,19 @@ public class Entity {
         return false;
     }
 
-    /**
-     * @author Ryder Hodgson
-     * @since December 20th, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity is touching a solid tile
-     */
+    /*
+	* Method Name: solidTile
+	* Author: Ryder Hodgson
+	* Creation Date: December 20th, 2023
+	* Modified Date: January 12th, 2024
+*//** Description: Checks the next position of an entity to see if it is a solid tile
+	* @param x the next x position of the entity
+    * @param y the next y position of the entity
+    * @param lvlData the data of the current level
+	* @return Is the next position a solid tile?
+	* Dependencies: 
+	* Throws/Exceptions: false
+	*/
     public boolean solidTile(float x, float y, int[][] lvlData) {
          if(x > lvlData[0].length * TILE_SIZE || x < 0) { // Right of left of the game window
              return true;
@@ -130,16 +136,21 @@ public class Entity {
         return false;
     }
 
-    /**
-     * @author Ryder Hodgson
-     * @since December 21st, 2023
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param lvlData
-     * @return if the entity is touching the floor
-     */
+    /*
+	* Method Name: checkFloor
+	* Author: Ryder Hodgson
+	* Creation Date: December 21st, 2023
+	* Modified Date: December 21st, 2023
+*//** Description: Checks below the entity to see if they are on a floor
+	* @param x the x position of the entity
+    * @param y the next y position of the entity
+    * @param width the width of the entity
+    * @param height the height of the entity
+    * @param lvlData the data of the current level
+	* @return Is the entity on a floor?
+	* Dependencies: solidTile
+	* Throws/Exceptions: true
+	*/
 
     public boolean checkFloor(float x, float y, float width, float height, int[][] lvlData) {
         if(!solidTile(x, y + height + 1, lvlData)) {
@@ -150,14 +161,18 @@ public class Entity {
         return true;
         }
 
-    /**
-     * if the entity hits the ground or a ceiling while moving, sets the y position to compensate for the lost movement
-     * @author Kaarin Gaming / Edited by Ryder Hodgson
-     * @since December 25th, 2023
-     * @param hitbox
-     * @param airSpeed
-     * @return the new yPos
-     */
+     /*
+	* Method Name: fixYPos
+	* Author: Kaarin Gaming / Edited by Ryder Hodgson
+	* Creation Date: December 25th, 2023
+	* Modified Date: December 25th, 2023
+*//** Description: If the entity hits the ground or a ceiling while moving, sets the y position to compensate for the lost movement
+	* @param hitbox the entities hitbox
+    * @param airSpeed the current vertical speed of the entity
+	* @return the value to change the entities y position to
+	* Dependencies: n/a
+	* Throws/Exceptions: n/a
+	*/
 protected static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
 		int currentTile = (int) ((hitbox.y+hitbox.height) / TILE_SIZE - 0.3); // The current tile the bottom of the entity is on, subtract 0.3 to fix inconsistency issue with the tile calculation
         
@@ -178,6 +193,19 @@ protected static float fixYPos(Rectangle2D.Float hitbox, float airSpeed) {
      * @param xSpeed
      * @return the new xPos
      */
+
+     /*
+	* Method Name: fixYPos
+	* Author: Kaarin Gaming / Edited by Ryder Hodgson
+	* Creation Date: January 2nd, 2024
+	* Modified Date: January 2nd, 2024
+*//** Description: If the player hits a wall while moving, sets the x position to compensate for the lost movement
+	* @param hitbox the entities hitbox
+    * @param xSpeed the current horizontal speed of the entity
+	* @return the value to change the entities x position to
+	* Dependencies: n/a
+	* Throws/Exceptions: n/a
+	*/
 protected static float fixXPos(Rectangle2D.Float hitbox, float xSpeed) {
 		int currentTile = (int) ((hitbox.x+hitbox.width) / TILE_SIZE - 0.2); // The current tile the right of the entity is on, subtract 0.2 to fix inconsistency issue with the tile calculation
 		if (xSpeed > 0) { // Moving the right

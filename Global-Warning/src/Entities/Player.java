@@ -73,6 +73,18 @@ public class Player extends Entity {
         this.lvlData = lvlData;
     }
 
+ /*
+	* Method Name: canMove
+	* Author: Ryder Hodgson
+	* Creation Date: January 2nd, 2024
+	* Modified Date: January 2nd, 2024
+*//** Description: Sets the room spawn of the player
+	* @param spawn the x and y coordinates to be spawned at
+	* @return n/a
+	* Dependencies: Point
+	* Throws/Exceptions: n/a
+	*/
+    
     public void setSpawn(Point spawn) {
         int spawnOffset = (int) (this.hitbox.height / 2) + 10; // Don't spawn the player inside the block the spawn point in on top of
         this.x = spawn.x;
@@ -80,6 +92,17 @@ public class Player extends Entity {
         hitbox.x = x;
         hitbox.y = y;
     }
+
+/*
+	* Method Name: reset
+	* Author: Ryder Hodgson
+	* Creation Date: January 18th, 2024
+	* Modified Date: January 18th, 2024
+*//** Description: Resets everything to do with the player
+	* @return n/a
+	* Dependencies: n/a
+	* Throws/Exceptions: n/a
+	*/
 
     public void reset() {
         xSpeed = 0;
@@ -104,6 +127,17 @@ public class Player extends Entity {
         currentOxygenBarLen = oxygenBarWidth;
     }
 
+/*
+	* Method Name: pauseReset
+	* Author: Ryder Hodgson
+	* Creation Date: January 19th, 2024
+	* Modified Date: January 19th, 2024
+*//** Description: Resets the player movement booleans when paused
+	* @return n/a
+	* Dependencies: n/a
+	* Throws/Exceptions: n/a
+	*/
+
     public void pauseReset() {
         left = false;
         right = false;
@@ -115,6 +149,18 @@ public class Player extends Entity {
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
+
+     /*
+	* Method Name: update
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 16th, 2023
+	* Modified Date: January 14th, 2024
+*//** Description: Updates everything to do with the player
+	* @param playing used literally only for setting a flag for the player dying
+	* @return n/a
+	* Dependencies: setPlayerDying, GetSpriteAmount, updateAnimationTick, canMove, checkFloor, checkWater, changeHealth, fixYPos, fixXPos, setAnimation
+	* Throws/Exceptions: n/a
+	*/
 
     public void update(Playing playing) {
         moving = false; // Stop the player movement animation in case they stop moving this update
@@ -278,7 +324,6 @@ public class Player extends Entity {
         } 
         // Moving horizontally
         
-
             if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
                 touchingWall = false;
@@ -291,7 +336,7 @@ public class Player extends Entity {
         updateAnimationTick();
         setAnimation();
     }
-
+    
     public void draw(Graphics g, int offset) {
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 63 * wFlipped, 68, null);
             //drawHitbox(g, offset);
@@ -303,6 +348,17 @@ public class Player extends Entity {
      * @author Ryder Hodgson
      * @since December 16, 2023
      */
+
+      /*
+	* Method Name: jump
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 17th, 2023
+	* Modified Date: January 12th, 2024
+*//** Description: Makes the player jump if they are on the ground or running into a wall
+	* @return n/a
+	* Dependencies: updateAnimationTick, checkWater, setAnimation
+	* Throws/Exceptions: n/a
+	*/
 
     public void jump() {
         if (inAir && !touchingWall) {
@@ -339,12 +395,16 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Sets the player speed to dash if they are allowed to
-     * 
-     * @author Ryder Hodgson
-     * @since December 18, 2023
-     */
+      /*
+	* Method Name: dash
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 18th, 2023
+	* Modified Date: January 8th, 2024
+*//** Description: Sets the player speed to dashspeed if they are allowed to
+	* @return n/a
+	* Dependencies: checkWater, Math
+	* Throws/Exceptions: n/a
+	*/
 
     public void dash() {
         if (isDashing || !canDash || updatesBetweenDash > 0) { // Immediately return if the player is already dashing or unable to dash
@@ -373,6 +433,20 @@ public class Player extends Entity {
             dashYSpeed /= Math.sqrt(2);
         }
     }
+
+     /*
+	* Method Name: checkWater
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 12th, 2023
+	* Modified Date: January 12th, 2024
+*//** Description: Checks if the player is in water
+	* @param x the x position of the player
+    * @param y the y position of the player
+    * @param lvlData the data of the current room
+	* @return Is the player in water?
+	* Dependencies: n/a
+	* Throws/Exceptions: false
+	*/
 
     public boolean checkWater(float x, float y, int[][] lvlData) {
         int lvlX = (int) (x / TILE_SIZE); // The current tile the entity is on in the horizontal
@@ -437,6 +511,18 @@ public class Player extends Entity {
         }
     }
 
+/*
+	* Method Name: drawHealthBar
+	* Author: Ryder Hodgson
+	* Creation Date: January 10th, 2024
+	* Modified Date: January 10th, 2024
+*//** Description: draws the player's health bar to the screen
+	* @param g What it actually draws with
+	* @return n/a
+	* Dependencies: Graphics
+	* Throws/Exceptions: n/a
+	*/
+
     public void drawHealthBar(Graphics g) {
         g.setColor(Color.red);
         g.fillRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
@@ -445,6 +531,18 @@ public class Player extends Entity {
         g.setColor(Color.black);
         g.drawRect(20, 20, (int) healthBarWidth, (int) healthBarHeight);
     }
+
+/*
+	* Method Name: drawOxygenBar
+	* Author: Ryder Hodgson
+	* Creation Date: January 12th, 2024
+	* Modified Date: January 12th, 2024
+*//** Description: draws the player's oxygen bar to the screen
+	* @param g What it actually draws with
+	* @return n/a
+	* Dependencies: Graphics
+	* Throws/Exceptions: n/a
+	*/
 
     public void drawOxygenBar(Graphics g) {
         if(waterUpdates > 0) {

@@ -85,13 +85,17 @@ public class Playing extends State implements KeyListener, MouseListener {
         initialize();
     }
 
-    /**
-     * Loads the new level
-     * 
-     * @author Ryder Hodgson
-     * @since January 1st, 2024
-     * @param spawnType 0 = checkpoint, 1 = next room left, 2 = next room right
-     */
+     /*
+	* Method Name: loadNextLevel
+	* Author: Ryder Hodgson
+	* Creation Date: January 1st, 2024
+	* Modified Date: January 15th, 2024
+*//** Description: Loads the next room
+	* @param spawnType 0 = checkpoint/default point, 1 = next room let, 2 = next room right
+	* @return n/a
+	* Dependencies: enemyManager, levelManager, resetLightning
+	* Throws/Exceptions: n/a
+	*/
 
     public void loadNextLevel(int spawnType) {
         enemyManager.resetEnemies();
@@ -105,6 +109,17 @@ public class Playing extends State implements KeyListener, MouseListener {
             default: player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
         }
     }
+
+/*
+	* Method Name: initialize
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 16th, 2023
+	* Modified Date: January 16th, 2024
+*//** Description: Initializes all necessary classes and default things they all need
+	* @return n/a
+	* Dependencies: EnemyManager, LevelManager, ObjectManager, Player, Bullet, Weapon1, Pause, InventoryState, Death, Bomb, LoadSave
+	* Throws/Exceptions: n/a
+	*/
 
     public void initialize() {
         levelManager = new LevelManager(this);
@@ -132,6 +147,18 @@ public class Playing extends State implements KeyListener, MouseListener {
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
     }
 
+/*
+	* Method Name: update
+	* Author: Ryder Hodgson
+	* Creation Date: Decemeber 16th, 2023
+	* Modified Date: January 20th, 2024
+*//** Description: updates everything in the class
+	* @return n/a
+	* Dependencies: EnemyManager, LevelManager, ObjectManager, Player, Bullet, Weapon1, Pause, InventoryState,
+    * Death, Bomb, updateLightning, checkLightningIntersect, checkBorder, checkTransition, checkTouchingSign, Environment
+	* Throws/Exceptions: n/a
+	*/
+
     public void update() throws IOException {
         if(!game.getPanel().inFocus) {
             paused = true;
@@ -158,7 +185,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         checkLightningIntersect();
         checkBorder();
         checkTouchingSign();
-        checkLightningIntersect();
         checkTransition();
         
         enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
@@ -172,6 +198,17 @@ public class Playing extends State implements KeyListener, MouseListener {
      * @author Ryder Hodgson
      * @since January 1st, 2024
      */
+
+     /*
+	* Method Name: checkBorder
+	* Author: Ryder Hodgson
+	* Creation Date: January 1st, 2024
+	* Modified Date: January 1st, 2024
+*//** Description: Checks if the player has gone past the camera border, updating the camera position if so
+	* @return n/a
+	* Dependencies: Player
+	* Throws/Exceptions: n/a
+	*/
 
     public void checkBorder() {
         int distance = (int) player.getHitbox().x - xOffset; // The distance between the player and the camera border
@@ -197,6 +234,17 @@ public class Playing extends State implements KeyListener, MouseListener {
      * @author Ryder Hodgson
      * @since January 1st, 2024
      */
+
+     /*
+	* Method Name: checkTransition
+	* Author: Ryder Hodgson
+	* Creation Date: January 2nd, 2024
+	* Modified Date: January 2nd, 2024
+*//** Description: Checks if the player has has touched a transition point, if so, put them into the next corresponding room
+	* @return n/a
+	* Dependencies: LevelManager, Player
+	* Throws/Exceptions: n/a
+	*/
 
     public void checkTransition() {
         // Check left door
@@ -235,12 +283,34 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+    /*
+	* Method Name: checkLightningIntersect
+	* Author: Ryder Hodgson
+	* Creation Date: January 15th, 2024
+	* Modified Date: January 16th, 2024
+*//** Description: Checks if the player is intersecting the lightning hitbox
+	* @return n/a
+	* Dependencies: Player
+	* Throws/Exceptions: n/a
+	*/
+
     public void checkLightningIntersect() {
         if(lightningHitbox != null && lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown)
         if(player.getHitbox().intersects(lightningHitbox) && lightningHasPos && !player.isImmune()) { // fix when this happens
             player.changeHealth(-50);
         }
     }
+
+/*
+	* Method Name: updateLightning
+	* Author: Ryder Hodgson
+	* Creation Date: January 15th, 2024
+	* Modified Date: January 16th, 2024
+*//** Description: Update lightning (cooldown between picking position, spawning, and making it finally strike)
+	* @return n/a
+	* Dependencies: Player, LevelManager, resetLightning
+	* Throws/Exceptions: n/a
+	*/
 
     private void updateLightning() {
         if(levelManager.getCurrentLevel().getStormy()) {
@@ -265,6 +335,19 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+/*
+	* Method Name: updateLightning
+	* Author: Ryder Hodgson
+	* Creation Date: January 15th, 2024
+	* Modified Date: January 20th, 2024
+*//** Description: Draw the lightning warning and the lightning itself
+    * @param g What it actually draws with
+    * @param xOffset the offset to the x position based on the current camera position
+	* @return n/a
+	* Dependencies: Graphics, Environment
+	* Throws/Exceptions: n/a
+	*/
+
     private void drawLightning(Graphics g, int xOffset) {
         if(lightningUpdates >= lightningPosCooldown && lightningHasPos && lightningUpdates <= lightningPosCooldown + lightningSpawnCooldown) {
             g.setColor(Color.RED);
@@ -277,11 +360,33 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+    /*
+	* Method Name: resetLightning
+	* Author: Ryder Hodgson
+	* Creation Date: January 15th, 2024
+	* Modified Date: January 15th, 2024
+*//** Description: Reset everything to do with lightning after a strike
+	* @return n/a
+	* Dependencies: n/a
+	* Throws/Exceptions: n/a
+	*/
+
     private void resetLightning() {
         lightningHasPos = false;
         lightningUpdates = 0;
         lightningHitbox = null;
     }
+
+    /*
+	* Method Name: checkTouchingSign
+	* Author: Ryder Hodgson
+	* Creation Date: January 20th, 2024
+	* Modified Date: January 20th, 2024
+*//** Description: Check if the player is touching the sign hitbox
+	* @return n/a
+	* Dependencies: LevelManager, Player, Sign
+	* Throws/Exceptions: n/a
+	*/
 
     private void checkTouchingSign() {
         for(Sign s : levelManager.getCurrentLevel().getSigns()) {
@@ -290,6 +395,18 @@ public class Playing extends State implements KeyListener, MouseListener {
             }
         }
     }
+
+    /*
+	* Method Name: draw
+	* Author: Ryder Hodgson
+	* Creation Date: January 16th, 2024
+	* Modified Date: January 20th, 2024
+*//** Description: Draw everything to the screen when actually playing the game (e.g. not in a menu)
+    * @param g What it actually draws with
+	* @return n/a
+	* Dependencies: Graphics, Environment, Weapon1, Player, LevelManager, EnemyManager, ObjectManager, Sign, drawLightning, Bullet, Bomb, InventoryState, Pause, Death,
+	* Throws/Exceptions: n/a
+	*/
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
@@ -334,6 +451,16 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
        
+/*
+	* Method Name: resetAll
+	* Author: Ryder Hodgson
+	* Creation Date: January 18th, 2024
+	* Modified Date: January 19th, 2024
+*//** Description: Reset literally everything to do with playing the game at all
+	* @return n/a
+	* Dependencies: Player, EnemyManager, resetLightning, Bullet, Bomb
+	* Throws/Exceptions: n/a
+	*/
 
     public void resetAll() {
         player.reset();

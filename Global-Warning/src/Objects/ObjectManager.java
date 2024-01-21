@@ -93,13 +93,6 @@ public class ObjectManager{
             }
     }
 
-    private void drawTutorialSigns(Graphics g, int xOffset) {
-        for (Sign s : playing.getLevelManager().getCurrentLevel().getSigns()) {
-            s.drawHitbox(g, xOffset);
-            g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) (s.getHitbox().y + s.getHitbox().height), (int) s.getHitbox().getWidth(), (int) SIGN_HEIGHT, null);
-        }
-    }
-
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()){
             if (!c.chestInteract && !c.chestOpen && !c.chestOpened)

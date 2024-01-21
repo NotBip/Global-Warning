@@ -10,7 +10,6 @@ public class Game implements Runnable {
     private static final int FPS = 60; // Frames per second
     private static final int UPS = 120; // Updates (behind the scenes stuff) per second
     public static final float SCALE = 1f; 
-    int update = 0;
     private Thread gameThread;
     public Playing playing;
     private Menu menu;
@@ -28,23 +27,32 @@ public class Game implements Runnable {
         startGame();
     }
 
-    /**
-     * Starts the initial game loop
-     * @author Ryder Hodgson
-     * @since December 16th, 2024
-     */
+    /*
+	* Method Name: update
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: December 16th, 2023
+*//** Description: Starts the initial game loop
+	* @return n/a
+	* Dependencies: Thread
+	* Throws/Exceptions: n/a
+	*/
 
     public void startGame() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
-    /**
-     * Does all of the background tasks every time the game updates (120 times per second)
-     * @author Ryder Hodgson
-     * @throws IOException 
-     * @since December 16th, 2024
-     */
+     /*
+	* Method Name: update
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: December 16th, 2023
+*//** Description: Does all of the background teask every time the game updates (120 time per second)
+	* @return n/a
+	* Dependencies: Playing, Menu, SaveState, OptionState 
+	* Throws/Exceptions: IOException
+	*/
 
     public void update() throws IOException {
         switch (GameState.currentState) {
@@ -67,13 +75,17 @@ public class Game implements Runnable {
         }
     }
 
-    /**
-     * Draws everything to the screen every frame (60FPS) depending on the game state
-     * @author Ryder Hodgson
-     * @param g What it uses to actually draw
-     * @throws IOException 
-     * @since December 16th, 2024
-     */
+     /*
+	* Method Name: draw
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: December 16th, 2023
+*//** Description: Draws everything to the screen every frame (60FPS)
+	* @return n/a
+    * @param g What it actually uses to draw
+	* Dependencies: Playing, Menu, OptionState, SaveState
+	* Throws/Exceptions: IOException
+	*/
 
     public void draw(Graphics g) throws IOException {
         
@@ -94,11 +106,16 @@ public class Game implements Runnable {
                 break;
         }
     }
-    /**
-     * Initializes each class
-     * @author Ryder Hodgson
-     * @since December 16th, 2024
-     */
+    /*
+	* Method Name: initialize
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: December 16th, 2023
+*//** Description: Initializes all the important classes necessary for the game to function
+	* @return n/a
+	* Dependencies: Playing, Menu, OptionState, SaveState
+	* Throws/Exceptions: n/a
+	*/
 
     public void initialize() {
         playing = new Playing(this);
@@ -112,6 +129,17 @@ public class Game implements Runnable {
      * @author Ryder Hodgson
      * @since December 16th, 2024
      */
+
+     /*
+	* Method Name: run
+	* Author: Ryder Hodgson
+	* Creation Date: December 16th, 2023
+	* Modified Date: December 16th, 2023
+*//** Description: Runs at the start of the game thread. Is THE game. Keeps track of framerate and updates
+	* @return n/a
+	* Dependencies: gamePanel, update
+	* Throws/Exceptions: IOException
+	*/
 
     @Override
     public void run() {
@@ -136,9 +164,6 @@ public class Game implements Runnable {
             }
 
             if (timeSinceLastUpdate >= 1) {
-                if(update >= UPS) {
-                    update = 0;
-                }
                 try {
                     update();
                 } catch (IOException e) {
