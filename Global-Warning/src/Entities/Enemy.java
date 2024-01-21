@@ -90,7 +90,7 @@ public class Enemy extends Entity {
         Animations(); 
         initialize();
     }
-
+    
     protected void turnTowardsPlayer(Player player) {
     if (isPlayerVisible(player) && !dead) { 
 		if (player.hitbox.x > hitbox.x)
@@ -143,12 +143,13 @@ public class Enemy extends Entity {
         fireballUpdate++; 
         magicAttack(playing); 
         for (Fireballs f : fireballs) { 
+            if(f.fireballHitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
+                playing.getPlayer().changeHealth(-15);
+                fireballs.remove(f); 
+            }
             if(canMove(f.fireballHitbox.x, f.fireballHitbox.y, f.fireballHitbox.width, f.fireballHitbox.height, lvllData)) { 
                 f.update(playing);
-                if(f.fireballHitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
-                    playing.getPlayer().changeHealth(-15);
-                    fireballs.remove(f); 
-                }
+  
             }
             else 
                 fireballs.remove(f); 
@@ -479,9 +480,15 @@ public class Enemy extends Entity {
     }
 
     public void magicAttack(Playing playing) { 
-        magicState++;
+        if(state == MAGIC)
+        magicState++; 
+        else 
+        magicState= 0; 
+
+        System.out.println(magicState);
+
         if(enemyType == Demonboi)
-            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*20000) + 1) < 20 && state != MAGIC)
+            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC)
                 state = MAGIC; 
             if(magicState >= magicTimer) { 
                 state = WALK; 

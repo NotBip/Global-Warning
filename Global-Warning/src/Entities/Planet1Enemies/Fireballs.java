@@ -21,10 +21,10 @@ public class Fireballs extends Entity {
     private Playing playing; 
     
     public Fireballs(float x, float y) {
-        super(x, 100, 120, 80);
+        super(0, 0, 0, 0);
         this.x = x; 
-        this.y = 100; 
-        fireballHitbox = new Rectangle2D.Float(this.x, this.y, 100, 60); 
+        this.y = y; 
+        fireballHitbox = new Rectangle2D.Float(this.x, this.y, 100, 80); 
         super.inAir = true; 
         loadImage();
     }
