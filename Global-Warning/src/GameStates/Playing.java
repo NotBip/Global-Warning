@@ -28,34 +28,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Playing extends State implements KeyListener, MouseListener {
-    //public static Weapon1 weapon;
     public static Weapon1 weapon;
-    public  Player player;
+    public Player player;
     private Game game;
 
-    public int bulletCount;
-    public List<Bullets> bullets;
-    public List<Bombs> bombs; 
-    private EnemyManager enemyManager;
-    private ObjectManager objectManager;
-    private int borderLen = (int) (0.4 * GAME_WIDTH);
-    private int xOffset;
-    private int maxOffsetX;
-    public int numFile = Checkpoint.fileNum;
-    public static LevelManager levelManager;
-    private Pause pauseScreen;
-    private Death gameOver;
-    private InventoryState inventoryState;
-    private Environment environment; 
-    private Image backgroundImage;
-    public static boolean paused, inventory, dead = false;
-    private double weaponAngle = 0;
-    public static int gunIndex = 1;
-    public long loadtime = 0;
-    public double mouseX;
-    public double mouseY;
-    public double offset;
-    public boolean BombReady = true; 
+    public int bulletCount; // How many bullets are on screen
+    public List<Bullets> bullets; // A list of bullets currently in use
+    public List<Bombs> bombs; // A list of bombs currently in use
+    private EnemyManager enemyManager; // Manage all enemies
+    private ObjectManager objectManager; // Manage all objects
+    private int borderLen = (int) (0.4 * GAME_WIDTH); // The distance between the window and the player that must be reached before the camera starts moving
+    private int xOffset; // The current camera offset of the current room
+    private int maxOffsetX; // The maximum camera offset of the current room
+    public int numFile = Checkpoint.fileNum; // Which file the player is on
+    public static LevelManager levelManager; // Manage all levels
+    private Pause pauseScreen; // The state for when the player is paused
+    private Death gameOver; // The state for when the player has died
+    private InventoryState inventoryState; // The state for when the player is in the inventory
+    private Environment environment; // Environmental effects/obstacles
+    private Image backgroundImage; // The background of the game
+    public static boolean paused, inventory, dead = false; // Player states where they should not be moving
+    private double weaponAngle = 0; // The angle of the current weapon being held
+    public static int gunIndex = 1; // Which gun is being used
+    public double mouseX; // Position of the mouse horizontally
+    public double mouseY; // Position of the mouse vertically
+    public double offset; // Offset for weapon
+    public boolean BombReady = true; // Can the player throw a new bomb?
 
 
 
@@ -71,10 +69,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
     public int lightningSpawnCooldown = 120; // How long it takes after choosing a position for lightning to strike
-    public float lightningPosX;
-    public float lightningHeight;
-    public Rectangle2D.Float lightningHitbox;
-    public boolean lightningHasPos = false;
+    public float lightningPosX; // X position of the lightning hitbox
+    public float lightningHeight; // Height of the lightning hitbox (so it doesn't strike through tiles)
+    public Rectangle2D.Float lightningHitbox; // The lightning hitbox
+    public boolean lightningHasPos = false; // Has the lightning chosen the position it is going to strike?
 
     public Playing(Game game) {
         super(game);
@@ -432,7 +430,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     * @param g What it actually draws with
 	* @return n/a
 	* Dependencies: Graphics, Environment, Weapon1, Player, LevelManager, EnemyManager, ObjectManager, Sign, drawLightning, Bullet, Bomb, InventoryState, Pause, Death,
-	* Throws/Exceptions: n/a
+	* Throws/Exceptions: IOException
 	*/
 
     public void draw(Graphics g) throws IOException {
@@ -443,7 +441,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
 
-        for(Sign s: levelManager.getCurrentLevel().getSigns()) {
+        for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
             if(s.hasBeenRead()) {
                 s.drawText(g, xOffset, s.getText());
             }

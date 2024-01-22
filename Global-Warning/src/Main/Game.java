@@ -124,12 +124,6 @@ public class Game implements Runnable {
         options = new OptionState(this);
     }
 
-    /**
-     * Runs at the start of the game thread. Is THE game. Keeps track of framerate and updates
-     * @author Ryder Hodgson
-     * @since December 16th, 2024
-     */
-
      /*
 	* Method Name: run
 	* Author: Ryder Hodgson
@@ -167,7 +161,6 @@ public class Game implements Runnable {
                 try {
                     update();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 timeSinceLastUpdate--; // Don't set to 0 as a means of catching up if updates are lost

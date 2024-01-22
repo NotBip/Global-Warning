@@ -35,7 +35,6 @@ public class gamePanel extends JPanel{
         try {
             game.draw(g);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

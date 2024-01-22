@@ -64,10 +64,7 @@ public class Bombs extends Entity {
             if(playing.BombReady)
             playing.BombReady = false; 
 
-            tempChange = Math.min(speed * ((vertX / initX) * 10), 3 * speed); // cap out the speed at 3 * the speed
-            if(tempChange < 0) { // cap out if bomb is moving at negative speed
-                tempChange = Math.max(tempChange, -3);
-            }
+            tempChange = Math.min(Math.max(speed * ((vertX / initX) * 10), -3 * speed), 3 * speed); // cap out the speed at 3 * the speed
             x += tempChange;
             hitbox.x += tempChange;
 

@@ -10,7 +10,7 @@ public class BarrierDoor extends Object {
 
     public BarrierDoor(int x, int y, int object) { 
         super(x, y, object); 
-        this.aniSpeed = 15;
+        this.aniSpeed = 10;
         initHitbox(40, 135);
         this.interactHitbox = new Rectangle2D.Float(this.hitbox.x-10, this.hitbox.y, this.hitbox.width+20, this.hitbox.height);
         xDrawOffset = 0;

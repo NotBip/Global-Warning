@@ -16,8 +16,8 @@ import static Utilities.Atlas.*;
 
 public class Player extends Entity {
 
-    private BufferedImage[][] animations;
-    private int lvlData[][];
+    private BufferedImage[][] animations; // All of the different player sprites
+    private int lvlData[][]; // Data of the current level
     private boolean moving = false; // Is the player moving?
     private boolean left, right, up, down; // What direction is being pressed
     private int playerDir = RIGHT; // The player's direction
@@ -51,7 +51,6 @@ public class Player extends Entity {
     private boolean isDead = false; // Is the player dead?
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
-    
 
     public Player(float x, float y, int width, int height) {
         super(x, y, width, height);
@@ -65,7 +64,6 @@ public class Player extends Entity {
         this.currentOxygenBarLen = oxygenBarWidth;
         Animations();
         initialize();
-
     }
 
     public void loadLevelData(int[][] lvlData) {
@@ -113,8 +111,7 @@ public class Player extends Entity {
         isDashing = false;
         canDash = true;
         playerDir = RIGHT;
-        left = false;
-        right = false;
+        pauseReset();
         wallJumpUpdates = 0;
         moving = false;
         animationIndex = 0;
@@ -168,9 +165,7 @@ public class Player extends Entity {
             animationTick = 0;
             animationIndex = 0; 
             }
-             else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) {
-                //this.changeHealth(maxHealth);
-                //GameState.currentState = GameState.MENU;   // Change to Game Over Screen. 
+             else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) { 
                 Playing.dead = true;
             } else {
              updateAnimationTick();
@@ -185,7 +180,7 @@ public class Player extends Entity {
             xSpeed = 0;    
         }
         
-        if(immunityUpdates > 0 && immunityUpdates < maxImmunityUpdates) {
+        if(immunityUpdates > 0 && immunityUpdates < maxImmunityUpdates) { // Checking for if the player is immune from damage
             immunityUpdates++;
             immune = true;
         } else {
@@ -216,7 +211,7 @@ public class Player extends Entity {
                 dashUpdates++;
                 xSpeed = dashXSpeed;
                 
-                if(dashYSpeed != 0) { // Set the airspeed to dash speed 
+                if(dashYSpeed != 0) { // Set the airspeed to dash speed (but allow for jumping out of a dash)
                     airSpeed = dashYSpeed;
                 }
                 
@@ -234,6 +229,7 @@ public class Player extends Entity {
             }
         } else { // Checking for wall jumping
             if(wallJumpUpdates < maxWallJumpUpdates/2 && wallJumpUpdates > 0) {
+                // Jump off of the wall rather than just up it
                 if(playerDir == RIGHT) {
                     xSpeed += moveSpeed;
                 } else {
@@ -250,7 +246,6 @@ public class Player extends Entity {
                     moving = true;
                 }
             }
-            
         }
 
         // Checking if the player has just gone into the air
@@ -259,7 +254,7 @@ public class Player extends Entity {
                 inAir = true;
             } else {
                 wallJumpUpdates = 0;
-                if (!isDashing) { // If not dashing on the ground, give dash back
+                if (!isDashing) { // If not dashing and on the ground, give dash back
                     canDash = true;
                     dashXSpeed = 0;
                     dashUpdates = 0;
@@ -277,7 +272,7 @@ public class Player extends Entity {
                 changeHealth(-maxHealth/10);
                 currentOxygenBarLen = 0;
             }
-            if(!isDashing) { // Make the player move slower horizontally if in water if not dashing
+            if(!isDashing) { // Make the player walk slower horizontally in the water 
                 xSpeed /= 2;
             }
         } else { // Not in water
@@ -313,24 +308,19 @@ public class Player extends Entity {
             } else {
                 // Reset everything to do with air
                 hitbox.y = fixYPos(hitbox, airSpeed);
-                //isDashing = false;
                 dashYSpeed = 0; 
                 inAir = false;
                 airSpeed = 0;
             }
         } 
         // Moving horizontally
-        
             if (canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !stuckBehindDoor) { // Move on the horizontal if possible
                 hitbox.x += xSpeed;
                 touchingWall = false;
             } else {
                 touchingWall = true;
                 moving = false;
-                if(!stuckBehindDoor) { // fixing x pos when walking into a door looks slightly goofy since the door doesn't take up one full tile
-                    hitbox.x = fixXPos(hitbox, xSpeed);
-                }
-                
+                hitbox.x = fixXPos(hitbox, xSpeed);
             }
         }
         updateAnimationTick();
@@ -341,13 +331,6 @@ public class Player extends Entity {
             g.drawImage(animations[state][animationIndex], (int) hitbox.x + xFlipped - offset, (int) hitbox.y, 63 * wFlipped, 68, null);
             //drawHitbox(g, offset);
     }
-
-    /**
-     * Makes the player jump if they are on the ground or running into a wall
-     * 
-     * @author Ryder Hodgson
-     * @since December 16, 2023
-     */
 
       /*
 	* Method Name: jump
@@ -383,26 +366,23 @@ public class Player extends Entity {
         } else {
             airSpeed = jumpSpeed;
         }
-        
-        
         // Allow the player to jump out of a dash, keeping the dashing momentum
         if(!touchingWall) {
             canDash = true;
             dashUpdates = 0;
             updatesBetweenDash = 0;
         }
-        
         }
     }
 
       /*
 	* Method Name: dash
 	* Author: Ryder Hodgson
-	* Creation Date: Decemeber 18th, 2023
+	* Creation Date: December 18th, 2023
 	* Modified Date: January 8th, 2024
 *//** Description: Sets the player speed to dashspeed if they are allowed to
 	* @return n/a
-	* Dependencies: checkWater, Math
+	* Dependencies: Math
 	* Throws/Exceptions: n/a
 	*/
 
@@ -415,7 +395,6 @@ public class Player extends Entity {
         canDash = false;
         if ((left && !right) || (!up && !down && !left && !right && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * dashSpeedMultiplier;
-
             playerDir = LEFT;
         } else if (right && !left || (!up && !down && !left && !right && playerDir == RIGHT)) { // Set dash right
             dashXSpeed = moveSpeed * dashSpeedMultiplier;
