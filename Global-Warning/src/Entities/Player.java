@@ -531,7 +531,7 @@ public class Player extends Entity {
             break;
             case 4:
             upgrade.useItem();
-            playing.updateFirerateUpgrade();
+            playing.updateUpgrade();
             break;
             default:
         }

@@ -20,6 +20,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import GameStates.Playing;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -33,6 +34,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     private int offset = 100;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
+    Playing playing;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     public static SaveButton[] buttons = new SaveButton[3];
@@ -50,6 +52,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     public SaveState(Game game) {
         super(game);
         this.game = game;
+        this.playing = game.getPlaying();
         makeButtons();
     }
 
@@ -213,44 +216,21 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons) {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
-                playSound(1);
+                playing.getSoundLibrary().playSound("Begin");
             }
 
         }
 
         if (Pause.isIn(e, menuBack)) {
             menuBack.setMousePressed(true);
-            playSound(2);
+            playing.getSoundLibrary().playSound("Deselect");
         }
 
         for (ResetSaveButton rb : resetbuttons){
             if (isIn(e, rb)) {
                 rb.setMousePressed(true);
-                playSound(3);
+                playing.getSoundLibrary().playSound("Off");
             }
-        }
-    }
-
-    public void playSound(int sound) {
-        String filepath;
-        if (sound == 1){
-            filepath = "Global-Warning/res/audio/complete.wav";
-        }
-        else if (sound == 2){
-            filepath = "Global-Warning/res/audio/button2.wav";
-        }
-        else {
-            filepath = "Global-Warning/res/audio/off.wav";
-        }
-        File musicPath = new File(filepath);
-        try {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInput);
-        clip.start();
-        }
-        catch(Exception e) {
-            System.out.println(e);
         }
     }
 

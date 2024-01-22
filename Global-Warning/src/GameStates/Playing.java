@@ -23,6 +23,7 @@ import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
 import static Utilities.Constants.TILE_SIZE;
+import Utilities.SoundLibrary;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -43,6 +44,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public List<Bombs> bombs; 
     private EnemyManager enemyManager;
     private ObjectManager objectManager;
+    private SoundLibrary soundlibrary;
     private int borderLen = (int) (0.4 * GAME_WIDTH);
     private int xOffset;
     private int maxOffsetX;
@@ -71,6 +73,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 250 milliseconds
     public static long fireRateWeapon3 = 1000; // 500 milliseconds
+    public static int damageWeapon1 = 10;
+    public static int OGdamageWeapon1 = 10;
+    public static int damageWeapon2 = 20;
+    public static int OGdamageWeapon2 = 20;
    // public  int num = SaveButton.getFileNum();
 
 
@@ -126,7 +132,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
         this.environment = new Environment(this); 
         bombs = new ArrayList<>();
-        playMusic();
+        soundlibrary = new SoundLibrary(this);
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -187,11 +193,13 @@ public class Playing extends State implements KeyListener, MouseListener {
     }
     }
 
-    public void updateFirerateUpgrade() {
-        fireRateWeapon1 = fireRateWeapon1 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+    public void updateUpgrade() {
+        fireRateWeapon1 += (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
         System.out.println("Firerate 1: " + fireRateWeapon1);
-        fireRateWeapon2 = fireRateWeapon2 + (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        fireRateWeapon2 += (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
         System.out.println("Firerate 2: " + fireRateWeapon2);
+        damageWeapon1 = OGdamageWeapon1 + (this.getPlayer().getUpgradeGem().getDamageBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        damageWeapon2 = OGdamageWeapon2 + (this.getPlayer().getUpgradeGem().getDamageBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
     }
 
     /**
@@ -302,7 +310,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
             environment.drawLightning(g, xOffset);
-            
+
         
     }
 
@@ -380,6 +388,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public ObjectManager getObjectManager() {
         return objectManager;
+    }
+
+    public SoundLibrary getSoundLibrary() {
+        return soundlibrary;
     }
 
     public double getAngle() {

@@ -85,22 +85,8 @@ public class Bullets extends Entities.Entity implements MouseListener {
         setTime();
         //System.out.println("X: " + (directionX * speed3) + " Y: " + (directionY * speed3));
         initialize();
-        playSound();
+        playing.getSoundLibrary().playSound("Shoot");
 
-    }
-
-    public void playSound() {
-        String filepath = "Global-Warning/res/audio/Gun.wav";
-        File musicPath = new File(filepath);
-        try {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInput);
-        clip.start();
-        }
-        catch(Exception e) {
-            System.out.println(e);
-        }
     }
 
     /**

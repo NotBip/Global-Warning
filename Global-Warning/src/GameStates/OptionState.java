@@ -11,6 +11,7 @@ import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
 import UserInterface.InGameButton;
 import UserInterface.SoundButton;
+import GameStates.Playing;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -28,6 +29,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
     private int offset = 70;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
+    Playing playing;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     private SoundButton[] buttons = new SoundButton[2];
@@ -42,6 +44,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
 
     public OptionState(Game game) {
         super(game);
+        this.playing = game.getPlaying();
         makeButtons();
     }
 
@@ -175,40 +178,17 @@ public class OptionState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
                 if (e.getX() > (GAME_WIDTH/2)){
-                playSound(2);
+                playing.getSoundLibrary().playSound("Off");
                 }
                 else {
-                    playSound(1);
+                    playing.getSoundLibrary().playSound("On");
                 }
             }
             if (Pause.isIn(e, menuBack)) {
                 menuBack.setMousePressed(true);
-                playSound(3);
+                playing.getSoundLibrary().playSound("Deselect");
             }
 
-        }
-    }
-
-    public void playSound(int sound) {
-        String filepath;
-        if (sound == 1){
-            filepath = "Global-Warning/res/audio/on.wav";
-        }
-        else if (sound == 2){
-            filepath = "Global-Warning/res/audio/off.wav";
-        }
-        else {
-            filepath = "Global-Warning/res/audio/button2.wav";
-        }
-        File musicPath = new File(filepath);
-        try {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-        Clip clip = AudioSystem.getClip();
-        clip.open(audioInput);
-        clip.start();
-        }
-        catch(Exception e) {
-            System.out.println(e);
         }
     }
 
