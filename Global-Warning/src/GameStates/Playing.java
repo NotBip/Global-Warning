@@ -74,10 +74,10 @@ public class Playing extends State implements KeyListener, MouseListener {
     public static long fireRateWeapon1 = 0; // 300 milliseconds
     public static long fireRateWeapon2 = 0; // 250 milliseconds
     public static long fireRateWeapon3 = 1000; // 500 milliseconds
-    public static int damageWeapon1 = 10;
-    public static int OGdamageWeapon1 = 10;
-    public static int damageWeapon2 = 20;
-    public static int OGdamageWeapon2 = 20;
+    public static int damageWeapon1 = 0;
+    public static int OGdamageWeapon1 = 0;
+    public static int damageWeapon2 = 0;
+    public static int OGdamageWeapon2 = 0;
    // public  int num = SaveButton.getFileNum();
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
@@ -485,6 +485,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         environment.draw(g, xOffset);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
+      //  player.drawItem(g);
         levelManager.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
 
