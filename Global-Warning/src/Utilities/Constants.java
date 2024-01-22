@@ -1,7 +1,10 @@
 package Utilities;
 
 import GameStates.Playing;
+import GameStates.SaveState;
 import Main.Game;
+import Objects.Saving.Checkpoint;
+import UserInterface.SaveButton;
 
 public class Constants {
 
@@ -310,10 +313,28 @@ public class Constants {
 		}
 
 		public static int getPlayerDamage(Playing playing, int gun) { 
+			int damage = 0;
 			switch (gun) {
 				case 1: 
+
+					if (Checkpoint.fileNum == 1){
+						damage =SaveButton.save1.getDamage1();
+					} else if (Checkpoint.fileNum == 2){
+						damage =SaveButton.save2.getDamage1();
+					} else if (Checkpoint.fileNum == 3){
+						damage =SaveButton.save3.getDamage1();
+					}
 					return 10 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
+
 				case 2: 
+
+				if (Checkpoint.fileNum == 1){
+					damage =SaveButton.save1.getDamage2();
+				} else if (Checkpoint.fileNum == 2){
+					damage =SaveButton.save2.getDamage2();
+				} else if (Checkpoint.fileNum == 3){
+					damage =SaveButton.save3.getDamage2();
+				}
 					return 20 + (playing.getPlayer().getUpgradeGem().getDamageBoost() * playing.getPlayer().getUpgradeGem().getNumUpgrades()); 
 				default:
 					return 0; 

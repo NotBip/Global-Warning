@@ -9,6 +9,7 @@ import Entities.Player;
 import GameStates.Playing;
 import Levels.LevelManager;
 import UserInterface.SaveButton;
+import Utilities.Constants.PlayerConstants;
 
 public class Checkpoint extends Entity {
    // variables
@@ -70,6 +71,14 @@ public class Checkpoint extends Entity {
 				SaveButton.save1.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save1.setCooldown2((int)Playing.fireRateWeapon2);
 				SaveButton.save1.setLevel(LevelManager.lvlIndex);
+
+				SaveButton.save1.setKey(playing.player.key.getQuantity());
+				SaveButton.save1.setGem(playing.player.upgrade.getQuantity());
+				SaveButton.save1.setBomb(playing.player.bomb.getQuantity());
+				SaveButton.save1.setPotion(playing.player.heal.getQuantity());
+				
+				//SaveButton.save1.setDamage1(PlayerConstants.getPlayerDamage(playing, 1));
+				//SaveButton.save1.setDamage2(PlayerConstants.getPlayerDamage(playing, 2));
 				
 
 					break;
@@ -79,6 +88,14 @@ public class Checkpoint extends Entity {
 				SaveButton.save2.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save2.setCooldown2((int)Playing.fireRateWeapon2);
 				SaveButton.save2.setLevel(LevelManager.lvlIndex);
+
+				SaveButton.save2.setKey(playing.player.key.getQuantity());
+				SaveButton.save2.setGem(playing.player.upgrade.getQuantity());
+				SaveButton.save2.setBomb(playing.player.bomb.getQuantity());
+				SaveButton.save2.setPotion(playing.player.heal.getQuantity());
+
+				//SaveButton.save2.setDamage1(PlayerConstants.getPlayerDamage(playing, 1));
+				//SaveButton.save2.setDamage2(PlayerConstants.getPlayerDamage(playing, 2));
 				
 					break;
 				case 3:
@@ -87,6 +104,14 @@ public class Checkpoint extends Entity {
 				SaveButton.save3.setCooldown1((int)Playing.fireRateWeapon1);
 				SaveButton.save3.setCooldown2((int)Playing.fireRateWeapon2);
 				SaveButton.save3.setLevel(LevelManager.lvlIndex);
+
+				SaveButton.save3.setKey(playing.player.key.getQuantity());
+				SaveButton.save3.setGem(playing.player.upgrade.getQuantity());
+				SaveButton.save3.setBomb(playing.player.bomb.getQuantity());
+				SaveButton.save3.setPotion(playing.player.heal.getQuantity());
+
+			//	SaveButton.save3.setDamage1(PlayerConstants.getPlayerDamage(playing, 1));
+			//	SaveButton.save3.setDamage2(PlayerConstants.getPlayerDamage(playing, 2));
 					
 					break;
 			

@@ -112,7 +112,7 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed1, xPos-80,yPos-40);
-				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 1), xPos-80,yPos-10);
+				g.drawString("Cooldown: "+PlayerConstants.getGunFirerate(playing, 1), xPos-80,yPos-10);
 				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 1), xPos-80,yPos+20);
 			}
 			
@@ -123,7 +123,7 @@ public class InventorySlot extends Button {
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos+40, yPos-110, 130, 150, null);
 				g.drawString("Speed: "+Bullets.speed2, xPos+55,yPos-40);
-				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 2), xPos+55,yPos-10);
+				g.drawString("Cooldown: "+PlayerConstants.getGunFirerate(playing, 2), xPos+55,yPos-10);
 				g.drawString("Damage: "+ PlayerConstants.getPlayerDamage(playing, 2), xPos+55,yPos+20);
 			}
 

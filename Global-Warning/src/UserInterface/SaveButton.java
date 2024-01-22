@@ -173,6 +173,12 @@ public class SaveButton extends Button {
            	Playing.fireRateWeapon2 = save1.getCooldown2();
 			LevelManager.lvlIndex = save1.getLevel();
 
+			//get items
+			playing.player.key.setQuantity(save1.getKey());
+			playing.player.heal.setQuantity(save1.getPotion());
+			playing.player.bomb.setQuantity(save1.getBomb());
+			playing.player.upgrade.setQuantity(save1.getGem());
+			
 			if (save1.getHealth() == 0){
 				playing.player.currentHealth = playing.player.maxHealth;
 			}
@@ -186,6 +192,12 @@ public class SaveButton extends Button {
             Playing.fireRateWeapon2 = save2.getCooldown2();
 			LevelManager.lvlIndex = save2.getLevel();
 
+			//get items
+			playing.player.key.setQuantity(save2.getKey());
+			playing.player.heal.setQuantity(save2.getPotion());
+			playing.player.bomb.setQuantity(save2.getBomb());
+			playing.player.upgrade.setQuantity(save2.getGem());
+
 			if (save2.getHealth() == 0){
 				playing.player.currentHealth = playing.player.maxHealth;
 			}
@@ -197,6 +209,12 @@ public class SaveButton extends Button {
 			Playing.fireRateWeapon1 = save3.getCooldown1();
             Playing.fireRateWeapon2 = save3.getCooldown2();
 			LevelManager.lvlIndex = save3.getLevel();
+
+			//get items
+			playing.player.key.setQuantity(save3.getKey());
+			playing.player.heal.setQuantity(save3.getPotion());
+			playing.player.bomb.setQuantity(save3.getBomb());
+			playing.player.upgrade.setQuantity(save3.getGem());
 
 			if (save3.getHealth() == 0){
 				playing.player.currentHealth = playing.player.maxHealth;

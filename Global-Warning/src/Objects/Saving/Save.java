@@ -28,14 +28,14 @@ public class Save {
         numberLevel = 0;
         weaponHold = 2;
         playerHealth = 0;
-        cooldownWeap1 = 300;
-        cooldownWeap2 = 300;
-        damageWeap1 = 0;
-        damageWeap2 = 0;
+        cooldownWeap1 = 250;
+        cooldownWeap2 = 350;
+        damageWeap1 = 10;
+        damageWeap2 = 20;
         amountBomb = 0;
-        amountPotion = 3;
+        amountPotion = 2;
         amountKey = 0;
-        amountGem = 0;
+        amountGem = 1;
     }//end Character
     /**********************************************************
     Methods to assign values accessible from the child class */

@@ -68,8 +68,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBomb = 0; 
     public long lastBullet = 0;
-    public static long fireRateWeapon1 = 300; // 300 milliseconds
-    public static long fireRateWeapon2 = 250; // 250 milliseconds
+    public static long fireRateWeapon1 = 0; // 300 milliseconds
+    public static long fireRateWeapon2 = 0; // 250 milliseconds
     public static long fireRateWeapon3 = 1000; // 500 milliseconds
    // public  int num = SaveButton.getFileNum();
 

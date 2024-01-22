@@ -53,10 +53,10 @@ public class Player extends Entity {
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
     private boolean isDead = false;
-    HealPotion heal = new HealPotion(this);
-    Bomb bomb = new Bomb(this);
-    Key key = new Key(this);
-    UpgradeGem upgrade = new UpgradeGem(this);
+    public HealPotion heal = new HealPotion(this);
+    public Bomb bomb = new Bomb(this);
+    public Key key = new Key(this);
+    public UpgradeGem upgrade = new UpgradeGem(this);
 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)

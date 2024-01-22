@@ -1,6 +1,7 @@
 package Objects;
 
 import static Utilities.Atlas.POTION_ATLAS;
+import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 
 import java.awt.Graphics;
@@ -41,9 +42,17 @@ public class Chest extends Object {
         switch (randnum) {
             case 1:
             item = "Potion";
+            img = getSpriteAtlas(POTION_ATLAS);
+            wItem = 90;
+            hItem = 100;
+            offset =20;
             break;
             case 2:
             item = "Bomb";
+            img = getSpriteAtlas(BOMB_ATLAS);
+            wItem = 40;
+            hItem = 40;
+            offset = 0;
             break;
         }
         randnum = r.nextInt(4 - 1) + 1;
@@ -74,6 +83,7 @@ public class Chest extends Object {
     }
 
     public void drawItem (Graphics g, int x) {
+        //System.out.println("Hello");
         long time1 = System.currentTimeMillis();
 
         if (time1 > lastTime + 1000 ) {

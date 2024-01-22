@@ -6,13 +6,11 @@ import Entities.Player;
 public class HealPotion {
     
     int healingAmount = 75;
-    int quantity = 5;
+    int quantity = 0;
 
     private Player player;
     public HealPotion(Player player) {
         this.player = player;
-        this.quantity = quantity;
-        this.healingAmount = healingAmount;
     }
 
 
