@@ -1,3 +1,10 @@
+/**
+ * @author: Hamad Mohammed
+ * @since: 1 Jan 2024
+ * @Last Modified: 21 Jan 2024
+ * @Description: Class used to initialize an enemy using the Enemy Constructor. 
+ */
+
 package Entities.Planet1Enemies;
 
 import static Utilities.Atlas.DEMONBOI_ATLAS;
@@ -18,4 +25,4 @@ public class Boss extends Enemy {
         super.enemyRangeWidth = GAME_WIDTH; 
     }
     
-}
+} // End Class

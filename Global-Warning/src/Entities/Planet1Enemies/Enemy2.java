@@ -1,8 +1,14 @@
+/**
+ * @author: Hamad Mohammed
+ * @since: 1 Jan 2024
+ * @Last Modified: 21 Jan 2024
+ * @Description: Class used to initialize an enemy using the Enemy Constructor. 
+ */
+
 package Entities.Planet1Enemies;
 
 import static Utilities.Atlas.*;
 import static Utilities.Constants.EnemyConstants.*;
-
 import Entities.Enemy;
 
 public class Enemy2 extends Enemy {
@@ -16,4 +22,4 @@ public class Enemy2 extends Enemy {
 
     }
     
-}
+} // End Class

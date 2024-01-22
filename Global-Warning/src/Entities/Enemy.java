@@ -1,3 +1,10 @@
+/**
+ * @author: Hamad Mohammed
+ * @since: Dec 15 2024
+ * @Last Modified: 21 Jan 2024
+ * @Description: Class used for the main enemy AI and animating enemies and other mechanics including damage etc. 
+ */
+
 package Entities;
 
 import static Utilities.Atlas.*;
@@ -5,59 +12,49 @@ import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.animationSpeed;
 import static Utilities.Constants.EnemyConstants.*;
-
 import java.awt.Color;
 import java.awt.Graphics;
-
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.stax.StAXResult;
-
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
-import Objects.Chest;
-import Objects.Object;
-import Objects.ObjectManager;
 import Objects.Weapons.Bombs;
 import Objects.Weapons.Bullets;
-import Utilities.Constants;
 import Utilities.Constants.PlayerConstants;
-
 import static Utilities.Constants.Directions.LEFT;
 import static Utilities.Constants.Directions.RIGHT;
 
 public class Enemy extends Entity {
-    protected int lvlData[][];
-    protected int aniIndex, enemyState, enemyType;
-	protected int aniTick, hitCooldown, aniSpeed;
-    protected int direction = LEFT; 
-    private String state = WALK; 
-    private BufferedImage[][] animations; 
-    public int xFlipped, xEnemyFlipped; 
+    protected int lvlData[][]; 
+    protected int enemyState, enemyType; 
+	protected int aniSpeed;   
+    protected int direction = LEFT;    
+    private String state = WALK;   
+    private BufferedImage[][] animations;
+    public int xFlipped, xEnemyFlipped; // Used to flip the images of the enemies when they switch directions. 
     public int wFlipped, wEnemyFlipped; 
-    private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight;
-    private String Atlas; 
+    private int arrI, arrJ, enemyW, enemyH, Ewidth, Eheight; // The number of rows, columns, size of each enemy sprite. 
+    private String Atlas; // The Atlas for each enemy. 
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
-    private boolean isAttack = false, leftwall = false, isVisible = false; 
-    protected int enemyRangeWidth = 200;
-    protected int enemyRangeHeight = 80; 
-    private boolean dead = false; 
-    private boolean deadOver = false; 
-    public float healthBarWidth = 100; 
+    private boolean isAttack = false, leftwall = false; 
+    protected int enemyRangeWidth = 200; // enemy detection hitbox width. 
+    protected int enemyRangeHeight = 80; // enemy detection hitbox height. 
+    private boolean dead = false;
+    private boolean deadOver = false; // used to see if deadAnimation is done.  
+    public float healthBarWidth = 100; // healthbar size for enemies
     public float healthBarHeight = 10;
     private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
     protected boolean isBoss = false;
-    public int fireballCooldown = 40; // How long it takes after choosing a position for lightning to strike
+    public int fireballCooldown = 40; // cooldown between each fireball shot by the boss. 
     private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
-    public int fireballUpdate = 0; 
-    public boolean bombHit = false; 
+    public int fireballUpdate = 0;
+    public boolean bombHit = false;
     private int bossXOffset = 0; 
     private int bossYOffset = 0; 
-    public int magicTimer = 600; // How long it takes after choosing a position for lightning to strike
+    public int magicTimer = 600; // How long the boss can stay in MAGIC state. 
     public int magicState = 0; 
     private boolean check = false; 
 
@@ -91,32 +88,46 @@ public class Enemy extends Entity {
         initialize();
     }
 
-    protected void turnTowardsPlayer(Player player) {
-    if (isPlayerVisible(player) && !dead) { 
-		if (player.hitbox.x > hitbox.x)
-			direction = RIGHT;
-		else
-			direction = LEFT;
-        }
-	}
-
+     /** 
+     * @MethodName: loadLevelData()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param lvlData current levelData 2D Array. 
+     * @Description: Load the level data for each level. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
     }
 
-    public void move(Player player, int[][] lvllData, Playing playing) {
+
+     /** 
+     * @MethodName: move() 
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param player The protagonist 
+     * @param playing The instance of the playing class. 
+     * @Description: basic enemy AI including movement, damage and fighting mechanics.  
+     * @returns: N/A
+     * @Dependencies: Playing.java, Atlas.java, Planet1Enemies
+     * @Throws/Exceptions: N/A
+     */
+    public void move(Player player, Playing playing) {
+    // if the enemy is a boss change the x and y offset. 
     if (isBoss){
         bossXOffset = 200; 
         bossYOffset = 115; 
         if(direction == RIGHT)
         bossXOffset *= -1;
-
     }
     else { 
         bossXOffset = 0; 
         bossYOffset = 0; 
     }
 
+    // if the enemy's health is less than 0 set their state to dead and reset the animations. 
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
@@ -124,8 +135,15 @@ public class Enemy extends Entity {
     }
 
 
-    if (!dead){ 
+    if (!dead) { 
 
+        // Setting the Enemies detection hitbox and updating it. 
+        enemyRange.x = this.hitbox.x-enemyRangeWidth; 
+        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
+        enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
+
+        // reset animation index everytime player interacts with hitbox. 
         if(playing.getPlayer().getHitbox().intersects(hitbox) && !check){ 
             animationIndex = 0; 
             check = true; 
@@ -137,83 +155,82 @@ public class Enemy extends Entity {
         else
             xSpeed = moveSpeed; 
 
+
         if(playing.getBombs().isEmpty())
         bombHit = false; 
 
-        fireballUpdate++; 
-        magicAttack(playing); 
+        // check for fireball collisions during boss and remove player's hp. 
         for (Fireballs f : fireballs) { 
             if(f.hitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
                 playing.getPlayer().changeHealth(-15);
                 fireballs.remove(f); 
             }
-            if(canMove(f.hitbox.x, f.hitbox.y, f.hitbox.width, f.hitbox.height, lvllData)) { 
-                f.update(playing);
+            if(canMove(f.hitbox.x, f.hitbox.y, f.hitbox.width, f.hitbox.height, lvlData)) { 
+                f.update();
             }
             else 
                 fireballs.remove(f); 
         }
         
+        // check for bomb explosion collisions and damage player. 
         for (Bombs b : playing.getBombs()) { 
             if(b.explode)
                 if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
                     this.changeHealth(-50);
                     bombHit = true; 
                 }
-                
         }
-        enemyRange.x = this.hitbox.x-enemyRangeWidth; 
-        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
-        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
-        enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
+
+
         if (!player.hitbox.intersects(enemyRange) && state != MAGIC)
         state = WALK; 
 
-        if (player.hitbox.intersects(hitbox)){
+        // Changing states when player interacts with enemy. 
+        if (player.hitbox.intersects(hitbox)) {
             aniSpeed = getAttackSpeed(this.enemyType);
             checkPlayerHit(player);
             xSpeed = 0; 
-            if(!isAttack){
-            state = ATTACK; 
-            isAttack = true; 
+
+            if(!isAttack) { 
+                state = ATTACK; 
+                isAttack = true; 
             }
-        }
-        else { 
-        if(!player.hitbox.intersects(enemyRange) && state != MAGIC) { 
-        xSpeed = moveSpeed; 
-        }else if (state != MAGIC) { 
-        xSpeed = moveSpeed;
-        state = RUN; 
+
+        } else { 
+
+            if(!player.hitbox.intersects(enemyRange) && state != MAGIC) { 
+                xSpeed = moveSpeed; 
+            } else if (state != MAGIC) { 
+                xSpeed = moveSpeed;
+                state = RUN; 
+            }
+
+            aniSpeed = animationSpeed; 
+            isAttack = false; 
         }
 
-        aniSpeed = animationSpeed; 
-        isAttack = false; 
-        }
+        // changing the direction of the enemies to follow the player. 
         if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
             bossXOffset *= 1; 
-            isVisible = true; 
             direction = LEFT; 
             flipW(); 
             flipX();
             leftwall = false;
-            }
-            
+        }
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
-            bossXOffset *= -1; 
-            isVisible = false; 
-            direction = RIGHT; 
-            flipW(); 
-            flipX();
-            leftwall = true;
-            }
-        else if (!player.hitbox.intersects(enemyRange)) { 
-            xSpeed = moveSpeed; 
-        }
-        }
+                bossXOffset *= -1; 
+                direction = RIGHT; 
+                flipW(); 
+                flipX();
+                leftwall = true;
 
+            } 
+        } else if (!player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
+            xSpeed = moveSpeed; 
+        
+        
         if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {
-           
             direction = LEFT; 
             flipW(); 
             flipX();
@@ -226,7 +243,7 @@ public class Enemy extends Entity {
             leftwall = true;
         }
 
-        if (canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && !leftwall && state != MAGIC) {
+        if (canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvlData) && !isAttack && !leftwall && state != MAGIC) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
@@ -234,7 +251,7 @@ public class Enemy extends Entity {
             hitbox.x -= xSpeed;
         }
 
-        else if ((!canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && state != MAGIC)) {
+        else if ((!canMove(this.hitbox.x - xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvlData) && !isAttack && state != MAGIC)) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
             direction = flipD(); 
             leftwall = true;
@@ -242,7 +259,7 @@ public class Enemy extends Entity {
             flipX(); 
         }
 
-       if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvllData) && !isAttack && state != MAGIC) && leftwall) { 
+       if ((canMove(this.hitbox.x + xSpeed, this.hitbox.y, this.hitbox.width, this.hitbox.height, lvlData) && !isAttack && state != MAGIC) && leftwall) { 
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
@@ -250,12 +267,8 @@ public class Enemy extends Entity {
             hitbox.x += xSpeed;
         }
 
-
-        
-
         else if (!isAttack && leftwall && state != RUN && state != MAGIC) {
             hitbox.x = fixXPos(hitbox, xSpeed); 
-            //enemyRange.x = fixXPos(enemyRange, xSpeed);
             direction = flipD(); 
             flipW(); 
             flipX();
@@ -287,15 +300,27 @@ public class Enemy extends Entity {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
+      }
+      fireballUpdate++; 
+      magicAttack(playing); 
     }
     updateAnimationTick(); 
-    }
+}
 
     
+     /** 
+     * @MethodName: flipX() 
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param: N/A
+     * @Description: Flip the enemy's image.   
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public void flipX() {
-		if (xFlipped == 0){  
+		if (xFlipped == 0)
 			xFlipped = width;
-        }
         else 
             xFlipped = 0; 
 
@@ -303,10 +328,19 @@ public class Enemy extends Entity {
             xEnemyFlipped = enemyRangeW; 
         else
             xEnemyFlipped = 0; 
-        
-
         }
 
+
+     /** 
+     * @MethodName: flipX() 
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param: N/A
+     * @Description: Flip the enemy's image.   
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
 	public void flipW() {
 		if (wFlipped == 1)
 			wFlipped = -1;
@@ -319,6 +353,17 @@ public class Enemy extends Entity {
         wEnemyFlipped = 1; 
     }
 
+
+    /** 
+     * @MethodName: flipX() 
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param: N/A
+     * @Description: Changes the enemies direction to be the opposite of what it currently is.   
+     * @return int returns the new direction after the flip
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public int flipD() { 
         if (direction == RIGHT)
             return LEFT; 
@@ -326,10 +371,15 @@ public class Enemy extends Entity {
             return RIGHT; 
     }
 
-     /**
-     * Helps change images making it animate. 
-     * @author Hamad Mohammed
-     * @since December 16, 2023
+    /** 
+     * @MethodName: updateAnimationTick()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param N/A
+     * @Description: Updates the animatiion tick which updates the animation Index which is then used to move onto the next image in a sprite sheet. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
      */
     protected void updateAnimationTick() {
 		animationTick++;
@@ -341,24 +391,39 @@ public class Enemy extends Entity {
 		}
 	}
 
-    public void draw(Graphics g, int xOffset) {
-        // g.setColor(Color.white);
-        // drawHitbox(g, xOffset);
-        if (!deadOver)
-        g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
-        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
-            deadOver = true; 
-        }
 
-        for (Fireballs f : fireballs) { 
+     /** 
+     * @MethodName: draw()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param xOffset The x-Position offset of the image. 
+     * @param g Graphics from the java awt library. 
+     * @Description: draws enemy sprites with animations also incharge of calling other draw methods from different classes related to enemies to update them. 
+     * @returns: N/A
+     * @Dependencies: Planet1Enemies.
+     * @Throws/Exception: N/A
+     */
+    public void draw(Graphics g, int xOffset) {
+        for (Fireballs f : fireballs) 
             f.drawFireBall(g, xOffset);
-        }
+      
+        if (!deadOver)
+            g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
+     
+        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) 
+            deadOver = true; 
+   
     }
 
-    /**
-     * Loads the animations from the sprite atlas. 
-     * @author Hamad Mohammed
-     * @since December 16, 2023
+    /** 
+     * @MethodName: Animations()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param N/A
+     * @Description: Loads the sprite sheet for each enemies to be used to for animations later on. 
+     * @returns: N/A
+     * @Dependencies: Atlas.java, Planet1Enemies
+     * @Throws/Exceptions: N/A
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(this.Atlas);
@@ -371,38 +436,35 @@ public class Enemy extends Entity {
         }
     }
 
-    public int getAniIndex() {
-		return aniIndex;
-	}
-
-	public void getEnemyState() {
-
-    }
-
-    protected void checkPlayerHit(Player player) {
-        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1){  
-            player.changeHealth(-getEnemyDamage(enemyType)); 
-            
-        } else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex) { 
-            player.changeHealth(-getEnemyDamage(enemyType));  
-        
-        }
-    }
-
-    /**
-     * Checks if the player is visible to the enemy or not
-     * @author Hamad Mohammed
-     * @since December 24, 2023
-     * @param player The instance of the player being detected. 
-     * @return Is the player visible or not
+    /** 
+     * @MethodName: checkPlayerHit()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param player The Protaganist
+     * @Description: Checks if the player has been hit and reduces the damage if yes, also checks for immunity frames. 
+     * @returns: N/A
+     * @Dependencies: Player.java, Atlas.java
+     * @Throws/Exceptions: N/A
      */
-    public boolean isPlayerVisible(Player player) { 
-        if (this.hitbox.intersects(player.hitbox)) 
-            return true; 
-        else 
-            return false; 
+    protected void checkPlayerHit(Player player) {
+        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1) 
+            player.changeHealth(-getEnemyDamage(enemyType));
+
+        else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex)  
+            player.changeHealth(-getEnemyDamage(enemyType));  
+
     }
 
+    /** 
+     * @MethodName: resetEnemy()
+     * @author: Ryder Hodgson
+     * @since: Dec 15 2024
+     * @param: N/A
+     * @Description: reset the different attributes for enemies. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public void resetEnemy() {
         hitbox.x = x;
         hitbox.y = y;
@@ -415,18 +477,32 @@ public class Enemy extends Entity {
         isActive = false;
       }
 
-      public void checkLightningIntersect(Playing playing) {
+    /** 
+     * @MethodName: checkLightningIntersect()
+     * @author: Ryder Hodgson
+     * @since: Dec 17 2024
+     * @param Playing The Protaganist
+     * @Description: Kill enemies if they get struck by lightning. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
+    public void checkLightningIntersect(Playing playing) {
         if(playing.lightningHitbox != null && playing.lightningUpdates >= playing.lightningPosCooldown + playing.lightningSpawnCooldown)
-        if(hitbox.intersects(playing.lightningHitbox) && playing.lightningHasPos) { // fix when this happens
-            dead();
-        }
+            if(hitbox.intersects(playing.lightningHitbox) && playing.lightningHasPos)
+                dead();
     }
     
-    /**
-     * Changes the players health depending on enemy.
-     * @author Hamad Mohammed
-     * @param value Damage being done 
-     * @since December 16, 2023
+
+    /** 
+     * @MethodName: changeHealth()
+     * @author: Hamad Mohammed
+     * @since: Dec 17 2024
+     * @param value The damage taken by the enemy. (Positive if adding enemy and Negative if subtracting). 
+     * @Description: Add or remove hp from enemies. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
      */
     public void changeHealth(int value) {
 		this.currentHealth += value;
@@ -434,9 +510,17 @@ public class Enemy extends Entity {
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float) maxHealth);
 	}
 
-    /**
-     * Changes enemy hp based on damage done. 
-     * @author Hamad Mohammed
+
+     /** 
+     * @MethodName: enemyHit()
+     * @author: Hamad Mohammed
+     * @since: Dec 17 2024
+     * @param bullet The arrayList of bullets being used by the player. 
+     * @param playing Current instance of the playing class.  
+     * @Description: Changes enemy health if they get hit by bullets. 
+     * @returns: N/A
+     * @Dependencies: playing.java, Bullets.java
+     * @Throws/Exceptions: N/A
      */
     public void enemyHit(List<Bullets> bullet, Playing playing) { 
         for (Bullets b : bullet) { 
@@ -448,6 +532,16 @@ public class Enemy extends Entity {
         }
     }
 
+
+     /** 
+     * @MethodName: isDead()
+     * @author: Hamad Mohammed
+     * @since: Dec 17 2024
+     * @Description: Determines if the enemy should be dead or not depending if their animation is over or not. 
+     * @return boolean true if the Enemy's animation is over. 
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public boolean isDead() { 
         if (deadOver)
             return true; 
@@ -455,51 +549,87 @@ public class Enemy extends Entity {
             return false; 
     }
 
+
+    /** 
+     * @MethodName: dead()
+     * @author: Hamad Mohammed
+     * @since: Dec 17 2024
+     * @Description: Changes all attributes of the enemy to be dead when called. 
+     * @returns: N/A 
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
     public void dead() {
         this.currentHealth = 0;
         this.currentHealthBarLen = 0; 
         animationIndex = 0;
     }
 
+
+
+     /** 
+     * @MethodName: drawHealth()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param xOffset The x-Position offset of the image. 
+     * @param g Graphics from the java awt library. 
+     * @Description: Draws the Enemy Hp bar if its boss it draws the boss hp bar. 
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exception: N/A
+     */
     public void drawHealth(Graphics g, int xOffset) {
         if (isActive && !isBoss) { 
-        g.setColor(Color.red);
-        g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
-        g.setColor(Color.green);
-        g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
-        g.setColor(Color.black);
-        g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
-         }
-         else if (isActive && isBoss) {
-         g.setColor(Color.red);
-         g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
-         g.setColor(Color.green);
-         g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) currentHealthBarLen, (int) healthBarHeight);
-         g.setColor(Color.black);
-         g.drawRect((int) (GAME_WIDTH/3.3  - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
-         }
+            g.setColor(Color.red);
+            g.fillRect((int) ((this.getHitbox().x - this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+            g.setColor(Color.green);
+            g.fillRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) currentHealthBarLen, (int) healthBarHeight);
+            g.setColor(Color.black);
+            g.drawRect((int) (this.getHitbox().x - (this.getHitbox().width/4)) - xOffset, (int) this.getHitbox().y - 20, (int) healthBarWidth, (int) healthBarHeight);
+
+        } else if (isActive && isBoss) {
+            g.setColor(Color.red);
+            g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
+            g.setColor(Color.green);
+            g.fillRect((int) (GAME_WIDTH/3.3 - xOffset), GAME_HEIGHT - 60, (int) currentHealthBarLen, (int) healthBarHeight);
+            g.setColor(Color.black);
+            g.drawRect((int) (GAME_WIDTH/3.3  - xOffset), GAME_HEIGHT - 60, (int) healthBarWidth, (int) healthBarHeight);
+        }
 
     }
 
+
+     /** 
+     * @MethodName: magicAttack()
+     * @author: Hamad Mohammed
+     * @since: Dec 15 2024
+     * @param playing The Protagoninst 
+     * @Description: Changes the enemy state to Magic to summon fireballs if certain conditions are met. 
+     * @returns: N/A
+     * @Dependencies: Planet1Enemies.
+     * @Throws/Exception: N/A
+     */
     public void magicAttack(Playing playing) { 
         if(state == MAGIC)
-        magicState++; 
+            magicState++; 
         else 
-        magicState= 0; 
+            magicState= 0; 
 
         if(enemyType == Demonboi)
             if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC)
-                state = MAGIC; 
-            if(magicState >= magicTimer) { 
-                state = WALK; 
-                magicState = 0; 
-            }
+                state = MAGIC;
+
+        if(magicState >= magicTimer) { 
+            state = WALK; 
+            magicState = 0; 
+        }
 
         if(fireballUpdate  >= fireballCooldown)
             if(this.enemyType == Demonboi)
                 if(state == MAGIC){ 
-                    fireballs.add(new Fireballs((int) (Math.random()*(GAME_WIDTH-200)+100), 100));
+                    fireballs.add(new Fireballs((int) (Math.random()*(GAME_WIDTH-200)+100), 100, playing));
                     fireballUpdate = 0; 
                 }
     }
-}
+
+} // End Class

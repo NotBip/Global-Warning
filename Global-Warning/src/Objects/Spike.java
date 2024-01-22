@@ -1,3 +1,11 @@
+/**
+ * @author: Hamad Mohammed
+ * @since: 10 Jan 2024
+ * @Last Modified: 10 Jan 2024
+ * @Description: Class used for generation spike hitboxes and initialzing its width and height. 
+ */
+
+
 package Objects;
 
 import Main.Game;
