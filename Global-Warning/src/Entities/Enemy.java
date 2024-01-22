@@ -131,12 +131,54 @@ public class Enemy extends Entity {
     }
 
     if (!dead){ 
+
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
         enemyRange.y = this.hitbox.y-enemyRangeWidth; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
-        if (!player.hitbox.intersects(enemyRange)) 
+
+        // reset animation index everytime player interacts with hitbox. 
+        if(playing.getPlayer().getHitbox().intersects(hitbox) && !check){ 
+            animationIndex = 0; 
+            check = true; 
+        } else if (!playing.getPlayer().getHitbox().intersects(hitbox))
+            check = false; 
+
+        if(state == MAGIC)
+            xSpeed = 0; 
+        else
+            xSpeed = moveSpeed; 
+
+
+        if(playing.getBombs().isEmpty())
+        bombHit = false; 
+
+        // check for bomb explosion collisions and damage player. 
+        for (Bombs b : playing.getBombs()) { 
+            if(b.explode)
+                if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
+                    this.changeHealth(-50);
+                    bombHit = true; 
+                }
+        }
+
+        // check for fireball collisions during boss and remove player's hp. 
+        for (Fireballs f : fireballs) { 
+            if(f.hitbox.intersects(playing.getPlayer().hitbox) && !playing.getPlayer().isImmune()){
+                playing.getPlayer().changeHealth(-25);
+                fireballs.remove(f); 
+            }
+            if(canMove(f.hitbox.x, f.hitbox.y, f.hitbox.width, f.hitbox.height, lvlData)) { 
+                f.update();
+            }
+            else 
+                fireballs.remove(f); 
+        }
+
+
+        if (!player.hitbox.intersects(enemyRange) && state != MAGIC) 
         state = WALK; 
+
         if(direction == LEFT) {
             xSpeed = -moveSpeed;
         } else {
@@ -155,7 +197,7 @@ public class Enemy extends Entity {
         aniSpeed = animationSpeed; 
         isAttack = false; 
         }
-        if (player.hitbox.intersects(enemyRange) && !isAttack) {
+        if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
             state = RUN;
             xSpeed  *= 1.5;
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
@@ -195,14 +237,14 @@ public class Enemy extends Entity {
         }
 
         // Horizontal movement
-        if(canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !isAttack) {
+        if(canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !isAttack && state != MAGIC) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
             state = RUN; 
             hitbox.x += xSpeed;
         } else {
-            if(!isAttack && state != RUN) {
+            if(!isAttack && state != RUN && state != MAGIC) {
                 xSpeed = -xSpeed;
                 xFlipped = flipX();
                 wFlipped = flipW();
@@ -234,7 +276,8 @@ public class Enemy extends Entity {
             inAir = false;
             hitbox.y = GAME_HEIGHT-hitbox.height;
         }
-    
+    fireballUpdate++; 
+    magicAttack(playing);
     updateAnimationTick(); 
 }
 

@@ -78,9 +78,8 @@ public class InventorySlot extends Button {
 	private void loadHoverImgs() {
 		hvr = new BufferedImage[5];
 		BufferedImage temp = getSpriteAtlas(HOVER_ATLAS);
-		for (int i = 0; i < 4; i++){
+		for (int i = 0; i < 4; i++)
 			hvr[i] = temp.getSubimage(i * HOVER_WIDTH, 0, HOVER_WIDTH, HOVER_HEIGHT);
-		}
 		hvr[4] = temp.getSubimage(0, HOVER_HEIGHT, HOVER_WIDTH, HOVER_HEIGHT);
 	}
 

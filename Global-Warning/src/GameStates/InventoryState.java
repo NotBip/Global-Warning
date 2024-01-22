@@ -36,9 +36,9 @@ public class InventoryState {
 	 * @since January 5, 2024
 	 */
 
-	public InventoryState() {
+	public InventoryState(Playing playing) {
+		this.playing = playing; 
 		makeSlots();
-
 	}
 
 	/**

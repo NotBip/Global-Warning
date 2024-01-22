@@ -141,7 +141,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         healthBar = new HealthBar(this); 
        // savepoint = new Checkpoint(GAME_WIDTH / 2-300, 100, 45, 63, this);
         pauseScreen = new Pause();
-        inventoryState = new InventoryState();
+        inventoryState = new InventoryState(this);
         gameOver = new Death(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);

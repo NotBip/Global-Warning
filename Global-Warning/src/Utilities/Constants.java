@@ -116,7 +116,7 @@ public class Constants {
 			public static final int demonWalk = 1; 
 			public static final int demonAttack = 2; 
 			public static final int demonDead = 4; 
-			public static final float demonSpeed = 1.5f * Game.SCALE; 
+			public static final float demonSpeed = 1f * Game.SCALE; 
 			public static final int demonSizeX = 288 * 2 *(int) Game.SCALE; 
 			public static final int demonSizeY = 161 * 2 *(int) Game.SCALE; 
 
@@ -197,7 +197,7 @@ public class Constants {
 				return 10; 
 			
 			case Demonboi: 
-				return 25; 
+				return 50; 
 
 			default:
 				return 0; 
