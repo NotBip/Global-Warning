@@ -16,13 +16,24 @@ import Entities.Planet1Enemies.*;
 import GameStates.Playing;
 import Levels.Level;
 
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 15 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Manages the objects during the game session.
+***********************************************
+*/
+
 public class ObjectManager{
 
+    // Variables
     private Playing playing; 
     private BufferedImage spikeImg;
     private BufferedImage[][] chestImg, doorImg; 
     private int lvlData[][];
     
+    // Initialize Object Manager
     public ObjectManager(Playing playing) { 
         this.playing = playing; 
         lvlData = playing.getLevelManager().getCurrentLevel().getLevelData(); 
@@ -30,6 +41,17 @@ public class ObjectManager{
 
     }
 
+    /**
+	@Method Name: loadImage
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Loads the images for each object including dimensions
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Atlas
+	@Throws/Exceptions: N/A
+	*/
     public void loadImage() { 
         spikeImg = getSpriteAtlas(SPIKE_ATLAS);
         
@@ -45,11 +67,33 @@ public class ObjectManager{
             for (int j = 0; j < doorImg[i].length; j++)
             doorImg[i][j] = DoorSprite.getSubimage(594 * j, 706 * i, 594, 706);
         }
-
+    
+    /**
+	@Method Name: loadObjects
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 15 JAN, 2024
+	@Description: Imports the level data into Object Manager
+	@Parameters: int[][] lvlData
+	@Returns: N/A
+	@Dependencies: Level
+	@Throws/Exceptions: N/A
+	*/    
     public void loadObjects(int[][] lvlData) { 
         this.lvlData = lvlData; 
     }
 
+    /**
+	@Method Name: update
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Updates the checks on each of the objects every tick.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     public void update() { 
         checkSpikeTouch(); 
         updateChests();
@@ -57,17 +101,50 @@ public class ObjectManager{
 
     }
     
+    /**
+	@Method Name: draw
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Initiates the drawing methods of all objects.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     public void draw(Graphics g, int xOffset)  { 
         drawSpikes(g, xOffset);
         drawChests(g, xOffset);
         drawDoors(g, xOffset);
     }
 
+    /**
+	@Method Name: checkInteracts
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Updates the checks from player interactions.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     public void checkInteracts() { 
          checkChestInteract();
          checkDoorInteract();
     }
 
+    /**
+	@Method Name: checkSpikeTouch
+	@Author: Ryder Hodgson
+	@Creation Date: 
+	@Modified Date: 
+	@Description: Checks whether an enemy or player is hitting a spike.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Spike, Planet1Enemies, Playing
+	@Throws/Exceptions: N/A
+	*/
     public void checkSpikeTouch() { 
         for(Spike s : playing.getLevelManager().getCurrentLevel().getSpike()) {
             for(Enemy1 e : playing.getLevelManager().getCurrentLevel().getFireBoi()) {
@@ -86,12 +163,34 @@ public class ObjectManager{
         }  
     }
     
+    /**
+	@Method Name: checkSpikeTouch
+	@Author: Ryder Hodgson
+	@Creation Date: 
+	@Modified Date: 
+	@Description: Checks whether an enemy or player is hitting a spike.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Spike, Playing
+	@Throws/Exceptions: N/A
+	*/
     private void drawSpikes(Graphics g, int xOffset) { 
         for (Spike s : playing.getLevelManager().getCurrentLevel().getSpike()) { 
             g.drawImage(spikeImg, (int) s.getHitbox().x - xOffset, (int) s.getHitbox().y, (int) s.getHitbox().getWidth(), (int) s.getHitbox().getHeight(), null);
             }
     }
 
+    /**
+	@Method Name: drawChests
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 21 JAN, 2024
+	@Description: Draws every chest and each of its animations.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Chest, KeyChest, Playing
+	@Throws/Exceptions: N/A
+	*/
     private void drawChests(Graphics g, int xOffset) { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()){
             if (!c.chestInteract && !c.chestOpen && !c.chestOpened)
@@ -111,6 +210,17 @@ public class ObjectManager{
         }
     }
 
+    /**
+	@Method Name: drawDoors
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Draws every door and each of its animations.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: BarrierDoor, Playing
+	@Throws/Exceptions: N/A
+	*/
     private void drawDoors(Graphics g, int xOffset) { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract && !d.doorOpen && !d.doorOpened)
@@ -123,6 +233,17 @@ public class ObjectManager{
         }
     }
     
+    /**
+	@Method Name: checkChestInteract
+	@Author: Bobby Walden
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 21 JAN, 2024
+	@Description: Checks for chest interaction, and initiates action.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Chest, KeyChest, Playing
+	@Throws/Exceptions: N/A
+	*/
     public void checkChestInteract() { 
         for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) { 
              if (!c.chestInteract) { 
@@ -144,6 +265,17 @@ public class ObjectManager{
        }
     }
 
+    /**
+	@Method Name: checkDoorInteract
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Checks for door interaction, checks for key, and initiates action.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: BarrierDoor, Playing
+	@Throws/Exceptions: N/A
+	*/
     public void checkDoorInteract() { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (!d.doorInteract) { 
@@ -159,6 +291,17 @@ public class ObjectManager{
         }
     }
 
+    /**
+	@Method Name: updateChests
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 21 JAN, 2024
+	@Description: Updates the chest animations and states.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Chest, KeyChest, Playing
+	@Throws/Exceptions: N/A
+	*/
     private void updateChests() {
 		for (Chest c : playing.getLevelManager().getCurrentLevel().getChest()) {
 			if (c.chestInteract && !c.chestOpened)
@@ -180,6 +323,17 @@ public class ObjectManager{
 		}
 	}
 
+    /**
+	@Method Name: updateDoors
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Updates the door animations and states
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: BarrierDoor, Playing
+	@Throws/Exceptions: N/A
+	*/
     private void updateDoors() { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
             if (d.doorInteract && !d.doorOpened) 

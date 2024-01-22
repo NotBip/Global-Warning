@@ -5,6 +5,15 @@ import java.util.Random;
 import Entities.Player;
 import Main.Game;
 
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 15 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Creates and calls the action for chests.
+***********************************************
+*/
+
 public class Chest extends Object {
   
     protected boolean chestInteract = false, chestOpen = false, chestOpened = false;
