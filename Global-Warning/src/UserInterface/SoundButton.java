@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 6 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Buttons found in the options state for volume adjustment
+***********************************************
+*/
+
 package UserInterface;
 
 import static Utilities.Atlas.getSpriteAtlas;
@@ -14,13 +23,7 @@ public class SoundButton extends Button {
 	private int xPos, yPos, index, rowIndex;
 	private BufferedImage[] imgs;
 
-	/**
-	 * Constructor to create sound button
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 6, 2024
-	 */
-
+	// constructor
 	public SoundButton(int xPos, int yPos, int width, int height, int rowIndex) {
 		super(xPos, yPos, width, height);
 
@@ -33,11 +36,15 @@ public class SoundButton extends Button {
 	}
 
 	/**
-	 * loads animations for button
-	 * 
+	 * @Method Name: loadImgs
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: loads images for sound buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Atlas, Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	private void loadImgs() {
 		imgs = new BufferedImage[3];
@@ -47,22 +54,29 @@ public class SoundButton extends Button {
 	}
 
 	/**
-	 * Draws specific sprite for button
-	 * 
+	 * @Method Name: draw
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
-
+	 * @since 5 JAN 2024
+	 * @Description: draws img for sound buttons
+	 * @Parameters: Graphics g
+	 * @returns:N/A
+	 * @Dependencies: Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 	public void draw(Graphics g) {
 		g.drawImage(imgs[index], xPos, yPos, SOUND_B_WIDTH, SOUND_B_HEIGHT, null);
 	}
 
 	/**
-	 * Updates button sprite based on mouse postion
-	 * 
+	 * @Method Name: update
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: updates button based on mouse position
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void update() {
 		index = 0;

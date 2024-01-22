@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 1 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Menubuttons for menu state (play,options and quit)
+***********************************************
+*/
+
 package UserInterface;
 
 import static Utilities.Atlas.getSpriteAtlas;
@@ -15,13 +24,7 @@ public class MenuButton extends Button {
 	private GameState state;
 	private BufferedImage[] imgs;
 
-	/**
-	 * Constructor to create button for menu
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 1, 2024
-	 */
-
+	// constructor
 	public MenuButton(int xPos, int yPos, int width, int height, int rowIndex, GameState state) {
 		super(xPos, yPos, width, height);
 		this.xPos = xPos;
@@ -33,12 +36,17 @@ public class MenuButton extends Button {
 	}
 
 	/**
-	 * loads animations for menu buttons
-	 * 
-	 * @referenced: Kaarin Gaming
+	 * @Method Name: loadImgs
+	 * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+	 * @author KaarinGaming
 	 * @author Nusayba Hamou
-	 * @since January 1, 2024
-	 */
+	 * @since 1 JAN 2024
+	 * @Description: loads images for menu buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Atlas, Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	private void loadImgs() {
 		imgs = new BufferedImage[3];
@@ -48,23 +56,32 @@ public class MenuButton extends Button {
 	}
 
 	/**
-	 * Draws menu button
-	 * 
+	 * @Method Name: draw
 	 * @author Nusayba Hamou
-	 * @since January 1, 2024
-	 */
+	 * @since 1 JAN 2024
+	 * @Description: draws menu button
+	 * @Parameters: Graphics g
+	 * @returns:N/A
+	 * @Dependencies: Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void draw(Graphics g) {
 		g.drawImage(imgs[index], xPos, yPos, B_WIDTH, B_HEIGHT, null);
 	}
 
 	/**
-	 * Updates menu button animations based on mouse position
-	 * 
-	 * @referenced: Kaarin Gaming
+	 * @Method Name: update
+	 * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+	 * @author KaarinGaming
 	 * @author Nusayba Hamou
-	 * @since January 1, 2024
-	 */
+	 * @since 1 JAN 2024
+	 * @Description: updates menu buttons based on mouse position
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void update() {
 		index = 0;
@@ -75,12 +92,17 @@ public class MenuButton extends Button {
 	}
 
 	/**
-	 * Applies gamestate if menu button is clicked
-	 * 
-	 * @referenced: Kaarin Gaming
+	 * @Method Name: applyGamestate
+	 * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+	 * @author KaarinGaming
 	 * @author Nusayba Hamou
-	 * @since January 1, 2024
-	 */
+	 * @since 1 JAN 2024
+	 * @Description: applies the current state to the gamestate
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: GameState
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void applyGamestate() {
 		GameState.currentState = state;

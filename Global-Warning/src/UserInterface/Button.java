@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 4 JAN. 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Made for all buttons with the same button properties (hover, bounds, etc.)
+***********************************************
+*/
+
 package UserInterface;
 
 import java.awt.Rectangle;
@@ -9,13 +18,7 @@ public class Button {
 	protected Rectangle bounds;
 	private boolean mouseOver, mousePressed, mouseReleased;
 
-	/**
-	 * Constructor to create a button
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 4, 2024
-	 */
-
+	// constructor
 	public Button(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -25,24 +28,32 @@ public class Button {
 	}
 
 	/**
-	 * Create bounds
-	 * 
-	 * @referenced: Kaarin Gaming
+	 * @Method Name: createBounds
+	 * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+	 * @author KaarinGaming
 	 * @author Nusayba Hamou
-	 * @since January 4, 2024
-	 */
+	 * @since 4 JAN 2024
+	 * @Description: creates bounds for buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	private void createBounds() {
 		bounds = new Rectangle(x, y, width, height);
 	}
 
 	/**
-	 * Resets button animations to unclicked
-	 * 
+	 * @Method Name: resetButtons
 	 * @author Nusayba Hamou
-	 * @since January 4, 2024
-	 */
-
+	 * @since 4 JAN 2024
+	 * @Description: resets buttons relative to mouse positions
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
 	public void resetButtons() {
 		mouseOver = false;
 		mousePressed = false;
@@ -113,7 +124,5 @@ public class Button {
 	public void setMouseReleased(boolean mouseReleased) {
 		this.mouseReleased = mouseReleased;
 	}
-
-	
 
 }
