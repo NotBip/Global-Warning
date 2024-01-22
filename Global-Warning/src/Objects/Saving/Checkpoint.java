@@ -73,8 +73,8 @@ public class Checkpoint extends Entity {
 					SaveButton.save1.setHold(Playing.gunIndex);
 					SaveButton.save1.setCooldown1((int) Playing.fireRateWeapon1);
 					SaveButton.save1.setCooldown2((int) Playing.fireRateWeapon2);
-					SaveButton.save1.setDamage1(Playing.OGdamageWeapon1);
-					SaveButton.save1.setDamage2(Playing.OGdamageWeapon2);
+					SaveButton.save1.setDamage1(Playing.damageWeapon1);
+					SaveButton.save1.setDamage2(Playing.damageWeapon2);
 					SaveButton.save1.setLevel(LevelManager.lvlIndex);
 
 					SaveButton.save1.setKey(playing.player.key.getQuantity());
@@ -88,8 +88,8 @@ public class Checkpoint extends Entity {
 					SaveButton.save2.setHold(Playing.gunIndex);
 					SaveButton.save2.setCooldown1((int) Playing.fireRateWeapon1);
 					SaveButton.save2.setCooldown2((int) Playing.fireRateWeapon2);
-					SaveButton.save2.setDamage1(Playing.OGdamageWeapon1);
-					SaveButton.save2.setDamage2(Playing.OGdamageWeapon2);
+					SaveButton.save2.setDamage1(Playing.damageWeapon1);
+					SaveButton.save2.setDamage2(Playing.damageWeapon2);
 					SaveButton.save2.setLevel(LevelManager.lvlIndex);
 
 					SaveButton.save2.setKey(playing.player.key.getQuantity());
@@ -103,8 +103,8 @@ public class Checkpoint extends Entity {
 					SaveButton.save3.setHold(Playing.gunIndex);
 					SaveButton.save3.setCooldown1((int) Playing.fireRateWeapon1);
 					SaveButton.save3.setCooldown2((int) Playing.fireRateWeapon2);
-					SaveButton.save3.setDamage1(Playing.OGdamageWeapon1);
-					SaveButton.save3.setDamage2(Playing.OGdamageWeapon2);
+					SaveButton.save3.setDamage1(Playing.damageWeapon1);
+					SaveButton.save3.setDamage2(Playing.damageWeapon2);
 					SaveButton.save3.setLevel(LevelManager.lvlIndex);
 
 					SaveButton.save3.setKey(playing.player.key.getQuantity());

@@ -570,7 +570,7 @@ public class Player extends Entity {
     public void drawItem (Graphics g){
         //g.setColor(Color.black);
         g.setColor(new Color(0,0,0,110));
-        g.fillRect(20, 100, 50, 50);
+        g.fillRect(170, 25, 50, 50);
         
         BufferedImage imageItem;
 
@@ -581,7 +581,7 @@ public class Player extends Entity {
         } else{
             imageItem = getSpriteAtlas(BOMB_ATLAS);       
         }
-        g.drawImage(imageItem, 20,100, WEAPON_WIDTH, WEAPON_HEIGHT, null);
+        g.drawImage(imageItem, 170,25, WEAPON_WIDTH, WEAPON_HEIGHT, null);
     }
 
     /**

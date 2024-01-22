@@ -253,6 +253,8 @@ public class SaveButton extends Button {
 				LevelManager.lvlIndex = save1.getLevel();
 				Playing.OGdamageWeapon1 = save1.getDamage1();
 				Playing.OGdamageWeapon2 = save1.getDamage2();
+				Playing.damageWeapon1 = save1.getDamage1();
+				Playing.damageWeapon2 = save1.getDamage2();
 
 				// get items
 				playing.player.key.setQuantity(save1.getKey());
@@ -275,6 +277,8 @@ public class SaveButton extends Button {
 				Playing.fireRateWeapon2 = save2.getCooldown2();
 				Playing.OGdamageWeapon1 = save2.getDamage1();
 				Playing.OGdamageWeapon2 = save2.getDamage2();
+				Playing.damageWeapon1 = save2.getDamage1();
+				Playing.damageWeapon2 = save2.getDamage2();
 				LevelManager.lvlIndex = save2.getLevel();
 
 				// get items
@@ -299,6 +303,8 @@ public class SaveButton extends Button {
 				LevelManager.lvlIndex = save3.getLevel();
 				Playing.OGdamageWeapon1 = save3.getDamage1();
 				Playing.OGdamageWeapon2 = save3.getDamage2();
+				Playing.damageWeapon1 = save3.getDamage1();
+				Playing.damageWeapon2 = save3.getDamage2();
 
 				// get items
 				playing.player.key.setQuantity(save3.getKey());

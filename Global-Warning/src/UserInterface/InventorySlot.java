@@ -133,6 +133,7 @@ public class InventorySlot extends Button {
 				if (index == 1) {
 					g.drawImage(hvr[0], xPos - 80, yPos - 70, 100, 90, null);
 					g.drawString("Amount: " + playing.player.getItemQuantity(2), xPos - 75, yPos - 20);
+					g.drawString("Kills Enemies", xPos -75, yPos +5);
 				}
 				break;
 			case 4:
@@ -140,6 +141,7 @@ public class InventorySlot extends Button {
 				if (index == 1) {
 					g.drawImage(hvr[1], xPos + 50, yPos - 70, 100, 90, null);
 					g.drawString("Amount: " + playing.player.getItemQuantity(1), xPos + 55, yPos - 20);
+					g.drawString("Increases HP", xPos +55, yPos +5);
 				}
 				break;
 			case 5:
@@ -147,6 +149,7 @@ public class InventorySlot extends Button {
 				if (index == 1) {
 					g.drawImage(hvr[2], xPos - 80, yPos - 70, 100, 90, null);
 					g.drawString("Amount: " + playing.player.getItemQuantity(3), xPos - 75, yPos - 20);
+					g.drawString("Opens Doors", xPos -75, yPos +5);
 				}
 				break;
 			case 6:
@@ -154,6 +157,7 @@ public class InventorySlot extends Button {
 				if (index == 1) {
 					g.drawImage(hvr[3], xPos + 50, yPos - 70, 100, 90, null);
 					g.drawString("Amount: " + playing.player.getItemQuantity(4), xPos + 55, yPos - 20);
+					g.drawString("Upgrades Gun", xPos + 55, yPos +5);
 				}
 				break;
 			default:

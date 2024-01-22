@@ -77,7 +77,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public static int damageWeapon1 = 0;
     public static int OGdamageWeapon1 = 0;
     public static int damageWeapon2 = 0;
-    public static int OGdamageWeapon2 = 0;
+    public static int OGdamageWeapon2= 0;
    // public  int num = SaveButton.getFileNum();
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
@@ -485,8 +485,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         environment.draw(g, xOffset);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
-      //  player.drawItem(g);
         levelManager.draw(g, xOffset);
+        player.drawItem(g);
         enemyManager.draw(g, xOffset);
 
         for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
