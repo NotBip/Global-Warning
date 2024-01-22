@@ -33,12 +33,12 @@ public class Save {
     public Save() {
         numberLevel = 0;
         weaponHold = 1;
-        playerHealth = 0;
+        playerHealth = 100;
         cooldownWeap1 = 250;
         cooldownWeap2 = 350;
         damageWeap1 = 10;
         damageWeap2 = 20;
-        amountBomb = 0;
+        amountBomb = 20;
         amountPotion = 2;
         amountKey = 0;
         amountGem = 1;

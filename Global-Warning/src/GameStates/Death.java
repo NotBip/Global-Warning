@@ -206,7 +206,6 @@ public class Death {
 
 		if (isIn(e, replayB)) {
 			if (replayB.getMousePressed())
-			playing.resetAll();
                 switch (Checkpoint.fileNum) {
                     case 1:
                     SaveState.buttons[0].loadSave(playing);
@@ -224,6 +223,7 @@ public class Death {
 				replayB.applyGamestate();
 				Playing.paused = false;
                 Playing.dead = false;
+				playing.resetAll();
 		}
 
 		resetButtons();

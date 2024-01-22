@@ -88,7 +88,11 @@ public class Bullets extends Entities.Entity implements MouseListener {
         //System.out.println("X: " + (directionX * speed3) + " Y: " + (directionY * speed3));
         getImage(); 
         initialize();
-        playing.getSoundLibrary().playSound("Shoot");
+        if(!playing.getPlayer().isDead()) {
+            System.out.println("pew");
+            playing.getSoundLibrary().playSound("Shoot");
+        }
+        
 
     }
 

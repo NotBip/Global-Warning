@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import GameStates.Playing;
 import Objects.Weapons.Bullets;
 import Utilities.Constants.PlayerConstants;
+import java.awt.Font;
 
 import static Utilities.Atlas.*;
 import static Utilities.Constants.*;
@@ -106,12 +107,14 @@ public class InventorySlot extends Button {
 		if (select == true) {
 			g.drawImage(getSpriteAtlas(SELECTION_ATLAS), xPos, yPos, 80, 80, null);
 		}
-
+		g.setFont(new Font(Font.DIALOG, Font.BOLD, 15));
 	switch(item) {
+		
         case 1:
            g.drawImage(getSpriteAtlas(WEAPON1_ATLAS), xPos+15, yPos+15, 50, 50, null);
 		   if (index == 1)	{
 				g.drawImage(hvr[4], xPos-90, yPos-110, 130, 150, null);
+				
 				g.drawString("Speed: "+Bullets.speed1, xPos-80,yPos-40);
 				g.drawString("Fire Rate: "+PlayerConstants.getGunFirerate(playing, 1), xPos-80,yPos-10);
 				g.drawString("Damage: "+ PlayerConstants.getGunDamage(playing, 1), xPos-80,yPos+20);

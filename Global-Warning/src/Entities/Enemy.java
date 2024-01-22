@@ -128,6 +128,7 @@ public class Enemy extends Entity {
         dead = true; 
         state = DEAD;
         animationIndex = 0;
+        animationTick = 0;
     }
 
     if (!dead){ 
@@ -156,9 +157,11 @@ public class Enemy extends Entity {
         // check for bomb explosion collisions and damage player. 
         for (Bombs b : playing.getBombs()) { 
             if(b.explode)
-                if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
-                    this.changeHealth(-50);
+                if(b.getExplosionHitbox().intersects(hitbox) && !bombHit){ 
+                    System.out.println("beeger boom");
+                    changeHealth(-50);
                     bombHit = true; 
+                    isActive = true;
                 }
         }
 
