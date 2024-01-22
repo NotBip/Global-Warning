@@ -16,8 +16,18 @@ import java.util.ConcurrentModificationException;
 import Entities.Entity;
 import GameStates.Playing;
 
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 16 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Calls, and initiates the bomb projectile.
+***********************************************
+*/
+
 public class Bombs extends Entity {
 
+    // Variables
     BufferedImage img, bombImg;
     private BufferedImage[][] animations;
     private  int animationTick, animationIndex, aniSpeed = 5;
@@ -40,7 +50,7 @@ public class Bombs extends Entity {
     public Rectangle2D.Float bombHitbox; 
 
 
-
+    // Initializes Bombs
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
         super((float)startX, (float)startY, 32, 32);
         this.lvlData = lvlData;
@@ -61,6 +71,17 @@ public class Bombs extends Entity {
         initialize();
     }
 
+    /**
+	@Method Name: setDirection
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the direction for the bomb's throwing angle.
+	@Parameters: double targetx, double targetY, int xOffset
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     public void setDirection(double targetX, double targetY, int xOffset) {
         //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
@@ -69,6 +90,17 @@ public class Bombs extends Entity {
         this.directionY = Math.sin(angle);
     }
 
+     /**
+	@Method Name: update
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the chest.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void update() { 
         double tempChange = 0;
 
@@ -105,6 +137,7 @@ public class Bombs extends Entity {
     }
     }
 
+    
     public void draw(Graphics g, int xOffset) {
         Graphics2D g2d = (Graphics2D) g;
         int drawX = (int) Math.round(x - xOffset);

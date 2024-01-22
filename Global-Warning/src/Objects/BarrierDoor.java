@@ -4,6 +4,15 @@ import java.awt.geom.Rectangle2D;
 
 import Main.Game;
 
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 16 JAN, 2024
+* @Last Modified: 16 JAN, 2024
+* @Description: Creates and calls the animation for doors.
+***********************************************
+*/
+
 public class BarrierDoor extends Object {
     public boolean doorInteract = false, doorOpen = false, doorOpened = false;
     public Rectangle2D.Float interactHitbox;
@@ -18,6 +27,17 @@ public class BarrierDoor extends Object {
         hitbox.y += yDrawOffset;
     }
 
+    /**
+	@Method Name: update
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Updates the animations for the door.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void update() { 
         if(doorOpen)
         updateAnimationTick(); 

@@ -29,6 +29,7 @@ public class Chest extends Object {
     public int wItem, hItem, offset= 0;
     public long lastTime = 0;
 
+    // Initialize Chest
     public Chest(int x, int y, int object, Player player) { 
         super(x, y, object);    
         this.aniSpeed = 25;
@@ -40,10 +41,32 @@ public class Chest extends Object {
         this.yItem = getHitbox().y;
     }
 
+    /**
+	@Method Name: update
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Updates the animations for the chest.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void update() { 
         updateAnimationTick(); 
     }
 
+    /**
+	@Method Name: giveItem
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 21 JAN, 2024
+	@Description: Gives the player a random item with a random quantity
+	@Parameters: Player player
+	@Returns: N/A
+	@Dependencies: Player
+	@Throws/Exceptions: N/A
+	*/
     public void giveItem(Player player) {
         Random r = new Random();
         int randnum = r.nextInt(3-1) + 1;
