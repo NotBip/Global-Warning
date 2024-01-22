@@ -11,8 +11,8 @@ public class BarrierDoor extends Object {
     public BarrierDoor(int x, int y, int object) { 
         super(x, y, object); 
         this.aniSpeed = 10;
+        initHitbox(40, 135);
         this.interactHitbox = new Rectangle2D.Float(this.hitbox.x-10, this.hitbox.y, this.hitbox.width+20, this.hitbox.height);
-        initHitbox(x,130, 135);
         xDrawOffset = 0;
         yDrawOffset = (int)(Game.SCALE * (32-this.hitbox.height));
         hitbox.y += yDrawOffset;

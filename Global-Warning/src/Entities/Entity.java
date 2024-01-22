@@ -22,7 +22,9 @@ public class Entity {
     protected int animationTick; // ticker that increases every update, change animation index based on animation speed
     protected int animationIndex; // current index/sprite of animation to be drawn, updates when animation tick exceeds animation speed
     protected int[][] lvlData; // data of the current room
-
+    protected Rectangle2D.Float enemyRange; 
+    protected float enemyRangeX, enemyRangeY; 
+    protected int enemyRangeW, enemyRangeH; 
     protected float healthBarWidth; // The default width of the entity's health bar
     protected float healthBarHeight;; // The default height of the entity's health bar
     public float currentHealthBarLen; // The current width of the entity's health bar (depending on damage taken)
@@ -36,6 +38,7 @@ public class Entity {
     }
 
     protected void initialize() {
+        enemyRange = new Rectangle2D.Float(enemyRangeX, enemyRangeY, enemyRangeW, enemyRangeH); 
         hitbox = new Rectangle2D.Float(x, y, width, height);
     }
 
@@ -58,6 +61,7 @@ public class Entity {
     public void drawHitbox(Graphics g, int offset) {
         g.setColor(Color.white);
         g.drawRect((int) hitbox.x - offset, (int) hitbox.y, (int) hitbox.width, (int) hitbox.height);
+        g.drawRect((int) enemyRange.x-offset, (int) enemyRange.y, (int) enemyRange.width, (int) enemyRange.height);
     }
 
     /* 

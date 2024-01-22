@@ -57,32 +57,9 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseY; // Position of the mouse vertically
     public double offset; // Offset for weapon
     public boolean BombReady = true; // Can the player throw a new bomb?
-
-    public int bulletCount;
-    public List<Bullets> bullets;
     private HealthBar healthBar; 
-    public List<Bombs> bombs; 
-    private EnemyManager enemyManager;
-    private ObjectManager objectManager;
-    private int borderLen = (int) (0.4 * GAME_WIDTH);
-    private int xOffset;
-    private int maxOffsetX;
-    public int numFile = Checkpoint.fileNum;
-    public static LevelManager levelManager;
-    private Pause pauseScreen;
-    private Death gameOver;
-    private InventoryState inventoryState;
-    private Environment environment; 
-    private Image backgroundImage;
-    public static boolean paused, inventory, dead = false;
-    private double weaponAngle = 0;
-    public static int gunIndex = 1;
     public long loadtime = 0;
-    public double mouseX;
-    public double mouseY;
-    public double offset;
     private boolean playerDying; 
-    public boolean BombReady = true; 
 
 
     //cooldown for firerate (later to be upgradeable to lower cooldown)
