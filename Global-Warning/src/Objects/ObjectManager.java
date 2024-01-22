@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import Entities.Planet1Enemies.*;
 import GameStates.Playing;
+import Levels.Level;
 
 /**
 ***********************************************
@@ -26,6 +27,7 @@ public class ObjectManager{
     private Playing playing; 
     private BufferedImage spikeImg;
     private BufferedImage[][] chestImg, doorImg; 
+    private int[][] lvlData; 
     
     // Initialize Object Manager
     public ObjectManager(Playing playing) { 

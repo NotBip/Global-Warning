@@ -19,9 +19,10 @@ public class Chest extends Object {
     public boolean chestInteract = false, chestOpen = false, chestOpened = false;  
     private Player player;   
 
-    public Chest(int x, int y, int object) { 
+    public Chest(int x, int y, int object, Player player) { 
         super(x, y, object);    
         this.aniSpeed = 25;
+        this.player = player; 
         initHitbox(68,52);
         xDrawOffset = 0;
         yDrawOffset = (int)(Game.SCALE * (32-this.hitbox.height));
