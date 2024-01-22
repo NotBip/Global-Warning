@@ -17,7 +17,13 @@ import UserInterface.SaveButton;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import GameStates.Playing;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import static Utilities.Atlas.*;
 
@@ -27,6 +33,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     private int offset = 100;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
+    Playing playing;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     public static SaveButton[] buttons = new SaveButton[3];
@@ -44,6 +51,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
     public SaveState(Game game) {
         super(game);
         this.game = game;
+        this.playing = game.getPlaying();
         makeButtons();
     }
 
@@ -207,17 +215,20 @@ public class SaveState extends State implements KeyListener, MouseListener {
         for (SaveButton sb : buttons) {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
+                playing.getSoundLibrary().playSound("Begin");
             }
 
         }
 
         if (Pause.isIn(e, menuBack)) {
             menuBack.setMousePressed(true);
+            playing.getSoundLibrary().playSound("Deselect");
         }
 
         for (ResetSaveButton rb : resetbuttons){
             if (isIn(e, rb)) {
                 rb.setMousePressed(true);
+                playing.getSoundLibrary().playSound("Off");
             }
         }
     }

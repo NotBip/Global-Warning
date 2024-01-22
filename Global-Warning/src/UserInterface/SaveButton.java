@@ -154,7 +154,7 @@ public class SaveButton extends Button {
 			playing.player.changeHealth(save1.getHealth());
 			Playing.gunIndex = save1.getHold();
 			Playing.fireRateWeapon1 = save1.getCooldown1();
-           	Playing.fireRateWeapon1 = save1.getCooldown2();
+           	Playing.fireRateWeapon2 = save1.getCooldown2();
 			LevelManager.lvlIndex = save1.getLevel();
 
 			if (save1.getHealth() == 0){
@@ -167,7 +167,7 @@ public class SaveButton extends Button {
 			playing.player.changeHealth(save2.getHealth());
 			Playing.gunIndex = save2.getHold();
 			Playing.fireRateWeapon1 = save2.getCooldown1();
-            Playing.fireRateWeapon1 = save2.getCooldown2();
+            Playing.fireRateWeapon2 = save2.getCooldown2();
 			LevelManager.lvlIndex = save2.getLevel();
 
 			if (save2.getHealth() == 0){
@@ -179,7 +179,7 @@ public class SaveButton extends Button {
 			playing.player.changeHealth(save3.getHealth());
 			Playing.gunIndex = save3.getHold();
 			Playing.fireRateWeapon1 = save3.getCooldown1();
-            Playing.fireRateWeapon1 = save3.getCooldown2();
+            Playing.fireRateWeapon2 = save3.getCooldown2();
 			LevelManager.lvlIndex = save3.getLevel();
 
 			if (save3.getHealth() == 0){

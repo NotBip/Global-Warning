@@ -2,6 +2,10 @@ package Entities;
 
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
+import Items.Key;
+import Items.Bomb;
+import Items.UpgradeGem;
+import Items.HealPotion;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -50,8 +54,12 @@ public class Player extends Entity {
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
-    private boolean isDead = false; 
     private Playing playing; 
+    private boolean isDead = false;
+    HealPotion heal = new HealPotion(this);
+    Bomb bomb = new Bomb(this);
+    Key key = new Key(this);
+    UpgradeGem upgrade = new UpgradeGem(this);
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
 
@@ -618,21 +626,66 @@ public class Player extends Entity {
     public boolean isDead() { 
         return isDead;
     }
-    
-    public boolean getKey() {
-        return hasKey;
+
+    public int getItemQuantity(int item) {
+        switch (item) {
+            case 1:
+            return heal.getQuantity();
+            case 2:
+            return bomb.getQuantity();
+            case 3:
+            return key.getQuantity();
+            case 4:
+            return upgrade.getQuantity();
+            default:
+            return 0;
+        }
     }
 
-    public void setKey(boolean hasKey) {
-        this.hasKey = hasKey;
+    public void useItem(int item, Playing playing) {
+        if (getItemQuantity(item) > 0) {
+        switch (item) {
+            case 1:
+            heal.useItem();
+            changeHealth(heal.getHealingAmount());
+            break;
+            case 2:
+            bomb.useItem();
+            break;
+            case 3:
+            key.useItem();
+            break;
+            case 4:
+            upgrade.useItem();
+            playing.updateUpgrade();
+            break;
+            default:
+        }
+    }
+    else {
+        System.out.println("You don't have enough!");
+    }
     }
 
-    public boolean getBomb() {
-        return hasBomb;
-    }
+    public void gainItem(String item, int quantity) {
+        switch (item) {
+            case "Potion":
+            heal.addItem(quantity);
+            break;
+            case "Bomb":
+            bomb.addItem(quantity);
+            break;
+            case "Key":
+            key.addItem(quantity);
+            break;
+            case "Gem":
+            upgrade.addItem(quantity);
+            break;
+            default:
+        }
+}
 
-    public void setBomb(boolean hasBomb) {
-        this.hasBomb = hasBomb;
+    public UpgradeGem getUpgradeGem() {
+        return upgrade;
     }
-
 }

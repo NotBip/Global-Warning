@@ -11,9 +11,15 @@ import static Utilities.Constants.GAME_HEIGHT;
 import Main.Game;
 import UserInterface.InGameButton;
 import UserInterface.SoundButton;
+import GameStates.Playing;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import static Utilities.Atlas.*;
 
@@ -23,6 +29,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
     private int offset = 70;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
+    Playing playing;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     private SoundButton[] buttons = new SoundButton[2];
@@ -37,6 +44,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
 
     public OptionState(Game game) {
         super(game);
+        this.playing = game.getPlaying();
         makeButtons();
     }
 
@@ -169,9 +177,16 @@ public class OptionState extends State implements KeyListener, MouseListener {
         for (SoundButton sb : buttons) {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
+                if (e.getX() > (GAME_WIDTH/2)){
+                playing.getSoundLibrary().playSound("Off");
+                }
+                else {
+                    playing.getSoundLibrary().playSound("On");
+                }
             }
             if (Pause.isIn(e, menuBack)) {
                 menuBack.setMousePressed(true);
+                playing.getSoundLibrary().playSound("Deselect");
             }
 
         }

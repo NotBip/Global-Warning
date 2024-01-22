@@ -21,6 +21,10 @@ import java.util.List;
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Weapons.Bombs;
+import Items.UpgradeGem;
+import Objects.Chest;
+import Objects.Object;
+import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
 import Utilities.Constants.PlayerConstants;
 import static Utilities.Constants.Directions.LEFT;
@@ -413,7 +417,7 @@ public class Enemy extends Entity {
             if (b.getHitbox().intersects(this.hitbox) && playing.gunIndex != 3) {
                 isActive = true;
                 playing.removeBullet();
-                changeHealth(-PlayerConstants.getPlayerDamage(playing));
+                changeHealth(-(PlayerConstants.getPlayerDamage(playing) + (playing.getPlayer().getUpgradeGem().getNumUpgrades() * playing.getPlayer().getUpgradeGem().getDamageBoost())));
             }
         }
     }

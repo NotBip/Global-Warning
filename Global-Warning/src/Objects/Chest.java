@@ -2,11 +2,22 @@ package Objects;
 
 import java.util.Random;
 
+import Entities.Player;
 import Main.Game;
+
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 15 JAN, 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: Creates and calls the action for chests.
+***********************************************
+*/
 
 public class Chest extends Object {
   
     public boolean chestInteract = false, chestOpen = false, chestOpened = false;  
+    private Player player;   
 
     public Chest(int x, int y, int object) { 
         super(x, y, object);    
@@ -21,7 +32,7 @@ public class Chest extends Object {
         updateAnimationTick(); 
     }
 
-    public void giveItem() {
+    public void giveItem(Player player) {
         Random r = new Random();
         int randnum = r.nextInt(3-1) + 1;
         int quantity = 0;
@@ -58,6 +69,7 @@ public class Chest extends Object {
         }
         //inventory add "item", quantity
         System.out.println("You got " + quantity + " " + item + "!");
+        player.gainItem(item, quantity);
     }
 
 

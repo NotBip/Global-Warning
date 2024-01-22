@@ -3,7 +3,7 @@ package GameStates;
 import Main.Game;
 
 public class State {
-    private Game game;
+    public Game game;
 
     public State(Game game) {
         this.game = game;

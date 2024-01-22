@@ -8,6 +8,11 @@ import UserInterface.HealthBar;
 import UserInterface.SaveButton;
 import Objects.Saving.*;
 import Utilities.LoadSave;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 import Levels.LevelManager;
 import Main.Game;
@@ -20,6 +25,7 @@ import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.HEIGHT_IN_TILES;
 import static Utilities.Constants.TILE_SIZE;
+import Utilities.SoundLibrary;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,21 +62,23 @@ public class Playing extends State implements KeyListener, MouseListener {
     public double mouseX; // Position of the mouse horizontally
     public double mouseY; // Position of the mouse vertically
     public double offset; // Offset for weapon
-    public boolean BombReady = true; // Can the player throw a new bomb?
     private HealthBar healthBar; 
+    private SoundLibrary soundlibrary;
     public long loadtime = 0;
     private boolean playerDying; 
-
-
+    public boolean BombReady = true;
+    private String filepath = "";
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBomb = 0; 
     public long lastBullet = 0;
     public static long fireRateWeapon1 = 300; // 300 milliseconds
     public static long fireRateWeapon2 = 250; // 250 milliseconds
     public static long fireRateWeapon3 = 1000; // 500 milliseconds
+    public static int damageWeapon1 = 10;
+    public static int OGdamageWeapon1 = 10;
+    public static int damageWeapon2 = 20;
+    public static int OGdamageWeapon2 = 20;
    // public  int num = SaveButton.getFileNum();
-
-
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
     public int lightningSpawnCooldown = 120; // How long it takes after choosing a position for lightning to strike
@@ -138,7 +146,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         backgroundImage = LoadSave.GetSpriteAtlas(MENUBACKGROUND_ATLAS);
         this.environment = new Environment(this); 
-        bombs = new ArrayList<>(); 
+        bombs = new ArrayList<>();
+        soundlibrary = new SoundLibrary(this);
 
         try{ // Catch errors if the room has no default spawn point
             player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
@@ -148,7 +157,28 @@ public class Playing extends State implements KeyListener, MouseListener {
         enemyManager.loadEnemies(levelManager.getCurrentLevel());
     }
 
-/*
+
+    private void playMusic() {
+        filepath = "Global-Warning/res/audio/Main.wav";
+        try {
+            File musicPath = new File(filepath);
+            if (musicPath.exists()) {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                clip.start();
+            }
+            else {
+                System.out.println("Can't Find Music File");
+            }
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    /*
 	* Method Name: update
 	* Author: Ryder Hodgson
 	* Creation Date: Decemeber 16th, 2023
@@ -159,7 +189,6 @@ public class Playing extends State implements KeyListener, MouseListener {
     * Death, Bomb, updateLightning, checkLightningIntersect, checkBorder, checkTransition, checkTouchingSign, Environment
 	* Throws/Exceptions: n/a
 	*/
-
     public void update() throws IOException {
         if(!game.getPanel().inFocus) {
             paused = true;
@@ -195,7 +224,17 @@ public class Playing extends State implements KeyListener, MouseListener {
         healthBar.update();
     }
     }
-     /**
+
+    public void updateUpgrade() {
+        fireRateWeapon1 += (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 1: " + fireRateWeapon1);
+        fireRateWeapon2 += (this.getPlayer().getUpgradeGem().getFirerateBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        System.out.println("Firerate 2: " + fireRateWeapon2);
+        damageWeapon1 = OGdamageWeapon1 + (this.getPlayer().getUpgradeGem().getDamageBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+        damageWeapon2 = OGdamageWeapon2 + (this.getPlayer().getUpgradeGem().getDamageBoost() * this.getPlayer().getUpgradeGem().getNumUpgrades());
+    }
+
+    /**
      * Checks if that player has gone past the camera border
      * 
      * @author Ryder Hodgson
@@ -361,6 +400,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) {
             environment.drawLightning(g, xOffset);
         }
+        
     }
 
     /*
@@ -536,6 +576,10 @@ public class Playing extends State implements KeyListener, MouseListener {
         return objectManager;
     }
 
+    public SoundLibrary getSoundLibrary() {
+        return soundlibrary;
+    }
+
     public double getAngle() {
         return weaponAngle;
     }
@@ -575,6 +619,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         }
     }
 
+
     public void bombCooldown(int x, int y) {
         long time1 = System.currentTimeMillis();
         long rate = 0;
@@ -601,15 +646,15 @@ public class Playing extends State implements KeyListener, MouseListener {
        if (!paused && !inventory){
             Bullets bullet = new Bullets(weapon, this, player.getHitbox().x + player.getHitbox().width/2, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
+            }
         }
 
-    }
-
     private void spawnBomb(int x, int y) {
-
-        if (!paused && !inventory){
-             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, player.getHitbox().x + player.getHitbox().width/2-5, weapon.getY(), x, y, xOffset);
+        
+        if (!paused && !inventory && player.getItemQuantity(2) > 0){
+             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
+             player.useItem(2, this);
          }
  
      }

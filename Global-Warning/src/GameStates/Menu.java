@@ -5,12 +5,20 @@ import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.Buttons.B_WIDTH;
 import static Utilities.Constants.Buttons.B_HEIGHT;
 import static Utilities.Constants.GAME_HEIGHT;
+import Utilities.SoundLibrary;
 
 import Main.Game;
 import UserInterface.MenuButton;
+import UserInterface.SaveButton;
+import GameStates.Playing;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import static Utilities.Atlas.*;
 
@@ -20,6 +28,8 @@ public class Menu extends State implements KeyListener, MouseListener {
     private int offset = 70;
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
+    Playing playing;
+    SoundLibrary soundlibrary;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage teachControls = getSpriteAtlas(CONTROLS_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
@@ -35,6 +45,7 @@ public class Menu extends State implements KeyListener, MouseListener {
 
     public Menu(Game game) {
         super(game);
+        this.playing = game.getPlaying();
         makeButtons();
     }
 
@@ -167,6 +178,7 @@ public class Menu extends State implements KeyListener, MouseListener {
         for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 mb.setMousePressed(true);
+                playing.getSoundLibrary().playSound("Select");
             }
 
         }

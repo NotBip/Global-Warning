@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import Entities.Player;
 import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
@@ -15,10 +16,21 @@ import GameStates.Playing;
 import Objects.BarrierDoor;
 import Objects.Chest;
 import Objects.Sign;
+import Objects.KeyChest;
 import Objects.Spike;
 
 import Objects.Saving.Checkpoint;
 import Utilities.Constants;
+
+/** 
+************************************************************
+@Author : Kaarin Gaming
+@Ref : https://youtube.com/playlist?list=PL4rzdwizLaxYmltJQRjq18a9gsSyEQQ-0&si=t85p0gaCX1tJNt_r
+@Published : May 2022
+@Modifiers : Bobby, Nusayba, Ryder, Hamad
+@Modified : January 2024
+************************************************************
+*/
 
 public class Level {
 
@@ -32,6 +44,7 @@ public class Level {
 	private int maxTilesOffset;
 	private int maxLvlOffsetX;
 	private Playing playing;
+	private Player player;
 	private Point playerSpawn; // Default spawn point in a room
 	private Point leftSpawn; // Spawn point from the left door in a room
 	private Point rightSpawn; // Spawn point from the right left in a room
@@ -40,7 +53,8 @@ public class Level {
 	public boolean isWindy = false;
 	private ArrayList<Spike> spike = new ArrayList<Spike>();
 	private ArrayList<BarrierDoor> door = new ArrayList<BarrierDoor>(); 
-	private ArrayList<Chest> chest = new ArrayList<Chest>(); 
+	private ArrayList<Chest> chest = new ArrayList<Chest>();
+	private ArrayList<KeyChest> keychest = new ArrayList<KeyChest>();
 	private Checkpoint checkpoint;
 	private boolean isStormy = false;
 	private  boolean isCheckpoint = false; 
@@ -62,6 +76,7 @@ public class Level {
 	public Level(BufferedImage img, Playing playing) {
 		this.img = img;
 		this.playing = playing;
+		this.player = playing.player;
 		lvlData = new int[img.getHeight()][img.getWidth()];
 		loadLevel();
 		calcLvlOffsets();
@@ -148,7 +163,8 @@ public class Level {
 	private void loadObjects(int blueValue, int x, int y) {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
-			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest)); break;
+			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
+			case 150: keychest.add(new KeyChest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
 			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 			case 1: signs.add(new Sign(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Sign, tutorialText[tutorialTextIndex++]));
 		}
@@ -234,6 +250,10 @@ public class Level {
 
 	public ArrayList<Chest> getChest() { 
 		return chest; 
+	}
+
+	public ArrayList<KeyChest> getKeyChest() {
+		return keychest;
 	}
 
 	public ArrayList<BarrierDoor> getDoor() {

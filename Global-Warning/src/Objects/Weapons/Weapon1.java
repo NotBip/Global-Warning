@@ -9,6 +9,10 @@ import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 import java.awt.Graphics2D;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -124,7 +128,7 @@ public class Weapon1 implements MouseMotionListener {
         } else if (Playing.gunIndex == 2){
             this.img = getSpriteAtlas(WEAPON2_ATLAS); 
         } else if (Playing.gunIndex == 3){
-            if (playing.getPlayer().getBomb() == true){
+            if (playing.getPlayer().getItemQuantity(2) > 0){
                 this.img = getSpriteAtlas(BOMB_ATLAS);
                 }
                 else {
