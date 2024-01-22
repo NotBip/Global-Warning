@@ -7,15 +7,13 @@ public class UpgradeGem {
     
     int damageBoost = 10;
     int firerateBoost = -20;
-    int quantity = 3;
+    int quantity = 0;
     int numUpgrades = 0;
 
     private Player player;
     public UpgradeGem(Player player) {
         this.player = player;
-        this.quantity = quantity;
-        this.damageBoost = damageBoost;
-        this.firerateBoost = firerateBoost;
+    
     }
 
 
@@ -46,6 +44,10 @@ public class UpgradeGem {
 
     public int getNumUpgrades() {
         return numUpgrades;
+    }
+
+    public void setNumUpgrades(int num) {
+        numUpgrades = num;
     }
 
 }

@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 5 JAN. 2024
+* @Last Modified: 21 JAN, 2024
+* @Description: In-game buttons for replaying, returning to home menu from game, etc.
+***********************************************
+*/
+
 package UserInterface;
 
 import GameStates.GameState;
@@ -17,13 +26,7 @@ public class InGameButton extends Button {
 	private GameState state;
 	private BufferedImage[] imgs;
 
-	/**
-	 * Constructor to create button for pause menu
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
-
+	// constructor
 	public InGameButton(int xPos, int yPos, int width, int height, int rowIndex, GameState state) {
 		super(xPos, yPos, width, height);
 
@@ -37,11 +40,15 @@ public class InGameButton extends Button {
 	}
 
 	/**
-	 * loads animations for button
-	 * 
+	 * @Method Name: loadImgs
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: loads images for in game buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Atlas, Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	private void loadImgs() {
 		imgs = new BufferedImage[3];
@@ -51,22 +58,30 @@ public class InGameButton extends Button {
 	}
 
 	/**
-	 * Draws specific sprite for button
-	 * 
+	 * @Method Name: draw
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: draws img for in-game buttons
+	 * @Parameters: Graphics g
+	 * @returns:N/A
+	 * @Dependencies: Constants
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void draw(Graphics g) {
 		g.drawImage(imgs[index], xPos, yPos, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, null);
 	}
 
 	/**
-	 * Updates button sprite based on mouse postion
-	 * 
+	 * @Method Name: update
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: updates button based on mouse position
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void update() {
 		index = 0;
@@ -77,11 +92,15 @@ public class InGameButton extends Button {
 	}
 
 	/**
-	 * Applies gamestate if button is clicked
-	 * 
+	 * @Method Name: applyGamestate
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 5 JAN 2024
+	 * @Description: applies the current state to the gamestate
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: GameState
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void applyGamestate() {
 		GameState.currentState = state;

@@ -544,8 +544,36 @@ public class Player extends Entity {
     //         g.setColor(Color.black);
     //         g.drawRect(20, 60, (int) oxygenBarWidth, (int) healthBarHeight);
     //     }
-        
+
+    public int getHealthWidth(){
+        return (int)healthBarWidth;
+    }
+
+    public int getHealthHeight(){
+        return (int)healthBarHeight;
+    }
+
+    public int getHealthLength(){
+        return (int)currentHealthBarLen;
+    }
     // }
+
+    public void drawItem (Graphics g){
+        //g.setColor(Color.black);
+        g.setColor(new Color(0,0,0,110));
+        g.fillRect(20, 100, 50, 50);
+        
+        BufferedImage imageItem;
+
+        if (Playing.gunIndex == 1){
+            imageItem = getSpriteAtlas(WEAPON1_ATLAS); 
+        } else if (Playing.gunIndex == 2){
+            imageItem = getSpriteAtlas(WEAPON2_ATLAS); 
+        } else{
+            imageItem = getSpriteAtlas(BOMB_ATLAS);       
+        }
+        g.drawImage(imageItem, 20,100, WEAPON_WIDTH, WEAPON_HEIGHT, null);
+    }
 
     /**
      * Changes animations based on input.

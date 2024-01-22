@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 1 JAN, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Inventory state for when player opens inventory
+***********************************************
+*/
+
 package GameStates;
 
 import java.awt.Graphics;
@@ -35,14 +44,7 @@ public class Menu extends State implements KeyListener, MouseListener {
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
     private MenuButton[] buttons = new MenuButton[3];
 
-    /**
-     * Constructor for menu
-     * 
-     * @referenced: Kaarin Gaming
-     * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
-
+    // constructor
     public Menu(Game game) {
         super(game);
         this.playing = game.getPlaying();
@@ -50,12 +52,17 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Updates menu buttons in menu
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: update
+     * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+     * @author KaarinGaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: updates buttons for the state
+     * @Parameters: N/A
+     * @returns:N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
 
     public void update() {
         for (MenuButton mb : buttons)
@@ -64,11 +71,15 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Adds menu buttons to menu
-     * 
+     * @Method Name: makeButtons
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: makes buttons for the state
+     * @Parameters: N/A
+     * @returns:N/A
+     * @Dependencies: MenuButton
+     * @Throws/Exceptions: N/A
+     **/
 
     public void makeButtons() {
         buttons[0] = new MenuButton(GAME_WIDTH / 2 - offset, GAME_HEIGHT / 2 + offset - 140, B_WIDTH, B_HEIGHT, 0,
@@ -80,29 +91,39 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Draws menu background, menu title, and menu buttons
-     * 
+     * @Method Name: draw
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: draws menu overlay screen with buttons
+     * @Parameters: Graphics g
+     * @returns:N/A
+     * @Dependencies: Constants, Button
+     * @Throws/Exceptions: N/A
+     **/
 
     public void draw(Graphics g) {
 
         g.drawImage(this.imgbackground, 0, 0, this.width, this.height, null);
-        g.drawImage(this.imgtitle, GAME_WIDTH / 3 +50, 0, 350, 200, null);
-        g.drawImage(this.teachControls, GAME_WIDTH-350, 40, 300, 400, null);
+        g.drawImage(this.imgtitle, GAME_WIDTH / 3 + 40, 0, 350, 200, null);
+        g.drawImage(this.teachControls, GAME_WIDTH - 350, 40, 300, 400, null);
         for (MenuButton mb : buttons)
             mb.draw(g);
 
     }
 
     /**
-     * Resets all menu buttons
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: resetButtons
+     * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+     * @author KaarinGaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: resets all buttons
+     * @Parameters: N/A
+     * @returns: N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
+
     private void resetButtons() {
         for (MenuButton mb : buttons)
             mb.resetButtons();
@@ -110,12 +131,17 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Checks if cursor X and Y position overlap button bounds
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: isIn
+     * @referenced: https://github.com/KaarinGaming/PlatformerTutorial
+     * @author KaarinGaming
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: checks if mouse is in button bounds
+     * @Parameters: MouseEvent e, MenuButton b
+     * @returns: N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
 
     private boolean isIn(MouseEvent e, MenuButton b) {
         return b.getBounds().contains(e.getX(), e.getY());
@@ -138,12 +164,15 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Checks if mouse position overlaps bounds (cursor on button)
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: mouseMoved
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: Checks if mouse position overlaps bounds (cursor on button)
+     * @Parameters: MouseEvent e
+     * @returns: N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
 
     public void mouseMoved(MouseEvent e) {
         for (MenuButton mb : buttons)
@@ -166,12 +195,15 @@ public class Menu extends State implements KeyListener, MouseListener {
     }
 
     /**
-     * Checks if mouse is clicked on button (cursor clicks button)
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: mousePressed
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description: Checks if mouse is clicked on button (cursor clicks button)
+     * @Parameters: MouseEvent e
+     * @returns: N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -184,13 +216,30 @@ public class Menu extends State implements KeyListener, MouseListener {
         }
     }
 
+ 
+    public void playSound() {
+        String filepath = "Global-Warning/res/audio/button1.wav";
+        File musicPath = new File(filepath);
+        try {
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     /**
-     * Checks if mouse is released from button bounds
-     * 
-     * @referenced: Kaarin Gaming
+     * @Method Name: mouseReleased
      * @author Nusayba Hamou
-     * @since January 1, 2024
-     */
+     * @since 1 JAN 2024
+     * @Description:Checks if mouse is released from button bounds
+     * @Parameters: MouseEvent e
+     * @returns: N/A
+     * @Dependencies: Button
+     * @Throws/Exceptions: N/A
+     **/
 
     @Override
     public void mouseReleased(MouseEvent e) {

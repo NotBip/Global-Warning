@@ -5,12 +5,11 @@ import Entities.Player;
 
 public class Key {
     
-    int quantity = 1;
+    public int quantity=0;
 
     private Player player;
     public Key(Player player) {
         this.player = player;
-        this.quantity = quantity;
     }
 
 

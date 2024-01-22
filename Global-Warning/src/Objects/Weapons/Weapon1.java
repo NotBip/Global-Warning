@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 19 DEC, 2023
+* @Last Modified: 21 JAN, 2024
+* @Description: Weapon class for all weapons+bombs (called weapon1 early on)
+***********************************************
+*/
+
 package Objects.Weapons;
 
 import Entities.*;
@@ -9,10 +18,6 @@ import java.awt.image.BufferedImage;
 
 import static Utilities.Atlas.*;
 import java.awt.Graphics2D;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.swing.JOptionPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -22,10 +27,10 @@ import static Utilities.Constants.Directions.RIGHT;
 
 public class Weapon1 implements MouseMotionListener {
 
-    //variables
+    // variables
     private Player player;
     BufferedImage img;
-    Graphics2D g2d; 
+    Graphics2D g2d;
     MouseInputs mouse;
     Playing playing;
     
@@ -34,39 +39,42 @@ public class Weapon1 implements MouseMotionListener {
     private float xthing = 0; 
     protected float x=0;
     protected float y=0;
-
-
+    // constructor
+    public Weapon1(Player player, Playing playing) {
+        this.player = player;
+        this.playing = playing;
+        getImage();
+    }
 
     /**
-     * Constructor to create weapon
+     * @Method Name: setAngle
      * @author Hamad Mohammed
-     * @since December 19, 2023
-     */
-    
-    public Weapon1 (Player player, Playing playing) {
-        this.player = player;
-        this.playing = playing; 
-        getImage();
-  }
+     * @since 21 DEC 2023
+     * @Description: sets angle for weapon to aim towards mouse
+     * @Parameters: double centerY, double mouseY, double centerX, double mouseX
+     *              (mouse positions)
+     * @returns:N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     **/
 
-  /**
-     * Sets angle for weapon to aim towards mouse
-     * @author Hamad Mohammed
-     * @since December 21, 2023
-     */
-
-    public double setAngle(double centerY, double mouseY, double centerX, double mouseX) { 
+    public double setAngle(double centerY, double mouseY, double centerX, double mouseX) {
         return Math.atan2(centerY - mouseY, centerX - mouseX) - Math.PI / 2;
     }
-  
+
     /**
-     * Draws the gun
+     * @Method Name: draw
      * @author Nusayba Hamou
-     * @since December 19, 2023
-     */
+     * @since 19 DEC 2023
+     * @Description: draws the gun
+     * @Parameters: Graphics g, int xOffset for character offset from gun
+     * @returns:N/A
+     * @Dependencies: Playing
+     * @Throws/Exceptions: N/A
+     **/
 
     public void draw(Graphics g, int xOffset) {
-        Graphics2D g2d = (Graphics2D)g; 
+        Graphics2D g2d = (Graphics2D) g;
         AffineTransform oldXForm = g2d.getTransform();
         g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
         xthing = this.x-xOffset; 
@@ -98,13 +106,18 @@ public class Weapon1 implements MouseMotionListener {
         g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
             g2d.setTransform(oldXForm);
 
-     }
+    }
 
     /**
-     * Updates gun position to follow player movement
+     * @Method Name: update
      * @author Nusayba Hamou
-     * @since December 19, 2023
-     */
+     * @since 19 DEC 2023
+     * @Description: updates gun position
+     * @Parameters: N/A
+     * @returns:N/A
+     * @Dependencies: Player
+     * @Throws/Exceptions: N/A
+     **/
 
     public void update() {
         if(playing.mouseX < xthing)
@@ -115,40 +128,42 @@ public class Weapon1 implements MouseMotionListener {
         this.y = player.getHitbox().y-20;
      }
 
-       /**
-     * Gets gun sprite
+    /**
+     * @Method Name: getImage
      * @author Nusayba Hamou
-     * @since December 19, 2023
-     */ 
-
+     * @since 19 DEC 2023
+     * @Description: gets the correct weapon image
+     * @Parameters: N/A
+     * @returns:N/A
+     * @Dependencies: Playing
+     * @Throws/Exceptions: N/A
+     **/
 
     public void getImage() {
-        if (Playing.gunIndex == 1){
-            this.img = getSpriteAtlas(WEAPON1_ATLAS); 
-        } else if (Playing.gunIndex == 2){
-            this.img = getSpriteAtlas(WEAPON2_ATLAS); 
-        } else if (Playing.gunIndex == 3){
-            if (playing.getPlayer().getItemQuantity(2) > 0){
+        if (Playing.gunIndex == 1) {
+            this.img = getSpriteAtlas(WEAPON1_ATLAS);
+        } else if (Playing.gunIndex == 2) {
+            this.img = getSpriteAtlas(WEAPON2_ATLAS);
+        } else if (Playing.gunIndex == 3) {
+            if (playing.getPlayer().getItemQuantity(2) > 0) {
                 this.img = getSpriteAtlas(BOMB_ATLAS);
-                }
-                else {
+            } else {
                 this.img = getSpriteAtlas(NOTHING_ATLAS);
-                } 
+            }
         }
     }
 
+    /* Getters */
 
-     /*Getters  */
-
-     public float getX() {
+    public float getX() {
         return this.x;
-     }
-      public float getY() {
-        return this.y;
-     }
+    }
 
-     /* Mouse events  */
-    
+    public float getY() {
+        return this.y;
+    }
+
+    /* Mouse events */
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -161,4 +176,3 @@ public class Weapon1 implements MouseMotionListener {
         throw new UnsupportedOperationException("Unimplemented method 'mouseDragged'");
     }
 }
-

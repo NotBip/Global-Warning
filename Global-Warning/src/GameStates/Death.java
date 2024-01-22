@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : Nusayba Hamou
+* @Originally made : 18 JAN, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Death state for when player diea in-game
+***********************************************
+*/
+
 package GameStates;
 
 import java.awt.Color;
@@ -8,7 +17,6 @@ import static Utilities.Constants.Buttons.PAUSE_B_WIDTH;
 import static Utilities.Constants.GAME_HEIGHT;
 
 import UserInterface.InGameButton;
-
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
@@ -23,13 +31,7 @@ public class Death {
 	private BufferedImage backgroundImg = getSpriteAtlas(OVER_ATLAS);
 	private InGameButton menuBackB, replayB;
 
-	/**
-	 * Constructor to create pause overlay
-	 * 
-	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
-
+	// constructor
 	public Death(Playing playing) {
 		this.playing = playing;
 		makeButton();
@@ -37,92 +39,116 @@ public class Death {
 	}
 
 	/**
-	 * Adds button to pause menu
-	 * 
+	 * @Method Name: makeButton
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: makes button for the state
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: InGameButton
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void makeButton() {
 		menuBackB = new InGameButton(GAME_WIDTH / 2 - 50, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 2,
 				GameState.MENU);
-        replayB = new InGameButton(GAME_WIDTH / 2 + 50, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 1,
+		replayB = new InGameButton(GAME_WIDTH / 2 + 50, GAME_HEIGHT / 2, PAUSE_B_WIDTH, PAUSE_B_HEIGHT, 1,
 				GameState.PLAYING);
 
 	}
 
 	/**
-	 * Updates button in pause menu
-	 * 
+	 * @Method Name: update
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: updates all buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void update() {
 		menuBackB.update();
-        replayB.update();
+		replayB.update();
 	}
 
 	/**
-	 * Draws pause menu and button
-	 * 
+	 * @Method Name: draw
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: draws death overlay screen with buttons
+	 * @Parameters: Graphics g
+	 * @returns:N/A
+	 * @Dependencies: Constants, Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void draw(Graphics g) {
-		//dark background
-		g.setColor(new Color(0,0,0,90));
-		g.fillRect(0,0, GAME_WIDTH, GAME_HEIGHT);
+		// dark background
+		g.setColor(new Color(0, 0, 0, 90));
+		g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-		//color for other
+		// color for other
 		g.setColor(Color.BLACK);
-		
+
 		g.drawImage(backgroundImg, 500, 150, 300, 300, null);
 		menuBackB.draw(g);
-        replayB.draw(g);
+		replayB.draw(g);
 	}
 
 	/**
-	 * Resets all buttons
-	 * 
+	 * @Method Name: resetButtons
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: resets all buttons
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	private void resetButtons() {
 		menuBackB.resetButtons();
-        replayB.resetButtons();
+		replayB.resetButtons();
 
 	}
 
 	/**
-	 * Checks if cursor X and Y position overlap button bounds
-	 * 
+	 * @Method Name: isIn
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: checks if mouse is in button bounds
+	 * @Parameters: MouseEvent e, InGameButton b
+	 * @returns: true or false based on bounds
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public static boolean isIn(MouseEvent e, InGameButton b) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
 
 	/**
-	 * Checks if mouse position overlaps bounds (cursor on button)
-	 * 
+	 * @Method Name: mouseMoved
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description:Checks if mouse position overlaps bounds (cursor on button)
+	 * @Parameters: MouseEvent e
+	 * @returns: N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void mouseMoved(MouseEvent e) {
 		menuBackB.setMouseOver(false);
-        replayB.setMouseOver(false);
+		replayB.setMouseOver(false);
 
 		if (isIn(e, menuBackB)) {
 			menuBackB.setMouseOver(true);
 		}
 
-        if (isIn(e, replayB)) {
+		if (isIn(e, replayB)) {
 			replayB.setMouseOver(true);
 		}
 	}
@@ -136,11 +162,15 @@ public class Death {
 	}
 
 	/**
-	 * Checks if mouse is clicked on button (cursor clicks button)
-	 * 
+	 * @Method Name: mousePressed
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description: Checks if mouse is clicked on button (cursor clicks button)
+	 * @Parameters: MouseEvent e
+	 * @returns: N/A
+	 * @Dependencies: Button
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	// @Override
 	public void mousePressed(MouseEvent e) {
@@ -148,18 +178,22 @@ public class Death {
 			menuBackB.setMousePressed(true);
 
 		}
-        if (isIn(e, replayB)) {
+		if (isIn(e, replayB)) {
 			replayB.setMousePressed(true);
 
 		}
 	}
 
 	/**
-	 * Checks if mouse is released from button bounds
-	 * 
+	 * @Method Name: mouseReleased
 	 * @author Nusayba Hamou
-	 * @since January 5, 2024
-	 */
+	 * @since 18 JAN 2024
+	 * @Description:Checks if mouse is released from button bounds
+	 * @Parameters: MouseEvent e
+	 * @returns: N/A
+	 * @Dependencies: Button, Playing, SaveState
+	 * @Throws/Exceptions: N/A
+	 **/
 
 	public void mouseReleased(MouseEvent e) {
 		if (isIn(e, menuBackB)) {
@@ -170,7 +204,7 @@ public class Death {
 				playing.resetAll();
 		}
 
-        if (isIn(e, replayB)) {
+		if (isIn(e, replayB)) {
 			if (replayB.getMousePressed())
 			playing.resetAll();
                 switch (Checkpoint.fileNum) {

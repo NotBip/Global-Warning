@@ -71,8 +71,8 @@ public class Playing extends State implements KeyListener, MouseListener {
     //cooldown for firerate (later to be upgradeable to lower cooldown)
     public long lastBomb = 0; 
     public long lastBullet = 0;
-    public static long fireRateWeapon1 = 300; // 300 milliseconds
-    public static long fireRateWeapon2 = 250; // 250 milliseconds
+    public static long fireRateWeapon1 = 0; // 300 milliseconds
+    public static long fireRateWeapon2 = 0; // 250 milliseconds
     public static long fireRateWeapon3 = 1000; // 500 milliseconds
     public static int damageWeapon1 = 10;
     public static int OGdamageWeapon1 = 10;
@@ -140,7 +140,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         bullets = new ArrayList<>();
         healthBar = new HealthBar(this); 
        // savepoint = new Checkpoint(GAME_WIDTH / 2-300, 100, 45, 63, this);
-        pauseScreen = new Pause();
+        pauseScreen = new Pause(this);
         inventoryState = new InventoryState(this);
         gameOver = new Death(this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());

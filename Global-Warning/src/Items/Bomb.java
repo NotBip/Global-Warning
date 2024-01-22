@@ -6,13 +6,11 @@ import Entities.Player;
 public class Bomb {
     
     int damageAmount = 100;
-    int quantity = 5;
+    int quantity =0;
 
     private Player player;
     public Bomb(Player player) {
         this.player = player;
-        this.quantity = quantity;
-        this.damageAmount = damageAmount;
     }
 
 
