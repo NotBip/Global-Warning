@@ -22,6 +22,7 @@ import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
 
+import Objects.BarrierDoor;
 import Objects.Chest;
 import static Utilities.Constants.Buttons.*;
 import static GameStates.Playing.*;
@@ -227,7 +228,7 @@ public class SaveButton extends Button {
 	 * @Description: sets all necessary elements to save file contents
 	 * @Parameters: Playing
 	 * @returns:N/A
-	 * @Dependencies: Save, LevelManager, Chest, Playing
+	 * @Dependencies: Save, LevelManager, Chest, Playing, BarrierDoor
 	 * @Throws/Exceptions: N/A
 	 **/
 
@@ -238,6 +239,13 @@ public class SaveButton extends Button {
 		if (levelManager.getCurrentLevel().getChest() != null) {
 			for (Chest chest : levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
+			}
+
+		}
+
+		if (levelManager.getCurrentLevel().getDoor() != null) {
+			for (BarrierDoor door : levelManager.getCurrentLevel().getDoor()) {
+				door.resetDoor();
 			}
 
 		}

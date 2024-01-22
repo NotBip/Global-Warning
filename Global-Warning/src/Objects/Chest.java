@@ -120,6 +120,17 @@ public class Chest extends Object {
         marker2 = false;
     }
 
+    /**
+	 * @Method Name: resetChests
+	 * @author Nusayba Hamou
+	 * @since 21 JAN 2024
+	 * @Description: resets chests every time a save is loaded
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
+
     public void resetChests () {
         chestInteract = false;
         chestOpen = false;
