@@ -38,7 +38,7 @@ public class Save {
         cooldownWeap2 = 350;
         damageWeap1 = 10;
         damageWeap2 = 20;
-        amountBomb = 0;
+        amountBomb = 100;
         amountPotion = 2;
         amountKey = 0;
         amountGem = 1;

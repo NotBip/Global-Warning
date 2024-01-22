@@ -5,6 +5,7 @@ import static Utilities.Atlas.BOMB_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.WEAPON_HEIGHT;
 import static Utilities.Constants.WEAPON_WIDTH;
+import static Utilities.Constants.animationSpeed;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -16,22 +17,12 @@ import java.util.ConcurrentModificationException;
 import Entities.Entity;
 import GameStates.Playing;
 
-/**
-***********************************************
-* @Author : Bobby Walden
-* @Originally made : 16 JAN, 2024
-* @Last Modified: 21 JAN, 2024
-* @Description: Calls, and initiates the bomb projectile.
-***********************************************
-*/
-
 public class Bombs extends Entity {
 
-    // Variables
     BufferedImage img, bombImg;
     private BufferedImage[][] animations;
     private  int animationTick, animationIndex, aniSpeed = 5;
-    private double x, y, vertX, vertY, initX, initY;
+    private double x, y, vertX, vertY, initX, initY, targetX, targetY;
     public static double speed = 1;
     private double directionX, directionY;
     private Playing playing;
@@ -50,7 +41,7 @@ public class Bombs extends Entity {
     public Rectangle2D.Float bombHitbox; 
 
 
-    // Initializes Bombs
+
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
         super((float)startX, (float)startY, 32, 32);
         this.lvlData = lvlData;
@@ -61,6 +52,8 @@ public class Bombs extends Entity {
         this.initY = startY;
         this.vertX = targetX - startX + xOffset;
         this.vertY = targetY - startY;
+        this.targetX = targetX + xOffset - startX;
+        this.targetY = targetY - startY;
         this.playing = playing; 
         this.weapon = weapon; 
         this.bombHitbox = new Rectangle2D.Float((float)startX, (float)startY, 128, 128);
@@ -71,41 +64,21 @@ public class Bombs extends Entity {
         initialize();
     }
 
-    /**
-	@Method Name: setDirection
-	@Author: Bobby Walden
-	@Creation Date: 16 JAN, 2024
-	@Modified Date: 17 JAN, 2024
-	@Description: Updates the direction for the bomb's throwing angle.
-	@Parameters: double targetx, double targetY, int xOffset
-	@Returns: N/A
-	@Dependencies: N/A
-	@Throws/Exceptions: N/A
-	*/
     public void setDirection(double targetX, double targetY, int xOffset) {
         //something goes wrong here
         double angle = Math.atan2(targetY - y, targetX - x + xOffset);
 
         this.directionX = Math.cos(angle);
+        //System.out.println("DirectionX: " + directionX);
         this.directionY = Math.sin(angle);
     }
 
-     /**
-	@Method Name: update
-	@Author: Bobby Walden
-	@Creation Date: 16 JAN, 2024
-	@Modified Date: 17 JAN, 2024
-	@Description: Updates the animations for the chest.
-	@Parameters: N/A
-	@Returns: N/A
-	@Dependencies: Object
-	@Throws/Exceptions: N/A
-	*/
     public void update() { 
         double tempChange = 0;
 
     if (Playing.gunIndex == 3) {
         if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
+            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
             // Change x of bomb
             this.bombHitbox.x = hitbox.x-32; 
             this.bombHitbox.y = hitbox.y-32; 
@@ -115,9 +88,11 @@ public class Bombs extends Entity {
             if(playing.BombReady)
             playing.BombReady = false; 
 
-            tempChange = Math.min(Math.max(speed * ((vertX / initX) * 10), -3 * speed), 3 * speed); // cap out the speed at 3 * the speed
+            tempChange = speed * ((vertX / initX) * 10);
+            //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
             x += tempChange;
             hitbox.x += tempChange;
+            //System.out.print(", NewX: " + x + "; OldY: " + y );
 
             tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
             if ((time + (vertY / initY)) > 0){
@@ -128,16 +103,20 @@ public class Bombs extends Entity {
                 y -= tempChange;
                 hitbox.y -= tempChange; 
             }
+            //System.out.println(", YDel: " + tempChange + ", NewY: " + y);
+            explodePosX = (int) hitbox.x; 
+            explodePosY = (int) hitbox.y;
             
         } else {
             playing.BombReady = false; 
+        //    System.out.println("EXPLOSION ASD AT: " + hitbox.x + "y: " + hitbox.y);
             explode = true; 
+           // System.out.println("Initiate Explosion");
             //playing.removeBomb();
         }
     }
     }
 
-    
     public void draw(Graphics g, int xOffset) {
         Graphics2D g2d = (Graphics2D) g;
         int drawX = (int) Math.round(x - xOffset);
@@ -160,6 +139,9 @@ public class Bombs extends Entity {
             playing.removeBomb();
             }
         }
+
+
+
     }
 
     public void drawBombAnimation(Graphics g, int xOffset) { 

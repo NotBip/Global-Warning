@@ -172,6 +172,14 @@ public class Player extends Entity {
 
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
+
+        for(Bombs b : playing.getBombs()) { 
+            if(b.explode)
+                if(this.getHitbox().intersects(b.bombHitbox) && !isImmune())
+                    this.changeHealth(-maxHealth/2);
+        }
+
+
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
             state = DEAD;
@@ -187,13 +195,7 @@ public class Player extends Entity {
     }   
         if (!isDead) {
 
-            for (Bombs b : playing.getBombs()) { 
-                if(b.explode)
-                    if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
-                        this.changeHealth(maxHealth/2);
-                        bombHit = true; 
-                    }
-            }
+
             // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;

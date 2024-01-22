@@ -111,6 +111,17 @@ public class Enemy extends Entity {
      * @Throws/Exceptions: N/A
      */
     public void move(Player player, Playing playing) {
+
+    // check for bomb explosion collisions and damage player. 
+    for (Bombs b : playing.getBombs()) { 
+        if(b.explode)
+            if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
+                this.changeHealth(-50);
+                bombHit = true; 
+                isActive = true; 
+            }
+    }
+
     // if the enemy is a boss change the x and y offset. 
     if (isBoss){
         bossXOffset = 200; 
@@ -153,14 +164,7 @@ public class Enemy extends Entity {
         if(playing.getBombs().isEmpty())
         bombHit = false; 
 
-        // check for bomb explosion collisions and damage player. 
-        for (Bombs b : playing.getBombs()) { 
-            if(b.explode)
-                if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
-                    this.changeHealth(-50);
-                    bombHit = true; 
-                }
-        }
+
 
         // check for fireball collisions during boss and remove player's hp. 
         for (Fireballs f : fireballs) { 
