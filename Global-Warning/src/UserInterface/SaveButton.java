@@ -311,7 +311,7 @@ public class SaveButton extends Button {
 				break;
 		}
 
-		playing.player.changeHealth(0);
+		//playing.player.changeHealth(0);
 		Playing.weapon.getImage();
 		playing.loadNextLevel(0);
 

@@ -19,18 +19,18 @@ public class HealthBar {
     private BufferedImage healthFrame, healthBar, oxygenBar; 
     public float widthHP = 1443/4, widthO2 = 1443/4; 
     public float widthHPOffset = 0, widthO2Offset = 0;
-    private boolean removeHP = false; 
-    private boolean addHP = false; 
     private boolean removeO2 = false; 
     private boolean addO2 = false; 
     private Playing playing; 
 
     public HealthBar(Playing playing) { 
         loadImage(); 
-        widthHP = 1443/4; 
-        widthO2 = 1443/4;
+        widthHP = 0; 
+        widthO2 = 0;
         widthHPOffset = 0;
         widthO2Offset = 0;
+        removeO2 = false;
+        addO2 = false;
         this.playing = playing; 
     }
 
@@ -54,6 +54,11 @@ public class HealthBar {
             widthHP = 1443/4;
             widthHPOffset = 0; 
         }
+
+        if(playing.getPlayer().currentHealth <= 0) { 
+            widthHPOffset = 115;
+            widthHP = 0; 
+        }
     }
     
 
@@ -71,12 +76,6 @@ public class HealthBar {
     public void removeHP(double percent) { 
         
         if(playing.getPlayer().getState() != DEAD) { 
-            if(!removeHP) { 
-                widthHPOffset = 0;
-                widthHP = 1443/4; 
-                removeHP = true; 
-            }
-
             if(widthHP >= 0) { 
                 widthHP = widthHP - (int) ((1443/4)*(percent));
                 widthHPOffset += (int) ((1443/4)*(percent)) / 3.27;
@@ -99,11 +98,6 @@ public class HealthBar {
      * @Throws/Exceptions: N/A
      */
     public void addHP(double percent) { 
-        if(!addHP) { 
-            widthHPOffset = 115;
-            widthHP = 0; 
-            addHP = true; 
-        } 
 
         if(widthHP <= 1443/4) { 
             widthHP = widthHP + (int) ((1443/4)*(percent));;
@@ -186,9 +180,9 @@ public class HealthBar {
     }
 
     public void loadSave(double percent) { 
-        System.out.println(percent);
-        widthHP = (int) ((1443/4)*(percent));
-         widthHPOffset = ((1443/4)*(percent)) ; 
+        widthHPOffset = 115;
+        widthHP = 0; 
+        addHP(percent);
     }
 
 
