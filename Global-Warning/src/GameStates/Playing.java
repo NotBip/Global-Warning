@@ -482,10 +482,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
-        environment.draw(g, xOffset);
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        environment.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
 
         for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
@@ -511,7 +511,6 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (inventory) {
             inventoryState.draw(g);
-        
         }
 
         if (paused) {
