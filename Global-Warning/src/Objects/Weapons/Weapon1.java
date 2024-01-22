@@ -25,9 +25,9 @@ public class Weapon1 implements MouseMotionListener {
     MouseInputs mouse;
     Playing playing;
     
-    private int xFlipped = 0; 
+    public int xFlipped = 0; 
     private int wFlipped = 1; 
-    
+    private float xthing = 0; 
     protected float x=0;
     protected float y=0;
 
@@ -65,31 +65,34 @@ public class Weapon1 implements MouseMotionListener {
         Graphics2D g2d = (Graphics2D)g; 
         AffineTransform oldXForm = g2d.getTransform();
         g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
-
+        xthing = this.x-xOffset; 
         if (!Playing.paused && !Playing.inventory && !Playing.dead){
            if (Playing.gunIndex < 3){
+            
             if (playing.mouseX < this.x-xOffset){
                 this.xFlipped = 0; 
                 this. wFlipped = 1; 
             }
             else {
-                this.xFlipped = 70;
+                this.xFlipped = WEAPON_WIDTH;
                 this.wFlipped = -1; 
             }
         }
         else {
             if (playing.getPlayer().getDirection() == RIGHT){
-                this.xFlipped = 0; 
-                this. wFlipped = 1; 
+                g2d.setTransform(oldXForm);
+                this.xFlipped = 46;
+                this.wFlipped = -1; 
             }
             else {
-                this.xFlipped = 70;
-                this.wFlipped = -1; 
+                g2d.setTransform(oldXForm);
+                this.xFlipped = 0; 
+                this. wFlipped = 1; 
             }
         }
         }
         g.drawImage(this.img, (int) this.x+this.xFlipped - xOffset, (int) this.y+20, WEAPON_WIDTH*this.wFlipped, WEAPON_HEIGHT, null);
-        g2d.setTransform(oldXForm);
+            g2d.setTransform(oldXForm);
 
      }
 
@@ -100,7 +103,11 @@ public class Weapon1 implements MouseMotionListener {
      */
 
     public void update() {
-        this.x = player.getHitbox().x;
+        if(playing.mouseX < xthing)
+        this.x = (float) player.getHitbox().getCenterX() - player.getHitbox().width;
+        else 
+        this.x = (float) player.getHitbox().getCenterX();
+
         this.y = player.getHitbox().y-20;
      }
 

@@ -70,7 +70,6 @@ public class Entity {
     currentHealth += value;
     currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
     currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
-       System.out.println(healthBarWidth);
    }
 
      /*
