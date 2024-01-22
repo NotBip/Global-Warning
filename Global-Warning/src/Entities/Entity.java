@@ -26,7 +26,7 @@ public class Entity {
     protected float healthBarWidth; // The default width of the entity's health bar
     protected float healthBarHeight;; // The default height of the entity's health bar
     public float currentHealthBarLen; // The current width of the entity's health bar (depending on damage taken)
-    protected boolean stuckBehindDoor = false;
+    public boolean stuckBehindDoor = false;
 
     public Entity(float x, float y, int width, int height) {
         this.x = x;

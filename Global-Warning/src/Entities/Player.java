@@ -327,7 +327,10 @@ public class Player extends Entity {
             } else {
                 touchingWall = true;
                 moving = false;
-                hitbox.x = fixXPos(hitbox, xSpeed);
+                if(!stuckBehindDoor) { // fixing x pos when walking into a door looks slightly goofy since the door doesn't take up one full tile
+                    hitbox.x = fixXPos(hitbox, xSpeed);
+                }
+                
             }
         }
         updateAnimationTick();

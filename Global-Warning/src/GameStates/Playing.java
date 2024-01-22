@@ -398,6 +398,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         for(BarrierDoor d : levelManager.getCurrentLevel().getDoor()) {
             if(player.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
                 player.setBehindDoor(true);
+                break;
             } else {
                 player.setBehindDoor(false);
             }
@@ -405,7 +406,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             for(Enemy2 e : levelManager.getCurrentLevel().getWaterBoi()) {
                 if(e.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
                     e.setBehindDoor(true);
-                    System.out.println("scree I'm stuckkk");
+                    break;
                 } else {
                     e.setBehindDoor(false);
                 }
@@ -414,6 +415,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             for(Enemy1 e : levelManager.getCurrentLevel().getFireBoi()) {
                 if(e.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
                     e.setBehindDoor(true);
+                    break;
                 } else {
                     e.setBehindDoor(false);
                 }
