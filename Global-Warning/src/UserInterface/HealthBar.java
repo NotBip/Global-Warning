@@ -32,7 +32,6 @@ public class HealthBar {
         widthHPOffset = 0;
         widthO2Offset = 0;
         this.playing = playing; 
-        
     }
 
      /** 
@@ -46,13 +45,12 @@ public class HealthBar {
      * @Throws/Exceptions: N/A
      */
     public void update() { 
-
         if (playing.getPlayer().checkWater(playing.getPlayer().getHitbox().x, playing.getPlayer().getHitbox().y, playing.getLevelManager().getCurrentLevel().lvlData))
             removeO2();
         else 
             addO2();  
 
-        if(playing.getPlayer().currentHealth == playing.getPlayer().maxHealth) {
+        if(playing.getPlayer().currentHealth >= playing.getPlayer().maxHealth) {
             widthHP = 1443/4;
             widthHPOffset = 0; 
         }
@@ -71,6 +69,7 @@ public class HealthBar {
      * @Throws/Exceptions: N/A
      */
     public void removeHP(double percent) { 
+        
         if(playing.getPlayer().getState() != DEAD) { 
             if(!removeHP) { 
                 widthHPOffset = 0;
@@ -78,7 +77,7 @@ public class HealthBar {
                 removeHP = true; 
             }
 
-            if(widthHP <= 1443/4) { 
+            if(widthHP >= 0) { 
                 widthHP = widthHP - (int) ((1443/4)*(percent));
                 widthHPOffset += (int) ((1443/4)*(percent)) / 3.27;
             }
@@ -184,6 +183,12 @@ public class HealthBar {
         healthFrame = img.getSubimage(0, 0, 1443, 450); 
         healthBar = img.getSubimage(0, 450, 1443, 450); 
         oxygenBar = img.getSubimage(0, 900, 1443, 450); 
+    }
+
+    public void loadSave(double percent) { 
+        System.out.println(percent);
+        widthHP = (int) ((1443/4)*(percent));
+         widthHPOffset = ((1443/4)*(percent)) ; 
     }
 
 

@@ -62,6 +62,7 @@ public class Player extends Entity {
     public UpgradeGem upgrade = new UpgradeGem(this);
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
+    private boolean bombHit = false; 
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -185,7 +186,15 @@ public class Player extends Entity {
         return; 
     }   
         if (!isDead) {
-        // Set the player's default speed at the start of the update before editing it later in the method 
+
+            for (Bombs b : playing.getBombs()) { 
+                if(b.explode)
+                    if(b.hitbox.intersects(this.hitbox) && !bombHit){ 
+                        this.changeHealth(maxHealth/2);
+                        bombHit = true; 
+                    }
+            }
+            // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
         } else {
