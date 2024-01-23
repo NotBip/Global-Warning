@@ -194,10 +194,10 @@ public class InventoryState {
 					Playing.setGunIndex(slot.item);
 					}
 					else if (slot.item == 4) {
-						playing.getPlayer().useItem(1, playing);
+						playing.getPlayer().useItem(1);
 					}
 					else if (slot.item == 6) {
-						playing.getPlayer().useItem(4, playing);
+						playing.getPlayer().useItem(4);
 					}
 				}
 					slot.select = true;

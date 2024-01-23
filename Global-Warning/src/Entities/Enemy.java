@@ -44,7 +44,8 @@ public class Enemy extends Entity {
     public float healthBarHeight = 10;
     private float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
-    protected boolean isBoss = false; 
+    protected boolean isBoss = false;
+    private Playing playing;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH, String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
         super(x, y, width, height); 
@@ -67,6 +68,7 @@ public class Enemy extends Entity {
         this.enemyRangeY = y-enemyRangeWidth; 
         this.enemyRangeH = height+2*enemyRangeWidth; 
         this.enemyRangeW = width+2*enemyRangeWidth;
+        this.playing = playing;
 
         Animations(); 
         initialize();
@@ -293,10 +295,13 @@ public class Enemy extends Entity {
     }
 
     protected void checkPlayerHit(Player player) {
-        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1) 
-            player.changeHealth(-getEnemyDamage(enemyType)); 
+        if(!player.isImmune() && !isBoss && animationIndex == GetSpriteAmount(enemyType, ATTACK) - 1 && animationTick >= animationSpeed - 1){
+            player.changeHealth(-getEnemyDamage(enemyType));
+            System.out.println(playing.getPlayer().currentHealth);
+        }
+
         else if (!player.isImmune() && isBoss && getFinalAttack(enemyType) == animationIndex)
-            player.changeHealth(-getEnemyDamage(enemyType));  
+            player.changeHealth(-getEnemyDamage(enemyType));
     }
 
     /**
@@ -353,6 +358,7 @@ public class Enemy extends Entity {
                 isActive = true;  
                 playing.removeBullet();
                 changeHealth(-(PlayerConstants.getPlayerDamage(playing) + (playing.getPlayer().getUpgradeGem().getNumUpgrades() * playing.getPlayer().getUpgradeGem().getDamageBoost())));
+                playing.getSoundLibrary().playSound("Hit");
             }
         }
         /*for (Explosions e : explosion) { 

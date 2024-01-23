@@ -87,6 +87,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     public float lightningHeight;
     public Rectangle2D.Float lightningHitbox;
     public boolean lightningHasPos = false;
+    private boolean lightningSound = false;
 
     public Playing(Game game) {
         super(game);
@@ -117,7 +118,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void initialize() {
         levelManager = new LevelManager(this);
-        player = new Player(1200, GAME_HEIGHT / 2 - 50, 58, 64); // Default spawn point
+        player = new Player(1200, GAME_HEIGHT / 2 - 50, 58, 64, this); // Default spawn point
         objectManager = new ObjectManager(this); 
         objectManager.loadObjects(levelManager.getCurrentLevel().getLevelData());
         enemyManager = new EnemyManager(player);
@@ -308,8 +309,13 @@ public class Playing extends State implements KeyListener, MouseListener {
             g.drawRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
         }
 
-        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) 
+        if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) {
             environment.drawLightning(g, xOffset);
+            if (lightningSound == false){
+            getSoundLibrary().playSound("Thunder");
+            lightningSound = true;
+            }
+        }
 
         
     }
@@ -318,6 +324,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         lightningHasPos = false;
         lightningUpdates = 0;
         lightningHitbox = null;
+        lightningSound = false;
     }
 
     public void draw(Graphics g) throws IOException {
@@ -465,7 +472,10 @@ public class Playing extends State implements KeyListener, MouseListener {
         if (!paused && !inventory && player.getItemQuantity(2) > 0){
              Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
-             player.useItem(2, this);
+             player.useItem(2);
+         }
+         else if (!paused && !inventory){
+            getSoundLibrary().playSound("Denied");
          }
  
      }

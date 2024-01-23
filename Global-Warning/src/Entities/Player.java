@@ -48,6 +48,7 @@ public class Player extends Entity {
     private boolean touchingWall = false; // Is the player running into a wall?
     private boolean immune = true;
     private int immunityUpdates = 0;
+    private int walkingUpdates = 45;
     private int maxImmunityUpdates = 60;
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
@@ -57,11 +58,13 @@ public class Player extends Entity {
     Bomb bomb = new Bomb(this);
     Key key = new Key(this);
     UpgradeGem upgrade = new UpgradeGem(this);
+    Playing playing;
 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
+    private boolean deathSound = false;
 
-    public Player(float x, float y, int width, int height) {
+    public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
         this.maxHealth = 200;
 		this.currentHealth = maxHealth;
@@ -71,6 +74,7 @@ public class Player extends Entity {
         this.healthBarHeight = 30;
         this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
         this.currentOxygenBarLen = oxygenBarWidth;
+        this.playing = playing;
         Animations();
         initialize();
 
@@ -180,11 +184,20 @@ public class Player extends Entity {
                     xSpeed += moveSpeed;
                     playerDir = RIGHT;
                     moving = true;
+                    if (inAir == false && walkingUpdates <= 0){
+                    playing.getSoundLibrary().playSound("Walk");
+                    walkingUpdates = 45;
+                }
                 } else if (left && !right) { // Left
                     xSpeed -= moveSpeed;
                     playerDir = LEFT;
                     moving = true;
+                    if (inAir == false && walkingUpdates <= 0) {
+                    playing.getSoundLibrary().playSound("Walk");
+                    walkingUpdates = 45;
+                    }
                 }
+                walkingUpdates --;
             }
             
         }
@@ -252,6 +265,7 @@ public class Player extends Entity {
                 //isDashing = false;
                 dashYSpeed = 0; 
                 inAir = false;
+                playing.getSoundLibrary().playSound("Land");
                 airSpeed = 0;
             }
         } 
@@ -301,6 +315,7 @@ public class Player extends Entity {
             }
         
         inAir = true;
+        playing.getSoundLibrary().playSound("Jump");
         if(checkWater(hitbox.x, hitbox.y, lvlData)) {
             airSpeed = jumpSpeed/1.5f;
         } else {
@@ -331,6 +346,7 @@ public class Player extends Entity {
         }
         updatesBetweenDash = 1;
         isDashing = true;
+        playing.getSoundLibrary().playSound("Dash");
         canDash = false;
         if ((left && !right) || (!up && !down && !left && !right && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * dashSpeedMultiplier;
@@ -479,7 +495,15 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
      public void changeHealth(int value) {
-		currentHealth += value;
+		if (value < 0 && currentHealth > 0){
+            playing.getSoundLibrary().playSound("Damage");
+            deathSound = false;
+            }
+        currentHealth += value;
+        if (value < 0 && currentHealth < 0 && deathSound == false){
+        playing.getSoundLibrary().playSound("Explode");
+        deathSound = true;
+        }
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
         immunityUpdates = 1;
@@ -501,6 +525,17 @@ public class Player extends Entity {
         return isDead;
     }
 
+    /**
+	@Method Name: getItemQuantity
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 19 JAN, 2024
+	@Description: Returns the quantity of the respective item.
+	@Parameters: int item
+	@Returns: int
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
     public int getItemQuantity(int item) {
         switch (item) {
             case 1:
@@ -516,12 +551,24 @@ public class Player extends Entity {
         }
     }
 
-    public void useItem(int item, Playing playing) {
+    /**
+	@Method Name: useItem
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Updates and uses the respective item.
+	@Parameters: int item
+	@Returns: N/A
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
+    public void useItem(int item) {
         if (getItemQuantity(item) > 0) {
         switch (item) {
             case 1:
             heal.useItem();
             changeHealth(heal.getHealingAmount());
+            playing.getSoundLibrary().playSound("Heal");
             break;
             case 2:
             bomb.useItem();
@@ -532,15 +579,28 @@ public class Player extends Entity {
             case 4:
             upgrade.useItem();
             playing.updateUpgrade();
+            playing.getSoundLibrary().playSound("Heal");
             break;
             default:
         }
     }
     else {
         System.out.println("You don't have enough!");
+        playing.getSoundLibrary().playSound("Denied");
     }
     }
 
+    /**
+	@Method Name: gainItem
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 19 JAN, 2024
+	@Description: Adds the number of items for the respective item.
+	@Parameters: String item, int quantity
+	@Returns: N/A
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
     public void gainItem(String item, int quantity) {
         switch (item) {
             case "Potion":

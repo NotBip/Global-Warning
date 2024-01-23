@@ -217,6 +217,7 @@ public class SaveState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 sb.setMousePressed(true);
                 playing.getSoundLibrary().playSound("Begin");
+                playing.getSoundLibrary().playSound("Music");
             }
 
         }

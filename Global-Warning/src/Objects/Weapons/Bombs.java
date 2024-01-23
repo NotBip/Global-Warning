@@ -20,7 +20,7 @@ import GameStates.Playing;
 ***********************************************
 * @Author : Bobby Walden
 * @Originally made : 16 JAN, 2024
-* @Last Modified: 21 JAN, 2024
+* @Last Modified: 22 JAN, 2024
 * @Description: Calls, and initiates the bomb projectile.
 ***********************************************
 */
@@ -43,6 +43,7 @@ public class Bombs extends Entity {
     private int explodePosX = 0; 
     private int explodePosY = 0; 
     private Weapon1 weapon;
+    private boolean explosionSound = false;
 
     // Initializes Bombs
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
@@ -85,7 +86,7 @@ public class Bombs extends Entity {
         this.directionY = Math.sin(angle);
     }
 
-     /**
+    /**
 	@Method Name: update
 	@Author: Bobby Walden
 	@Creation Date: 16 JAN, 2024
@@ -136,7 +137,17 @@ public class Bombs extends Entity {
     }
     }
 
-    
+    /**
+	@Method Name: draw
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Draws the appropriate image over the hitbox.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Object, Entity, Playing
+	@Throws/Exceptions: N/A
+	*/
     public void draw(Graphics g, int xOffset) {
         Graphics2D g2d = (Graphics2D) g;
         int drawX = (int) Math.round(x - xOffset);
@@ -152,6 +163,10 @@ public class Bombs extends Entity {
         drawHitbox(g, xOffset);
 
         if(explode){ 
+            if (explosionSound == false) {
+                playing.getSoundLibrary().playSound("Explode");
+                explosionSound = true;
+            }
             updateAnimationTick();   
             System.out.println(animationIndex);
             drawBombAnimation(g, xOffset);
@@ -165,12 +180,35 @@ public class Bombs extends Entity {
 
     }
 
+    /**
+	@Method Name: drawBombAnimation
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the chest.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void drawBombAnimation(Graphics g, int xOffset) { 
         g.drawImage(animations[9][animationIndex], (int) hitbox.x-32-xOffset , (int) hitbox.y-32, 128, 128, null);
     }
-
+    
+    /**
+	@Method Name: loadImage
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Loads the respective image for the bomb.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object, Playing, Atlas, 
+	@Throws/Exceptions: N/A
+	*/
     private void loadImage() { 
-
+        playing.getSoundLibrary().playSound("Throw");
+        explosionSound = false;
         bombImg = getSpriteAtlas(BOMB_ATLAS);
 
         BufferedImage img = getSpriteAtlas(BOMBEXPLODE_ATLAS); 
@@ -182,6 +220,17 @@ public class Bombs extends Entity {
         }
     }
 
+    /**
+	@Method Name: updateAnimationTick
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the bomb.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     private void updateAnimationTick() {
         animationTick++;
         if (animationTick >= aniSpeed) {
@@ -209,7 +258,17 @@ public class Bombs extends Entity {
         return (int) Math.round(y);
     }
 
-    
+    /**
+	@Method Name: updateBombs()
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the custom timer for bomb, for physics.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void updateBombs() {
         try {
             for (Bombs bomb : playing.bombs) {
