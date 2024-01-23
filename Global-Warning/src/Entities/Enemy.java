@@ -125,16 +125,6 @@ public class Enemy extends Entity {
      */
     public void move(Player player, Playing playing) {
     // if the enemy is a boss change the x and y offset. 
-    if (isBoss){
-        bossXOffset = 200; 
-        bossYOffset = 115; 
-        if(direction == RIGHT)
-        bossXOffset *= -1;
-    }
-    else { 
-        bossXOffset = 0; 
-        bossYOffset = 0; 
-    }
 
     // check for bomb explosion collisions and damage player. 
     for (Bombs b : playing.getBombs()) { 
