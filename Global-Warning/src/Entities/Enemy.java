@@ -123,7 +123,7 @@
       * @Throws/Exceptions: N/A
       */
      public void move(Player player, Playing playing) {
- 
+        System.out.println(bossXOffset);
      // check for bomb explosion collisions and damage player. 
      for (Bombs b : playing.getBombs()) { 
          if(b.explode)
