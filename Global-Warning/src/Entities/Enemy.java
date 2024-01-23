@@ -124,6 +124,8 @@ public class Enemy extends Entity {
 
     if (isBoss)
         if(direction == RIGHT)
+            bossXOffset = width;
+        else   
             bossXOffset *= -1;
 
     // if the enemy's health is less than 0 set their state to dead and reset the animations. 
@@ -336,11 +338,12 @@ public class Enemy extends Entity {
             f.drawFireBall(g, xOffset);
       
         if (!deadOver)
-            g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
+            g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset  , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
      
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) 
             deadOver = true; 
         
+            drawHitbox(g, xOffset);
     }
 
     /** 

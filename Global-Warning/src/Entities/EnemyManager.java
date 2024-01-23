@@ -10,6 +10,7 @@ package Entities;
 import java.awt.Graphics;
 import java.util.List;
 import Entities.Planet1Enemies.Boss;
+import Entities.Planet1Enemies.Boss2;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Entities.Planet1Enemies.Enemy3;
@@ -89,6 +90,13 @@ public class EnemyManager {
         b.enemyHit(bullet, playing);
       }
     }
+
+    for (Boss2 c : currentLevel.getCoolBoi()) { 
+      if(!c.isDead()) { 
+        c.move(player, playing);
+        c.enemyHit(bullet, playing);
+      }
+    }
   }  catch (Exception e) {}
   }
 
@@ -132,6 +140,13 @@ public class EnemyManager {
         b.drawHealth(g, xOffset);
       }
     }
+
+    for (Boss2 c : currentLevel.getCoolBoi()) { 
+      if(!c.isDead()) { 
+        c.draw(g, xOffset);
+        c.drawHealth(g, xOffset);
+      }
+    }
   }
 
  
@@ -159,9 +174,14 @@ public class EnemyManager {
       b.resetEnemy();
     }
 
+    for (Boss2 c : currentLevel.getCoolBoi()) { 
+      c.resetEnemy();
+    }
+
     for (Enemy3 s : currentLevel.getShardBoi()) { 
       s.resetEnemy();
     }
+    
     
   }
 }

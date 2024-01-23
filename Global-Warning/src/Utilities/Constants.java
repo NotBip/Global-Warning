@@ -139,6 +139,22 @@ public class Constants {
 			public static final int shardSizeX = 140 *(int) Game.SCALE; 
 			public static final int shardSizeY = 150 *(int) Game.SCALE;  
 
+			public static final int Coolboi = 4;
+			public static final int COOLBOI_HEIGHT = 130 * (int) Game.SCALE; 
+			public static final int COOLBOI_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int coolAttackSpeed = 5; 
+			public static final int coolboiArrI = 5; 
+			public static final int coolboiArrJ = 23; 
+			public static final int coolboiW = 80; 
+			public static final int coolboiH = 80;
+			public static final int coolIdle = 0; 
+			public static final int coolWalk = 1; 
+			public static final int coolAttack = 2; 
+			public static final int coolDead = 4; 
+			public static final float coolSpeed = .5f * Game.SCALE; 
+			public static final int coolSizeX = 120 * 2 *(int) Game.SCALE; 
+			public static final int coolSizeY = 100 * 2 *(int) Game.SCALE; 
+
 
 
 			
@@ -155,6 +171,8 @@ public class Constants {
 			return 5; 
 			if(enemy_type == Shardboi)
 			return 7; 
+			if(enemy_type == Coolboi)
+			return 8; 
 
 		case "WALK":
 			if(enemy_type == Waterboi)
@@ -165,6 +183,8 @@ public class Constants {
 			return 10; 
 			if(enemy_type == Shardboi)
 			return 7; 
+			if(enemy_type == Coolboi)
+			return 5; 
 
 		case "RUN": 
 			 if(enemy_type == Waterboi)
@@ -181,6 +201,8 @@ public class Constants {
 			return 14;  
 			if(enemy_type == Shardboi)
 			return 4; 
+			if(enemy_type == Coolboi)
+			return 11; 
 
 		case "DEAD": 
 			if(enemy_type == Waterboi)
@@ -191,6 +213,8 @@ public class Constants {
 			return 21; 
 			if(enemy_type == Shardboi)
 			return 5; 
+			if(enemy_type == Coolboi)
+			return 22; 
 
 		case "MAGIC":
 			if(enemy_type == Demonboi)
@@ -201,6 +225,8 @@ public class Constants {
 			return 3;
 			if(enemy_type == Shardboi)
 			return 4; 
+			if(enemy_type == Coolboi)
+			return 11; 
 
 		default: 
 			return 0;
@@ -218,6 +244,8 @@ public class Constants {
 				return 2000; 
 			case Shardboi: 
 				return 200; 
+			case Coolboi: 
+				return 300; 
 			default:
 				return 0;
 		}
@@ -234,6 +262,8 @@ public class Constants {
 				return 50; 
 			case Shardboi: 
 				return 20; 
+			case Coolboi: 
+				return 25; 
 			default:
 				return 0; 
 		}
@@ -250,6 +280,8 @@ public class Constants {
 				return demonIdle; 
 				if(enemy_type == Shardboi)
 				return shardIdle; 
+				if(enemy_type == Coolboi)
+				return coolIdle; 
 
 			case "WALK":
 				if(enemy_type == Waterboi)
@@ -260,6 +292,8 @@ public class Constants {
 				return demonWalk; 
 				if(enemy_type == Shardboi)
 				return shardWalk; 
+				if(enemy_type == Coolboi)
+				return coolWalk; 
 			
 			case "RUN": 
 				if(enemy_type == Waterboi)
@@ -270,6 +304,8 @@ public class Constants {
 				return demonWalk; 
 				if(enemy_type == Shardboi)
 				return shardWalk; 
+				if(enemy_type == Coolboi)
+				return coolWalk; 
 			
 			case "ATTACK": 
 				if(enemy_type == Waterboi) 
@@ -280,6 +316,8 @@ public class Constants {
 				return demonAttack; 
 				if(enemy_type == Shardboi)
 				return shardAttack; 
+				if(enemy_type == Coolboi)
+				return coolAttack; 
 
 			case "DEAD": 
 				if(enemy_type == Waterboi)
@@ -290,6 +328,8 @@ public class Constants {
 				return demonDead; 
 				if(enemy_type == Shardboi)
 				return shardDead; 
+				if(enemy_type == Coolboi)
+				return coolDead; 
 
 			case "MAGIC": 
 				if(enemy_type == Waterboi)
@@ -300,6 +340,8 @@ public class Constants {
 				return 5; 
 				if(enemy_type == Shardboi)
 				return shardAttack; 
+				if(enemy_type == Coolboi)
+				return coolAttack; 
 
 			default: 
 				return 0; 
@@ -318,6 +360,8 @@ public class Constants {
 				return demonAttackSpeed; 
 			case Shardboi:
 				return shardAttackSpeed; 
+			case Coolboi: 
+				return coolAttackSpeed; 	
 			default:
 				return 0;
 		}
@@ -334,6 +378,8 @@ public class Constants {
 				return 9; 
 			case Shardboi: 
 				return 3; 
+			case Coolboi:
+				return 9;
 			default: 
 				return 0;  
 		}
