@@ -1,5 +1,14 @@
 package Entities;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : December 14th, 2023
+* @Last Modified: 22 JAN, 2024
+* @Description: The player themself. How the user interacts with the game through movement, interaction, and attacking
+***********************************************
+*/
+
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import Items.Key;
@@ -40,32 +49,30 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
-    private boolean hasKey = true; // If the player has a key
-    private boolean hasBomb = true; // If the player has a bomb
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0; // 0 = origin of where the player is drawn is from the top left, width = top right
     private int wFlipped = 1; // 1 = width goes from left to right, -1 = width goes from right to left
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private final int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
-    private boolean immune = true;
-    private int immunityUpdates = 0;
-    private int walkingUpdates = 45;
-    private int maxImmunityUpdates = 60;
+    private boolean immune = true; // Is the player immune to damage?
+    private int immunityUpdates = 0; // How long the player has been immune to damage
+    private int maxImmunityUpdates = 60; // The maximum time the player can be immune for
+    private int walkingUpdates = 45; // Updates between playing the step sound
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
-    private boolean isDead = false;
-    public HealPotion heal = new HealPotion(this);
-    public Bomb bomb = new Bomb(this);
-    public Key key = new Key(this);
-    public UpgradeGem upgrade = new UpgradeGem(this);
-    private Playing playing;
+    private boolean isDead = false; // Is the player dead?
+    public HealPotion heal = new HealPotion(this); // Health potion class initialization
+    public Bomb bomb = new Bomb(this); // Bomb class initialization
+    public Key key = new Key(this); // Key class initialization
+    public UpgradeGem upgrade = new UpgradeGem(this); // Updgrade gem initialization
+    private Playing playing; // Importing in the playing class for player interactions
 
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
-    private boolean deathSound = false;
-    public boolean bombHit = false; 
+    private boolean deathSound = false; // Play the death sound?
+    public boolean bombHit = false; // Has the player been hit by a bomb?
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);

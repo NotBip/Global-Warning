@@ -1,5 +1,14 @@
 package GameStates;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : December 14th, 2023
+* @Last Modified: 22 JAN, 2024
+* @Description: The main part of the game, runs while in levels (not in the start menu)
+***********************************************
+*/
+
 import Entities.*;
 import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
@@ -18,6 +27,8 @@ import javax.swing.JOptionPane;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.BarrierDoor;
+import Objects.Chest;
+import Objects.KeyChest;
 import Objects.ObjectManager;
 import Objects.Sign;
 import Objects.Saving.Checkpoint;
@@ -300,6 +311,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                     && levelManager.getLevelIndex() > 0) { // Make sure there is a level to transition into
 
                 // Load previous room
+                resetObjects();
                 levelManager.setLevelIndex(levelManager.getLevelIndex() - 1); 
                 if(levelManager.getCurrentLevel().getRightSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
                     loadNextLevel(2);
@@ -318,6 +330,7 @@ public class Playing extends State implements KeyListener, MouseListener {
                     && levelManager.getLevelIndex() < levelManager.getAmountOfLevels()-1) { // Make sure there is a level to transition into
                 
                 // Load next room
+                resetObjects();
                 levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
                 if(levelManager.getCurrentLevel().getLeftSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
                     loadNextLevel(1);
@@ -430,6 +443,21 @@ public class Playing extends State implements KeyListener, MouseListener {
         lightningUpdates = 0;
         lightningHitbox = null;
         lightningSound = false;
+    }
+
+    private void resetObjects() {
+        for(Chest c : levelManager.getCurrentLevel().getChest()) {
+            c.resetChests();
+        }
+        for(KeyChest c : levelManager.getCurrentLevel().getKeyChest()) {
+            c.resetKeyChests();
+        }
+        for(BarrierDoor d : levelManager.getCurrentLevel().getDoor()) {
+            d.resetDoor();
+        }
+        if(levelManager.getCurrentLevel().getCheckpoint() != null) {
+            levelManager.getCurrentLevel().getCheckpoint().reached = false;
+        }
     }
 
     /*
@@ -653,10 +681,6 @@ public class Playing extends State implements KeyListener, MouseListener {
         }else if (gunIndex ==2 ) {
             rate = fireRateWeapon2;
         }
-        // else if (gunIndex == 3) {
-        //     rate = fireRateWeapon3;
-        // }
-
         //cooldown according to the firerate of gun
         if (time1 > lastBullet + rate) {
             spawnBullet(x, y);

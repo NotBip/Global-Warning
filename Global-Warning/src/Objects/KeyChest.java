@@ -2,10 +2,7 @@ package Objects;
 
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Atlas.KEY_ATLAS;
-
 import java.awt.Graphics;
-import java.util.Random;
-
 import Entities.Player;
 import Main.Game;
 
@@ -23,21 +20,22 @@ public class KeyChest extends Object {
     protected boolean chestInteract = false, chestOpen = false, chestOpened = false, marker1,marker2= false;
     private Player player;   
     public float yItem = 0;
-    public int wItem, hItem =40;
+    //public int wItem, hItem =0;
     public long lastTime = 0;
 
     // Initializes Key Chest
     public KeyChest(int x, int y, int object, Player player) { 
         super(x, y, object);
         this.player = player;
+        this.aniSpeed = 25;
         initHitbox(68, 52);
+        this.yItem = hitbox.y; 
         xDrawOffset = 0;
         yDrawOffset = (int)(Game.SCALE * (32-this.hitbox.height));
         hitbox.y += yDrawOffset;
     }
     
     public void drawItem (Graphics g, int x) {
-        //System.out.println("Hello");
         long time1 = System.currentTimeMillis();
 
         if (time1 > lastTime + 1000 ) {
@@ -50,7 +48,7 @@ public class KeyChest extends Object {
             lastTime = time1;
            
         } else if (!marker2 ){
-            g.drawImage(getSpriteAtlas(KEY_ATLAS), x, (int)yItem, wItem, hItem, null );
+            g.drawImage(getSpriteAtlas(KEY_ATLAS), x, (int)yItem, 40,40, null );
           
             if (yItem> getHitbox().y -40){
                     yItem-=7;

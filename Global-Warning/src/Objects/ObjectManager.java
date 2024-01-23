@@ -229,7 +229,6 @@ public class ObjectManager{
 	*/
     private void drawDoors(Graphics g, int xOffset) { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
-            d.drawHitbox(g, xOffset);
             if (!d.doorInteract && !d.doorOpen && !d.doorOpened)
             g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) (130 - d.getHitbox().width), (int) d.getHitbox().height, null);
             if (d.doorInteract && d.doorOpen && !d.doorOpened)

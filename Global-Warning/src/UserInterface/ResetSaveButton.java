@@ -116,11 +116,11 @@ public class ResetSaveButton extends Button {
 			for (Chest chest : Playing.levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
 			}
-
 		}
-
+ 
 		if (Playing.levelManager.getCurrentLevel().getKeyChest() != null) {
 			for (KeyChest keychest : Playing.levelManager.getCurrentLevel().getKeyChest()) {
+				System.out.println("asD");
 				keychest.resetKeyChests();
 			}
 

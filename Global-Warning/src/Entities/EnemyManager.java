@@ -13,9 +13,7 @@ import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Entities.Planet1Enemies.Enemy3;
-import GameStates.GameState;
 import GameStates.Playing;
-import GameStates.ToBeContinued;
 import Levels.Level;
 import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
@@ -117,7 +115,6 @@ public class EnemyManager {
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
         f.draw(g, xOffset);
-        f.drawHitbox(g, xOffset);
         f.drawHealth(g, xOffset);
       }
     }

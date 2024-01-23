@@ -62,6 +62,15 @@ public class Constants {
 		public static final int LOAD_HEIGHT = 91;
 	}
 
+
+		/**
+	***********************************************
+	* @Author : Hamad Mohammed
+	* @Originally made : 15 JAN, 2024
+	* @Last Modified: 18 JAN, 2024
+	* @Description: Module to call enemy constants when needed.
+	***********************************************
+	*/
 	public static class EnemyConstants {
 
 			public static final String IDLE = "IDLE";
@@ -70,7 +79,7 @@ public class Constants {
 			public static final String ATTACK = "ATTACK"; 
 			public static final String DEAD = "DEAD"; 
 			public static final String MAGIC = "MAGIC"; 
-
+			
 			public static final int Waterboi = 0; 
 			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
 			public static final int WATERBOI_WIDTH = 60 *(int) Game.SCALE; 

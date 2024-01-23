@@ -117,7 +117,6 @@ public class Enemy extends Entity {
      */
     public void move(Player player, Playing playing) {
     // if the enemy is a boss change the x and y offset. 
-    System.out.println(animationIndex + " " + state);
     if (isBoss){
         bossXOffset = 200; 
         bossYOffset = 115; 
@@ -385,7 +384,6 @@ public class Enemy extends Entity {
      * @returns: N/A
      * @Dependencies: Atlas.java, Planet1Enemies
      * @Throws/Exceptions: N/A
->>>>>>> origin/Hamad's-Branch
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(this.Atlas);

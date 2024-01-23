@@ -72,7 +72,7 @@ public class Atlas {
       * Takes in a image filename and returns a buffered image QOL
       * @param filename The name of the image file being read. 
       * @return Buffered Image of the image that has been read. 
-      * @author Hamad Mohammed
+      * @author Kaarin Gaming
       * @since December 16, 2023
       */
     public static BufferedImage getSpriteAtlas(String filename){

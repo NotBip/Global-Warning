@@ -33,7 +33,7 @@ public class Save {
     public Save() {
         numberLevel = 0;
         weaponHold = 1;
-        playerHealth = 100;
+        playerHealth = 0;
         cooldownWeap1 = 250;
         cooldownWeap2 = 350;
         damageWeap1 = 10;

@@ -237,6 +237,7 @@ public class SaveButton extends Button {
 	public void loadSave(Playing playing) {
 		if (levelManager.getCurrentLevel().getCheckpoint() != null) {
 			levelManager.getCurrentLevel().getCheckpoint().resetReached();
+		
 		}
 
 		if (levelManager.getCurrentLevel().getChest() != null) {
@@ -264,7 +265,7 @@ public class SaveButton extends Button {
 			case 1:
 				System.out.println("save 1: loaded");
 				playing.player.currentHealth = (save1.getHealth());
-				playing.getHealthBar().loadSave((float)save1.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave(save1.getHealth());
 				Playing.gunIndex = save1.getHold();
 				Playing.fireRateWeapon1 = save1.getCooldown1();
 				Playing.fireRateWeapon2 = save1.getCooldown2();
@@ -289,7 +290,7 @@ public class SaveButton extends Button {
 			case 2:
 				System.out.println("save 2: loaded");
 				playing.player.currentHealth = (save2.getHealth());
-				playing.getHealthBar().loadSave((float)save2.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave(save1.getHealth());
 				Playing.gunIndex = save2.getHold();
 				Playing.fireRateWeapon1 = save2.getCooldown1();
 				Playing.fireRateWeapon2 = save2.getCooldown2();
@@ -314,7 +315,7 @@ public class SaveButton extends Button {
 			case 3:
 				System.out.println("save 3: loaded");
 				playing.player.currentHealth = (save3.getHealth());
-				playing.getHealthBar().loadSave((float) save3.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave(save1.getHealth());
 				Playing.gunIndex = save3.getHold();
 				Playing.fireRateWeapon1 = save3.getCooldown1();
 				Playing.fireRateWeapon2 = save3.getCooldown2();

@@ -1,5 +1,14 @@
 package Objects;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : January 19th, 2024
+* @Last Modified: 19 JAN, 2024
+* @Description: Tutorial "signs" that tell the user the basic controls
+***********************************************
+*/
+
 import static Utilities.Constants.GAME_HEIGHT;
 
 import java.awt.Color;
@@ -8,9 +17,9 @@ import java.awt.Graphics;
 
 public class Sign extends Object{
 
-    private String text;
-    private boolean hasBeenRead = false;
-    private int textOpacity = 50;
+    private String text; // The text that the sign will output
+    private boolean hasBeenRead = false; // Has this sign been read already?
+    private int textOpacity = 50; // Opacity of the text being faded onto the screen
 
     public Sign(int x, int y, int objType, String text) {
         super(x, y, objType);
