@@ -81,11 +81,12 @@ public class Playing extends State implements KeyListener, MouseListener {
    // public  int num = SaveButton.getFileNum();
     public int lightningUpdates; // The total updates that have passed before a complete lightning cycle
     public int lightningPosCooldown = 480; // How long it takes before the lightning chooses where to strike
-    public int lightningSpawnCooldown = 120; // How long it takes after choosing a position for lightning to strike
-    public float lightningPosX; // X position of the lightning hitbox
-    public float lightningHeight; // Height of the lightning hitbox (so it doesn't strike through tiles)
-    public Rectangle2D.Float lightningHitbox; // The lightning hitbox
-    public boolean lightningHasPos = false; // Has the lightning chosen the position it is going to strike?
+    public int lightningSpawnCooldown = 60; // How long it takes after choosing a position for lightning to strike
+    public float lightningPosX;
+    public float lightningHeight;
+    public Rectangle2D.Float lightningHitbox;
+    public boolean lightningHasPos = false;
+    private boolean lightningSound = false;
 
     public Playing(Game game) {
         super(game);
@@ -397,9 +398,15 @@ public class Playing extends State implements KeyListener, MouseListener {
                 g.fillRect((int) lightningHitbox.x - xOffset, (int) lightningHitbox.y, (int) lightningHitbox.width, (int) lightningHitbox.height);
             }
         }
+
         if(lightningUpdates >= lightningPosCooldown + lightningSpawnCooldown && lightningHasPos && lightningHitbox != null) {
             environment.drawLightning(g, xOffset);
+            if (lightningSound == false){
+            getSoundLibrary().playSound("Thunder");
+            lightningSound = true;
+            }
         }
+
         
     }
 
@@ -418,6 +425,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         lightningHasPos = false;
         lightningUpdates = 0;
         lightningHitbox = null;
+        lightningSound = false;
     }
 
     /*
@@ -654,7 +662,10 @@ public class Playing extends State implements KeyListener, MouseListener {
         if (!paused && !inventory && player.getItemQuantity(2) > 0){
              Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
              bombs.add(bomb);
-             player.useItem(2, this);
+             player.useItem(2);
+         }
+         else if (!paused && !inventory){
+            getSoundLibrary().playSound("Denied");
          }
  
      }

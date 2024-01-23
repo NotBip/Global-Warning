@@ -63,6 +63,7 @@ public class Enemy extends Entity {
     public int magicState = 0; 
     private boolean check = false; 
     private boolean xChanged = false;
+    private Playing playing;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH,
             String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -89,6 +90,7 @@ public class Enemy extends Entity {
         this.enemyRangeH = height+2*enemyRangeHeight; 
         this.enemyRangeW = width+2*enemyRangeWidth;
         currentHealthBarLen = healthBarWidth;
+        this.playing = playing;
 
         Animations();
         initialize();
@@ -456,6 +458,7 @@ public class Enemy extends Entity {
                 isActive = true;
                 playing.removeBullet();
                 changeHealth(-(PlayerConstants.getPlayerDamage(playing) + (playing.getPlayer().getUpgradeGem().getNumUpgrades() * playing.getPlayer().getUpgradeGem().getDamageBoost())));
+                playing.getSoundLibrary().playSound("Hit");
             }
         }
     }

@@ -395,15 +395,33 @@ public class Constants {
 		}
     }
 
+	/**
+	***********************************************
+	* @Author : Bobby Walden
+	* @Originally made : 15 JAN, 2024
+	* @Last Modified: 18 JAN, 2024
+	* @Description: Manages the objects during the game session.
+	***********************************************
+	*/
+
 	public static class objectConstants { 
 
 		public static final int Spike = 0; 		
 		public static final int Chest = 1;
 		public static final int Door = 2;
 		public static final int Explosion = 3;
-		public static final int Sign = 4;
-		public static final int SIGN_HEIGHT = 20;
 
+		/**
+		@Method Name: GetSpriteAmount
+		@Author: Bobby Walden
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns number of sprites per object
+		@Parameters: int objectType
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/
 		public static int GetSpriteAmount(int objectType) { 
 			switch (objectType) { 
 				case Spike: 
