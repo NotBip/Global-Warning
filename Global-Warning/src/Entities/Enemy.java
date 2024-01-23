@@ -584,7 +584,7 @@
              magicState= 0; 
  
          if(enemyType == Demonboi)
-             if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC && state != DEAD)
+             if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*15000) + 1) < 15 && state != MAGIC && state != DEAD)
                  state = MAGIC;
  
          if(magicState >= magicTimer && state != DEAD) { 

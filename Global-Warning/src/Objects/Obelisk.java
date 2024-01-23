@@ -96,7 +96,7 @@
       * @Throws/Exception: N/A
       */
      public void drawObelisk(Graphics g, int xOffset) { 
-         g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y-95, 128, 128, null);
+         g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y-90, 128, 128, null);
      }
  
  } // End Class
