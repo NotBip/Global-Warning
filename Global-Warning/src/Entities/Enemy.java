@@ -57,11 +57,12 @@ public class Enemy extends Entity {
     private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
     public int fireballUpdate = 0;
     public boolean bombHit = false;
-    public int bossXOffset = 0; 
-    public int bossYOffset = 0; 
+    public int bossXOffset; 
+    public int bossYOffset; 
     public int magicTimer = 600; // How long the boss can stay in MAGIC state. 
     public int magicState = 0; 
     private boolean check = false; 
+    private boolean xChanged = false;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH,
             String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -121,11 +122,7 @@ public class Enemy extends Entity {
                 isActive = true; 
             }
     }
-
-    if (isBoss)
-        if(direction == RIGHT)
-            bossXOffset *= -1;
-
+    
     // if the enemy's health is less than 0 set their state to dead and reset the animations. 
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
@@ -197,12 +194,14 @@ public class Enemy extends Entity {
             state = RUN;
             xSpeed  *= 1.5;
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
+            bossXOffset *= -1;
             direction = LEFT; 
             wFlipped = flipW(); 
             xFlipped = flipX();
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
+            bossXOffset *= -1;
             direction = RIGHT; 
             wFlipped = flipW(); 
             xFlipped = flipX();
