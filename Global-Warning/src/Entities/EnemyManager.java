@@ -25,6 +25,7 @@ public class EnemyManager {
 
   Player player;
   private Level currentLevel;
+  private boolean droppedKey = false; 
 
   public EnemyManager(Player player) {
     this.player = player;
@@ -116,28 +117,28 @@ public class EnemyManager {
   public void draw(Graphics g, int xOffset, Playing playing) {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       if(!o.isDead()) {
-        o.draw(g, xOffset, playing);
+        o.draw(g, xOffset);
         o.drawHealth(g, xOffset);
       }
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
-        f.draw(g, xOffset, playing);
+        f.draw(g, xOffset);
         f.drawHealth(g, xOffset);
       }
     }
 
     for (Enemy3 s : currentLevel.getShardBoi()) { 
       if(!s.isDead()) { 
-        s.draw(g, xOffset, playing);
+        s.draw(g, xOffset);
         s.drawHealth(g, xOffset);
       }
     }
 
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
-        b.draw(g, xOffset, playing);
+        b.draw(g, xOffset);
         b.drawHealth(g, xOffset);
       } else{
         Playing.endGame = true;
@@ -146,11 +147,14 @@ public class EnemyManager {
 
     for (Boss2 c : currentLevel.getCoolBoi()) { 
       if(!c.isDead()) { 
-        c.draw(g, xOffset, playing);
+        c.draw(g, xOffset);
         c.drawHealth(g, xOffset);
       } else{ 
       c.keyAnimation(g, xOffset);
-      playing.player.gainItem("Key", 1);
+        if(!droppedKey) { 
+        playing.player.gainItem("Key", 1);
+        droppedKey = true; 
+        }
       }
     }
   }

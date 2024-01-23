@@ -5,7 +5,7 @@
  * @Description: Class used for the animations and mecahnics of the fireballs spawned by the first boss in the game. 
  */
 
- package Entities.Planet1Enemies;
+ package Objects;
 
  import static Utilities.Atlas.FIREBALL_ATLAS;
  import static Utilities.Atlas.OBELISK_ATLAS;
@@ -96,7 +96,7 @@
       * @Throws/Exception: N/A
       */
      public void drawObelisk(Graphics g, int xOffset) { 
-         g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y, 32, 32, null);
+         g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y-95, 128, 128, null);
      }
  
  } // End Class

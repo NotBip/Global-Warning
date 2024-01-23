@@ -24,11 +24,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
+import Levels.Level;
 import Levels.LevelManager;
 import Main.Game;
 import Objects.BarrierDoor;
 import Objects.Chest;
 import Objects.KeyChest;
+import Objects.Obelisk;
 import Objects.ObjectManager;
 import Objects.Sign;
 import Objects.Saving.Checkpoint;
@@ -226,6 +228,9 @@ public class Playing extends State implements KeyListener, MouseListener {
          for (int i = 0; i < bombs.size(); i++) { 
             bombs.get(i).updateBombs();
          }
+         for (Obelisk o : levelManager.getCurrentLevel().getObelisks()) { 
+            o.update();
+        }
         }
         checkTouchingDoor();
         updateLightning(); 
@@ -544,6 +549,10 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
+        for (Obelisk o : levelManager.getCurrentLevel().getObelisks()) { 
+            o.drawObelisk(g, xOffset);
+        }
+        
         if(!(gunIndex == 3 && player.getItemQuantity(2) <= 0)) {
             weapon.draw(g, xOffset);
         }

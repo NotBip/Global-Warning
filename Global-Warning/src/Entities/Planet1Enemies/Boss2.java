@@ -27,7 +27,7 @@ public class Boss2 extends Enemy {
         super.isBoss = true; 
         super.healthBarWidth = 500; 
         super.healthBarHeight = 50; 
-        super.enemyRangeWidth = GAME_WIDTH/2; 
+        super.enemyRangeWidth = GAME_WIDTH/3; 
          super.bossXOffset = -90; 
          super.bossYOffset = 30;
          this.yItem = hitbox.y + hitbox.height;  

@@ -19,6 +19,7 @@ import Objects.BarrierDoor;
 import Objects.Chest;
 import Objects.Sign;
 import Objects.KeyChest;
+import Objects.Obelisk;
 import Objects.Spike;
 
 import Objects.Saving.Checkpoint;
@@ -65,7 +66,7 @@ public class Level {
 	private ArrayList<Boss> Demonboi = new ArrayList<Boss>(); 
 	private ArrayList<Enemy3> Shardboi = new ArrayList<Enemy3>(); 
 	private ArrayList<Boss2> Coolboi = new ArrayList<Boss2>(); 
-
+	private ArrayList<Obelisk> obelisk = new ArrayList<Obelisk>(); 
 	// Used only for the tutorial
 	private ArrayList<Sign> signs = new ArrayList<Sign>();
 	private String[] tutorialText = {"Use WASD to MOVE!", "Press SPACE to JUMP!", "HOLD jump on a wall to WALL JUMP", "Press SHIFT to DASH!", "SHOOT enemies with the MOUSE!", 
@@ -169,6 +170,7 @@ public class Level {
 		switch (blueValue) {
 			case 250: spike.add(new Spike(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Spike)); break; 
 			case 100: chest.add(new Chest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
+			case 175: obelisk.add(new Obelisk(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, playing)); break; 
 			case 150: keychest.add(new KeyChest(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Chest, player)); break;
 			case 50: door.add(new BarrierDoor(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Door)); break;
 			case 1: signs.add(new Sign(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Sign, tutorialText[tutorialTextIndex++]));
@@ -255,6 +257,10 @@ public class Level {
 
 	public ArrayList<Boss2> getCoolBoi() { 
 		return Coolboi; 
+	}
+
+	public ArrayList<Obelisk> getObelisks() { 
+		return obelisk; 
 	}
 
 	public ArrayList<Spike> getSpike() { 
