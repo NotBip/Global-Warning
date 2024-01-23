@@ -1,6 +1,7 @@
 package GameStates;
 
 import Entities.*;
+import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Objects.Weapons.*;
@@ -190,7 +191,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 	* Throws/Exceptions: n/a
 	*/
     public void update() throws IOException {
-        if(!game.getPanel().inFocus) {
+        if(!game.getPanel().inFocus && !inventory) {
             paused = true;
         }
 
@@ -467,6 +468,25 @@ public class Playing extends State implements KeyListener, MouseListener {
                     e.setBehindDoor(false);
                 }
             }
+
+            for(Bullets b : bullets) {
+               
+                if(b.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    b.setBehindDoor(true);
+                    return;
+                } else {
+                    b.setBehindDoor(false);
+                }
+            }
+
+            for(Bombs b : bombs) {
+                if(b.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    b.setBehindDoor(true);
+                    return;
+                } else {
+                    b.setBehindDoor(false);
+                }
+            }
         }
     }
 
@@ -484,17 +504,21 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
-        if(!(gunIndex == 3 && bombs.isEmpty())) {
+        if(!(gunIndex == 3 && player.getItemQuantity(2) <= 0)) {
             weapon.draw(g, xOffset);
         }
         
         player.draw(g, xOffset);
-        
+        enemyManager.draw(g, xOffset);
+        objectManager.draw(g, xOffset);
         levelManager.draw(g, xOffset);
+        for(Boss b : levelManager.getCurrentLevel().getDemonBoi()) {
+            b.drawHealth(g, maxOffsetX);
+        }
         
         environment.draw(g, xOffset);
         
-        enemyManager.draw(g, xOffset);
+        
 
         for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
             if(s.hasBeenRead()) {
@@ -504,7 +528,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (getLevelManager().getCurrentLevel().getIsCheckpoint())
         getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
-        objectManager.draw(g, xOffset);
+        
         drawLightning(g, xOffset);
         // player.drawHealthBar(g);
         // player.drawOxygenBar(g);
@@ -661,7 +685,7 @@ public class Playing extends State implements KeyListener, MouseListener {
     private void spawnBomb(int x, int y) {
         
         if (!paused && !inventory && !dead && player.getItemQuantity(2) > 0){
-             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
+             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, player.getHitbox().x + player.getHitbox().width/2-5, weapon.getY()+35, x, y, xOffset);
              bombs.add(bomb);
              player.useItem(2, this);
          }

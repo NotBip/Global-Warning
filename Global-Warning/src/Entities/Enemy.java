@@ -18,6 +18,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Weapons.Bombs;
@@ -43,14 +45,14 @@ public class Enemy extends Entity {
     private String Atlas; // The Atlas for each enemy. 
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
-    private boolean isAttack = false, leftwall = false; 
-    protected int enemyRangeWidth = 200; // enemy detection hitbox width. 
-    protected int enemyRangeHeight = 80; // enemy detection hitbox height. 
+    private boolean isAttack = false;
+    protected int enemyRangeWidth = 140; // enemy detection hitbox width. 
+    protected int enemyRangeHeight = 100; // enemy detection hitbox height. 
     private boolean dead = false;
     private boolean deadOver = false; // used to see if deadAnimation is done.  
     public float healthBarWidth = 100; // healthbar size for enemies
     public float healthBarHeight = 10;
-    private float currentHealthBarLen = healthBarWidth;
+    protected float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
     protected boolean isBoss = false;
     public int fireballCooldown = 40; // cooldown between each fireball shot by the boss. 
@@ -112,6 +114,7 @@ public class Enemy extends Entity {
      */
     public void move(Player player, Playing playing) {
     // if the enemy is a boss change the x and y offset. 
+    System.out.println(animationIndex + " " + state);
     if (isBoss){
         bossXOffset = 200; 
         bossYOffset = 115; 
@@ -129,13 +132,14 @@ public class Enemy extends Entity {
         state = DEAD;
         animationIndex = 0;
         animationTick = 0;
+        return;
     }
 
     if (!dead){ 
 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
         enemyRange.y = this.hitbox.y-enemyRangeWidth; 
-        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
 
         // reset animation index everytime player interacts with hitbox. 
@@ -158,8 +162,12 @@ public class Enemy extends Entity {
         for (Bombs b : playing.getBombs()) { 
             if(b.explode)
                 if(b.getExplosionHitbox().intersects(hitbox) && !bombHit){ 
-                    System.out.println("beeger boom");
-                    changeHealth(-50);
+                    if(isBoss) {
+                        changeHealth(-200);
+                    } else {
+                        changeHealth(-maxHealth);
+                    }
+                    
                     bombHit = true; 
                     isActive = true;
                 }
@@ -179,7 +187,7 @@ public class Enemy extends Entity {
         }
 
 
-        if (!player.hitbox.intersects(enemyRange) && state != MAGIC) 
+        if (!player.hitbox.intersects(enemyRange) && state != MAGIC && state != DEAD) 
         state = WALK; 
 
         if(direction == LEFT) {
@@ -345,8 +353,11 @@ public class Enemy extends Entity {
         if (!deadOver)
             g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
      
-        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) 
-            deadOver = true; 
+        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) {
+            deadOver = true;
+            isActive = false;
+        }
+             
    
     }
 
@@ -410,7 +421,12 @@ public class Enemy extends Entity {
         dead = false;
         deadOver = false;
         currentHealthBarLen = healthBarWidth;
-        isActive = false;
+        if(!isBoss) {
+            isActive = false;
+        } else {
+            isActive = true;
+        }
+        
       }
 
     /** 
@@ -544,7 +560,7 @@ public class Enemy extends Entity {
      /** 
      * @MethodName: magicAttack()
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Jan 15 2024
      * @param playing The Protagoninst 
      * @Description: Changes the enemy state to Magic to summon fireballs if certain conditions are met. 
      * @returns: N/A
@@ -558,10 +574,10 @@ public class Enemy extends Entity {
             magicState= 0; 
 
         if(enemyType == Demonboi)
-            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC)
+            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC && state != DEAD)
                 state = MAGIC;
 
-        if(magicState >= magicTimer) { 
+        if(magicState >= magicTimer && state != DEAD) { 
             state = WALK; 
             magicState = 0; 
         }

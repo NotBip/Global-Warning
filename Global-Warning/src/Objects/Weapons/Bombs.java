@@ -73,7 +73,7 @@ public class Bombs extends Entity {
         double tempChange = 0;
 
     if (Playing.gunIndex == 3) {
-        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
+        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData) && !stuckBehindDoor) {
             // Change x of bomb
             this.bombHitbox.x = hitbox.x-32; 
             this.bombHitbox.y = hitbox.y-32; 
@@ -87,7 +87,7 @@ public class Bombs extends Entity {
             x += tempChange;
             hitbox.x += tempChange;
 
-            tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
+            tempChange = Math.min(Math.max(speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2)), -3 * speed), 5 * speed);
             if ((time + (vertY / initY)) > 0){
             y += tempChange;
             hitbox.y += tempChange;
@@ -117,7 +117,7 @@ public class Bombs extends Entity {
         g.drawImage(this.bombImg, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
 
         g2d.setColor(Color.WHITE);
-        drawHitbox(g, xOffset);
+        //drawHitbox(g, xOffset);
 
         if(explode){ 
             if(!Playing.paused && !Playing.inventory && !Playing.dead) {
@@ -134,7 +134,7 @@ public class Bombs extends Entity {
 
     public void drawBombAnimation(Graphics g, int xOffset) { 
         g.setColor(Color.white);
-         g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
+        //g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
         g.drawImage(animations[9][animationIndex], (int) bombHitbox.x-xOffset , (int) bombHitbox.y, 128, 128, null);
     }
 

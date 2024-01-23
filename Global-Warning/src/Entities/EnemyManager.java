@@ -106,6 +106,7 @@ public class EnemyManager {
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
         f.draw(g, xOffset);
+        f.drawHitbox(g, xOffset);
         f.drawHealth(g, xOffset);
       }
     }
@@ -113,7 +114,6 @@ public class EnemyManager {
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
         b.draw(g, xOffset);
-        b.drawHealth(g, xOffset);
       }
     }
   }

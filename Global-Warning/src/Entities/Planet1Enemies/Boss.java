@@ -21,8 +21,10 @@ public class Boss extends Enemy {
         super.lvlData = lvlData; 
         super.isBoss = true; 
         super.healthBarWidth = 500; 
+        super.currentHealthBarLen = 500;
         super.healthBarHeight = 50; 
         super.enemyRangeWidth = GAME_WIDTH; 
+        super.isActive = true;
     }
     
 } // End Class

@@ -89,7 +89,6 @@ public class Bullets extends Entities.Entity implements MouseListener {
         getImage(); 
         initialize();
         if(!playing.getPlayer().isDead()) {
-            System.out.println("pew");
             playing.getSoundLibrary().playSound("Shoot");
         }
         
@@ -142,7 +141,7 @@ public class Bullets extends Entities.Entity implements MouseListener {
 
         if (Playing.gunIndex < 3) {
             if (canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y + speed * directionY), hitbox.width,
-                    hitbox.height, lvlData)) {
+                    hitbox.height, lvlData) && !stuckBehindDoor) {
                 x += speed * directionX;
                 y += speed * directionY;
                 hitbox.x += speed * directionX;
