@@ -134,6 +134,8 @@ public class Pause {
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuBackB)) {
 			menuBackB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Deselect");
+			playing.getSoundLibrary().playSound("EndMusic");
 
 		}
 	}

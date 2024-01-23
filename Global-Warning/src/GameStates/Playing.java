@@ -533,6 +533,12 @@ public class Playing extends State implements KeyListener, MouseListener {
                         inventoryState.reset();
                     } else {
                         paused = !paused;
+                        if (paused == true) {
+                            this.getSoundLibrary().playSound("Off");
+                        }
+                        else {
+                        this.getSoundLibrary().playSound("On");
+                        }
                     }
                  }
                  break;
