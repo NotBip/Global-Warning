@@ -151,8 +151,8 @@ public class Constants {
 			public static final int coolWalk = 1; 
 			public static final int coolAttack = 2; 
 			public static final int coolDead = 4; 
-			public static final float coolSpeed = .5f * Game.SCALE; 
-			public static final int coolSizeX = 120 * 2 *(int) Game.SCALE; 
+			public static final float coolSpeed = 1.5f * Game.SCALE; 
+			public static final int coolSizeX = 100 * 2 *(int) Game.SCALE; 
 			public static final int coolSizeY = 100 * 2 *(int) Game.SCALE; 
 
 

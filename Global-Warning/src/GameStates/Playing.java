@@ -486,7 +486,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         weapon.draw(g, xOffset);
         player.draw(g, xOffset);
         levelManager.draw(g, xOffset);
-        enemyManager.draw(g, xOffset);
+        enemyManager.draw(g, xOffset, this);
 
         for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
             if(s.hasBeenRead()) {

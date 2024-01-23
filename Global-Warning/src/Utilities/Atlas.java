@@ -17,7 +17,6 @@ public class Atlas {
     public static final String WEAPON1_ATLAS = "gunSmol.png";
     public static final String WEAPON2_ATLAS = "pixel_weap_blue.png";
     public static final String WEAPON3_ATLAS = "pixel_weap_yellow.png";
-
      public static final String BOMB_ATLAS = "bomb_transparent.png";
      public static final String NOTHING_ATLAS = "no_bomb.png";
 
@@ -62,6 +61,7 @@ public class Atlas {
     public static final String CURSOR_ATLAS = "cursor.png"; 
     public static final String CURSOR2_ATLAS = "Curser.png"; 
     public static final String HEALTH_ATLAS = "HealthBar.png"; 
+    public static final String OBELISK_ATLAS = "Obelisk.png"; 
 
 
 

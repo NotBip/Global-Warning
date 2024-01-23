@@ -18,6 +18,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import Entities.Planet1Enemies.Boss2;
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Weapons.Bombs;
@@ -121,19 +123,24 @@ public class Enemy extends Entity {
                 isActive = true; 
             }
     }
-
-    if (isBoss)
-        if(direction == RIGHT)
-            bossXOffset = width;
-        else   
-            bossXOffset *= -1;
-
     // if the enemy's health is less than 0 set their state to dead and reset the animations. 
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
         animationIndex = 0;
     }
+    System.out.println(state);
+
+    if(isBoss && !player.getHitbox().intersects(this.enemyRange) && state != DEAD) { 
+        state = IDLE; 
+        xSpeed = 0; 
+    }
+    else if (state != DEAD) { 
+        state = WALK; 
+        xSpeed = moveSpeed; 
+
+    }
+
 
     if (!dead){ 
 
@@ -149,7 +156,7 @@ public class Enemy extends Entity {
         } else if (!playing.getPlayer().getHitbox().intersects(hitbox))
             check = false; 
 
-        if(state == MAGIC)
+        if(state == MAGIC || state == IDLE)
             xSpeed = 0; 
         else
             xSpeed = moveSpeed; 
@@ -174,10 +181,10 @@ public class Enemy extends Entity {
         }
 
 
-        if (!player.hitbox.intersects(enemyRange) && state != MAGIC) 
+        if (!player.hitbox.intersects(enemyRange) && state != MAGIC && state != IDLE) 
         state = WALK; 
 
-        if(direction == LEFT) {
+        if(direction == LEFT && state != IDLE) {
             xSpeed = -moveSpeed;
         } else {
             xSpeed = moveSpeed;
@@ -195,28 +202,30 @@ public class Enemy extends Entity {
         aniSpeed = animationSpeed; 
         isAttack = false; 
         }
-        if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
+        if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC && state != IDLE) {
             state = RUN;
             xSpeed  *= 1.5;
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
             direction = LEFT; 
+            bossXOffset *= -1;
             wFlipped = flipW(); 
             xFlipped = flipX();
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
             direction = RIGHT; 
+            bossXOffset *= -1;
             wFlipped = flipW(); 
             xFlipped = flipX();
             }
         }
 
         // Patrolling
-        if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {  
+        if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN && state != IDLE) {  
             direction = LEFT; 
             wFlipped = flipW(); 
             xFlipped = flipX();  
-        } else if (direction == LEFT && !solidTile(hitbox.x - 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) { 
+        } else if (direction == LEFT && !solidTile(hitbox.x - 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN && state != IDLE) { 
             direction = RIGHT; 
             wFlipped = flipW(); 
             xFlipped = flipX();
@@ -235,14 +244,14 @@ public class Enemy extends Entity {
         }
 
         // Horizontal movement
-        if(canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !isAttack && state != MAGIC) {
+        if(canMove(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && !isAttack && state != MAGIC && state != IDLE) {
             if(!player.hitbox.intersects(enemyRange))
             state = WALK; 
             else 
             state = RUN; 
             hitbox.x += xSpeed;
         } else {
-            if(!isAttack && state != RUN && state != MAGIC) {
+            if(!isAttack && state != RUN && state != MAGIC && state != IDLE) {
                 xSpeed = -xSpeed;
                 xFlipped = flipX();
                 wFlipped = flipW();
@@ -333,15 +342,16 @@ public class Enemy extends Entity {
      * @Dependencies: Planet1Enemies.
      * @Throws/Exception: N/A
      */
-    public void draw(Graphics g, int xOffset) {
+    public void draw(Graphics g, int xOffset, Playing playing) {
         for (Fireballs f : fireballs) 
             f.drawFireBall(g, xOffset);
       
         if (!deadOver)
             g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset  , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
-     
-        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) 
+
+        if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
             deadOver = true; 
+        }
         
             drawHitbox(g, xOffset);
     }

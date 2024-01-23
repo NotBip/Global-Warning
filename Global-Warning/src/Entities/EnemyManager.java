@@ -112,38 +112,38 @@ public class EnemyManager {
      * @Dependencies: Enemy.java, Level.java
      * @Throws/Exception: N/A
      */
-  public void draw(Graphics g, int xOffset) {
+  public void draw(Graphics g, int xOffset, Playing playing) {
     for (Enemy2 o : currentLevel.getWaterBoi()) {
       if(!o.isDead()) {
-        o.draw(g, xOffset);
+        o.draw(g, xOffset, playing);
         o.drawHealth(g, xOffset);
       }
     }
 
     for (Enemy1 f : currentLevel.getFireBoi()) {
       if(!f.isDead()) {
-        f.draw(g, xOffset);
+        f.draw(g, xOffset, playing);
         f.drawHealth(g, xOffset);
       }
     }
 
     for (Enemy3 s : currentLevel.getShardBoi()) { 
       if(!s.isDead()) { 
-        s.draw(g, xOffset);
+        s.draw(g, xOffset, playing);
         s.drawHealth(g, xOffset);
       }
     }
 
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
-        b.draw(g, xOffset);
+        b.draw(g, xOffset, playing);
         b.drawHealth(g, xOffset);
       }
     }
 
     for (Boss2 c : currentLevel.getCoolBoi()) { 
       if(!c.isDead()) { 
-        c.draw(g, xOffset);
+        c.draw(g, xOffset, playing);
         c.drawHealth(g, xOffset);
       }
     }
