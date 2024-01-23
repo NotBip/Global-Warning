@@ -8,7 +8,8 @@
  package Objects;
 
  import static Utilities.Atlas.FIREBALL_ATLAS;
- import static Utilities.Atlas.OBELISK_ATLAS;
+import static Utilities.Atlas.OBELISKANIMATED_ATLAS;
+import static Utilities.Atlas.OBELISK_ATLAS;
  import static Utilities.Atlas.getSpriteAtlas;
  import java.awt.Graphics;
  import java.awt.image.BufferedImage;
@@ -55,11 +56,11 @@
       * @Throws/Exceptions: N/A
       */
      private void loadImage() { 
-         BufferedImage obelisk = getSpriteAtlas(OBELISK_ATLAS); 
-         ObeliskAnimations = new BufferedImage[1][13]; 
+         BufferedImage obelisk = getSpriteAtlas(OBELISKANIMATED_ATLAS); 
+         ObeliskAnimations = new BufferedImage[1][7]; 
          for (int i = 0; i < ObeliskAnimations.length; i++) {
              for (int j = 0; j < ObeliskAnimations[i].length; j++) {
-                ObeliskAnimations[i][j] = obelisk.getSubimage(j * 200, i * 400, 200, 400);
+                ObeliskAnimations[i][j] = obelisk.getSubimage(j * 190, i * 380, 190, 380);
              }
          }
      }
@@ -79,7 +80,7 @@
          if (animationTick >= aniSpeed) {
              animationTick = 0;
              animationIndex++;
-             if (animationIndex >= 5)
+             if (animationIndex >= 6)
                  animationIndex = 0;
          }
      }
@@ -96,7 +97,7 @@
       * @Throws/Exception: N/A
       */
      public void drawObelisk(Graphics g, int xOffset) { 
-         g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y-90, 128, 128, null);
+        //  g.drawImage(ObeliskAnimations[0][animationIndex], (int)x - xOffset, (int) y-190, 212, 246, null);
      }
  
  } // End Class

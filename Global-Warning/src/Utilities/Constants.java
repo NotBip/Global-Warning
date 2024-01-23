@@ -167,7 +167,7 @@ public class Constants {
 
 			public static final int Coolboi = 4;
 			public static final int COOLBOI_HEIGHT = 130 * (int) Game.SCALE; 
-			public static final int COOLBOI_WIDTH = 60 *(int) Game.SCALE; 
+			public static final int COOLBOI_WIDTH = 120 *(int) Game.SCALE; 
 			public static final int coolAttackSpeed = 5; 
 			public static final int coolboiArrI = 5; 
 			public static final int coolboiArrJ = 23; 

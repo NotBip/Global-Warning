@@ -151,6 +151,10 @@ public class ObjectManager{
                 if(s.getHitbox().intersects(e.getHitbox()))
                 e.dead();
             }
+            for(Enemy3 e : playing.getLevelManager().getCurrentLevel().getShardBoi()) {
+                if(s.getHitbox().intersects(e.getHitbox()))
+                e.dead();
+            }
             
             if(playing.getPlayer().getHitbox().intersects(s.getHitbox()) && !playing.getPlayer().isImmune()) {
                 playing.getPlayer().changeHealth(-20);

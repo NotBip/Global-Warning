@@ -140,6 +140,7 @@ public class EnemyManager {
       if(!b.isDead()) { 
         b.draw(g, xOffset);
         b.drawHealth(g, xOffset);
+        b.drawHitbox(g, xOffset);
       } else{
         Playing.endGame = true;
       }
@@ -149,6 +150,7 @@ public class EnemyManager {
       if(!c.isDead()) { 
         c.draw(g, xOffset);
         c.drawHealth(g, xOffset);
+        c.drawHitbox(g, xOffset);
       } else{ 
       c.keyAnimation(g, xOffset);
         if(!droppedKey) { 
@@ -184,14 +186,29 @@ public class EnemyManager {
       b.resetEnemy();
     }
 
-    for (Boss2 c : currentLevel.getCoolBoi()) { 
-      c.resetEnemy();
-    }
 
     for (Enemy3 s : currentLevel.getShardBoi()) { 
       s.resetEnemy();
     }
     
     
+  }
+
+
+    /** 
+   * @MethodName: resetMiniBosses()
+   * @author: Hamad Mohammed
+   * @since: Dec 15 2024
+   * @param: N/A 
+   * @description: Responsible for resetting all instances of minibosses when called. 
+   * @returns: N/A
+   * @Dependencies: Enemy.java, Level.java
+   * @Throws/Exception: N/A
+   */
+  public void resetMiniBosses() { 
+    for (Boss2 c : currentLevel.getCoolBoi()) { 
+      c.resetEnemy();
+    }
+
   }
 }

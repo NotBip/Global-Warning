@@ -163,6 +163,8 @@ public class Level {
 	public void resetEnemies() {	
 			Waterboi.clear();
 			Fireboi.clear();
+			Shardboi.clear();
+			Coolboi.clear();
 			Demonboi.clear(); 
 	}
 

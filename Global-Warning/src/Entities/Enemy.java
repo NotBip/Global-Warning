@@ -16,7 +16,8 @@
  import java.awt.Graphics;
  import java.awt.geom.Rectangle2D;
  import java.awt.image.BufferedImage;
- import java.util.ArrayList;
+import java.awt.image.DirectColorModel;
+import java.util.ArrayList;
  import java.util.List;
  
  import Entities.Planet1Enemies.Boss;
@@ -91,6 +92,7 @@
          this.enemyRangeH = height+2*enemyRangeHeight; 
          this.enemyRangeW = width+2*enemyRangeWidth;
          currentHealthBarLen = healthBarWidth;
+         bossXOffset *= -1; 
  
          Animations();
          initialize();
@@ -123,7 +125,7 @@
       * @Throws/Exceptions: N/A
       */
      public void move(Player player, Playing playing) {
-        System.out.println(bossXOffset);
+        System.out.println(direction);
      // check for bomb explosion collisions and damage player. 
      for (Bombs b : playing.getBombs()) { 
          if(b.explode)
@@ -219,14 +221,14 @@
          if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
              state = RUN;
              xSpeed  *= 1.5;
-             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
+             if (player.hitbox.x < this.hitbox.x && direction == RIGHT && bossXOffset != Math.abs(bossXOffset)) {
              bossXOffset *= -1;
              direction = LEFT; 
              wFlipped = flipW(); 
              xFlipped = flipX();
              }
              
-             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
+             if (player.hitbox.x > this.hitbox.x && direction == LEFT && bossXOffset == Math.abs(bossXOffset)) { 
              bossXOffset *= -1;
              direction = RIGHT; 
              wFlipped = flipW(); 
@@ -236,10 +238,14 @@
  
          // Patrolling
          if(direction == RIGHT && !solidTile(hitbox.x + hitbox.width + 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) {  
+          //  if (bossXOffset != Math.abs(bossXOffset))
+             bossXOffset *= -1; 
              direction = LEFT; 
              wFlipped = flipW(); 
              xFlipped = flipX();  
          } else if (direction == LEFT && !solidTile(hitbox.x - 5, hitbox.y + hitbox.height + 5, lvlData) && state != RUN) { 
+      //      if(bossXOffset == Math.abs(bossXOffset))
+            bossXOffset *= -1;
              direction = RIGHT; 
              wFlipped = flipW(); 
              xFlipped = flipX();
@@ -266,6 +272,7 @@
              hitbox.x += xSpeed;
          } else {
              if(!isAttack && state != RUN && state != MAGIC) {
+                bossXOffset *= -1;
                  xSpeed = -xSpeed;
                  xFlipped = flipX();
                  wFlipped = flipW();

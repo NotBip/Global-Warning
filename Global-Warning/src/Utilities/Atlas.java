@@ -71,7 +71,7 @@ public class Atlas {
     public static final String CURSOR2_ATLAS = "Curser.png"; 
     public static final String HEALTH_ATLAS = "HealthBar.png"; 
     public static final String OBELISK_ATLAS = "Obelisk.png"; 
-
+    public static final String OBELISKANIMATED_ATLAS = "Obelisk_effects.png"; 
     public static final String CONTINUE_ATLAS = "to_be_continued.png";
 
 

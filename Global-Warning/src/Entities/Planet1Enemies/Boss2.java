@@ -7,6 +7,8 @@ import static Utilities.Atlas.KEY_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
+import static Utilities.Constants.Directions.LEFT;
+import static Utilities.Constants.Directions.RIGHT;
 import static Utilities.Constants.EnemyConstants.*;
 
 import java.awt.Graphics;
@@ -20,7 +22,7 @@ public class Boss2 extends Enemy {
     private int x; 
 
     public Boss2(float x, float y, int[][] lvlData) {
-        super(x, y, COOLBOI_WIDTH, COOLBOI_HEIGHT, Coolboi, coolboiArrI, coolboiArrJ, coolboiW, coolboiH, COOLBOI_ATLAS, COOLBOI_WIDTH, -1 , coolSpeed, coolSizeX, coolSizeY);
+        super(x, y, COOLBOI_WIDTH, COOLBOI_HEIGHT, Coolboi, coolboiArrI, coolboiArrJ, coolboiW, coolboiH, COOLBOI_ATLAS, 0, 1, coolSpeed, coolSizeX, coolSizeY);
         
         super.inAir = true; 
         super.lvlData = lvlData; 
@@ -29,9 +31,10 @@ public class Boss2 extends Enemy {
         super.healthBarHeight = 50; 
         super.enemyRangeWidth = GAME_WIDTH/3; 
         super.enemyRangeHeight = GAME_HEIGHT; 
-         super.bossXOffset = -90; 
-         super.bossYOffset = 30;
-         this.yItem = hitbox.y + hitbox.height;  
+        super.bossXOffset = 20; 
+        super.bossYOffset = 30;
+        this.yItem = hitbox.y + hitbox.height;  
+        this.direction = RIGHT; 
     }
 
 
