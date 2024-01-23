@@ -176,10 +176,13 @@ public class Death {
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuBackB)) {
 			menuBackB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Deselect");
+			playing.getSoundLibrary().playSound("EndMusic");
 
 		}
 		if (isIn(e, replayB)) {
 			replayB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Select");
 
 		}
 	}

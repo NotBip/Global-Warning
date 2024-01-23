@@ -212,6 +212,7 @@ public class OptionState extends State implements KeyListener, MouseListener {
                 if (e.getX() > (GAME_WIDTH/2)){
                 playing.getSoundLibrary().playSound("Off");
                 playing.getSoundLibrary().setMute(true);
+                playing.getSoundLibrary().playSound("End Music");
                 }
                 else {
                     playing.getSoundLibrary().setMute(false);

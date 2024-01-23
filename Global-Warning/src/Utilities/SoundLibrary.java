@@ -24,6 +24,11 @@ public class SoundLibrary {
     File musicPath;
     Playing playing;
     Boolean mute = false;
+    Clip clip;
+    Clip clipMusic;
+    private boolean isMusic = false;
+    private boolean endMusic = false;
+    private boolean songPlayed = false;
 
     // Intitialize Sound Library
     public SoundLibrary(Playing playing) {
@@ -44,11 +49,16 @@ public class SoundLibrary {
     public void playSound(String sound) {
         if (mute == false) {
         switch (sound) {
+            case "EndMusic":
+            endMusic = true;
+            break;
             case "Music":
             filepath = "Global-Warning/res/audio/Music.wav";
+            isMusic = true;
             break;
             case "Boss":
             filepath = "Global-Warning/res/audio/Boss.wav";
+            isMusic = true;
             break;
             case "Select":
             filepath = "Global-Warning/res/audio/button1.wav";
@@ -115,14 +125,33 @@ public class SoundLibrary {
         musicPath = new File(filepath);
         try {
         AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-        Clip clip = AudioSystem.getClip();
+        if (endMusic == true) {
+            clipMusic.stop();
+            clip.stop();
+            songPlayed = false;
+        }
+        if (isMusic == true && endMusic == false) {
+            if (songPlayed == true){
+            clipMusic.stop();
+            songPlayed = false;
+            }
+            clipMusic = AudioSystem.getClip();
+            clipMusic.open(audioInput);
+            clipMusic.loop(Clip.LOOP_CONTINUOUSLY);
+            clipMusic.start();
+            songPlayed = true;
+        }
+        else if (isMusic == false){
+        clip = AudioSystem.getClip();
         clip.open(audioInput);
-        
         clip.start();
+        }
         }
         catch(Exception e) {
             System.out.println(e);
         }
+        endMusic = false;
+        isMusic = false;
     }
     }
 
