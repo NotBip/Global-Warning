@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 10 DEC, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library for all images used in project
+***********************************************
+*/
+
 package Utilities;
 
 import java.awt.image.BufferedImage;

@@ -10,7 +10,7 @@ import Main.Game;
 ***********************************************
 * @Author : Bobby Walden
 * @Originally made : 21 JAN, 2024
-* @Last Modified: 21 JAN, 2024
+* @Last Modified: 22 JAN, 2024
 * @Description: Creates and calls the action for chests with keys.
 ***********************************************
 */
@@ -35,6 +35,17 @@ public class KeyChest extends Object {
         hitbox.y += yDrawOffset;
     }
     
+      /**
+	 * @Method Name: drawItem
+	 * @author Nusayba Hamou
+	 * @since 21 JAN 2024
+	 * @Description: resets getting item animation
+	 * @Parameters: Graphics g, int x for offset
+	 * @returns:N/A
+	 * @Dependencies: Object, Atlas
+	 * @Throws/Exceptions: N/A
+	 **/
+
     public void drawItem (Graphics g, int x) {
         long time1 = System.currentTimeMillis();
 

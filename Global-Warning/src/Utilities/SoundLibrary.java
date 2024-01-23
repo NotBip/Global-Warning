@@ -124,7 +124,9 @@ public class SoundLibrary {
         }
         musicPath = new File(filepath);
         try {
-        AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+     
+
+    /*setter*/   AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
         if (endMusic == true) {
             clipMusic.stop();
             clip.stop();

@@ -115,6 +115,17 @@ public class Chest extends Object {
         player.gainItem(item, quantity);
     }
 
+      /**
+	 * @Method Name: drawItem
+	 * @author Nusayba Hamou
+	 * @since 21 JAN 2024
+	 * @Description: resets getting item animation
+	 * @Parameters: Graphics g, int x for offset
+	 * @returns:N/A
+	 * @Dependencies: Object
+	 * @Throws/Exceptions: N/A
+	 **/
+
     public void drawItem (Graphics g, int x) {
         //System.out.println("Hello");
         long time1 = System.currentTimeMillis();
@@ -136,6 +147,17 @@ public class Chest extends Object {
                 }
             } 
     }
+
+    /**
+	 * @Method Name: resetAnimation
+	 * @author Nusayba Hamou
+	 * @since 21 JAN 2024
+	 * @Description: resets getting item animation
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
 
     public void resetAnimation () {
         yItem = getHitbox().y;

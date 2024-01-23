@@ -171,6 +171,8 @@ public class ToBeContinued {
 	public void mousePressed(MouseEvent e) {
 		if (Pause.isIn(e, menuBackB)) {
 			menuBackB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Deselect");
+			playing.getSoundLibrary().playSound("EndMusic");
 
 		}
 	}

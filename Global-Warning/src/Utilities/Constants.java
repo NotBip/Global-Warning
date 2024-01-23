@@ -1,3 +1,13 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 10 DEC, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library made for all constants
+***********************************************
+*/
+
+
 package Utilities;
 
 import GameStates.Playing;
@@ -38,7 +48,14 @@ public class Constants {
 		public static final int DOWN = 3;
   }
 
-
+/**
+***********************************************
+* @Author : Nusayba
+* @Originally made : 1 JAN, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library made for all button image constants
+***********************************************
+*/
 	public static class Buttons {
 		public static final int B_WIDTH = 140;
 		public static final int B_HEIGHT = 56;

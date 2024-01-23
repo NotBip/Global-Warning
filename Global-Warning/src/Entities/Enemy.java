@@ -65,7 +65,6 @@ public class Enemy extends Entity {
     public int magicState = 0; 
     private boolean check = false; 
     private boolean xChanged = false;
-    private Playing playing;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH,
             String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -92,12 +91,20 @@ public class Enemy extends Entity {
         this.enemyRangeH = height+2*enemyRangeHeight; 
         this.enemyRangeW = width+2*enemyRangeWidth;
         currentHealthBarLen = healthBarWidth;
-        this.playing = playing;
 
         Animations();
         initialize();
     }
-
+/** 
+     * @MethodName: loadLevelData
+     * @author: Ryder Hodgson
+     * @since: Dec 20 2023
+     * @param int[][] lvlData
+     * @Description:loads level data  
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
 
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
@@ -107,7 +114,7 @@ public class Enemy extends Entity {
      /** 
      * @MethodName: move() 
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Dec 15 2023
      * @param player The protagonist 
      * @param playing The instance of the playing class. 
      * @Description: basic enemy AI including movement, damage and fighting mechanics.  
@@ -150,7 +157,7 @@ public class Enemy extends Entity {
     if (!dead){ 
 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
-        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
+        enemyRange.y = this.hitbox.y; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
 
@@ -331,7 +338,7 @@ public class Enemy extends Entity {
     /** 
      * @MethodName: updateAnimationTick()
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Dec 15 2023
      * @param N/A
      * @Description: Updates the animatiion tick which updates the animation Index which is then used to move onto the next image in a sprite sheet. 
      * @returns: N/A
@@ -361,6 +368,7 @@ public class Enemy extends Entity {
      * @Throws/Exception: N/A
      */
     public void draw(Graphics g, int xOffset) {
+        drawHitbox(g, xOffset);
         for (Fireballs f : fireballs) 
             f.drawFireBall(g, xOffset);
       
