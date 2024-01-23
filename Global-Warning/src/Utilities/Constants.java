@@ -410,6 +410,9 @@ public class Constants {
 		public static final int Chest = 1;
 		public static final int Door = 2;
 		public static final int Explosion = 3;
+		public static final int Sign = 4;
+		public static final int SIGN_HEIGHT = 20;
+
 
 		/**
 		@Method Name: GetSpriteAmount
