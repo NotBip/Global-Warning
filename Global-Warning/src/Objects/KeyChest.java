@@ -57,6 +57,21 @@ public class KeyChest extends Object {
         System.out.println("You got a " + item + "!");
         player.gainItem(item, 1);
     }
+/**
+	 * @Method Name: resetKeyChests
+	 * @author Nusayba Hamou
+	 * @since 22 JAN 2024
+	 * @Description: resets key chests every time a save is loaded
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
 
+     public void resetKeyChests () {
+        chestInteract = false;
+        chestOpen = false;
+        chestOpened = false;   
+    }
 
 }

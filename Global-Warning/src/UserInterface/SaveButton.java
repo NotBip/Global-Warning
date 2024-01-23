@@ -24,6 +24,8 @@ import static Utilities.Atlas.*;
 
 import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.KeyChest;
+
 import static Utilities.Constants.Buttons.*;
 import static GameStates.Playing.*;
 
@@ -236,9 +238,17 @@ public class SaveButton extends Button {
 		if (levelManager.getCurrentLevel().getCheckpoint() != null) {
 			levelManager.getCurrentLevel().getCheckpoint().resetReached();
 		}
+
 		if (levelManager.getCurrentLevel().getChest() != null) {
 			for (Chest chest : levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
+			}
+
+		}
+
+		if (levelManager.getCurrentLevel().getKeyChest() != null) {
+			for (KeyChest keychest : levelManager.getCurrentLevel().getKeyChest()) {
+				keychest.resetKeyChests();
 			}
 
 		}

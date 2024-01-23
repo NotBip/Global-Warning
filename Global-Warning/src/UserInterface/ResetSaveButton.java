@@ -17,6 +17,7 @@ import java.io.IOException;
 import GameStates.Playing;
 import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.KeyChest;
 import Objects.Saving.Save;
 import static Utilities.Atlas.RESETBUTTON_ATLAS;
 import static Utilities.Constants.Buttons.*;
@@ -114,6 +115,13 @@ public class ResetSaveButton extends Button {
 		if (Playing.levelManager.getCurrentLevel().getChest() != null) {
 			for (Chest chest : Playing.levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
+			}
+
+		}
+
+		if (Playing.levelManager.getCurrentLevel().getKeyChest() != null) {
+			for (KeyChest keychest : Playing.levelManager.getCurrentLevel().getKeyChest()) {
+				keychest.resetKeyChests();
 			}
 
 		}
