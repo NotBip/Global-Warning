@@ -23,6 +23,7 @@ public class Boss extends Enemy {
         super.healthBarWidth = 500; 
         super.healthBarHeight = 50; 
         super.enemyRangeWidth = GAME_WIDTH; 
+        super.bossXOffset = 200; 
+        super.bossYOffset = 115; 
     }
-    
 } // End Class

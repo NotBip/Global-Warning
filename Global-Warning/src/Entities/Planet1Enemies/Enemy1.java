@@ -19,6 +19,7 @@ public class Enemy1 extends Enemy {
                 super.lvlData = lvlData;
                 super.maxHealth = getMaxEnemyHealth(Fireboi);
                 super.isBoss = false;
+                bossXOffset = 0; 
+                bossYOffset = 0; 
         }
-
 } // End Class

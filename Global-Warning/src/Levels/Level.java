@@ -12,6 +12,7 @@ import Entities.Player;
 import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import Entities.Planet1Enemies.Enemy3;
 import GameStates.Playing;
 import Objects.BarrierDoor;
 import Objects.Chest;
@@ -61,6 +62,7 @@ public class Level {
 	private ArrayList<Enemy2> Waterboi = new ArrayList<Enemy2>(); 
     private ArrayList<Enemy1> Fireboi = new ArrayList<Enemy1>(); 
 	private ArrayList<Boss> Demonboi = new ArrayList<Boss>(); 
+	private ArrayList<Enemy3> Shardboi = new ArrayList<Enemy3>(); 
 
 	// Used only for the tutorial
 	private ArrayList<Sign> signs = new ArrayList<Sign>();
@@ -126,6 +128,7 @@ public class Level {
 		case 1: Waterboi.add(new Enemy2(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 2: Fireboi.add(new Enemy1(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 10: Demonboi.add(new Boss((x * Constants.TILE_SIZE) + 10, y * Constants.TILE_SIZE, lvlData)); break; 
+		case 15: Shardboi.add(new Enemy3(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, lvlData)); break; 
 		case 98: playerSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 99: leftSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
 		case 100: rightSpawn = new Point(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE); break;
@@ -238,6 +241,10 @@ public class Level {
 
 	public ArrayList<Enemy1> getFireBoi() { 
 		return Fireboi; 
+	}
+
+	public ArrayList<Enemy3> getShardBoi() { 
+		return Shardboi; 
 	}
 
 	public ArrayList<Boss> getDemonBoi() { 

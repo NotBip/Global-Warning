@@ -123,6 +123,22 @@ public class Constants {
 			public static final int demonSizeX = 288 * 2 *(int) Game.SCALE; 
 			public static final int demonSizeY = 161 * 2 *(int) Game.SCALE; 
 
+			public static final int Shardboi = 3;
+			public static final int SHARDBOI_HEIGHT = 130 * (int) Game.SCALE; 
+			public static final int SHARDBOI_WIDTH = 90 *(int) Game.SCALE; 
+			public static final int shardAttackSpeed = 15; 
+			public static final int shardboiArrI = 5; 
+			public static final int shardboiArrJ = 8; 
+			public static final int shardboiW = 64; 
+			public static final int shardboiH = 64;
+			public static final int shardIdle = 0; 
+			public static final int shardWalk = 1; 
+			public static final int shardAttack = 2; 
+			public static final int shardDead = 4; 
+			public static final float shardSpeed = 1f * Game.SCALE; 
+			public static final int shardSizeX = 140 *(int) Game.SCALE; 
+			public static final int shardSizeY = 150 *(int) Game.SCALE;  
+
 
 
 			
@@ -137,18 +153,25 @@ public class Constants {
 			return 1; 
 			if(enemy_type == Demonboi)
 			return 5; 
+			if(enemy_type == Shardboi)
+			return 7; 
+
 		case "WALK":
-			 if(enemy_type == Waterboi)
+			if(enemy_type == Waterboi)
 			return 6; 
-			 if(enemy_type == Fireboi)
+			if(enemy_type == Fireboi)
 			return 7;
-			 if(enemy_type == Demonboi)
+			if(enemy_type == Demonboi)
 			return 10; 
+			if(enemy_type == Shardboi)
+			return 7; 
+
 		case "RUN": 
 			 if(enemy_type == Waterboi)
 			return 5; 
 			 if(enemy_type == Fireboi)
 			return 2;
+
 		case "ATTACK": 
 			if(enemy_type == Waterboi)
 			return 3; 
@@ -156,6 +179,9 @@ public class Constants {
 			return 6;
 			if(enemy_type == Demonboi)
 			return 14;  
+			if(enemy_type == Shardboi)
+			return 4; 
+
 		case "DEAD": 
 			if(enemy_type == Waterboi)
 			return 6; 
@@ -163,6 +189,9 @@ public class Constants {
 			return 6; 
 			if(enemy_type == Demonboi)
 			return 21; 
+			if(enemy_type == Shardboi)
+			return 5; 
+
 		case "MAGIC":
 			if(enemy_type == Demonboi)
 			return 5; 
@@ -170,6 +199,8 @@ public class Constants {
 			return 6; 
 			if(enemy_type == Waterboi)
 			return 3;
+			if(enemy_type == Shardboi)
+			return 4; 
 
 		default: 
 			return 0;
@@ -185,6 +216,8 @@ public class Constants {
 				return 150; 
 			case Demonboi: 
 				return 2000; 
+			case Shardboi: 
+				return 200; 
 			default:
 				return 0;
 		}
@@ -194,14 +227,13 @@ public class Constants {
 		switch (enemyType) {
 
 			case Waterboi:
-				return 10; 
-
+				return 10;
 			case Fireboi: 
 				return 10; 
-			
 			case Demonboi: 
 				return 50; 
-
+			case Shardboi: 
+				return 20; 
 			default:
 				return 0; 
 		}
@@ -216,6 +248,8 @@ public class Constants {
 				return fireIdle; 
 				if(enemy_type == Demonboi)
 				return demonIdle; 
+				if(enemy_type == Shardboi)
+				return shardIdle; 
 
 			case "WALK":
 				if(enemy_type == Waterboi)
@@ -224,6 +258,8 @@ public class Constants {
 				return fireWalk; 
 				if(enemy_type == Demonboi)
 				return demonWalk; 
+				if(enemy_type == Shardboi)
+				return shardWalk; 
 			
 			case "RUN": 
 				if(enemy_type == Waterboi)
@@ -232,6 +268,8 @@ public class Constants {
 				return fireRun; 
 				if(enemy_type == Demonboi)
 				return demonWalk; 
+				if(enemy_type == Shardboi)
+				return shardWalk; 
 			
 			case "ATTACK": 
 				if(enemy_type == Waterboi) 
@@ -240,6 +278,8 @@ public class Constants {
 				return fireAttack; 
 				if(enemy_type == Demonboi)
 				return demonAttack; 
+				if(enemy_type == Shardboi)
+				return shardAttack; 
 
 			case "DEAD": 
 				if(enemy_type == Waterboi)
@@ -248,6 +288,9 @@ public class Constants {
 				return 9; 
 				if(enemy_type == Demonboi)
 				return demonDead; 
+				if(enemy_type == Shardboi)
+				return shardDead; 
+
 			case "MAGIC": 
 				if(enemy_type == Waterboi)
 				return waterAttack; 
@@ -255,6 +298,8 @@ public class Constants {
 				return fireAttack; 
 				if(enemy_type == Demonboi)
 				return 5; 
+				if(enemy_type == Shardboi)
+				return shardAttack; 
 
 			default: 
 				return 0; 
@@ -271,6 +316,8 @@ public class Constants {
 				return fireAttackSpeed;
 			case Demonboi: 
 				return demonAttackSpeed; 
+			case Shardboi:
+				return shardAttackSpeed; 
 			default:
 				return 0;
 		}
@@ -285,6 +332,8 @@ public class Constants {
 				return 6; 
 			case Demonboi: 
 				return 9; 
+			case Shardboi: 
+				return 3; 
 			default: 
 				return 0;  
 		}

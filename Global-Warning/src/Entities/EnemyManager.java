@@ -12,6 +12,7 @@ import java.util.List;
 import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
+import Entities.Planet1Enemies.Enemy3;
 import GameStates.Playing;
 import Levels.Level;
 import Objects.ObjectManager;
@@ -74,6 +75,14 @@ public class EnemyManager {
       }
     }
 
+    for (Enemy3 s : currentLevel.getShardBoi()) { 
+      if(!s.isDead()) { 
+        s.move(player, playing);
+        s.enemyHit(bullet, playing);
+        s.checkLightningIntersect(playing);
+      }
+    }
+
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
         b.move(player, playing);
@@ -110,6 +119,13 @@ public class EnemyManager {
       }
     }
 
+    for (Enemy3 s : currentLevel.getShardBoi()) { 
+      if(!s.isDead()) { 
+        s.draw(g, xOffset);
+        s.drawHealth(g, xOffset);
+      }
+    }
+
     for (Boss b : currentLevel.getDemonBoi()) { 
       if(!b.isDead()) { 
         b.draw(g, xOffset);
@@ -138,8 +154,14 @@ public class EnemyManager {
     for (Enemy1 e : currentLevel.getFireBoi()) {
       e.resetEnemy();
     }
+
     for (Boss b : currentLevel.getDemonBoi()) { 
       b.resetEnemy();
     }
+
+    for (Enemy3 s : currentLevel.getShardBoi()) { 
+      s.resetEnemy();
+    }
+    
   }
 }
