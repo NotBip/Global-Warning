@@ -25,8 +25,8 @@ public class gameFrame extends JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-       // getCursorImg(); 
-       // cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0,0), "Curser"); 
+       getCursorImg(); 
+       cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0,0), "Curser"); 
         frame.getContentPane().setCursor(cursor);
         frame.addWindowFocusListener(new WindowFocusListener() {
 

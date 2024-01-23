@@ -36,7 +36,7 @@ public class Weapon1 implements MouseMotionListener {
     
     public int xFlipped = 0; 
     private int wFlipped = 1; 
-    private float xthing = 0; 
+    private float xOffset = 0; 
     protected float x=0;
     protected float y=0;
     // constructor
@@ -77,7 +77,7 @@ public class Weapon1 implements MouseMotionListener {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform oldXForm = g2d.getTransform();
         g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
-        xthing = this.x-xOffset; 
+        this.xOffset = xOffset; 
         if (!Playing.paused && !Playing.inventory && !Playing.dead &&!Playing.endGame){
            if (Playing.gunIndex < 3){
             
@@ -120,10 +120,11 @@ public class Weapon1 implements MouseMotionListener {
      **/
 
     public void update() {
-        if(playing.mouseX < xthing)
+        if(playing.mouseX < player.getHitbox().getCenterX() - xOffset)
         this.x = (float) player.getHitbox().getCenterX() - player.getHitbox().width;
-        else 
-        this.x = (float) player.getHitbox().getCenterX();
+        else
+        this.x = (float) player.getHitbox().getCenterX() ;
+
 
         this.y = player.getHitbox().y-20;
      }
