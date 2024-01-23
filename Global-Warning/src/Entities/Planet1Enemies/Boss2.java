@@ -5,6 +5,7 @@ import Entities.Enemy;
 import static Utilities.Atlas.COOLBOI_ATLAS;
 import static Utilities.Atlas.KEY_ATLAS;
 import static Utilities.Atlas.getSpriteAtlas;
+import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.GAME_WIDTH;
 import static Utilities.Constants.EnemyConstants.*;
 
@@ -15,7 +16,7 @@ public class Boss2 extends Enemy {
     private long lastTime = 0; 
     protected boolean chestInteract = false, chestOpen = false, chestOpened = false, marker1,marker2= false;
     public float yItem = 0;
-    public int wItem, hItem =40;
+    public int wItem, hItem = 20;
     private int x; 
 
     public Boss2(float x, float y, int[][] lvlData) {
@@ -28,12 +29,14 @@ public class Boss2 extends Enemy {
         super.healthBarHeight = 50; 
         super.enemyRangeWidth = GAME_WIDTH/2; 
          super.bossXOffset = -90; 
-         super.bossYOffset = 35; 
+         super.bossYOffset = 30;
+         this.yItem = hitbox.y + hitbox.height;  
     }
 
-        public void keyAnimation (Graphics g, int x) {
-            
+
+    public void keyAnimation (Graphics g, int xOffset) {
         long time1 = System.currentTimeMillis();
+
         if (time1 > lastTime + 1000 ) {
            
             if (marker1){
@@ -44,10 +47,11 @@ public class Boss2 extends Enemy {
             lastTime = time1;
            
         } else if (!marker2 ){
-            g.drawImage(getSpriteAtlas(KEY_ATLAS), (int) hitbox.x, (int)yItem, wItem, hItem, null );
+            System.out.println(yItem);
+            g.drawImage(getSpriteAtlas(KEY_ATLAS), (int) this.hitbox.x - xOffset, (int) yItem, 40,40, null );
           
-            if (yItem> getHitbox().y - 200){
-                    yItem-=7;
+            if (yItem > 400){
+                    yItem-= 3;
                 }
             } 
     }

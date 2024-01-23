@@ -15,6 +15,7 @@ import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Entities.Planet1Enemies.Enemy3;
 import GameStates.Playing;
+import Items.Key;
 import Levels.Level;
 import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
@@ -145,6 +146,9 @@ public class EnemyManager {
       if(!c.isDead()) { 
         c.draw(g, xOffset, playing);
         c.drawHealth(g, xOffset);
+      } else{ 
+      c.keyAnimation(g, xOffset);
+      playing.player.gainItem("Key", 1);
       }
     }
   }

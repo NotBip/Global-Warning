@@ -38,7 +38,7 @@ public class Menu extends State implements KeyListener, MouseListener {
     private int height = GAME_HEIGHT;
     private int width = GAME_WIDTH;
     Playing playing;
-    SoundLibrary soundlibrary;
+    // SoundLibrary soundlibrary;
     BufferedImage imgbackground = getSpriteAtlas(MENUBACKGROUND_ATLAS);
     BufferedImage teachControls = getSpriteAtlas(CONTROLS_ATLAS);
     BufferedImage imgtitle = getSpriteAtlas(MENUTITLE_ATLAS);
@@ -210,25 +210,25 @@ public class Menu extends State implements KeyListener, MouseListener {
         for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 mb.setMousePressed(true);
-                playing.getSoundLibrary().playSound("Select");
+                // playing.getSoundLibrary().playSound("Select");
             }
 
         }
     }
 
  
-    public void playSound() {
-        String filepath = "Global-Warning/res/audio/button1.wav";
-        File musicPath = new File(filepath);
-        try {
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+    // public void playSound() {
+    //     String filepath = "Global-Warning/res/audio/button1.wav";
+    //     File musicPath = new File(filepath);
+    //     try {
+    //         AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+    //         Clip clip = AudioSystem.getClip();
+    //         clip.open(audioInput);
+    //         clip.start();
+    //     } catch (Exception e) {
+    //         System.out.println(e);
+    //     }
+    // }
 
     /**
      * @Method Name: mouseReleased

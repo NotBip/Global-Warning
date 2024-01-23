@@ -13,6 +13,6 @@ public class Enemy3 extends Enemy {
         super.maxHealth = getMaxEnemyHealth(Waterboi);
         super.isBoss = false; 
         bossXOffset = 0; 
-        bossYOffset = 20; 
+        bossYOffset = 55; 
     }
 }

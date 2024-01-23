@@ -129,7 +129,6 @@ public class Enemy extends Entity {
         state = DEAD;
         animationIndex = 0;
     }
-    System.out.println(state);
 
     if(isBoss && !player.getHitbox().intersects(this.enemyRange) && state != DEAD) { 
         state = IDLE; 

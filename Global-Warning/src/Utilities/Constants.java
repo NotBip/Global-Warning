@@ -124,7 +124,7 @@ public class Constants {
 			public static final int demonSizeY = 161 * 2 *(int) Game.SCALE; 
 
 			public static final int Shardboi = 3;
-			public static final int SHARDBOI_HEIGHT = 130 * (int) Game.SCALE; 
+			public static final int SHARDBOI_HEIGHT = 90 * (int) Game.SCALE; 
 			public static final int SHARDBOI_WIDTH = 90 *(int) Game.SCALE; 
 			public static final int shardAttackSpeed = 15; 
 			public static final int shardboiArrI = 5; 
@@ -191,6 +191,10 @@ public class Constants {
 			return 5; 
 			 if(enemy_type == Fireboi)
 			return 2;
+			if(enemy_type == Coolboi)
+			return 5; 
+			if(enemy_type == Demonboi)
+			return 10; 
 
 		case "ATTACK": 
 			if(enemy_type == Waterboi)
