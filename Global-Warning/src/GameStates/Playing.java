@@ -450,6 +450,8 @@ public class Playing extends State implements KeyListener, MouseListener {
         lightningUpdates = 0;
         lightningHitbox = null;
         lightningSound = false;
+        resetObjects(); 
+        enemyManager.resetMiniBosses();
     }
 
     private void resetObjects() {
