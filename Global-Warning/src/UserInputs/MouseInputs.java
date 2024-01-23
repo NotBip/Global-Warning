@@ -198,10 +198,10 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
     }
 
     /**
-	@Method Name: mouseReleased
+	@Method Name: actionPerformed
 	@Modified Date: 22 JAN, 2024
-	@Description: gets mouse released  for state
-	@Parameters: Mouse Event e
+	@Description: gets events applies to state
+	@Parameters: Action Event e
 	@Dependencies: Panel, Gamestate
 	*/
 
