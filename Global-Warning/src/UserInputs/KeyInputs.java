@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 1 JAN 2024
+* @Last Modified: 22 JAN 2024
+* @Description: Key inputs for key listeners
+***********************************************
+*/
+
 package UserInputs;
 
 import java.awt.event.KeyEvent;
@@ -14,6 +23,14 @@ public class KeyInputs implements KeyListener{
         this.panel = panel;
     }
 
+    /**
+	@Method Name: keyPressed
+	@Modified Date: 22 JAN, 2024
+	@Description: gets keys pressed for state
+	@Parameters: Key Event E
+	@Dependencies: Panel, Gamestate
+	*/
+
     @Override
     public void keyPressed(KeyEvent e) {
        switch(GameState.currentState) {
@@ -25,6 +42,14 @@ public class KeyInputs implements KeyListener{
             break;
        }
     }
+
+     /**
+	@Method Name: keyReleased
+	@Modified Date: 22 JAN, 2024
+	@Description: get keys released for state
+	@Parameters: Key Event E
+	@Dependencies: Panel, Gamestate
+	*/
 
     @Override
     public void keyReleased(KeyEvent e) {

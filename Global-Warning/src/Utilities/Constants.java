@@ -150,7 +150,7 @@ public class Constants {
 			public static final int demonSizeY = 161 * 2 *(int) Game.SCALE; 
 
 			public static final int Shardboi = 3;
-			public static final int SHARDBOI_HEIGHT = 130 * (int) Game.SCALE; 
+			public static final int SHARDBOI_HEIGHT = 140 * (int) Game.SCALE; 
 			public static final int SHARDBOI_WIDTH = 90 *(int) Game.SCALE; 
 			public static final int shardAttackSpeed = 15; 
 			public static final int shardboiArrI = 5; 
@@ -168,7 +168,17 @@ public class Constants {
 
 
 			
-			
+		/**
+		@Method Name: GetSpriteAmount
+		@Author: hamad Mohammed
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns number of sprites per object
+		@Parameters: int enemy_type, String enemy_state
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/		
 	public static int GetSpriteAmount(int enemy_type, String enemy_state) {
 		switch (enemy_state) {
 
@@ -234,6 +244,17 @@ public class Constants {
 		}
 	}
 
+		/**
+		@Method Name: getMaxEnemyHealth
+		@Author: hamad Mohammed
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns the max health for each enemy
+		@Parameters: int enemyType
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/		
 	public static int getMaxEnemyHealth(int enemyType) {
 		switch (enemyType) {
 			case Fireboi:
@@ -249,6 +270,19 @@ public class Constants {
 		}
 	}
 
+
+	
+	/**
+	@Method Name: getEnemyDamage
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the max damage for each enemy
+	@Parameters: int enemyType
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/	
 	public static int getEnemyDamage(int enemyType) { 
 		switch (enemyType) {
 
@@ -263,8 +297,20 @@ public class Constants {
 			default:
 				return 0; 
 		}
-	}
+	}	
 
+	
+	/**
+	@Method Name: findState
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the the correct state for each enemy
+	@Parameters: int enemy_type, String enemy_state
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int findState(int enemy_type, String enemy_state) { 
 		switch(enemy_state) { 
 			case "IDLE": 
@@ -332,6 +378,18 @@ public class Constants {
 		}
 	}
 
+
+	/**
+	@Method Name: getAttackSpeed
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the the attack speed for each enemy
+	@Parameters: int enemy_type
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int getAttackSpeed(int enemy_type) { 
 		
 		switch (enemy_type) {
@@ -349,6 +407,18 @@ public class Constants {
 		}
 	}
 
+
+	/**
+	@Method Name: getFinalAttack
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the last attack animation for each enemy
+	@Parameters: int enemy_type
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int getFinalAttack(int enemy_type) { 
 		switch (enemy_type) {
 

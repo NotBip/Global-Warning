@@ -157,7 +157,7 @@ public class Enemy extends Entity {
     if (!dead){ 
 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
-        enemyRange.y = this.hitbox.y; 
+        enemyRange.y = this.hitbox.y-enemyRangeHeight; 
         enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
 
