@@ -368,7 +368,6 @@ public class Enemy extends Entity {
      * @Throws/Exception: N/A
      */
     public void draw(Graphics g, int xOffset) {
-        drawHitbox(g, xOffset);
         for (Fireballs f : fireballs) 
             f.drawFireBall(g, xOffset);
       
