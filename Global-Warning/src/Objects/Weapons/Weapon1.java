@@ -78,7 +78,7 @@ public class Weapon1 implements MouseMotionListener {
         AffineTransform oldXForm = g2d.getTransform();
         g2d.rotate(playing.getAngle() , this.x+30-xOffset, this.y+50);
         xthing = this.x-xOffset; 
-        if (!Playing.paused && !Playing.inventory && !Playing.dead){
+        if (!Playing.paused && !Playing.inventory && !Playing.dead &&!Playing.endGame){
            if (Playing.gunIndex < 3){
             
             if (playing.mouseX < this.x-xOffset){

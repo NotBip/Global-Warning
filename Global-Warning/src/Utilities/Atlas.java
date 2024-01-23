@@ -62,7 +62,7 @@ public class Atlas {
     public static final String CURSOR2_ATLAS = "Curser.png"; 
     public static final String HEALTH_ATLAS = "HealthBar.png"; 
 
-
+    public static final String CONTINUE_ATLAS = "to_be_continued.png";
 
 
 
