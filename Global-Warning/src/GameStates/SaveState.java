@@ -290,8 +290,9 @@ public class SaveState extends State implements KeyListener, MouseListener {
             if (isIn(e, sb)) {
                 if (sb.getMousePressed())
                     try {
-                        game.playing.resetAll();
+                        
                         sb.readSave(game.playing);
+                        game.playing.resetAll();
                         System.out.println("check");
                         Checkpoint.setNumName(sb.fileName, sb.fileNum);
                         sb.applyGamestate();

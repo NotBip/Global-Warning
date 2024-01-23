@@ -222,18 +222,19 @@ public class InventoryState {
 	 **/
 
 	public void mouseReleased(MouseEvent e) {
-		 
-        for (InventorySlot slot : slots){
-		slot.select = false;
-            if (isIn(e, slot)) {
-			    if (slot.getMousePressed() && !Playing.paused){
-					if(slot.item < 4) {
-					Playing.setGunIndex(slot.item);
-					}
-					else if (slot.item == 4) {
+
+		for (InventorySlot slot : slots) {
+			slot.select = false;
+			if (isIn(e, slot)) {
+				if (slot.getMousePressed() && !Playing.paused) {
+					if (slot.item < 4) {
+						Playing.setGunIndex(slot.item);
+						playing.bombs.clear();
+						playing.BombReady = true;
+						playing.lastBomb = 0;
+					} else if (slot.item == 4) {
 						playing.getPlayer().useItem(1);
-					}
-					else if (slot.item == 6) {
+					} else if (slot.item == 6) {
 						playing.getPlayer().useItem(4);
 					}
 				}

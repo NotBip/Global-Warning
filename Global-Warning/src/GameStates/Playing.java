@@ -1,6 +1,7 @@
 package GameStates;
 
 import Entities.*;
+import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Objects.Weapons.*;
@@ -192,42 +193,40 @@ public class Playing extends State implements KeyListener, MouseListener {
 	* Throws/Exceptions: n/a
 	*/
     public void update() throws IOException {
-        if(!game.getPanel().inFocus) {
+        if(!game.getPanel().inFocus && !inventory) {
             paused = true;
         }
 
-        if (!endGame){
-            if(dead){
-                gameOver.update();
-            }else if (paused) {
-                pauseScreen.update();
-            } else if (inventory && !paused){
-                inventoryState.update();
-            } else {
-                player.update();
-                weapon.update();
-                if (getLevelManager().getCurrentLevel().getIsCheckpoint())
-                getLevelManager().getCurrentLevel().getCheckpoint().update();
-            for (int i = 0; i < bullets.size(); i++) {
-                bullets.get(i).updateBullets();
-            }
-            for (int i = 0; i < bombs.size(); i++) { 
-                bombs.get(i).updateBombs();
-            }
-            checkTouchingDoor();
-            updateLightning(); 
-            checkLightningIntersect();
-            checkBorder();
-            checkTouchingSign();
-            checkTransition();
-            
-            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
-            objectManager.update();
-            environment.update();
-            healthBar.update();
+        if(dead){
+            gameOver.update();
+        }else if (paused) {
+			pauseScreen.update();
+		} else if (inventory && !paused){
+			inventoryState.update();
+		} else {
+            player.update();
+            weapon.update();
+            if (getLevelManager().getCurrentLevel().getIsCheckpoint())
+            getLevelManager().getCurrentLevel().getCheckpoint().update();
+            if(!player.isDead()) {
+         for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).updateBullets();
+         }
+         for (int i = 0; i < bombs.size(); i++) { 
+            bombs.get(i).updateBombs();
+         }
         }
-    }else {
-        end.update();
+        checkTouchingDoor();
+        updateLightning(); 
+        checkLightningIntersect();
+        checkBorder();
+        checkTouchingSign();
+        checkTransition();
+        
+        enemyManager.update(levelManager.getCurrentLevel().getLevelData(), bullets, this, getObjectManager());
+        objectManager.update();
+        environment.update();
+        healthBar.update();
     }
     }
 
@@ -478,6 +477,25 @@ public class Playing extends State implements KeyListener, MouseListener {
                     e.setBehindDoor(false);
                 }
             }
+
+            for(Bullets b : bullets) {
+               
+                if(b.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    b.setBehindDoor(true);
+                    return;
+                } else {
+                    b.setBehindDoor(false);
+                }
+            }
+
+            for(Bombs b : bombs) {
+                if(b.getHitbox().intersects(d.getHitbox()) && !d.doorOpen && !d.doorOpened) {
+                    b.setBehindDoor(true);
+                    return;
+                } else {
+                    b.setBehindDoor(false);
+                }
+            }
         }
     }
 
@@ -495,12 +513,21 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     public void draw(Graphics g) throws IOException {
         g.drawImage(backgroundImage, 0, 0, null);
-        environment.draw(g, xOffset);
-        weapon.draw(g, xOffset);
-        player.draw(g, xOffset);
-        levelManager.draw(g, xOffset);
+        if(!(gunIndex == 3 && player.getItemQuantity(2) <= 0)) {
+            weapon.draw(g, xOffset);
+        }
         player.drawItem(g);
+        player.draw(g, xOffset);
         enemyManager.draw(g, xOffset);
+        objectManager.draw(g, xOffset);
+        levelManager.draw(g, xOffset);
+        for(Boss b : levelManager.getCurrentLevel().getDemonBoi()) {
+            b.drawHealth(g, maxOffsetX);
+        }
+        
+        environment.draw(g, xOffset);
+        
+        
 
         for(Sign s: levelManager.getCurrentLevel().getSigns()) { // Only for the tutorial
             if(s.hasBeenRead()) {
@@ -510,11 +537,12 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (getLevelManager().getCurrentLevel().getIsCheckpoint())
         getLevelManager().getCurrentLevel().getCheckpoint().draw(g, xOffset);
-        objectManager.draw(g, xOffset);
+        
         drawLightning(g, xOffset);
         // player.drawHealthBar(g);
         // player.drawOxygenBar(g);
         healthBar.draw(g, xOffset);
+        player.drawItem(g);
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).draw(g, xOffset);
         }
@@ -525,7 +553,6 @@ public class Playing extends State implements KeyListener, MouseListener {
 
         if (inventory) {
             inventoryState.draw(g);
-        
         }
 
         if (paused) {
@@ -649,6 +676,7 @@ public class Playing extends State implements KeyListener, MouseListener {
         if (time1 > lastBomb + rate && BombReady) {
             spawnBomb(x, y);
             lastBomb = time1;
+            player.bombHit = false;
         }
     }
 
@@ -661,7 +689,7 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     private void spawnBullet(int x, int y) {
 
-       if (!paused && !inventory&&!endGame){
+       if (!paused && !inventory&&!endGame&&!dead){
             Bullets bullet = new Bullets(weapon, this, player.getHitbox().x + player.getHitbox().width/2, weapon.getY() + 35, x, y, xOffset, levelManager.getCurrentLevel().getLevelData(), 0);
              bullets.add(bullet);
             }
@@ -669,8 +697,8 @@ public class Playing extends State implements KeyListener, MouseListener {
 
     private void spawnBomb(int x, int y) {
         
-        if (!endGame&&!paused && !inventory && player.getItemQuantity(2) > 0){
-             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, weapon.getX() + 50, weapon.getY(), x, y, xOffset);
+        if (!dead && !endGame&&!paused && !inventory && player.getItemQuantity(2) > 0){
+             Bombs bomb = new Bombs(this, weapon, levelManager.getCurrentLevel().getLevelData(), 0, player.getHitbox().x + player.getHitbox().width/2-5, weapon.getY()+35, x, y, xOffset);
              bombs.add(bomb);
              player.useItem(2);
          }

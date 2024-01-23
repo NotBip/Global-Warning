@@ -96,8 +96,7 @@ public class Bombs extends Entity {
         double tempChange = 0;
 
     if (Playing.gunIndex == 3) {
-        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
+        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData) && !stuckBehindDoor) {
             // Change x of bomb
             this.bombHitbox.x = hitbox.x-32; 
             this.bombHitbox.y = hitbox.y-32; 
@@ -113,7 +112,7 @@ public class Bombs extends Entity {
             hitbox.x += tempChange;
             //System.out.print(", NewX: " + x + "; OldY: " + y );
 
-            tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
+            tempChange = Math.min(Math.max(speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2)), -3 * speed), 5 * speed);
             if ((time + (vertY / initY)) > 0){
             y += tempChange;
             hitbox.y += tempChange;
@@ -159,7 +158,7 @@ public class Bombs extends Entity {
         g.drawImage(this.bombImg, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
 
         g2d.setColor(Color.WHITE);
-        drawHitbox(g, xOffset);
+        //drawHitbox(g, xOffset);
 
         if(explode){ 
             if (explosionSound == false) {
@@ -191,8 +190,8 @@ public class Bombs extends Entity {
 	*/
     public void drawBombAnimation(Graphics g, int xOffset) { 
         g.setColor(Color.white);
-        // g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
-        g.drawImage(animations[9][animationIndex], (int) hitbox.x-32-xOffset , (int) hitbox.y-32, 128, 128, null);
+        //g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
+        g.drawImage(animations[9][animationIndex], (int) bombHitbox.x-xOffset , (int) bombHitbox.y, 128, 128, null);
     }
     
     /**
@@ -241,6 +240,9 @@ public class Bombs extends Entity {
         }
     }
 
+    public Rectangle2D.Float getExplosionHitbox() {
+        return bombHitbox;
+    }
     
     public void setTime() {
         this.time = 0;

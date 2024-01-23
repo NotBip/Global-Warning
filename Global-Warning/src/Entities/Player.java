@@ -65,6 +65,7 @@ public class Player extends Entity {
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
     private boolean deathSound = false;
+    public boolean bombHit = false; 
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -75,7 +76,7 @@ public class Player extends Entity {
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
         this.healthBarHeight = 30;
-        this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
+        this.currentHealthBarLen = (int) (healthBarWidth * ((double)currentHealth / (double)maxHealth));
         this.currentOxygenBarLen = oxygenBarWidth;
         this.playing = playing;
         Animations();
@@ -137,6 +138,8 @@ public class Player extends Entity {
         waterUpdates = 0;
         immunityUpdates = 1;
         currentOxygenBarLen = oxygenBarWidth;
+        bombHit = false;
+        currentHealthBarLen = (int) (healthBarWidth * ((double)currentHealth / (double)maxHealth));
     }
 
 /*
@@ -176,18 +179,15 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
 
-        for(Bombs b : playing.getBombs()) { 
-            if(b.explode)
-                if(this.getHitbox().intersects(b.bombHitbox) && !isImmune())
-                    this.changeHealth(-maxHealth/2);
-        }
+
 
 
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
-            state = DEAD;
-            animationTick = 0;
-            animationIndex = 0; 
+                isDead = true;
+                state = DEAD;
+                animationTick = 0;
+                animationIndex = 0; 
             }
              else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) { 
                 Playing.dead = true;
@@ -196,9 +196,15 @@ public class Player extends Entity {
         }
         return; 
     }   
-        if (!isDead) {
 
-
+        isDead = false;
+            for (Bombs b : playing.getBombs()) { 
+                if(b.explode)
+                    if(b.getExplosionHitbox().intersects(this.hitbox) && !bombHit){ 
+                        this.changeHealth(-maxHealth/4);
+                        bombHit=true;
+                    } 
+            }
             // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
@@ -358,7 +364,6 @@ public class Player extends Entity {
                 moving = false;
                 hitbox.x = fixXPos(hitbox, xSpeed);
             }
-        }
         updateAnimationTick();
         setAnimation();
     }
@@ -587,7 +592,7 @@ public class Player extends Entity {
     public void drawItem (Graphics g){
         //g.setColor(Color.black);
         g.setColor(new Color(0,0,0,110));
-        g.fillRect(170, 25, 50, 50);
+        g.fillRect(170, 30, 50, 50);
         
         BufferedImage imageItem;
 
@@ -598,7 +603,7 @@ public class Player extends Entity {
         } else{
             imageItem = getSpriteAtlas(BOMB_ATLAS);       
         }
-        g.drawImage(imageItem, 170,25, WEAPON_WIDTH, WEAPON_HEIGHT, null);
+        g.drawImage(imageItem, 170,30, WEAPON_WIDTH, WEAPON_HEIGHT, null);
     }
 
     /**
