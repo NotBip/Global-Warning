@@ -11,6 +11,7 @@ package GameStates;
 
 import Entities.*;
 import Entities.Planet1Enemies.Boss;
+import Entities.Planet1Enemies.Boss2;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Objects.Weapons.*;
@@ -564,6 +565,9 @@ public class Playing extends State implements KeyListener, MouseListener {
         levelManager.draw(g, xOffset);
         for(Boss b : levelManager.getCurrentLevel().getDemonBoi()) {
             b.drawHealth(g, maxOffsetX);
+        }
+        for(Boss2 c : levelManager.getCurrentLevel().getCoolBoi()) {
+            c.drawHealth(g, maxOffsetX);
         }
         
         environment.draw(g, xOffset);
