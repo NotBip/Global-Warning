@@ -3,11 +3,22 @@ package Items;
 import Main.Game;
 import Entities.Player;
 
+    /**
+	***********************************************
+	* @Author : Bobby Walden
+	* @Originally made : 18 JAN, 2024
+	* @Last Modified: 22 JAN, 2024
+	* @Description: Manages the information for the key item.
+	***********************************************
+	*/
+
 public class Key {
     
-    public int quantity=0;
-
+    // Variables
+    int quantity = 1;
     private Player player;
+
+    // Intitializes Key
     public Key(Player player) {
         this.player = player;
     }

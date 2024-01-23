@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entities.Planet1Enemies.Boss2;
+import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Fireballs;
 import GameStates.Playing;
 import Objects.Weapons.Bombs;
@@ -45,25 +46,26 @@ public class Enemy extends Entity {
     private String Atlas; // The Atlas for each enemy. 
     private float xSpeed, moveSpeed; 
     private float gravity = 0.04f;
-    private boolean isAttack = false, leftwall = false; 
-    protected int enemyRangeWidth = 200; // enemy detection hitbox width. 
-    protected int enemyRangeHeight = 80; // enemy detection hitbox height. 
+    private boolean isAttack = false;
+    protected int enemyRangeWidth = 140; // enemy detection hitbox width. 
+    protected int enemyRangeHeight = 100; // enemy detection hitbox height. 
     private boolean dead = false;
     private boolean deadOver = false; // used to see if deadAnimation is done.  
     public float healthBarWidth = 100; // healthbar size for enemies
     public float healthBarHeight = 10;
-    private float currentHealthBarLen = healthBarWidth;
+    protected float currentHealthBarLen = healthBarWidth;
     public boolean isActive = false; 
     protected boolean isBoss = false;
     public int fireballCooldown = 40; // cooldown between each fireball shot by the boss. 
     private ArrayList<Fireballs> fireballs = new ArrayList<Fireballs>(); 
     public int fireballUpdate = 0;
     public boolean bombHit = false;
-    public int bossXOffset = 0; 
-    public int bossYOffset = 0; 
+    public int bossXOffset; 
+    public int bossYOffset; 
     public int magicTimer = 600; // How long the boss can stay in MAGIC state. 
     public int magicState = 0; 
     private boolean check = false; 
+    private boolean xChanged = false;
 
     public Enemy(float x, float y, int width, int height, int EnemyType, int arrI, int arrJ, int enemyW, int enemyH,
             String Atlas, int xFlipped, int wFlipped, float speed, int sizeX, int sizeH) {
@@ -94,7 +96,16 @@ public class Enemy extends Entity {
         Animations();
         initialize();
     }
-
+/** 
+     * @MethodName: loadLevelData
+     * @author: Ryder Hodgson
+     * @since: Dec 20 2023
+     * @param int[][] lvlData
+     * @Description:loads level data  
+     * @returns: N/A
+     * @Dependencies: N/A
+     * @Throws/Exceptions: N/A
+     */
 
     public void loadLevelData(int[][] lvlData) {
         this.lvlData = lvlData;
@@ -104,7 +115,7 @@ public class Enemy extends Entity {
      /** 
      * @MethodName: move() 
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Dec 15 2023
      * @param player The protagonist 
      * @param playing The instance of the playing class. 
      * @Description: basic enemy AI including movement, damage and fighting mechanics.  
@@ -113,6 +124,17 @@ public class Enemy extends Entity {
      * @Throws/Exceptions: N/A
      */
     public void move(Player player, Playing playing) {
+    // if the enemy is a boss change the x and y offset. 
+    if (isBoss){
+        bossXOffset = 200; 
+        bossYOffset = 115; 
+        if(direction == RIGHT)
+        bossXOffset *= -1;
+    }
+    else { 
+        bossXOffset = 0; 
+        bossYOffset = 0; 
+    }
 
     // check for bomb explosion collisions and damage player. 
     for (Bombs b : playing.getBombs()) { 
@@ -123,11 +145,14 @@ public class Enemy extends Entity {
                 isActive = true; 
             }
     }
+    
     // if the enemy's health is less than 0 set their state to dead and reset the animations. 
     if (this.currentHealth <= 0 && state != DEAD) { 
         dead = true; 
         state = DEAD;
         animationIndex = 0;
+        animationTick = 0;
+        return;
     }
 
     if(isBoss && !player.getHitbox().intersects(this.enemyRange) && state != DEAD) { 
@@ -144,8 +169,8 @@ public class Enemy extends Entity {
     if (!dead){ 
 
         enemyRange.x = this.hitbox.x-enemyRangeWidth; 
-        enemyRange.y = this.hitbox.y-enemyRangeWidth; 
-        enemyRange.height = (int) this.hitbox.height+2*enemyRangeWidth; 
+        enemyRange.y = this.hitbox.y-enemyRangeHeight; 
+        enemyRange.height = (int) this.hitbox.height+2*enemyRangeHeight; 
         enemyRange.width = (int) this.hitbox.width+2*enemyRangeWidth; 
 
         // reset animation index everytime player interacts with hitbox. 
@@ -164,7 +189,20 @@ public class Enemy extends Entity {
         if(playing.getBombs().isEmpty())
         bombHit = false; 
 
-
+        // check for bomb explosion collisions and damage player. 
+        for (Bombs b : playing.getBombs()) { 
+            if(b.explode)
+                if(b.getExplosionHitbox().intersects(hitbox) && !bombHit){ 
+                    if(isBoss) {
+                        changeHealth(-200);
+                    } else {
+                        changeHealth(-maxHealth);
+                    }
+                    
+                    bombHit = true; 
+                    isActive = true;
+                }
+        }
 
         // check for fireball collisions during boss and remove player's hp. 
         for (Fireballs f : fireballs) { 
@@ -180,7 +218,7 @@ public class Enemy extends Entity {
         }
 
 
-        if (!player.hitbox.intersects(enemyRange) && state != MAGIC && state != IDLE) 
+        if (!player.hitbox.intersects(enemyRange) && state != MAGIC && state != IDLE && state != DEAD) 
         state = WALK; 
 
         if(direction == LEFT && state != IDLE) {
@@ -205,6 +243,7 @@ public class Enemy extends Entity {
             state = RUN;
             xSpeed  *= 1.5;
             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
+            bossXOffset *= -1;
             direction = LEFT; 
             bossXOffset *= -1;
             wFlipped = flipW(); 
@@ -212,6 +251,7 @@ public class Enemy extends Entity {
             }
             
             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
+            bossXOffset *= -1;
             direction = RIGHT; 
             bossXOffset *= -1;
             wFlipped = flipW(); 
@@ -312,7 +352,7 @@ public class Enemy extends Entity {
     /** 
      * @MethodName: updateAnimationTick()
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Dec 15 2023
      * @param N/A
      * @Description: Updates the animatiion tick which updates the animation Index which is then used to move onto the next image in a sprite sheet. 
      * @returns: N/A
@@ -349,11 +389,11 @@ public class Enemy extends Entity {
             g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset  , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
 
         if (dead && animationIndex == GetSpriteAmount(this.enemyType, DEAD) - 1) { 
-            deadOver = true; 
+            deadOver = true;
+            isActive = false;        
         }
-        
-            drawHitbox(g, xOffset);
-    }
+    
+    }    
 
     /** 
      * @MethodName: Animations()
@@ -364,7 +404,6 @@ public class Enemy extends Entity {
      * @returns: N/A
      * @Dependencies: Atlas.java, Planet1Enemies
      * @Throws/Exceptions: N/A
->>>>>>> origin/Hamad's-Branch
      */
     public void Animations() {
         BufferedImage img = getSpriteAtlas(this.Atlas);
@@ -415,7 +454,12 @@ public class Enemy extends Entity {
         dead = false;
         deadOver = false;
         currentHealthBarLen = healthBarWidth;
-        isActive = false;
+        if(!isBoss) {
+            isActive = false;
+        } else {
+            isActive = true;
+        }
+        
       }
 
     /** 
@@ -469,6 +513,7 @@ public class Enemy extends Entity {
                 isActive = true;
                 playing.removeBullet();
                 changeHealth(-(PlayerConstants.getPlayerDamage(playing) + (playing.getPlayer().getUpgradeGem().getNumUpgrades() * playing.getPlayer().getUpgradeGem().getDamageBoost())));
+                playing.getSoundLibrary().playSound("Hit");
             }
         }
     }
@@ -549,7 +594,7 @@ public class Enemy extends Entity {
      /** 
      * @MethodName: magicAttack()
      * @author: Hamad Mohammed
-     * @since: Dec 15 2024
+     * @since: Jan 15 2024
      * @param playing The Protagoninst 
      * @Description: Changes the enemy state to Magic to summon fireballs if certain conditions are met. 
      * @returns: N/A
@@ -563,10 +608,10 @@ public class Enemy extends Entity {
             magicState= 0; 
 
         if(enemyType == Demonboi)
-            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC)
+            if(!hitbox.intersects(playing.getPlayer().getHitbox()) && ((Math.random()*10000) + 1) < 20 && state != MAGIC && state != DEAD)
                 state = MAGIC;
 
-        if(magicState >= magicTimer) { 
+        if(magicState >= magicTimer && state != DEAD) { 
             state = WALK; 
             magicState = 0; 
         }

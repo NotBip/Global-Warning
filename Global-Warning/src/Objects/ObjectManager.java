@@ -229,7 +229,6 @@ public class ObjectManager{
 	*/
     private void drawDoors(Graphics g, int xOffset) { 
         for (BarrierDoor d : playing.getLevelManager().getCurrentLevel().getDoor()) { 
-            d.drawHitbox(g, xOffset);
             if (!d.doorInteract && !d.doorOpen && !d.doorOpened)
             g.drawImage(doorImg[0][0], (int) d.getHitbox().x - xOffset, (int) d.getHitbox().y, (int) (130 - d.getHitbox().width), (int) d.getHitbox().height, null);
             if (d.doorInteract && d.doorOpen && !d.doorOpened)
@@ -257,6 +256,7 @@ public class ObjectManager{
                     if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
                         c.chestInteract = true;
                         c.giveItem(playing.player);
+                        playing.getSoundLibrary().playSound("Unlock");
                         return; 
                     }
              }
@@ -266,6 +266,7 @@ public class ObjectManager{
                    if (c.getHitbox().intersects(playing.getPlayer().getHitbox())) { 
                        c.chestInteract = true;
                        c.giveItem(playing.player);
+                       playing.getSoundLibrary().playSound("Unlock");
                        return; 
                    }
             }
@@ -288,11 +289,13 @@ public class ObjectManager{
             if (!d.doorInteract) { 
                 if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) > 0) { 
                     d.doorInteract = true;
-                    playing.player.useItem(3, playing);
+                    playing.player.useItem(3);
+                    playing.getSoundLibrary().playSound("Unlock");
                     return; 
                 }
                 else if (d.getHitbox().intersects(playing.getPlayer().getHitbox()) && playing.player.getItemQuantity(3) == 0) {
                     System.out.println("YOU DON'T HAVE THE BALLS");
+                    playing.getSoundLibrary().playSound("Locked");
                 }
             }
         }

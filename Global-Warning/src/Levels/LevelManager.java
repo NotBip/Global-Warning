@@ -1,5 +1,14 @@
 package Levels;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : December 14th, 2023
+* @Last Modified: 21 JAN, 2024
+* @Description: Manages all levels when it comes to their sprites and their interactions
+***********************************************
+*/
+
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS_FIRE;
 import static Utilities.Atlas.MENUBACKGROUND_ATLAS_ICE;
@@ -124,6 +133,17 @@ public class LevelManager {
 			}
 	}
 
+	/*
+	* Method Name: draw
+	* Author: Bobby Walden
+	* Creation Date: December 18th, 2023
+	* Modified Date: January 4th, 2024
+*//** Description: Draws all tiles to the screen
+	* @return n/a
+	* Dependencies: Graphics 
+	* Throws/Exceptions: n/a
+	*/
+
 	public void draw(Graphics g, int offset) throws IOException {
 		for (int j = 0; j < levels.get(lvlIndex).getLevelData().length; j++)
 			for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
@@ -141,25 +161,6 @@ public class LevelManager {
 			
 				levels.get(lvlIndex).getCheckpoint().draw(g, offset);
 			
-		}
-	}
-
-	public void update() {
-		updateWaterAnimation();
-	}
-
-	public void setLevelType() {
-		
-	}
-
-	private void updateWaterAnimation() {
-		aniTick++;
-		if (aniTick >= 40) {
-			aniTick = 0;
-			aniIndex++;
-
-			if (aniIndex >= 4)
-				aniIndex = 0;
 		}
 	}
 

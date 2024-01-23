@@ -38,10 +38,10 @@ public class Save {
         cooldownWeap2 = 350;
         damageWeap1 = 10;
         damageWeap2 = 20;
-        amountBomb = 100;
+        amountBomb = 3;
         amountPotion = 2;
         amountKey = 0;
-        amountGem = 1;
+        amountGem = 0;
     }// end Character
 
     /**********************************************************

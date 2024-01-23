@@ -59,8 +59,8 @@ public class Environment {
      */
     public void draw(Graphics g, int xOffset) {
         if(playing.getPlayer().getWindy()) { 
-            g.drawImage(this.windImg[0][animationWindIndex], (int) (0 - xOffset)-100 + GAME_WIDTH, 200, -GAME_WIDTH, GAME_HEIGHT-500, null);
-            g.drawImage(this.windImg[0][animationWindIndex], (int) (0 - xOffset) + GAME_WIDTH, 100, -GAME_WIDTH+200, GAME_HEIGHT-600, null);
+            g.drawImage(this.windImg[0][animationWindIndex], (int) GAME_WIDTH, 200, -GAME_WIDTH, GAME_HEIGHT-500, null);
+            g.drawImage(this.windImg[0][animationWindIndex], (int) GAME_WIDTH, 100, -GAME_WIDTH+200, GAME_HEIGHT-600, null);
         }
     }
 

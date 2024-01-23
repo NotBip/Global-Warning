@@ -1,5 +1,14 @@
 package Entities;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : December 14th, 2023
+* @Last Modified: 22 JAN, 2024
+* @Description: The player themself. How the user interacts with the game through movement, interaction, and attacking
+***********************************************
+*/
+
 import static Utilities.Constants.*;
 import static Utilities.Constants.PlayerConstants.*;
 import Items.Key;
@@ -40,29 +49,30 @@ public class Player extends Entity {
     public boolean isDashing = false; // Is the player dashing?
     public boolean canDash = true; // Can the player dash?
     private boolean isWindy = false; // If the level the player is on is windy
-    private boolean hasKey = true; // If the player has a key
-    private boolean hasBomb = true; // If the player has a bomb
     private final float windSpeed = -1.0f; // A speed added to the player at all times (except when dashing) if the level is windy
     private int xFlipped = 0; // 0 = origin of where the player is drawn is from the top left, width = top right
     private int wFlipped = 1; // 1 = width goes from left to right, -1 = width goes from right to left
     private int wallJumpUpdates = 0; // The amount of updates that have passed since the last wall jump
     private final int maxWallJumpUpdates = 60; // The cooldown between walljumping
     private boolean touchingWall = false; // Is the player running into a wall?
-    private boolean immune = true; // Is the player immune from damage?
-    private int immunityUpdates = 0; // The amount of updates that have passed since the player last took damage
-    private int maxImmunityUpdates = 60; // The maximum amount of time the player can be immune
+    private boolean immune = true; // Is the player immune to damage?
+    private int immunityUpdates = 0; // How long the player has been immune to damage
+    private int maxImmunityUpdates = 60; // The maximum time the player can be immune for
+    private int walkingUpdates = 45; // Updates between playing the step sound
     private boolean checkedWater = false; // Used to stop water from affecting y speed multiple times
     private int waterUpdates = 0; // The amount of updates that the user has been in the water / must be out of the water before regaining all of their oxygen
     private final int maxWaterUpdates = 1200; // The amount of updates the user can be in the water before starting to take damage
-    private Playing playing; 
-    private boolean isDead = false;
-    public HealPotion heal = new HealPotion(this);
-    public Bomb bomb = new Bomb(this);
-    public Key key = new Key(this);
-    public UpgradeGem upgrade = new UpgradeGem(this);
+    private boolean isDead = false; // Is the player dead?
+    public HealPotion heal = new HealPotion(this); // Health potion class initialization
+    public Bomb bomb = new Bomb(this); // Bomb class initialization
+    public Key key = new Key(this); // Key class initialization
+    public UpgradeGem upgrade = new UpgradeGem(this); // Updgrade gem initialization
+    private Playing playing; // Importing in the playing class for player interactions
+
     private final float oxygenBarWidth = 200; // The default width of the player's oxygen bar
     private float currentOxygenBarLen; // The current width of the player's oxygen bar (depending on how long they have been the water)
-    private boolean bombHit = false; 
+    private boolean deathSound = false; // Play the death sound?
+    public boolean bombHit = false; // Has the player been hit by a bomb?
 
     public Player(float x, float y, int width, int height, Playing playing) {
         super(x, y, width, height);
@@ -73,8 +83,9 @@ public class Player extends Entity {
         this.inAir = true;
         this.healthBarWidth = 2 * maxHealth;
         this.healthBarHeight = 30;
-        this.currentHealthBarLen = healthBarWidth * (currentHealth / maxHealth);
+        this.currentHealthBarLen = (int) (healthBarWidth * ((double)currentHealth / (double)maxHealth));
         this.currentOxygenBarLen = oxygenBarWidth;
+        this.playing = playing;
         Animations();
         initialize();
     }
@@ -134,6 +145,8 @@ public class Player extends Entity {
         waterUpdates = 0;
         immunityUpdates = 1;
         currentOxygenBarLen = oxygenBarWidth;
+        bombHit = false;
+        currentHealthBarLen = (int) (healthBarWidth * ((double)currentHealth / (double)maxHealth));
     }
 
 /*
@@ -173,18 +186,15 @@ public class Player extends Entity {
     public void update() {
         moving = false; // Stop the player movement animation in case they stop moving this update
 
-        for(Bombs b : playing.getBombs()) { 
-            if(b.explode)
-                if(this.getHitbox().intersects(b.bombHitbox) && !isImmune())
-                    this.changeHealth(-maxHealth/2);
-        }
+
 
 
         if (currentHealth <= 0) { 
             if (state != DEAD) { 
-            state = DEAD;
-            animationTick = 0;
-            animationIndex = 0; 
+                isDead = true;
+                state = DEAD;
+                animationTick = 0;
+                animationIndex = 0; 
             }
              else if (animationIndex == GetSpriteAmount(DEAD) - 1 && animationTick >= animationSpeed - 1) { 
                 Playing.dead = true;
@@ -193,9 +203,15 @@ public class Player extends Entity {
         }
         return; 
     }   
-        if (!isDead) {
 
-
+        isDead = false;
+            for (Bombs b : playing.getBombs()) { 
+                if(b.explode)
+                    if(b.getExplosionHitbox().intersects(this.hitbox) && !bombHit){ 
+                        this.changeHealth(-maxHealth/4);
+                        bombHit=true;
+                    } 
+            }
             // Set the player's default speed at the start of the update before editing it later in the method 
         if(isWindy) {
             xSpeed = windSpeed;
@@ -263,11 +279,20 @@ public class Player extends Entity {
                     xSpeed += moveSpeed;
                     playerDir = RIGHT;
                     moving = true;
+                    if (inAir == false && walkingUpdates <= 0){
+                    playing.getSoundLibrary().playSound("Walk");
+                    walkingUpdates = 45;
+                }
                 } else if (left && !right) { // Left
                     xSpeed -= moveSpeed;
                     playerDir = LEFT;
                     moving = true;
+                    if (inAir == false && walkingUpdates <= 0) {
+                    playing.getSoundLibrary().playSound("Walk");
+                    walkingUpdates = 45;
+                    }
                 }
+                walkingUpdates --;
             }
         }
 
@@ -333,6 +358,7 @@ public class Player extends Entity {
                 hitbox.y = fixYPos(hitbox, airSpeed);
                 dashYSpeed = 0; 
                 inAir = false;
+                playing.getSoundLibrary().playSound("Land");
                 airSpeed = 0;
             }
         } 
@@ -345,7 +371,6 @@ public class Player extends Entity {
                 moving = false;
                 hitbox.x = fixXPos(hitbox, xSpeed);
             }
-        }
         updateAnimationTick();
         setAnimation();
     }
@@ -384,6 +409,7 @@ public class Player extends Entity {
             }
         
         inAir = true;
+        playing.getSoundLibrary().playSound("Jump");
         if(checkWater(hitbox.x, hitbox.y, lvlData)) {
             airSpeed = jumpSpeed/1.5f;
         } else {
@@ -415,6 +441,7 @@ public class Player extends Entity {
         }
         updatesBetweenDash = 1;
         isDashing = true;
+        playing.getSoundLibrary().playSound("Dash");
         canDash = false;
         if ((left && !right) || (!up && !down && !left && !right && playerDir == LEFT)) { // Set dash left
             dashXSpeed = -moveSpeed * dashSpeedMultiplier;
@@ -572,7 +599,7 @@ public class Player extends Entity {
     public void drawItem (Graphics g){
         //g.setColor(Color.black);
         g.setColor(new Color(0,0,0,110));
-        g.fillRect(20, 100, 50, 50);
+        g.fillRect(170, 30, 50, 50);
         
         BufferedImage imageItem;
 
@@ -583,7 +610,7 @@ public class Player extends Entity {
         } else{
             imageItem = getSpriteAtlas(BOMB_ATLAS);       
         }
-        g.drawImage(imageItem, 20,100, WEAPON_WIDTH, WEAPON_HEIGHT, null);
+        g.drawImage(imageItem, 170,30, WEAPON_WIDTH, WEAPON_HEIGHT, null);
     }
 
     /**
@@ -639,7 +666,15 @@ public class Player extends Entity {
      * @since December 16, 2023
      */
      public void changeHealth(int value) {
-		currentHealth += value;
+		if (value < 0 && currentHealth > 0){
+            playing.getSoundLibrary().playSound("Damage");
+            deathSound = false;
+            }
+        currentHealth += value;
+        if (value < 0 && currentHealth < 0 && deathSound == false){
+        playing.getSoundLibrary().playSound("Explode");
+        deathSound = true;
+        }
 		currentHealth = Math.max(Math.min(currentHealth, maxHealth), 0);
         currentHealthBarLen = healthBarWidth * ((float)currentHealth / (float)maxHealth);
         immunityUpdates = 1;
@@ -666,6 +701,17 @@ public class Player extends Entity {
         return isDead;
     }
 
+    /**
+	@Method Name: getItemQuantity
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 19 JAN, 2024
+	@Description: Returns the quantity of the respective item.
+	@Parameters: int item
+	@Returns: int
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
     public int getItemQuantity(int item) {
         switch (item) {
             case 1:
@@ -681,12 +727,24 @@ public class Player extends Entity {
         }
     }
 
-    public void useItem(int item, Playing playing) {
+    /**
+	@Method Name: useItem
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Updates and uses the respective item.
+	@Parameters: int item
+	@Returns: N/A
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
+    public void useItem(int item) {
         if (getItemQuantity(item) > 0) {
         switch (item) {
             case 1:
             heal.useItem();
             changeHealth(heal.getHealingAmount());
+            playing.getSoundLibrary().playSound("Heal");
             break;
             case 2:
             bomb.useItem();
@@ -697,15 +755,28 @@ public class Player extends Entity {
             case 4:
             upgrade.useItem();
             playing.updateUpgrade();
+            playing.getSoundLibrary().playSound("Heal");
             break;
             default:
         }
     }
     else {
         System.out.println("You don't have enough!");
+        playing.getSoundLibrary().playSound("Denied");
     }
     }
 
+    /**
+	@Method Name: gainItem
+	@Author: Bobby Walden
+	@Creation Date: 18 JAN, 2024
+	@Modified Date: 19 JAN, 2024
+	@Description: Adds the number of items for the respective item.
+	@Parameters: String item, int quantity
+	@Returns: N/A
+	@Dependencies: Items
+	@Throws/Exceptions: N/A
+	*/
     public void gainItem(String item, int quantity) {
         switch (item) {
             case "Potion":

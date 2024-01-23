@@ -1,5 +1,14 @@
 package Entities;
 
+/**
+***********************************************
+* @Author : Ryder Hodgson
+* @Originally made : December 14th, 2023
+* @Last Modified: 21 JAN, 2024
+* @Description: The base class for basically anything with a hitbox and interactions
+***********************************************
+*/
+
 import static Utilities.Constants.GAME_HEIGHT;
 import static Utilities.Constants.TILE_SIZE;
 

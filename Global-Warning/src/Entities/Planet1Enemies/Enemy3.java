@@ -1,3 +1,11 @@
+/**
+ * @author: Hamad Mohammed
+ * @since: 22 Jan 2024
+ * @Last Modified: 22 Jan 2024
+ * @Description: Class used to initialize an enemy using the Enemy Constructor. 
+ */
+
+
 package Entities.Planet1Enemies;
 
 import static Utilities.Atlas.SHARDBOI_ATLAS;

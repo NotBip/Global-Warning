@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 1 JAN 2024
+* @Last Modified: 22 JAN 2024
+* @Description: Mouse inputs for mouse listeners
+***********************************************
+*/
+
 package UserInputs;
 
 import java.awt.event.ActionEvent;
@@ -23,6 +32,14 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
         timer = new Timer(1, this);
 
     }
+
+      /**
+	@Method Name: mouseClicked
+	@Modified Date: 22 JAN, 2024
+	@Description: gets mouse clicked for state
+	@Parameters: Mouse Event e
+	@Dependencies: Panel, Gamestate
+	*/
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -52,6 +69,14 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
         // works
     }
 
+     /**
+	@Method Name: mouseDragged
+	@Modified Date: 22 JAN, 2024
+	@Description: gets mouse dragged for state
+	@Parameters: Mouse Event e
+	@Dependencies: Panel, Gamestate
+	*/
+
     @Override
     public void mouseDragged(MouseEvent e) {
         lastMouseEvent = e;
@@ -73,6 +98,13 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
                 break;
         }
     }
+    /**
+	@Method Name: mouseMoved
+	@Modified Date: 22 JAN, 2024
+	@Description: gets mouse moved for state
+	@Parameters: Mouse Event e
+	@Dependencies: Panel, Gamestate
+	*/
 
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -102,6 +134,14 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
         // remain stagnant if gone
     }
 
+    /**
+	@Method Name: mousePressed
+	@Modified Date: 22 JAN, 2024
+	@Description: gets mouse pressed  for state
+	@Parameters: Mouse Event e
+	@Dependencies: Panel, Gamestate
+	*/
+
     @Override
     public void mousePressed(MouseEvent e) {
         lastMouseEvent = e;
@@ -124,6 +164,14 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
         }
         
     }
+
+    /**
+	@Method Name: mouseReleased
+	@Modified Date: 22 JAN, 2024
+	@Description: gets mouse released  for state
+	@Parameters: Mouse Event e
+	@Dependencies: Panel, Gamestate
+	*/
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -148,6 +196,14 @@ public class MouseInputs implements MouseMotionListener, MouseListener, ActionLi
         }
 
     }
+
+    /**
+	@Method Name: actionPerformed
+	@Modified Date: 22 JAN, 2024
+	@Description: gets events applies to state
+	@Parameters: Action Event e
+	@Dependencies: Panel, Gamestate
+	*/
 
     @Override
     public void actionPerformed(ActionEvent e) {

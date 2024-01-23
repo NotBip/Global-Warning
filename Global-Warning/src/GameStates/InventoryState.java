@@ -229,10 +229,13 @@ public class InventoryState {
 				if (slot.getMousePressed() && !Playing.paused) {
 					if (slot.item < 4) {
 						Playing.setGunIndex(slot.item);
+						playing.bombs.clear();
+						playing.BombReady = true;
+						playing.lastBomb = 0;
 					} else if (slot.item == 4) {
-						playing.getPlayer().useItem(1, playing);
+						playing.getPlayer().useItem(1);
 					} else if (slot.item == 6) {
-						playing.getPlayer().useItem(4, playing);
+						playing.getPlayer().useItem(4);
 					}
 				}
 				slot.select = true;

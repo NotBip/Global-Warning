@@ -1,3 +1,13 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 10 DEC, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library made for all constants
+***********************************************
+*/
+
+
 package Utilities;
 
 import GameStates.Playing;
@@ -38,7 +48,14 @@ public class Constants {
 		public static final int DOWN = 3;
   }
 
-
+/**
+***********************************************
+* @Author : Nusayba
+* @Originally made : 1 JAN, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library made for all button image constants
+***********************************************
+*/
 	public static class Buttons {
 		public static final int B_WIDTH = 140;
 		public static final int B_HEIGHT = 56;
@@ -62,6 +79,15 @@ public class Constants {
 		public static final int LOAD_HEIGHT = 91;
 	}
 
+
+		/**
+	***********************************************
+	* @Author : Hamad Mohammed
+	* @Originally made : 15 JAN, 2024
+	* @Last Modified: 18 JAN, 2024
+	* @Description: Module to call enemy constants when needed.
+	***********************************************
+	*/
 	public static class EnemyConstants {
 
 			public static final String IDLE = "IDLE";
@@ -70,7 +96,7 @@ public class Constants {
 			public static final String ATTACK = "ATTACK"; 
 			public static final String DEAD = "DEAD"; 
 			public static final String MAGIC = "MAGIC"; 
-
+			
 			public static final int Waterboi = 0; 
 			public static final int WATERBOI_HEIGHT = 93 *(int) Game.SCALE; 
 			public static final int WATERBOI_WIDTH = 60 *(int) Game.SCALE; 
@@ -158,7 +184,17 @@ public class Constants {
 
 
 			
-			
+		/**
+		@Method Name: GetSpriteAmount
+		@Author: hamad Mohammed
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns number of sprites per object
+		@Parameters: int enemy_type, String enemy_state
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/		
 	public static int GetSpriteAmount(int enemy_type, String enemy_state) {
 		switch (enemy_state) {
 
@@ -238,6 +274,17 @@ public class Constants {
 		}
 	}
 
+		/**
+		@Method Name: getMaxEnemyHealth
+		@Author: hamad Mohammed
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns the max health for each enemy
+		@Parameters: int enemyType
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/		
 	public static int getMaxEnemyHealth(int enemyType) {
 		switch (enemyType) {
 			case Fireboi:
@@ -255,6 +302,19 @@ public class Constants {
 		}
 	}
 
+
+	
+	/**
+	@Method Name: getEnemyDamage
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the max damage for each enemy
+	@Parameters: int enemyType
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/	
 	public static int getEnemyDamage(int enemyType) { 
 		switch (enemyType) {
 
@@ -271,8 +331,20 @@ public class Constants {
 			default:
 				return 0; 
 		}
-	}
+	}	
 
+	
+	/**
+	@Method Name: findState
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the the correct state for each enemy
+	@Parameters: int enemy_type, String enemy_state
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int findState(int enemy_type, String enemy_state) { 
 		switch(enemy_state) { 
 			case "IDLE": 
@@ -352,6 +424,18 @@ public class Constants {
 		}
 	}
 
+
+	/**
+	@Method Name: getAttackSpeed
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the the attack speed for each enemy
+	@Parameters: int enemy_type
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int getAttackSpeed(int enemy_type) { 
 		
 		switch (enemy_type) {
@@ -371,6 +455,18 @@ public class Constants {
 		}
 	}
 
+
+	/**
+	@Method Name: getFinalAttack
+	@Author: hamad Mohammed
+	@Creation Date: 15 JAN, 2024
+	@Modified Date: 16 JAN, 2024
+	@Description: Returns the last attack animation for each enemy
+	@Parameters: int enemy_type
+	@Returns: int
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
 	public static int getFinalAttack(int enemy_type) { 
 		switch (enemy_type) {
 
@@ -445,6 +541,15 @@ public class Constants {
 		}
     }
 
+	/**
+	***********************************************
+	* @Author : Bobby Walden
+	* @Originally made : 15 JAN, 2024
+	* @Last Modified: 18 JAN, 2024
+	* @Description: Manages the objects during the game session.
+	***********************************************
+	*/
+
 	public static class objectConstants { 
 
 		public static final int Spike = 0; 		
@@ -454,6 +559,18 @@ public class Constants {
 		public static final int Sign = 4;
 		public static final int SIGN_HEIGHT = 20;
 
+
+		/**
+		@Method Name: GetSpriteAmount
+		@Author: Bobby Walden
+		@Creation Date: 15 JAN, 2024
+		@Modified Date: 16 JAN, 2024
+		@Description: Returns number of sprites per object
+		@Parameters: int objectType
+		@Returns: int
+		@Dependencies: N/A
+		@Throws/Exceptions: N/A
+		*/
 		public static int GetSpriteAmount(int objectType) { 
 			switch (objectType) { 
 				case Spike: 

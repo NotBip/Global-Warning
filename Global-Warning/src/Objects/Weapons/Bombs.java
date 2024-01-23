@@ -17,6 +17,15 @@ import java.util.ConcurrentModificationException;
 import Entities.Entity;
 import GameStates.Playing;
 
+/**
+***********************************************
+* @Author : Bobby Walden
+* @Originally made : 16 JAN, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Calls, and initiates the bomb projectile.
+***********************************************
+*/
+
 public class Bombs extends Entity {
 
     BufferedImage img, bombImg;
@@ -39,8 +48,7 @@ public class Bombs extends Entity {
     private float bombRangeW; 
     private float bombRangeH; 
     public Rectangle2D.Float bombHitbox; 
-
-
+    private boolean explosionSound = false;
 
     public Bombs(Playing playing, Weapon1 weapon, int[][] lvlData, double time, double startX, double startY, double targetX, double targetY, int xOffset) {
         super((float)startX, (float)startY, 32, 32);
@@ -73,12 +81,22 @@ public class Bombs extends Entity {
         this.directionY = Math.sin(angle);
     }
 
+    /**
+	@Method Name: update
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the chest.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void update() { 
         double tempChange = 0;
 
     if (Playing.gunIndex == 3) {
-        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData)) {
-            //System.out.println("Time: " + time + ", directionX: " + directionX + ", directionY: " + directionY);
+        if(canMove((float) (hitbox.x + speed * directionX), (float) (hitbox.y - speed * directionY), hitbox.width, hitbox.height, lvlData) && !stuckBehindDoor) {
             // Change x of bomb
             this.bombHitbox.x = hitbox.x-32; 
             this.bombHitbox.y = hitbox.y-32; 
@@ -88,13 +106,13 @@ public class Bombs extends Entity {
             if(playing.BombReady)
             playing.BombReady = false; 
 
-            tempChange = speed * ((vertX / initX) * 10);
+            tempChange = Math.min(Math.max(speed * ((vertX / initX) * 10), -3 * speed), 3 * speed); // cap out the speed at 3 * the speed
             //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
             x += tempChange;
             hitbox.x += tempChange;
             //System.out.print(", NewX: " + x + "; OldY: " + y );
 
-            tempChange = speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2));
+            tempChange = Math.min(Math.max(speed * (0.5 * 9.8 * Math.pow((this.time + (vertY / initY)), 2)), -3 * speed), 5 * speed);
             if ((time + (vertY / initY)) > 0){
             y += tempChange;
             hitbox.y += tempChange;
@@ -117,6 +135,17 @@ public class Bombs extends Entity {
     }
     }
 
+    /**
+	@Method Name: draw
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Draws the appropriate image over the hitbox.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Object, Entity, Playing
+	@Throws/Exceptions: N/A
+	*/
     public void draw(Graphics g, int xOffset) {
         Graphics2D g2d = (Graphics2D) g;
         int drawX = (int) Math.round(x - xOffset);
@@ -129,9 +158,13 @@ public class Bombs extends Entity {
         g.drawImage(this.bombImg, (int) this.x+this.xFlipped - xOffset, (int) this.y, WEAPON_WIDTH*this.wFlipped / 2, WEAPON_HEIGHT / 2, null);
 
         g2d.setColor(Color.WHITE);
-        drawHitbox(g, xOffset);
+        //drawHitbox(g, xOffset);
 
         if(explode){ 
+            if (explosionSound == false) {
+                playing.getSoundLibrary().playSound("Explode");
+                explosionSound = true;
+            }
             updateAnimationTick();   
             drawBombAnimation(g, xOffset);
             if(animationIndex >= 5 && animationTick >= aniSpeed - 1){ 
@@ -144,14 +177,37 @@ public class Bombs extends Entity {
 
     }
 
+    /**
+	@Method Name: drawBombAnimation
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the chest.
+	@Parameters: Graphics g, int xOffset
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void drawBombAnimation(Graphics g, int xOffset) { 
         g.setColor(Color.white);
-        // g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
-        g.drawImage(animations[9][animationIndex], (int) hitbox.x-32-xOffset , (int) hitbox.y-32, 128, 128, null);
+        //g.drawRect((int) this.bombHitbox.x-xOffset , (int) this.bombHitbox.y, (int) this.bombHitbox.width, (int) this.bombHitbox.height);    
+        g.drawImage(animations[9][animationIndex], (int) bombHitbox.x-xOffset , (int) bombHitbox.y, 128, 128, null);
     }
-
+    
+    /**
+	@Method Name: loadImage
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 22 JAN, 2024
+	@Description: Loads the respective image for the bomb.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object, Playing, Atlas, 
+	@Throws/Exceptions: N/A
+	*/
     private void loadImage() { 
-
+        playing.getSoundLibrary().playSound("Throw");
+        explosionSound = false;
         bombImg = getSpriteAtlas(BOMB_ATLAS);
 
         BufferedImage img = getSpriteAtlas(BOMBEXPLODE_ATLAS); 
@@ -163,6 +219,17 @@ public class Bombs extends Entity {
         }
     }
 
+    /**
+	@Method Name: updateAnimationTick
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the animations for the bomb.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: N/A
+	@Throws/Exceptions: N/A
+	*/
     private void updateAnimationTick() {
         animationTick++;
         if (animationTick >= aniSpeed) {
@@ -173,6 +240,9 @@ public class Bombs extends Entity {
         }
     }
 
+    public Rectangle2D.Float getExplosionHitbox() {
+        return bombHitbox;
+    }
     
     public void setTime() {
         this.time = 0;
@@ -190,7 +260,17 @@ public class Bombs extends Entity {
         return (int) Math.round(y);
     }
 
-    
+    /**
+	@Method Name: updateBombs()
+	@Author: Bobby Walden
+	@Creation Date: 16 JAN, 2024
+	@Modified Date: 17 JAN, 2024
+	@Description: Updates the custom timer for bomb, for physics.
+	@Parameters: N/A
+	@Returns: N/A
+	@Dependencies: Object
+	@Throws/Exceptions: N/A
+	*/
     public void updateBombs() {
         try {
             for (Bombs bomb : playing.bombs) {

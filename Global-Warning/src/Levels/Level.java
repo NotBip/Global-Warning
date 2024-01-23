@@ -26,7 +26,7 @@ import Utilities.Constants;
 
 /** 
 ************************************************************
-@Author : Kaarin Gaming
+@Author : Kaarin Gaming / Ryder Hodgson
 @Ref : https://youtube.com/playlist?list=PL4rzdwizLaxYmltJQRjq18a9gsSyEQQ-0&si=t85p0gaCX1tJNt_r
 @Published : May 2022
 @Modifiers : Bobby, Nusayba, Ryder, Hamad
@@ -87,7 +87,6 @@ public class Level {
 	}
 
 	private void loadLevel() {
-
 		for (int y = 0; y < img.getHeight(); y++)
 			for (int x = 0; x < img.getWidth(); x++) {
 				Color c = new Color(img.getRGB(x, y));

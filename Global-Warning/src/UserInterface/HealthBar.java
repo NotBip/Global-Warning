@@ -25,10 +25,6 @@ public class HealthBar {
 
     public HealthBar(Playing playing) { 
         loadImage(); 
-        widthHP = 0; 
-        widthO2 = 0;
-        widthHPOffset = 0;
-        widthO2Offset = 0;
         removeO2 = false;
         addO2 = false;
         this.playing = playing; 
@@ -100,8 +96,13 @@ public class HealthBar {
     public void addHP(double percent) { 
 
         if(widthHP <= 1443/4) { 
-            widthHP = widthHP + (int) ((1443/4)*(percent));;
+            widthHP = widthHP + (int) ((1443/4)*(percent));
             widthHPOffset -= (int) ((1443/4)*(percent)) / 3.27;
+        }
+        
+        if (widthHP >= 1443/4) { 
+            widthHP = 1443/4; 
+            widthHPOffset = 0; 
         }
 
     }
@@ -180,8 +181,8 @@ public class HealthBar {
     }
 
     public void loadSave(double percent) { 
-        widthHPOffset = 115;
-        widthHP = 0; 
+        //widthHPOffset = 115;
+        //widthHP = 0; 
         addHP(percent);
     }
 

@@ -139,6 +139,8 @@ public class EnemyManager {
       if(!b.isDead()) { 
         b.draw(g, xOffset, playing);
         b.drawHealth(g, xOffset);
+      } else{
+        Playing.endGame = true;
       }
     }
 

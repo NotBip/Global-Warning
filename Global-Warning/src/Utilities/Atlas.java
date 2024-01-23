@@ -1,3 +1,12 @@
+/**
+***********************************************
+* @Author : All
+* @Originally made : 10 DEC, 2024
+* @Last Modified: 22 JAN, 2024
+* @Description: Library for all images used in project
+***********************************************
+*/
+
 package Utilities;
 
 import java.awt.image.BufferedImage;
@@ -63,7 +72,7 @@ public class Atlas {
     public static final String HEALTH_ATLAS = "HealthBar.png"; 
     public static final String OBELISK_ATLAS = "Obelisk.png"; 
 
-
+    public static final String CONTINUE_ATLAS = "to_be_continued.png";
 
 
 
@@ -73,7 +82,7 @@ public class Atlas {
       * Takes in a image filename and returns a buffered image QOL
       * @param filename The name of the image file being read. 
       * @return Buffered Image of the image that has been read. 
-      * @author Hamad Mohammed
+      * @author Kaarin Gaming
       * @since December 16, 2023
       */
     public static BufferedImage getSpriteAtlas(String filename){

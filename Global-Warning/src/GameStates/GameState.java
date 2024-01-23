@@ -1,5 +1,6 @@
 package GameStates;
 // From KaarinGaming 
+
 public enum GameState {
     MENU, PLAYING, QUIT, OPTIONS, SAVE;
 

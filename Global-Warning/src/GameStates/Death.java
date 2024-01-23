@@ -176,10 +176,13 @@ public class Death {
 	public void mousePressed(MouseEvent e) {
 		if (isIn(e, menuBackB)) {
 			menuBackB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Deselect");
+			playing.getSoundLibrary().playSound("EndMusic");
 
 		}
 		if (isIn(e, replayB)) {
 			replayB.setMousePressed(true);
+			playing.getSoundLibrary().playSound("Select");
 
 		}
 	}
@@ -206,7 +209,6 @@ public class Death {
 
 		if (isIn(e, replayB)) {
 			if (replayB.getMousePressed())
-			playing.resetAll();
                 switch (Checkpoint.fileNum) {
                     case 1:
                     SaveState.buttons[0].loadSave(playing);
@@ -224,6 +226,7 @@ public class Death {
 				replayB.applyGamestate();
 				Playing.paused = false;
                 Playing.dead = false;
+				playing.resetAll();
 		}
 
 		resetButtons();

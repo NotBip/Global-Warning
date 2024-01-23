@@ -22,7 +22,10 @@ import java.io.RandomAccessFile;
 
 import static Utilities.Atlas.*;
 
+import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.KeyChest;
+
 import static Utilities.Constants.Buttons.*;
 import static GameStates.Playing.*;
 
@@ -227,17 +230,33 @@ public class SaveButton extends Button {
 	 * @Description: sets all necessary elements to save file contents
 	 * @Parameters: Playing
 	 * @returns:N/A
-	 * @Dependencies: Save, LevelManager, Chest, Playing
+	 * @Dependencies: Save, LevelManager, Chest, Playing, BarrierDoor
 	 * @Throws/Exceptions: N/A
 	 **/
 
 	public void loadSave(Playing playing) {
 		if (levelManager.getCurrentLevel().getCheckpoint() != null) {
 			levelManager.getCurrentLevel().getCheckpoint().resetReached();
+		
 		}
+
 		if (levelManager.getCurrentLevel().getChest() != null) {
 			for (Chest chest : levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
+			}
+
+		}
+
+		if (levelManager.getCurrentLevel().getKeyChest() != null) {
+			for (KeyChest keychest : levelManager.getCurrentLevel().getKeyChest()) {
+				keychest.resetKeyChests();
+			}
+
+		}
+
+		if (levelManager.getCurrentLevel().getDoor() != null) {
+			for (BarrierDoor door : levelManager.getCurrentLevel().getDoor()) {
+				door.resetDoor();
 			}
 
 		}
@@ -246,11 +265,15 @@ public class SaveButton extends Button {
 			case 1:
 				System.out.println("save 1: loaded");
 				playing.player.currentHealth = (save1.getHealth());
-				playing.getHealthBar().loadSave((float)save1.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave((float) save1.getHealth());
 				Playing.gunIndex = save1.getHold();
 				Playing.fireRateWeapon1 = save1.getCooldown1();
 				Playing.fireRateWeapon2 = save1.getCooldown2();
 				LevelManager.lvlIndex = save1.getLevel();
+				Playing.OGdamageWeapon1 = save1.getDamage1();
+				Playing.OGdamageWeapon2 = save1.getDamage2();
+				Playing.damageWeapon1 = save1.getDamage1();
+				Playing.damageWeapon2 = save1.getDamage2();
 
 				// get items
 				playing.player.key.setQuantity(save1.getKey());
@@ -260,17 +283,22 @@ public class SaveButton extends Button {
 
 				if (save1.getHealth() == 0) {
 					playing.player.currentHealth = (playing.player.maxHealth);
-					playing.getHealthBar().loadSave(1);
+					playing.getHealthBar().loadSave(1.0);
 				}
 
 				break;
+
 			case 2:
 				System.out.println("save 2: loaded");
 				playing.player.currentHealth = (save2.getHealth());
-				playing.getHealthBar().loadSave((float)save2.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave((float) save2.getHealth());
 				Playing.gunIndex = save2.getHold();
 				Playing.fireRateWeapon1 = save2.getCooldown1();
 				Playing.fireRateWeapon2 = save2.getCooldown2();
+				Playing.OGdamageWeapon1 = save2.getDamage1();
+				Playing.OGdamageWeapon2 = save2.getDamage2();
+				Playing.damageWeapon1 = save2.getDamage1();
+				Playing.damageWeapon2 = save2.getDamage2();
 				LevelManager.lvlIndex = save2.getLevel();
 
 				// get items
@@ -281,18 +309,22 @@ public class SaveButton extends Button {
 
 				if (save2.getHealth() == 0) {
 					playing.player.currentHealth = (playing.player.maxHealth);
-					playing.getHealthBar().loadSave(1);
+					playing.getHealthBar().loadSave(1.0);
 				}
 				break;
 
 			case 3:
 				System.out.println("save 3: loaded");
 				playing.player.currentHealth = (save3.getHealth());
-				playing.getHealthBar().loadSave((float) save3.getHealth() / playing.player.maxHealth);
+				playing.getHealthBar().loadSave((float) save3.getHealth());
 				Playing.gunIndex = save3.getHold();
 				Playing.fireRateWeapon1 = save3.getCooldown1();
 				Playing.fireRateWeapon2 = save3.getCooldown2();
 				LevelManager.lvlIndex = save3.getLevel();
+				Playing.OGdamageWeapon1 = save3.getDamage1();
+				Playing.OGdamageWeapon2 = save3.getDamage2();
+				Playing.damageWeapon1 = save3.getDamage1();
+				Playing.damageWeapon2 = save3.getDamage2();
 
 				// get items
 				playing.player.key.setQuantity(save3.getKey());
@@ -302,7 +334,7 @@ public class SaveButton extends Button {
 
 				if (save3.getHealth() == 0) {
 					playing.player.currentHealth = (playing.player.maxHealth);
-					playing.getHealthBar().loadSave(1);
+					playing.getHealthBar().loadSave(1.0);
 				}
 
 				break;
