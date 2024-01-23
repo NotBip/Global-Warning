@@ -20,6 +20,7 @@ public class Boss2 extends Enemy {
     public float yItem = 0;
     public int wItem, hItem = 20;
     private int x; 
+    public boolean droppedKey = false; 
 
     public Boss2(float x, float y, int[][] lvlData) {
         super(x, y, COOLBOI_WIDTH, COOLBOI_HEIGHT, Coolboi, coolboiArrI, coolboiArrJ, coolboiW, coolboiH, COOLBOI_ATLAS, 0, 1, coolSpeed, coolSizeX, coolSizeY);
@@ -35,6 +36,7 @@ public class Boss2 extends Enemy {
         super.bossYOffset = 30;
         this.yItem = hitbox.y + hitbox.height;  
         this.direction = RIGHT; 
+        System.out.println("ASD");
     }
 
 
@@ -51,7 +53,6 @@ public class Boss2 extends Enemy {
             lastTime = time1;
            
         } else if (!marker2 ){
-            System.out.println(yItem);
             g.drawImage(getSpriteAtlas(KEY_ATLAS), (int) this.hitbox.x - xOffset, (int) yItem, 40,40, null );
           
             if (yItem > 400){

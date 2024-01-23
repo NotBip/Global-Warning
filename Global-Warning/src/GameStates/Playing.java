@@ -316,8 +316,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             if (player.getHitbox().x <= levelManager.getCurrentLevel().getLeftTransition().x // Checking if touching left door
                     && levelManager.getLevelIndex() > 0) { // Make sure there is a level to transition into
 
-                // Load previous room
-                resetObjects();
+
                 levelManager.setLevelIndex(levelManager.getLevelIndex() - 1); 
                 if(levelManager.getCurrentLevel().getRightSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
                     loadNextLevel(2);
@@ -335,8 +334,7 @@ public class Playing extends State implements KeyListener, MouseListener {
             if (player.getHitbox().x + player.getHitbox().width >= levelManager.getCurrentLevel().getRightTransition().x // Check if touching right door
                     && levelManager.getLevelIndex() < levelManager.getAmountOfLevels()-1) { // Make sure there is a level to transition into
                 
-                // Load next room
-                resetObjects();
+
                 levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
                 if (levelManager.getLevelIndex() == 10) {
                     getSoundLibrary().playSound("Boss");
@@ -623,6 +621,8 @@ public class Playing extends State implements KeyListener, MouseListener {
 	*/
 
     public void resetAll() {
+        resetObjects(); 
+        enemyManager.resetMiniBosses();
         player.reset();
         enemyManager.resetEnemies();
         resetLightning();

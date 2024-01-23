@@ -125,7 +125,6 @@ import java.util.ArrayList;
       * @Throws/Exceptions: N/A
       */
      public void move(Player player, Playing playing) {
-        System.out.println(direction);
      // check for bomb explosion collisions and damage player. 
      for (Bombs b : playing.getBombs()) { 
          if(b.explode)
@@ -177,7 +176,7 @@ import java.util.ArrayList;
                      } else {
                          changeHealth(-maxHealth);
                      }
-                     
+                    
                      bombHit = true; 
                      isActive = true;
                  }
@@ -221,15 +220,17 @@ import java.util.ArrayList;
          if (player.hitbox.intersects(enemyRange) && !isAttack && state != MAGIC) {
              state = RUN;
              xSpeed  *= 1.5;
-             if (player.hitbox.x < this.hitbox.x && direction == RIGHT && bossXOffset != Math.abs(bossXOffset)) {
-             bossXOffset *= -1;
+             if (player.hitbox.x < this.hitbox.x && direction == RIGHT) {
+                if(bossXOffset != Math.abs(bossXOffset))
+                bossXOffset *= -1;
              direction = LEFT; 
              wFlipped = flipW(); 
              xFlipped = flipX();
              }
              
-             if (player.hitbox.x > this.hitbox.x && direction == LEFT && bossXOffset == Math.abs(bossXOffset)) { 
-             bossXOffset *= -1;
+             if (player.hitbox.x > this.hitbox.x && direction == LEFT) { 
+                if(bossXOffset == Math.abs(bossXOffset))
+                bossXOffset *= -1;
              direction = RIGHT; 
              wFlipped = flipW(); 
              xFlipped = flipX();
@@ -442,7 +443,6 @@ import java.util.ArrayList;
          } else {
              isActive = true;
          }
-         
        }
  
      /** 

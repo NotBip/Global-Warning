@@ -25,7 +25,6 @@ public class EnemyManager {
 
   Player player;
   private Level currentLevel;
-  private boolean droppedKey = false; 
 
   public EnemyManager(Player player) {
     this.player = player;
@@ -150,12 +149,12 @@ public class EnemyManager {
       if(!c.isDead()) { 
         c.draw(g, xOffset);
         c.drawHealth(g, xOffset);
-        c.drawHitbox(g, xOffset);
-      } else{ 
-      c.keyAnimation(g, xOffset);
-        if(!droppedKey) { 
+       // c.drawHitbox(g, xOffset);
+      }
+      if(c.isDead()){      
+        c.keyAnimation(g, xOffset);
+        if(!c.droppedKey) { 
         playing.player.gainItem("Key", 1);
-        droppedKey = true; 
         }
       }
     }
@@ -191,6 +190,10 @@ public class EnemyManager {
       s.resetEnemy();
     }
     
+    for (Boss2 c : currentLevel.getCoolBoi()) { 
+      c.resetEnemy();
+    }
+
     
   }
 
@@ -206,9 +209,7 @@ public class EnemyManager {
    * @Throws/Exception: N/A
    */
   public void resetMiniBosses() { 
-    for (Boss2 c : currentLevel.getCoolBoi()) { 
-      c.resetEnemy();
-    }
+
 
   }
 }
