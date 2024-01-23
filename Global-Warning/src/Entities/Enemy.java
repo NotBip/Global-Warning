@@ -367,7 +367,9 @@ import java.util.ArrayList;
      public void draw(Graphics g, int xOffset) {
          for (Fireballs f : fireballs) 
              f.drawFireBall(g, xOffset);
-       
+        
+            // drawHitbox(g, xOffset);
+
          if (!deadOver)
              g.drawImage(animations[findState(this.enemyType, state)][animationIndex], (int) ((hitbox.x - xOffset) + xFlipped) - bossXOffset , (int) hitbox.y - bossYOffset, Ewidth * wFlipped, Eheight, null);
       

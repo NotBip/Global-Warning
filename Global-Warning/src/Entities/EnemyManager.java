@@ -152,7 +152,7 @@ public class EnemyManager {
        // c.drawHitbox(g, xOffset);
       }
       if(c.isDead()){      
-        c.keyAnimation(g, xOffset);
+        // c.keyAnimation(g, xOffset);
         if(!c.droppedKey) { 
         playing.player.gainItem("Key", 1);
         }

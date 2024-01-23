@@ -40,25 +40,25 @@ public class Boss2 extends Enemy {
     }
 
 
-    public void keyAnimation (Graphics g, int xOffset) {
-        long time1 = System.currentTimeMillis();
+    // public void keyAnimation (Graphics g, int xOffset) {
+    //     long time1 = System.currentTimeMillis();
 
-        if (time1 > lastTime + 1000 ) {
+    //     if (time1 > lastTime + 1000 ) {
            
-            if (marker1){
-                marker2= true;
-             }
+    //         if (marker1){
+    //             marker2= true;
+    //          }
 
-            marker1 = true;
-            lastTime = time1;
+    //         marker1 = true;
+    //         lastTime = time1;
            
-        } else if (!marker2 ){
-            g.drawImage(getSpriteAtlas(KEY_ATLAS), (int) this.hitbox.x - xOffset, (int) yItem, 40,40, null );
+    //     } else if (!marker2 ){
+    //         g.drawImage(getSpriteAtlas(KEY_ATLAS), (int) this.hitbox.x - xOffset, (int) yItem, 40,40, null );
           
-            if (yItem > 400){
-                    yItem-= 3;
-                }
-            } 
-    }
+    //         if (yItem > 400){
+    //                 yItem-= 3;
+    //             }
+    //         } 
+    // }
     
 }
