@@ -106,7 +106,7 @@ public class Bombs extends Entity {
             if(playing.BombReady)
             playing.BombReady = false; 
 
-            tempChange = speed * ((vertX / initX) * 10);
+            tempChange = Math.min(Math.max(speed * ((vertX / initX) * 10), -3 * speed), 3 * speed); // cap out the speed at 3 * the speed
             //System.out.print("    OldX: " + x + ", XDel: " + tempChange );
             x += tempChange;
             hitbox.x += tempChange;
