@@ -15,7 +15,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import GameStates.Playing;
+import Objects.BarrierDoor;
 import Objects.Chest;
+import Objects.KeyChest;
 import Objects.Saving.Save;
 import static Utilities.Atlas.RESETBUTTON_ATLAS;
 import static Utilities.Constants.Buttons.*;
@@ -100,7 +102,7 @@ public class ResetSaveButton extends Button {
 	 * @Description: resets save file by replacing it with an empty file
 	 * @Parameters: N/A
 	 * @returns:N/A
-	 * @Dependencies: SaveButton, Playing, Chest
+	 * @Dependencies: SaveButton, Playing, Chest, BarrierDoor
 	 * @Throws/Exceptions: IO Exception
 	 **/
 
@@ -113,6 +115,20 @@ public class ResetSaveButton extends Button {
 		if (Playing.levelManager.getCurrentLevel().getChest() != null) {
 			for (Chest chest : Playing.levelManager.getCurrentLevel().getChest()) {
 				chest.resetChests();
+			}
+
+		}
+
+		if (Playing.levelManager.getCurrentLevel().getKeyChest() != null) {
+			for (KeyChest keychest : Playing.levelManager.getCurrentLevel().getKeyChest()) {
+				keychest.resetKeyChests();
+			}
+
+		}
+
+		if (Playing.levelManager.getCurrentLevel().getDoor() != null) {
+			for (BarrierDoor door : Playing.levelManager.getCurrentLevel().getDoor()) {
+				door.resetDoor();
 			}
 
 		}

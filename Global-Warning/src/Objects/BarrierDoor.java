@@ -42,4 +42,21 @@ public class BarrierDoor extends Object {
         if(doorOpen)
         updateAnimationTick(); 
     }
+
+     /**
+	 * @Method Name: resetDoor
+	 * @author Nusayba Hamou
+	 * @since 22 JAN 2024
+	 * @Description: resets doors every time a save is loaded
+	 * @Parameters: N/A
+	 * @returns:N/A
+	 * @Dependencies: N/A
+	 * @Throws/Exceptions: N/A
+	 **/
+
+    public void resetDoor () {
+        doorInteract = false;
+         doorOpen = false;
+        doorOpened = false;   
+    }
 }

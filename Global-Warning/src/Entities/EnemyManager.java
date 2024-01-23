@@ -13,7 +13,9 @@ import Entities.Planet1Enemies.Boss;
 import Entities.Planet1Enemies.Enemy1;
 import Entities.Planet1Enemies.Enemy2;
 import Entities.Planet1Enemies.Enemy3;
+import GameStates.GameState;
 import GameStates.Playing;
+import GameStates.ToBeContinued;
 import Levels.Level;
 import Objects.ObjectManager;
 import Objects.Weapons.Bullets;
@@ -130,6 +132,8 @@ public class EnemyManager {
       if(!b.isDead()) { 
         b.draw(g, xOffset);
         b.drawHealth(g, xOffset);
+      } else{
+        Playing.endGame = true;
       }
     }
   }
