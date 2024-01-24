@@ -29,6 +29,7 @@ public class Fireballs extends Entity {
         super.inAir = true; 
         this.playing = playing;
         loadImage();
+        playing.getSoundLibrary().playSound("Fireball");
         initialize();
     }
 

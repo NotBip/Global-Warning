@@ -66,7 +66,8 @@ public class Checkpoint extends Entity {
 	public void update() throws IOException {
 		if (playing.getPlayer().getHitbox().intersects(hitbox) && !reached) {
 			reached = true;
-
+			playing.getSoundLibrary().playSound("Checkpoint");
+			System.out.println("YEAAAAAHHH");
 			switch (fileNum) {
 				case 1:
 					SaveButton.save1.setHealth(playing.getPlayer().currentHealth);

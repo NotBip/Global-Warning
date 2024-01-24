@@ -131,6 +131,12 @@ public class SoundLibrary {
             filepath = "Global-Warning/res/audio/Wind.wav";
             isESound = true;
             break;
+            case "Checkpoint":
+            filepath = "Global-Warning/res/audio/Checkpoint.wav";
+            break;
+            case "Fireball":
+            filepath = "Global-Warning/res/audio/Fire.wav";
+            break;
             default:
             filepath = "";
             break;
@@ -157,7 +163,7 @@ public class SoundLibrary {
             clipMusic.start();
             songPlayed = true;
         }
-        if (endESound == true) {
+        if (endESound == true && soundEPlayed == true) {
             clipESound.stop();
             soundEPlayed = false;
         }
