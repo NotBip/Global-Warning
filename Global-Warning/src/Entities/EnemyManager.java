@@ -139,7 +139,6 @@ public class EnemyManager {
       if(!b.isDead()) { 
         b.draw(g, xOffset);
         b.drawHealth(g, xOffset);
-        b.drawHitbox(g, xOffset);
       } else{
         Playing.endGame = true;
       }
