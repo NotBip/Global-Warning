@@ -336,9 +336,14 @@ public class Playing extends State implements KeyListener, MouseListener {
                 
                 resetObjects(); 
                 levelManager.setLevelIndex(levelManager.getLevelIndex() + 1);
+                getSoundLibrary().playSound("EndSound");
+                if (levelManager.getLevelIndex() == 2 || levelManager.getLevelIndex() == 6) {
+                    getSoundLibrary().playSound("Wind");
+                }
                 if (levelManager.getLevelIndex() == 9) {
                     getSoundLibrary().playSound("Boss");
                 }
+                
                 if(levelManager.getCurrentLevel().getLeftSpawn() != null) { // Make sure the room has a point to send you to, otherwise send you to default point
                     loadNextLevel(1);
                 } else {

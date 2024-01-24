@@ -209,7 +209,7 @@ public class Menu extends State implements KeyListener, MouseListener {
         for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 mb.setMousePressed(true);
-                // playing.getSoundLibrary().playSound("Select");
+                playing.getSoundLibrary().playSound("Select");
             }
 
         }

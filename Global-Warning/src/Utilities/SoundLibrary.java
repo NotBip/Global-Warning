@@ -5,6 +5,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 import GameStates.Playing;
 
@@ -26,9 +27,13 @@ public class SoundLibrary {
     Boolean mute = false;
     Clip clip;
     Clip clipMusic;
+    Clip clipESound;
     private boolean isMusic = false;
     private boolean endMusic = false;
     private boolean songPlayed = false;
+    private boolean endESound = false;
+    private boolean soundEPlayed = false;
+    private boolean isESound = false;
 
     // Intitialize Sound Library
     public SoundLibrary(Playing playing) {
@@ -51,13 +56,18 @@ public class SoundLibrary {
         switch (sound) {
             case "EndMusic":
             endMusic = true;
+            filepath = "Global-Warning/res/audio/Nothing.wav";
+            break;
+            case "EndSound":
+            endESound = true;
+            filepath = "Global-Warning/res/audio/Nothing.wav";
             break;
             case "Music":
             filepath = "Global-Warning/res/audio/Music.wav";
             isMusic = true;
             break;
             case "Boss":
-            filepath = "Global-Warning/res/audio/Boss.wav";
+            filepath = "Global-Warning/res/audio/Bossn.wav";
             isMusic = true;
             break;
             case "Select":
@@ -117,6 +127,10 @@ public class SoundLibrary {
             case "Denied":
             filepath = "Global-Warning/res/audio/Denied.wav";
             break;
+            case "Wind":
+            filepath = "Global-Warning/res/audio/Wind.wav";
+            isESound = true;
+            break;
             default:
             filepath = "";
             break;
@@ -143,7 +157,22 @@ public class SoundLibrary {
             clipMusic.start();
             songPlayed = true;
         }
-        else if (isMusic == false){
+        if (endESound == true) {
+            clipESound.stop();
+            soundEPlayed = false;
+        }
+        if (isESound == true && endESound == false) {
+            if (soundEPlayed == true){
+            clipESound.stop();
+            soundEPlayed = false;
+            }
+            clipESound = AudioSystem.getClip();
+            clipESound.open(audioInput);
+            clipESound.loop(Clip.LOOP_CONTINUOUSLY);
+            clipESound.start();
+            soundEPlayed = true;
+        }
+        else if (isMusic == false && isESound == false){
         clip = AudioSystem.getClip();
         clip.open(audioInput);
         clip.start();
@@ -154,6 +183,8 @@ public class SoundLibrary {
         }
         endMusic = false;
         isMusic = false;
+        endESound = false;
+        isESound = false;
     }
     }
 
