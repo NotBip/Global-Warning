@@ -207,13 +207,13 @@ public class Bullets extends Entities.Entity implements MouseListener {
         if (Playing.gunIndex == 1) {
             g2d.setColor(Color.PINK);
             // g2d.fillOval(drawX - 5 , drawY - 5, 64, 64);
-            g.drawImage(bulletPurple, drawX - 5 , drawY - 5, 42, 42, null);
+            g.drawImage(bulletPurple, drawX - 5 , drawY - 40, 42, 42, null);
 
 
         } else if (Playing.gunIndex ==2 ){
             g2d.setColor(Color.BLUE);
             // g2d.fillOval(drawX - 5 , drawY - 5, 10, 10);
-            g.drawImage(bulletBlue, drawX - 5 , drawY - 5, 42, 42, null);
+            g.drawImage(bulletBlue, drawX - 5 , drawY - 10, 42, 42, null);
 
         } 
         g2d.setTransform(oldXForm);
